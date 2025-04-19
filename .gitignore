@@ -1,0 +1,11 @@
+node_modules
+.swc
+.next
+.env
+tasks.md
+.DS_Store
+out
+build
+venv
+__pycache__
+alembic.ini
