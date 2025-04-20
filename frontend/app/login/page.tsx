@@ -1,23 +1,19 @@
 "use client";
 import { Button, Input } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { isStrongPassword } from "validator";
 import { useApi } from "../../utils/api";
-import Link from "next/link";
+import { setAuthToken } from "../../utils/localStorage";
 
 const formSchema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z
-    .string()
-    .refine(
-      isStrongPassword,
-      "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character"
-    ),
+  email: z.string().min(1, "Email is required"),
+  password: z.string().min(1, "Password is required"),
 });
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const {
     register,
     handleSubmit,
@@ -26,19 +22,32 @@ export default function RegisterPage() {
     resolver: zodResolver(formSchema),
   });
 
-  const loginApi = useApi("/user/login", "POST");
+  const loginApi = useApi({
+    url: "/user/login",
+    method: "POST",
+  });
 
-  const onSubmit = (data) => {
+  const router = useRouter();
+
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
     loginApi({
       email: data.email,
       password: data.password,
+    }).then((res) => {
+      if (res?.message == "Email not verified") {
+        router.push("/verify-email");
+      }
+      if (res?.success) {
+        setAuthToken(res.data.token);
+        router.push("/");
+      }
     });
   };
 
   return (
-    <div className="flex flex-col items-center mt-10">
+    <div className="flex flex-col items-center">
       <div className="flex flex-col gap-4 items-center">
-        <h1 className="text-2xl font-bold">Login</h1>
+        <h1 className="heading-1">Login</h1>
         <Input
           label="Email"
           type="text"
@@ -55,11 +64,21 @@ export default function RegisterPage() {
           isInvalid={!!errors.password}
           errorMessage={errors.password?.message}
         />
-        <Button onPress={handleSubmit(onSubmit)}>Submit</Button>
+        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
         <p className="text-sm text-gray-500">
           Don't have an account?{" "}
           <Link href="/register">
             <span className="underline">Register</span>
+          </Link>
+        </p>
+        <p className="text-sm text-gray-500">
+          <Link href="/forgot-password">
+            <span className="underline">Forgot Password?</span>
+          </Link>
+        </p>
+        <p className="text-sm text-gray-500">
+          <Link href="/email-verification-code">
+            <span className="underline">Resend Email Verification Code</span>
           </Link>
         </p>
       </div>

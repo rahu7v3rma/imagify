@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -46,6 +46,18 @@ async def custom_404_handler(request, exc):
             content={
                 "success": False,
                 "message": "Route not found",
+                "data": None,
+            },
+        )
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request, exc):
+    if exc.status_code == 401:
+        return JSONResponse(
+            content={
+                "success": False,
+                "message": "Unauthorized",
                 "data": None,
             },
         )

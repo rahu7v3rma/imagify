@@ -1,8 +1,8 @@
-import re
 from pydantic import BaseModel, field_validator
+from validators.common import EmailValidator, PasswordValidator
 
 
-class RegisterRequestBody(BaseModel):
+class RegisterRequestBody(BaseModel, EmailValidator, PasswordValidator):
     name: str
     email: str
     password: str
@@ -13,25 +13,32 @@ class RegisterRequestBody(BaseModel):
             raise ValueError("Name must be at least 3 characters long")
         return v
 
-    @field_validator("email")
-    def validate_email(cls, v):
-        if not re.match(r".+@.+\..+", v):
-            raise ValueError("Invalid email address")
-        return v
-
-    @field_validator("password")
-    def validate_password(cls, v):
-        if len(v) < 8:
-            raise ValueError("Password must be at least 8 characters long")
-        if not any(char.isupper() for char in v):
-            raise ValueError("Password must contain at least one uppercase letter")
-        if not any(char.islower() for char in v):
-            raise ValueError("Password must contain at least one lowercase letter")
-        if not any(char.isdigit() for char in v):
-            raise ValueError("Password must contain at least one digit")
-        return v
-
 
 class VerifyEmailRequestBody(BaseModel):
     email: str
     email_verification_code: str
+
+
+class LoginRequestBody(BaseModel):
+    email: str
+    password: str
+
+
+class UpdateProfileRequestBody(BaseModel):
+    name: str | None = None
+    email: str | None = None
+    password: str | None = None
+
+
+class ForgotPasswordRequestBody(BaseModel, EmailValidator):
+    email: str
+
+
+class ResetPasswordRequestBody(BaseModel, EmailValidator, PasswordValidator):
+    email: str
+    email_verification_code: str
+    password: str
+
+
+class EmailVerificationCodeRequestBody(BaseModel, EmailValidator):
+    email: str

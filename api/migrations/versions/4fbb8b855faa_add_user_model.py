@@ -1,8 +1,8 @@
 """add user model
 
-Revision ID: 85db5ca0319f
+Revision ID: 4fbb8b855faa
 Revises: 
-Create Date: 2025-04-20 01:23:48.279989
+Create Date: 2025-04-20 14:30:56.384434
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '85db5ca0319f'
+revision: str = '4fbb8b855faa'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None

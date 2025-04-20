@@ -20,9 +20,12 @@ export default function ContactUsPage() {
     resolver: zodResolver(formSchema),
   });
 
-  const registerApi = useApi("/user/register", "POST");
+  const registerApi = useApi({
+    url: "/user/register",
+    method: "POST",
+  });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
     registerApi(data);
   };
 
@@ -53,7 +56,7 @@ export default function ContactUsPage() {
           isInvalid={!!errors.attachment}
           errorMessage={errors.attachment?.message}
         />
-        <Button onPress={handleSubmit(onSubmit)}>Submit</Button>
+        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
       </div>
     </div>
   );
