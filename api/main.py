@@ -28,6 +28,11 @@ app.add_middleware(
 app.include_router(user_router)
 
 
+@app.get("/connect")
+async def connect():
+    return {"success": True, "message": "API connected", "data": None}
+
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
     return JSONResponse(

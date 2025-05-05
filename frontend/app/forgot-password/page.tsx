@@ -5,10 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useApi } from "../../utils/api";
 import { useRouter } from "next/navigation";
-
-const formSchema = z.object({
-  email: z.string().email("Invalid email"),
-});
+import { ForgotPasswordSchema } from "../../utils/formsSchema";
 
 export default function ForgotPasswordPage() {
   const {
@@ -16,7 +13,7 @@ export default function ForgotPasswordPage() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(ForgotPasswordSchema),
   });
 
   const forgotPasswordApi = useApi({
@@ -26,7 +23,7 @@ export default function ForgotPasswordPage() {
 
   const router = useRouter();
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof ForgotPasswordSchema>) => {
     forgotPasswordApi({
       email: data.email,
     }).then(() => {

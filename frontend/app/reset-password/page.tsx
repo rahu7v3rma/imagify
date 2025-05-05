@@ -5,26 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useApi } from "../../utils/api";
 import { useRouter } from "next/navigation";
-import { isStrongPassword } from "validator";
-
-const formSchema = z
-  .object({
-    email: z.string().email("Invalid email"),
-    emailVerificationCode: z
-      .string()
-      .min(1, "Email verification code is required"),
-    password: z
-      .string()
-      .refine(
-        isStrongPassword,
-        "Password must have at least 8 characters, one uppercase, one lowercase, one number and one special character"
-      ),
-    confirmPassword: z.string().min(1, "Confirm password is required"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Passwords do not match",
-  });
+import { ResetPasswordSchema } from "../../utils/formsSchema";
 
 export default function ResetPasswordPage() {
   const {
@@ -32,7 +13,7 @@ export default function ResetPasswordPage() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(ResetPasswordSchema),
   });
 
   const resetPasswordApi = useApi({
@@ -42,7 +23,7 @@ export default function ResetPasswordPage() {
 
   const router = useRouter();
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof ResetPasswordSchema>) => {
     resetPasswordApi({
       email: data.email,
       email_verification_code: data.emailVerificationCode,

@@ -6,13 +6,19 @@ import { Link, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/react";
 import { Navbar } from "@heroui/react";
 import { useUser } from "../context/user";
 import { useEffect } from "react";
+import { useApi } from "../utils/api";
+
 export default function Header() {
-  console.log("header");
   const { user } = useUser();
 
+  const connectApi = useApi({
+    url: "/connect",
+    method: "GET",
+  });
+
   useEffect(() => {
-    console.log(user, "user");
-  }, [user]);
+    connectApi();
+  }, []);
 
   return (
     <Navbar position="static" className="shadow-sm">
@@ -32,7 +38,10 @@ export default function Header() {
           <Link href={user ? "/profile" : "/login"}>
             <Avatar
               showFallback
-              src="https://images.unsplash.com/broken"
+              name={user?.name
+                ?.split(" ")
+                .map((x) => x[0])
+                .join("")}
               className="cursor-pointer hover:opacity-50"
             />
           </Link>

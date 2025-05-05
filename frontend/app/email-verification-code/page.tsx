@@ -5,10 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useApi } from "../../utils/api";
 import { useRouter } from "next/navigation";
-
-const formSchema = z.object({
-  email: z.string().email("Invalid email"),
-});
+import { EmailVerificationCodeSchema } from "../../utils/formsSchema";
 
 export default function EmailVerificationCodePage() {
   const {
@@ -16,7 +13,7 @@ export default function EmailVerificationCodePage() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(EmailVerificationCodeSchema),
   });
 
   const emailVerificationCodeApi = useApi({
@@ -26,7 +23,7 @@ export default function EmailVerificationCodePage() {
 
   const router = useRouter();
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof EmailVerificationCodeSchema>) => {
     emailVerificationCodeApi({
       email: data.email,
     }).then(() => {
@@ -37,7 +34,7 @@ export default function EmailVerificationCodePage() {
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-col gap-4 items-center">
-        <h1 className="heading-1">Email Verification Code</h1>
+        <h1 className="heading-1">Request Email Verification Code</h1>
         <Input
           label="Email"
           type="text"

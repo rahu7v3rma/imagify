@@ -1,29 +1,12 @@
 "use client";
 import { Button, Input } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { isStrongPassword } from "validator";
-import { useApi } from "../../utils/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-const formSchema = z
-  .object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email"),
-    password: z
-      .string()
-      .refine(
-        isStrongPassword,
-        "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character"
-      ),
-    confirmPassword: z.string().min(1, "Confirm password is required"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Passwords do not match",
-  });
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useApi } from "../../utils/api";
+import { RegisterSchema } from "../../utils/formsSchema";
 
 export default function RegisterPage() {
   const {
@@ -31,7 +14,7 @@ export default function RegisterPage() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(RegisterSchema),
   });
 
   const registerApi = useApi({
@@ -41,7 +24,7 @@ export default function RegisterPage() {
 
   const router = useRouter();
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     registerApi({
       name: data.name,
       email: data.email,

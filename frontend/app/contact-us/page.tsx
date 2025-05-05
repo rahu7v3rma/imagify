@@ -4,12 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useApi } from "../../utils/api";
-
-const formSchema = z.object({
-  email: z.string().email("Invalid email"),
-  message: z.string().min(1, "Message is required"),
-  attachment: z.instanceof(File),
-});
+import { ContactUsSchema } from "../../utils/formsSchema";
 
 export default function ContactUsPage() {
   const {
@@ -17,7 +12,7 @@ export default function ContactUsPage() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(ContactUsSchema),
   });
 
   const registerApi = useApi({
@@ -25,7 +20,7 @@ export default function ContactUsPage() {
     method: "POST",
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof ContactUsSchema>) => {
     registerApi(data);
   };
 

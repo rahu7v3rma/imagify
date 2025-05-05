@@ -6,35 +6,8 @@ import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import { useUser } from "../../context/user";
 import { useApi } from "../../utils/api";
-import { isStrongPassword } from "validator";
-const formSchema = z
-  .object({
-    name: z.string().min(1, "Name is required").optional(),
-    email: z.string().min(1, "Email is required").optional(),
-    password: z
-      .string()
-      .refine(isStrongPassword, {
-        message:
-          "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-      })
-      .optional(),
-    confirmPassword: z
-      .string()
-      .min(1, "Confirm password is required")
-      .optional(),
-  })
-  .refine(
-    (data) => {
-      if (data.password || data.confirmPassword) {
-        return data.password === data.confirmPassword;
-      }
-      return true;
-    },
-    {
-      path: ["confirmPassword"],
-      message: "Passwords do not match",
-    }
-  );
+import { ProfileSchema } from "../../utils/formsSchema";
+
 export default function ProfilePage() {
   const { user, logout, fetchProfile } = useUser();
 
@@ -44,7 +17,7 @@ export default function ProfilePage() {
     control,
     setValue,
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(ProfileSchema),
   });
 
   const updateProfileApi = useApi({
@@ -52,7 +25,7 @@ export default function ProfilePage() {
     method: "POST",
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof ProfileSchema>) => {
     updateProfileApi({
       name: data.name,
       email: data.email,

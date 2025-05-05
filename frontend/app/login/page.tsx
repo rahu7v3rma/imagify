@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useApi } from "../../utils/api";
 import { setAuthToken } from "../../utils/localStorage";
+import { useUser } from "../../context/user";
 
 const formSchema = z.object({
   email: z.string().min(1, "Email is required"),
@@ -29,6 +30,8 @@ export default function LoginPage() {
 
   const router = useRouter();
 
+  const { fetchProfile } = useUser();
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     loginApi({
       email: data.email,
@@ -39,7 +42,8 @@ export default function LoginPage() {
       }
       if (res?.success) {
         setAuthToken(res.data.token);
-        router.push("/");
+        fetchProfile();
+        router.push("/profile");
       }
     });
   };
