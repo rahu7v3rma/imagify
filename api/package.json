@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "dev": "nodemon --exec ts-node -r tsconfig-paths/register --transpile-only index.ts"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.1",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.15.18",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.3",
+    "winston": "^3.17.0",
+    "zod": "^3.24.4"
+  }
+}
