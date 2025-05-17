@@ -13,6 +13,7 @@ type Env = {
   CORS_ALLOWED_ORIGINS: string[];
   JWT_SECRET_KEY: string;
   OPENAI_API_KEY: string;
+  ADMIN_EMAIL_ADDRESS: string;
 };
 
 const envSchema = z.object({
@@ -29,6 +30,7 @@ const envSchema = z.object({
   CORS_ALLOWED_ORIGINS: z.string().min(1),
   JWT_SECRET_KEY: z.string().min(1),
   OPENAI_API_KEY: z.string().min(1),
+  ADMIN_EMAIL_ADDRESS: z.string().min(1),
 });
 
 const rawEnv = {
@@ -41,6 +43,7 @@ const rawEnv = {
   CORS_ALLOWED_ORIGINS: process.env.CORS_ALLOWED_ORIGINS,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  ADMIN_EMAIL_ADDRESS: process.env.ADMIN_EMAIL_ADDRESS,
 };
 
 const env: Env = {
@@ -53,8 +56,17 @@ const env: Env = {
   CORS_ALLOWED_ORIGINS: String(process.env.CORS_ALLOWED_ORIGINS).split(","),
   JWT_SECRET_KEY: String(process.env.JWT_SECRET_KEY),
   OPENAI_API_KEY: String(process.env.OPENAI_API_KEY),
+  ADMIN_EMAIL_ADDRESS: String(process.env.ADMIN_EMAIL_ADDRESS),
 };
 
-export const verifyEnv = () => envSchema.parse(rawEnv);
+export const verifyEnv = () => {
+  const result = envSchema.safeParse(rawEnv);
+  if (!result.success) {
+    throw {
+      message: "Environment validation failed",
+      error: result.error.flatten().fieldErrors,
+    };
+  }
+};
 
 export default env;

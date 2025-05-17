@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import env from "@/utils/env";
-import logger from "@/lib/winston";
+import { logInfo } from "@/utils/logger";
 
 export const initMongoose = async () => {
   await mongoose.connect(env.MONGODB_URI);
-  logger.info(`MongoDB connected successfully at ${env.MONGODB_URI}`);
+  logInfo("MongoDB connected successfully");
 };
