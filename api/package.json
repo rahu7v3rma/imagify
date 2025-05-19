@@ -22,5 +22,10 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "mongoose": "^8.15.0",
+    "zod": "^3.25.7"
   }
 }

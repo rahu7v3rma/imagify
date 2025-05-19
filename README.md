@@ -1,4 +1,4 @@
-# imagify - image processing tools
+# imagify - image processing tools - imagify.store
 
 ## Tech Stack
 
