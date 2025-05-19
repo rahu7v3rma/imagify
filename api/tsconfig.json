@@ -2,8 +2,11 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "baseUrl": ".",
+    "strict": true,
     "paths": {
-      "@/*": ["*"]
-    }
-  }
+      "@/*": ["./src/*"]
+    },
+    "outDir": "./build"
+  },
+  "include": ["src/**/*"]
 }
