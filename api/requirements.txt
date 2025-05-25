@@ -1,7 +1,0 @@
-fastapi[standard]
-sqlmodel
-python-dotenv
-psycopg2-binary
-bcrypt
-alembic
-pyjwt

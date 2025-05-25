@@ -1,11 +1,6 @@
-node_modules
-.swc
-.next
-.env
-tasks.md
-.DS_Store
-out
-build
+.aider*
 venv
 __pycache__
-alembic.ini
+.env
+ai.py
+.DS_Store
