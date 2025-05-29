@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_DOMAIN } from "../../utils/env";
+import gmail from "../../lib/gmail";
 
 test("GET /status should return success response", async () => {
   const response = await axios.get(`${API_DOMAIN}/status`);
@@ -35,5 +36,8 @@ test("GET /error should return 500 response", async () => {
       message: "internal server error",
       data: null,
     });
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    const email = await gmail.getLatestEmail();
+    expect(email.subject).toContain("internal server error");
   }
-});
+}, 120000);

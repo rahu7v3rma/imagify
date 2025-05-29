@@ -1,19 +1,18 @@
-import express, { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
 import cors from "cors";
+import express, { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
 import morgan from "morgan";
-import { PORT, MONGODB_URI, ALLOWED_ORIGINS } from "./lib/env";
-import "./instrument";
-import * as Sentry from "@sentry/node";
 import userRouter from "./routers/user";
+import { ALLOWED_ORIGINS, MONGODB_URI, PORT } from "./utils/env";
+import { handleError } from "./utils/error";
 
 const app = express();
 
-Sentry.setupExpressErrorHandler(app);
-
-app.use(cors({
-  origin: ALLOWED_ORIGINS.split(',')
-}));
+app.use(
+  cors({
+    origin: ALLOWED_ORIGINS.split(","),
+  })
+);
 app.use(morgan("dev"));
 app.use(express.json());
 
@@ -23,7 +22,7 @@ app.get("/status", (req, res) => {
   res.json({
     success: true,
     message: "socialify status",
-    data: null
+    data: null,
   });
 });
 
@@ -35,16 +34,20 @@ app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: "route not found",
-    data: null
+    data: null,
   });
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  Sentry.captureException(err);
+  handleError({
+    error: err,
+    url: req.originalUrl,
+    method: req.method,
+  });
   res.status(500).json({
     success: false,
     message: "internal server error",
-    data: null
+    data: null,
   });
 });
 

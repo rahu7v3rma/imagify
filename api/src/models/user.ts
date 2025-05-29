@@ -9,9 +9,18 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true
+  },
+  emailConfirmationCode: {
+    type: String,
+    required: false
+  },
+  emailConfirmed: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });
 
 const UserModel = mongoose.model("User", userSchema);
 
-export default UserModel; 
+export default UserModel;
