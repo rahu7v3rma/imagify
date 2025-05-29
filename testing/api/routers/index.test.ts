@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_DOMAIN } from "../utils/env";
+import { API_DOMAIN } from "../../utils/env";
 
 test("GET /status should return success response", async () => {
   const response = await axios.get(`${API_DOMAIN}/status`);

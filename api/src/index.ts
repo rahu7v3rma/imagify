@@ -2,17 +2,22 @@ import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import morgan from "morgan";
-import { PORT, MONGODB_URI } from "./utils/env";
+import { PORT, MONGODB_URI, ALLOWED_ORIGINS } from "./lib/env";
 import "./instrument";
 import * as Sentry from "@sentry/node";
+import userRouter from "./routers/user";
 
 const app = express();
 
 Sentry.setupExpressErrorHandler(app);
 
-app.use(cors());
+app.use(cors({
+  origin: ALLOWED_ORIGINS.split(',')
+}));
 app.use(morgan("dev"));
 app.use(express.json());
+
+app.use("/user", userRouter);
 
 app.get("/status", (req, res) => {
   res.json({
@@ -23,7 +28,7 @@ app.get("/status", (req, res) => {
 });
 
 app.get("/error", (req, res) => {
-  throw new Error("This is a test error");
+  throw new Error("test error");
 });
 
 app.use((req, res) => {
