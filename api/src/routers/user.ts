@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateRequestBody } from "../middlewares/validation";
-import { UserRegisterRequestBody } from "../lib/schema";
+import { UserRegisterRequestBody, UserEmailConfirmRequestBody } from "../lib/schema";
 import { hashPassword } from "../lib/bcrypt";
 import UserModel from "../models/user";
 import { generateEmailConfirmationCode } from "../utils/general";
@@ -38,7 +38,7 @@ router.post(
 
     await sendRegistrationEmail({ to: email, emailConfirmationCode });
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: "user registered",
       data: null,
@@ -46,4 +46,27 @@ router.post(
   }
 );
 
+router.post(
+  "/email/confirm",
+  validateRequestBody(UserEmailConfirmRequestBody),
+  async (req, res) => {
+    const { email, emailConfirmationCode } = req.body;
+    const user = await UserModel.findOne({ email, emailConfirmationCode });
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: "user not found",
+        data: null,
+      });
+      return;
+    }
+    user.emailConfirmed = true;
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: "email confirmed successfully",
+      data: null,
+    });
+  }
+);
 export default router;

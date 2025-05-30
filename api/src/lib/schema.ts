@@ -7,3 +7,7 @@ export const UserRegisterRequestBody = z.object({
   email: z.string().min(1).refine(isEmail, { message: "Invalid email address" }),
   password: z.string().min(1).refine(isStrongPassword, { message: "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol." }),
 });
+export const UserEmailConfirmRequestBody = z.object({
+  email: z.string().min(1).refine(isEmail, { message: "Invalid email address" }),
+  emailConfirmationCode: z.string().min(1),
+});
