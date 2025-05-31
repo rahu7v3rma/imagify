@@ -4,21 +4,21 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   emailConfirmationCode: {
     type: String,
-    required: false
+    required: false,
   },
   emailConfirmed: {
     type: Boolean,
     required: true,
-    default: false
-  }
+    default: false,
+  },
 });
 
 const UserModel = mongoose.model("User", userSchema);

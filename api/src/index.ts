@@ -11,7 +11,7 @@ const app = express();
 app.use(
   cors({
     origin: ALLOWED_ORIGINS.split(","),
-  })
+  }),
 );
 app.use(morgan("dev"));
 app.use(express.json());

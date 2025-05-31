@@ -114,7 +114,10 @@ describe("register routes", () => {
 
   test("POST /register with correct email and password", async () => {
     await deleteUsers({ email: TEST_EMAIL });
-    const response = await axios.post(url, { email: TEST_EMAIL, password: TEST_PASSWORD });
+    const response = await axios.post(url, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       success: true,
@@ -135,10 +138,18 @@ describe("register routes", () => {
 
   test("POST /register with existing email should return 400 response", async () => {
     await deleteUsers({ email: TEST_EMAIL });
-    await createUser({ email: TEST_EMAIL, password: TEST_PASSWORD, emailConfirmationCode: "existing", emailConfirmed: false });
+    await createUser({
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+      emailConfirmationCode: "existing",
+      emailConfirmed: false,
+    });
     let response;
     try {
-      response = await axios.post(url, { email: TEST_EMAIL, password: TEST_PASSWORD });
+      response = await axios.post(url, {
+        email: TEST_EMAIL,
+        password: TEST_PASSWORD,
+      });
     } catch (error) {
       response = error.response;
     }
@@ -227,10 +238,16 @@ describe("login routes", () => {
   });
 
   test("POST /login with right email and wrong password should return 400 response", async () => {
-    await axios.post(`${API_DOMAIN}/user/register`, { email: TEST_EMAIL, password: TEST_PASSWORD });
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
     let response;
     try {
-      response = await axios.post(url, { email: TEST_EMAIL, password: "WrongPass1!" });
+      response = await axios.post(url, {
+        email: TEST_EMAIL,
+        password: "WrongPass1!",
+      });
     } catch (error) {
       response = error.response;
     }
@@ -243,10 +260,16 @@ describe("login routes", () => {
   }, 60000);
 
   test("POST /login with wrong email and right password should return 400 response", async () => {
-    await axios.post(`${API_DOMAIN}/user/register`, { email: TEST_EMAIL, password: TEST_PASSWORD });
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
     let response;
     try {
-      response = await axios.post(url, { email: "nonexistent@example.com", password: TEST_PASSWORD });
+      response = await axios.post(url, {
+        email: "nonexistent@example.com",
+        password: TEST_PASSWORD,
+      });
     } catch (error) {
       response = error.response;
     }
@@ -259,8 +282,14 @@ describe("login routes", () => {
   }, 60000);
 
   test("POST /login with correct email and password should return 200 and token", async () => {
-    await axios.post(`${API_DOMAIN}/user/register`, { email: TEST_EMAIL, password: TEST_PASSWORD });
-    const response = await axios.post(url, { email: TEST_EMAIL, password: TEST_PASSWORD });
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
+    const response = await axios.post(url, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
     expect(response.status).toBe(200);
     expect(response.data.success).toBe(true);
     expect(response.data.data.token).toBeDefined();
@@ -343,12 +372,18 @@ describe("email confirmation routes", () => {
   });
 
   test("POST /email/confirm with wrong email should return 400 response", async () => {
-    await axios.post(`${API_DOMAIN}/user/register`, { email: TEST_EMAIL, password: TEST_PASSWORD });
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
     const usersBefore = await getUsers({ email: TEST_EMAIL });
     const confirmationCode = usersBefore[0].emailConfirmationCode;
     let response;
     try {
-      response = await axios.post(url, { email: 'socialify@gmail.com', emailConfirmationCode: confirmationCode });
+      response = await axios.post(url, {
+        email: "socialify@gmail.com",
+        emailConfirmationCode: confirmationCode,
+      });
     } catch (error) {
       response = error.response;
     }
@@ -361,10 +396,16 @@ describe("email confirmation routes", () => {
   });
 
   test("POST /email/confirm with wrong code should return 400 response", async () => {
-    await axios.post(`${API_DOMAIN}/user/register`, { email: TEST_EMAIL, password: TEST_PASSWORD });
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
     let response;
     try {
-      response = await axios.post(url, { email: TEST_EMAIL, emailConfirmationCode: "wrong" });
+      response = await axios.post(url, {
+        email: TEST_EMAIL,
+        emailConfirmationCode: "wrong",
+      });
     } catch (error) {
       response = error.response;
     }
@@ -377,10 +418,16 @@ describe("email confirmation routes", () => {
   }, 60000);
 
   test("POST /email/confirm with correct code should return 200 response", async () => {
-    await axios.post(`${API_DOMAIN}/user/register`, { email: TEST_EMAIL, password: TEST_PASSWORD });
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
     const usersBefore = await getUsers({ email: TEST_EMAIL });
     const confirmationCode = usersBefore[0].emailConfirmationCode;
-    const response = await axios.post(url, { email: TEST_EMAIL, emailConfirmationCode: confirmationCode });
+    const response = await axios.post(url, {
+      email: TEST_EMAIL,
+      emailConfirmationCode: confirmationCode,
+    });
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       success: true,

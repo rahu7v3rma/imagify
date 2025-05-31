@@ -9,7 +9,7 @@ const gmail = google.gmail("v1");
 
 const oauth2Client = new google.auth.OAuth2(
   GOOGLE_OAUTH_CLIENT_ID,
-  GOOGLE_OAUTH_CLIENT_SECRET
+  GOOGLE_OAUTH_CLIENT_SECRET,
 );
 
 oauth2Client.setCredentials({
@@ -32,7 +32,7 @@ const getLatestEmail = async () => {
   });
 
   const subject = message.data.payload?.headers?.find(
-    (header) => header.name === "Subject"
+    (header) => header.name === "Subject",
   )?.value;
 
   const body = message.data.payload?.body?.data;
@@ -44,4 +44,4 @@ const getLatestEmail = async () => {
 
 export default {
   getLatestEmail,
-}
+};

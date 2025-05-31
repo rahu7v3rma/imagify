@@ -1,5 +1,12 @@
 import nodemailer from "nodemailer";
-import { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM, ADMIN_EMAIL } from "../utils/env";
+import {
+  SMTP_HOST,
+  SMTP_PORT,
+  SMTP_USER,
+  SMTP_PASS,
+  SMTP_FROM,
+  ADMIN_EMAIL,
+} from "../utils/env";
 
 function getTransporter() {
   return nodemailer.createTransport({
@@ -8,8 +15,8 @@ function getTransporter() {
     secure: true,
     auth: {
       user: SMTP_USER,
-      pass: SMTP_PASS
-    }
+      pass: SMTP_PASS,
+    },
   });
 }
 
@@ -17,7 +24,7 @@ export async function sendEmail({
   to,
   subject,
   text,
-  html
+  html,
 }: {
   to: string;
   subject: string;
@@ -30,14 +37,14 @@ export async function sendEmail({
     to,
     subject,
     text,
-    html
+    html,
   });
 }
 
 export async function sendAdminEmail({
   subject,
   text,
-  html
+  html,
 }: {
   subject: string;
   text: string;
@@ -47,13 +54,13 @@ export async function sendAdminEmail({
     to: ADMIN_EMAIL,
     subject,
     text,
-    html
+    html,
   });
 }
 
 export async function sendRegistrationEmail({
   to,
-  emailConfirmationCode
+  emailConfirmationCode,
 }: {
   to: string;
   emailConfirmationCode: string;
@@ -61,6 +68,6 @@ export async function sendRegistrationEmail({
   return await sendEmail({
     to,
     subject: "Socialify email confirmation",
-    text: `Your email confirmation code is ${emailConfirmationCode}.`
+    text: `Your email confirmation code is ${emailConfirmationCode}.`,
   });
 }

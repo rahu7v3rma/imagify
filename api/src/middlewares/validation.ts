@@ -8,7 +8,7 @@ export const validateRequestBody = (schema: ZodSchema): RequestHandler => {
       res.status(400).json({
         success: false,
         message: "invalid request body",
-        data: error.flatten().fieldErrors
+        data: error.flatten().fieldErrors,
       });
       return;
     }
