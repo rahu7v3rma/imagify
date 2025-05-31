@@ -11,3 +11,8 @@ export const UserEmailConfirmRequestBody = z.object({
   email: z.string().min(1).refine(isEmail, { message: "Invalid email address" }),
   emailConfirmationCode: z.string().min(1),
 });
+
+export const UserLoginRequestBody = z.object({
+  email: z.string().min(1).refine(isEmail, { message: "Invalid email address" }),
+  password: z.string().min(1),
+});

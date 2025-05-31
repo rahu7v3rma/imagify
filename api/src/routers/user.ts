@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { validateRequestBody } from "../middlewares/validation";
-import { UserRegisterRequestBody, UserEmailConfirmRequestBody } from "../lib/schema";
-import { hashPassword } from "../lib/bcrypt";
+import { UserRegisterRequestBody, UserEmailConfirmRequestBody, UserLoginRequestBody } from "../lib/schema";
+import { hashPassword, comparePassword } from "../lib/bcrypt";
 import UserModel from "../models/user";
+import { generateJWT } from "../lib/jwt";
 import { generateEmailConfirmationCode } from "../utils/general";
 import { sendRegistrationEmail } from "../lib/email";
 
@@ -67,6 +68,25 @@ router.post(
       message: "email confirmed successfully",
       data: null,
     });
+  }
+);
+router.post(
+  "/login",
+  validateRequestBody(UserLoginRequestBody),
+  async (req, res) => {
+    const { email, password } = req.body;
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      res.status(400).json({ success: false, message: "invalid credentials", data: null });
+      return;
+    }
+    const isValidPassword = await comparePassword(password, user.password);
+    if (!isValidPassword) {
+      res.status(400).json({ success: false, message: "invalid credentials", data: null });
+      return;
+    }
+    const token = generateJWT({ userId: user._id.toString() });
+    res.status(200).json({ success: true, message: "login successful", data: { token } });
   }
 );
 export default router;

@@ -12,3 +12,4 @@ export const SMTP_USER = process.env.SMTP_USER;
 export const SMTP_PASS = process.env.SMTP_PASS;
 export const SMTP_FROM = process.env.SMTP_FROM;
 export const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+export const JWT_SECRET = process.env.JWT_SECRET;
