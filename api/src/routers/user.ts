@@ -4,12 +4,13 @@ import {
   UserRegisterRequestBody,
   UserEmailConfirmRequestBody,
   UserLoginRequestBody,
+  UserForgotPasswordRequestBody,
 } from "../lib/schema";
 import { hashPassword, comparePassword } from "../lib/bcrypt";
 import UserModel from "../models/user";
 import { generateJWT } from "../lib/jwt";
 import { generateEmailConfirmationCode } from "../utils/general";
-import { sendRegistrationEmail } from "../lib/email";
+import { sendRegistrationEmail, sendForgotPasswordEmail } from "../lib/email";
 
 const router = Router();
 
@@ -30,18 +31,18 @@ router.post(
     }
 
     const hashedPassword = await hashPassword(password);
-    const emailConfirmationCode = generateEmailConfirmationCode();
+    const registerEmailConfirmationCode = generateEmailConfirmationCode();
 
     const user = new UserModel({
       email,
       password: hashedPassword,
-      emailConfirmationCode,
+      registerEmailConfirmationCode,
       emailConfirmed: false,
     });
 
     await user.save();
 
-    await sendRegistrationEmail({ to: email, emailConfirmationCode });
+    await sendRegistrationEmail({ to: email, registerEmailConfirmationCode });
 
     res.status(200).json({
       success: true,
@@ -55,8 +56,8 @@ router.post(
   "/email/confirm",
   validateRequestBody(UserEmailConfirmRequestBody),
   async (req, res) => {
-    const { email, emailConfirmationCode } = req.body;
-    const user = await UserModel.findOne({ email, emailConfirmationCode });
+    const { email, registerEmailConfirmationCode } = req.body;
+    const user = await UserModel.findOne({ email, registerEmailConfirmationCode });
     if (!user) {
       res.status(400).json({
         success: false,
@@ -99,4 +100,31 @@ router.post(
       .json({ success: true, message: "login successful", data: { token } });
   },
 );
+
+router.post(
+  "/forgot-password",
+  validateRequestBody(UserForgotPasswordRequestBody),
+  async (req, res) => {
+    const { email } = req.body;
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: "user not found",
+        data: null,
+      });
+      return;
+    }
+    const forgotPasswordEmailConfirmationCode = generateEmailConfirmationCode();
+    user.forgotPasswordEmailConfirmationCode = forgotPasswordEmailConfirmationCode;
+    await user.save();
+    await sendForgotPasswordEmail({ to: email, forgotPasswordEmailConfirmationCode });
+    res.status(200).json({
+      success: true,
+      message: "forgot password email sent",
+      data: null,
+    });
+  },
+);
+
 export default router;

@@ -60,14 +60,28 @@ export async function sendAdminEmail({
 
 export async function sendRegistrationEmail({
   to,
-  emailConfirmationCode,
+  registerEmailConfirmationCode,
 }: {
   to: string;
-  emailConfirmationCode: string;
+  registerEmailConfirmationCode: string;
 }) {
   return await sendEmail({
     to,
     subject: "Socialify email confirmation",
-    text: `Your email confirmation code is ${emailConfirmationCode}.`,
+    text: `Your email confirmation code is ${registerEmailConfirmationCode}.`,
+  });
+}
+
+export async function sendForgotPasswordEmail({
+  to,
+  forgotPasswordEmailConfirmationCode,
+}: {
+  to: string;
+  forgotPasswordEmailConfirmationCode: string;
+}) {
+  return await sendEmail({
+    to,
+    subject: "Socialify forgot password",
+    text: `Your forgot password confirmation code is ${forgotPasswordEmailConfirmationCode}.`,
   });
 }

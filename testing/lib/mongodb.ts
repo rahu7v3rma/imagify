@@ -26,12 +26,12 @@ export const deleteUsers = async ({ email }: { email: string }) => {
 export const createUser = async ({
   email,
   password,
-  emailConfirmationCode,
+  registerEmailConfirmationCode,
   emailConfirmed,
 }: {
   email: string;
   password: string;
-  emailConfirmationCode?: string;
+  registerEmailConfirmationCode?: string;
   emailConfirmed: boolean;
 }) => {
   const { client, db } = await getClient();
@@ -39,7 +39,7 @@ export const createUser = async ({
   await collection.insertOne({
     email,
     password,
-    emailConfirmationCode,
+    registerEmailConfirmationCode,
     emailConfirmed,
   });
   await client.close();

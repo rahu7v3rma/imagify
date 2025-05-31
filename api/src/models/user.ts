@@ -10,7 +10,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  emailConfirmationCode: {
+  registerEmailConfirmationCode: {
     type: String,
     required: false,
   },
@@ -18,6 +18,10 @@ const userSchema = new Schema({
     type: Boolean,
     required: true,
     default: false,
+  },
+  forgotPasswordEmailConfirmationCode: {
+    type: String,
+    required: false,
   },
 });
 

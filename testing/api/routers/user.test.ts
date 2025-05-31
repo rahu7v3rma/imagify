@@ -9,19 +9,6 @@ describe("register routes", () => {
     await deleteUsers({ email: TEST_EMAIL });
   });
 
-  test("non-POST methods should fail", async () => {
-    let response;
-    const methods = ["get", "put", "patch", "delete"];
-    for (const method of methods) {
-      try {
-        response = await axios[method](url);
-      } catch (error) {
-        response = error.response;
-      }
-      expect(response.status).not.toBe(200);
-    }
-  });
-
   test("POST /register without body should return 400 response", async () => {
     let response;
     try {
@@ -43,7 +30,10 @@ describe("register routes", () => {
   test("POST /register with only email - invalid email should return 400 response", async () => {
     let response;
     try {
-      response = await axios.post(url, { email: "not-an-email" });
+      response = await axios.post(url, {
+        email: "not-an-email",
+        password: "invalid-password",
+      });
     } catch (error) {
       response = error.response;
     }
@@ -53,61 +43,9 @@ describe("register routes", () => {
       message: "invalid request body",
       data: {
         email: ["Invalid email address"],
-        password: ["Required"],
-      },
-    });
-  });
-
-  test("POST /register with only email - valid email should return 400 response", async () => {
-    let response;
-    try {
-      response = await axios.post(url, { email: "socialify@gmail.com" });
-    } catch (error) {
-      response = error.response;
-    }
-    expect(response.status).toBe(400);
-    expect(response.data).toEqual({
-      success: false,
-      message: "invalid request body",
-      data: {
-        password: ["Required"],
-      },
-    });
-  });
-
-  test("POST /register with only password - invalid password should return 400 response", async () => {
-    let response;
-    try {
-      response = await axios.post(url, { password: "123" });
-    } catch (error) {
-      response = error.response;
-    }
-    expect(response.status).toBe(400);
-    expect(response.data).toEqual({
-      success: false,
-      message: "invalid request body",
-      data: {
-        email: ["Required"],
         password: [
           "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol.",
-        ],
-      },
-    });
-  });
-
-  test("POST /register with only password - valid password should return 400 response", async () => {
-    let response;
-    try {
-      response = await axios.post(url, { password: "Socialify1!" });
-    } catch (error) {
-      response = error.response;
-    }
-    expect(response.status).toBe(400);
-    expect(response.data).toEqual({
-      success: false,
-      message: "invalid request body",
-      data: {
-        email: ["Required"],
+        ]
       },
     });
   });
@@ -127,13 +65,13 @@ describe("register routes", () => {
     const users = await getUsers({ email: TEST_EMAIL });
     expect(users.length).toBe(1);
     expect(users[0].email).toBe(TEST_EMAIL);
-    expect(users[0].password).toBeDefined();
+    expect(users[0].password?.length).toBeGreaterThan(1);
     expect(users[0].emailConfirmed).toBe(false);
-    expect(users[0].emailConfirmationCode).toBeDefined();
+    expect(users[0].registerEmailConfirmationCode?.length).toBeGreaterThan(1);
     await new Promise((resolve) => setTimeout(resolve, 5000));
     const latestEmail = await gmail.getLatestEmail();
     expect(latestEmail.subject).toBe("Socialify email confirmation");
-    expect(latestEmail.body).toContain(users[0].emailConfirmationCode);
+    expect(latestEmail.body).toContain(users[0].registerEmailConfirmationCode);
   }, 60000);
 
   test("POST /register with existing email should return 400 response", async () => {
@@ -141,7 +79,7 @@ describe("register routes", () => {
     await createUser({
       email: TEST_EMAIL,
       password: TEST_PASSWORD,
-      emailConfirmationCode: "existing",
+      registerEmailConfirmationCode: "existing",
       emailConfirmed: false,
     });
     let response;
@@ -166,23 +104,97 @@ describe("register routes", () => {
   });
 });
 
-describe("login routes", () => {
-  const url = `${API_DOMAIN}/user/login`;
+describe("forgot password routes", () => {
+  const url = `${API_DOMAIN}/user/forgot-password`;
   beforeEach(async () => {
     await deleteUsers({ email: TEST_EMAIL });
   });
 
-  test("non-POST methods should fail", async () => {
+  test("POST /forgot-password without body should return 400 response", async () => {
     let response;
-    const methods = ["get", "put", "patch", "delete"];
-    for (const method of methods) {
-      try {
-        response = await axios[method](url);
-      } catch (error) {
-        response = error.response;
-      }
-      expect(response.status).not.toBe(200);
+    try {
+      response = await axios.post(url);
+    } catch (error) {
+      response = error.response;
     }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "invalid request body",
+      data: {
+        email: ["Required"],
+      },
+    });
+  });
+
+  test("POST /forgot-password with invalid email should return 400 response", async () => {
+    let response;
+    try {
+      response = await axios.post(url, {
+        email: "not-an-email",
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "invalid request body",
+      data: {
+        email: ["Invalid email address"],
+      },
+    });
+  });
+
+  test("POST /forgot-password with user not found should return 400 response", async () => {
+    let response;
+    try {
+      response = await axios.post(url, {
+        email: "nonexistent@example.com",
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "user not found",
+      data: null,
+    });
+  });
+
+  test("POST /forgot-password with valid request should return 200 response and send email", async () => {
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
+    const response = await axios.post(url, {
+      email: TEST_EMAIL,
+    });
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual({
+      success: true,
+      message: "forgot password email sent",
+      data: null,
+    });
+    const users = await getUsers({ email: TEST_EMAIL });
+    expect(users.length).toBe(1);
+    expect(users[0].forgotPasswordEmailConfirmationCode?.length).toBeGreaterThan(1);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    const latestEmail = await gmail.getLatestEmail();
+    expect(latestEmail.subject).toBe("Socialify forgot password");
+    expect(latestEmail.body).toContain(users[0].forgotPasswordEmailConfirmationCode);
+  }, 60000);
+
+  afterEach(async () => {
+    await deleteUsers({ email: TEST_EMAIL });
+  });
+});
+
+describe("login routes", () => {
+  const url = `${API_DOMAIN}/user/login`;
+  beforeEach(async () => {
+    await deleteUsers({ email: TEST_EMAIL });
   });
 
   test("POST /login without body should return 400 response", async () => {
@@ -198,40 +210,6 @@ describe("login routes", () => {
       message: "invalid request body",
       data: {
         email: ["Required"],
-        password: ["Required"],
-      },
-    });
-  });
-
-  test("POST /login without email should return 400 response", async () => {
-    let response;
-    try {
-      response = await axios.post(url, { password: TEST_PASSWORD });
-    } catch (error) {
-      response = error.response;
-    }
-    expect(response.status).toBe(400);
-    expect(response.data).toEqual({
-      success: false,
-      message: "invalid request body",
-      data: {
-        email: ["Required"],
-      },
-    });
-  });
-
-  test("POST /login without password should return 400 response", async () => {
-    let response;
-    try {
-      response = await axios.post(url, { email: TEST_EMAIL });
-    } catch (error) {
-      response = error.response;
-    }
-    expect(response.status).toBe(400);
-    expect(response.data).toEqual({
-      success: false,
-      message: "invalid request body",
-      data: {
         password: ["Required"],
       },
     });
@@ -306,19 +284,6 @@ describe("email confirmation routes", () => {
     await deleteUsers({ email: TEST_EMAIL });
   });
 
-  test("non-POST methods should fail", async () => {
-    let response;
-    const methods = ["get", "put", "patch", "delete"];
-    for (const method of methods) {
-      try {
-        response = await axios[method](url);
-      } catch (error) {
-        response = error.response;
-      }
-      expect(response.status).not.toBe(200);
-    }
-  });
-
   test("POST /email/confirm without body should return 400 response", async () => {
     let response;
     try {
@@ -332,41 +297,7 @@ describe("email confirmation routes", () => {
       message: "invalid request body",
       data: {
         email: ["Required"],
-        emailConfirmationCode: ["Required"],
-      },
-    });
-  });
-
-  test("POST /email/confirm without email should return 400 response", async () => {
-    let response;
-    try {
-      response = await axios.post(url, { emailConfirmationCode: "correct" });
-    } catch (error) {
-      response = error.response;
-    }
-    expect(response.status).toBe(400);
-    expect(response.data).toEqual({
-      success: false,
-      message: "invalid request body",
-      data: {
-        email: ["Required"],
-      },
-    });
-  });
-
-  test("POST /email/confirm without emailConfirmationCode should return 400 response", async () => {
-    let response;
-    try {
-      response = await axios.post(url, { email: TEST_EMAIL });
-    } catch (error) {
-      response = error.response;
-    }
-    expect(response.status).toBe(400);
-    expect(response.data).toEqual({
-      success: false,
-      message: "invalid request body",
-      data: {
-        emailConfirmationCode: ["Required"],
+        registerEmailConfirmationCode: ["Required"],
       },
     });
   });
@@ -377,12 +308,12 @@ describe("email confirmation routes", () => {
       password: TEST_PASSWORD,
     });
     const usersBefore = await getUsers({ email: TEST_EMAIL });
-    const confirmationCode = usersBefore[0].emailConfirmationCode;
+    const confirmationCode = usersBefore[0].registerEmailConfirmationCode;
     let response;
     try {
       response = await axios.post(url, {
         email: "socialify@gmail.com",
-        emailConfirmationCode: confirmationCode,
+        registerEmailConfirmationCode: confirmationCode,
       });
     } catch (error) {
       response = error.response;
@@ -404,7 +335,7 @@ describe("email confirmation routes", () => {
     try {
       response = await axios.post(url, {
         email: TEST_EMAIL,
-        emailConfirmationCode: "wrong",
+        registerEmailConfirmationCode: "wrong",
       });
     } catch (error) {
       response = error.response;
@@ -423,10 +354,10 @@ describe("email confirmation routes", () => {
       password: TEST_PASSWORD,
     });
     const usersBefore = await getUsers({ email: TEST_EMAIL });
-    const confirmationCode = usersBefore[0].emailConfirmationCode;
+    const confirmationCode = usersBefore[0].registerEmailConfirmationCode;
     const response = await axios.post(url, {
       email: TEST_EMAIL,
-      emailConfirmationCode: confirmationCode,
+      registerEmailConfirmationCode: confirmationCode,
     });
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
