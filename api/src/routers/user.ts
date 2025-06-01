@@ -105,6 +105,14 @@ router.post(
         .json({ success: false, message: "invalid credentials", data: null });
       return;
     }
+    if (!user.registerEmailConfirmed) {
+      res.status(400).json({
+        success: false,
+        message: "email not confirmed",
+        data: null,
+      });
+      return;
+    }
     const token = generateJWT({ userId: user._id.toString() });
     res
       .status(200)
@@ -122,6 +130,14 @@ router.post(
       res.status(400).json({
         success: false,
         message: "user not found",
+        data: null,
+      });
+      return;
+    }
+    if (!user.registerEmailConfirmed) {
+      res.status(400).json({
+        success: false,
+        message: "email not confirmed",
         data: null,
       });
       return;
@@ -148,6 +164,14 @@ router.post(
       res.status(400).json({
         success: false,
         message: "user not found",
+        data: null,
+      });
+      return;
+    }
+    if (!user.registerEmailConfirmed) {
+      res.status(400).json({
+        success: false,
+        message: "email not confirmed",
         data: null,
       });
       return;

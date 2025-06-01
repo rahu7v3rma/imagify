@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { API_DOMAIN, TEST_EMAIL, TEST_PASSWORD } from "../../utils/env";
-import { deleteUsers, getUsers, createUser } from "../../lib/mongodb";
+import { deleteUsers, getUsers, createUser, updateUser } from "../../lib/mongodb";
 import gmail from "../../lib/gmail";
 import { comparePassword } from "../../lib/bcrypt";
 import { generateJWT } from "../../lib/jwt";
@@ -208,6 +208,33 @@ describe("profile routes", () => {
     });
   });
 
+  test("GET /profile with unconfirmed email should return 401 response", async () => {
+    await createUser({
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+      registerEmailConfirmationCode: "test-code",
+      registerEmailConfirmed: false,
+    });
+    const getUser = await getUsers({ email: TEST_EMAIL });
+    const validToken = generateJWT({ userId: getUser[0]._id.toString() });
+    let response;
+    try {
+      response = await axios.get(url, {
+        headers: {
+          authorization: `${validToken}`,
+        },
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(401);
+    expect(response.data).toEqual({
+      success: false,
+      message: "unauthorized",
+      data: null,
+    });
+  });
+
   test("GET /profile with valid user id should return 200 response with email", async () => {
     await createUser({
       email: TEST_EMAIL,
@@ -294,10 +321,35 @@ describe("forgot password routes", () => {
     });
   });
 
+  test("POST /forgot-password with unconfirmed email should return 400 response", async () => {
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
+    let response;
+    try {
+      response = await axios.post(url, {
+        email: TEST_EMAIL,
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "email not confirmed",
+      data: null,
+    });
+  }, 60000);
+
   test("POST /forgot-password with valid request should return 200 response and send email", async () => {
     await axios.post(`${API_DOMAIN}/user/register`, {
       email: TEST_EMAIL,
       password: TEST_PASSWORD,
+    });
+    await axios.post(`${API_DOMAIN}/user/email/confirm`, {
+      email: TEST_EMAIL,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
     });
     const response = await axios.post(url, {
       email: TEST_EMAIL,
@@ -390,10 +442,36 @@ describe("login routes", () => {
     });
   }, 60000);
 
+  test("POST /login with unconfirmed email should return 400 response", async () => {
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
+    let response;
+    try {
+      response = await axios.post(url, {
+        email: TEST_EMAIL,
+        password: TEST_PASSWORD,
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "email not confirmed",
+      data: null,
+    });
+  }, 60000);
+
   test("POST /login with correct email and password should return 200 and token", async () => {
     await axios.post(`${API_DOMAIN}/user/register`, {
       email: TEST_EMAIL,
       password: TEST_PASSWORD,
+    });
+    await axios.post(`${API_DOMAIN}/user/email/confirm`, {
+      email: TEST_EMAIL,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
     });
     const response = await axios.post(url, {
       email: TEST_EMAIL,
@@ -561,6 +639,10 @@ describe("reset password routes", () => {
       email: TEST_EMAIL,
       password: TEST_PASSWORD,
     });
+    await axios.post(`${API_DOMAIN}/user/email/confirm`, {
+      email: TEST_EMAIL,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+    });
     await axios.post(`${API_DOMAIN}/user/forgot-password`, {
       email: TEST_EMAIL,
     });
@@ -587,6 +669,10 @@ describe("reset password routes", () => {
       email: TEST_EMAIL,
       password: TEST_PASSWORD,
     });
+    await axios.post(`${API_DOMAIN}/user/email/confirm`, {
+      email: TEST_EMAIL,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+    });
     await axios.post(`${API_DOMAIN}/user/forgot-password`, {
       email: TEST_EMAIL,
     });
@@ -609,11 +695,48 @@ describe("reset password routes", () => {
       data: null,
     });
   }, 60000);
+  
+  test("POST /reset-password with unconfirmed email should return 400 response", async () => {
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
+    await axios.post(`${API_DOMAIN}/user/email/confirm`, {
+      email: TEST_EMAIL,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+    });
+    await axios.post(`${API_DOMAIN}/user/forgot-password`, {
+      email: TEST_EMAIL,
+    });
+    const users = await getUsers({ email: TEST_EMAIL });
+    const forgotPasswordCode = users[0].forgotPasswordEmailConfirmationCode;
+    await updateUser({ email: TEST_EMAIL }, { registerEmailConfirmed: false });
+    let response;
+    try {
+      response = await axios.post(url, {
+        email: TEST_EMAIL,
+        forgotPasswordEmailConfirmationCode: forgotPasswordCode,
+        password: "NewPass123!",
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "email not confirmed",
+      data: null,
+    });
+  }, 60000);
 
   test("POST /reset-password with all valid inputs should return 200 and update password", async () => {
     await axios.post(`${API_DOMAIN}/user/register`, {
       email: TEST_EMAIL,
       password: TEST_PASSWORD,
+    });
+    await axios.post(`${API_DOMAIN}/user/email/confirm`, {
+      email: TEST_EMAIL,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
     });
     await axios.post(`${API_DOMAIN}/user/forgot-password`, {
       email: TEST_EMAIL,

@@ -48,6 +48,15 @@ export const authMiddleware = async (
       return;
     }
 
+    if (!user.registerEmailConfirmed) {
+      res.status(401).json({
+        success: false,
+        message: "unauthorized",
+        data: null,
+      });
+      return;
+    }
+
     req.user = user;
 
     next();

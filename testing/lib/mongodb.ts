@@ -44,3 +44,17 @@ export const createUser = async ({
   });
   await client.close();
 };
+
+export const updateUser = async (
+  { email }: { email: string },
+  {
+    registerEmailConfirmed,
+  }: {
+    registerEmailConfirmed: boolean;
+  }
+) => {
+  const { client, db } = await getClient();
+  const collection = db.collection("users");
+  await collection.updateOne({ email }, { $set: { registerEmailConfirmed } });
+  await client.close();
+};
