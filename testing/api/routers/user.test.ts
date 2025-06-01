@@ -2,6 +2,7 @@ import axios from "axios";
 import { API_DOMAIN, TEST_EMAIL, TEST_PASSWORD } from "../../utils/env";
 import { deleteUsers, getUsers, createUser } from "../../lib/mongodb";
 import gmail from "../../lib/gmail";
+import { comparePassword } from "../../lib/bcrypt";
 
 describe("register routes", () => {
   const url = `${API_DOMAIN}/user/register`;
@@ -66,7 +67,8 @@ describe("register routes", () => {
     expect(users.length).toBe(1);
     expect(users[0].email).toBe(TEST_EMAIL);
     expect(users[0].password?.length).toBeGreaterThan(1);
-    expect(users[0].emailConfirmed).toBe(false);
+    expect(await comparePassword(TEST_PASSWORD, users[0].password)).toBe(true);
+    expect(users[0].registerEmailConfirmed).toBe(false);
     expect(users[0].registerEmailConfirmationCode?.length).toBeGreaterThan(1);
     await new Promise((resolve) => setTimeout(resolve, 5000));
     const latestEmail = await gmail.getLatestEmail();
@@ -80,7 +82,7 @@ describe("register routes", () => {
       email: TEST_EMAIL,
       password: TEST_PASSWORD,
       registerEmailConfirmationCode: "existing",
-      emailConfirmed: false,
+      registerEmailConfirmed: false,
     });
     let response;
     try {
@@ -367,7 +369,144 @@ describe("email confirmation routes", () => {
     });
     const users = await getUsers({ email: TEST_EMAIL });
     expect(users.length).toBe(1);
-    expect(users[0].emailConfirmed).toBe(true);
+    expect(users[0].registerEmailConfirmed).toBe(true);
+  }, 60000);
+
+  afterEach(async () => {
+    await deleteUsers({ email: TEST_EMAIL });
+  });
+});
+
+describe("reset password routes", () => {
+  const url = `${API_DOMAIN}/user/reset-password`;
+  beforeEach(async () => {
+    await deleteUsers({ email: TEST_EMAIL });
+  });
+
+  test("POST /reset-password without body should return 400 response", async () => {
+    let response;
+    try {
+      response = await axios.post(url);
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "invalid request body",
+      data: {
+        email: ["Required"],
+        forgotPasswordEmailConfirmationCode: ["Required"],
+        password: ["Required"],
+      },
+    });
+  });
+
+  test("POST /reset-password with invalid email, forgotPasswordEmailConfirmationCode and password should return 400 response", async () => {
+    let response;
+    try {
+      response = await axios.post(url, {
+        email: "not-an-email",
+        forgotPasswordEmailConfirmationCode: "",
+        password: "weak",
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "invalid request body",
+      data: {
+        email: ["Invalid email address"],
+        forgotPasswordEmailConfirmationCode: ["String must contain at least 1 character(s)"],
+        password: [
+          "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol.",
+        ],
+      },
+    });
+  });
+
+  test("POST /reset-password with valid email but invalid forgotPasswordEmailConfirmationCode should return 400 response", async () => {
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
+    await axios.post(`${API_DOMAIN}/user/forgot-password`, {
+      email: TEST_EMAIL,
+    });
+    let response;
+    try {
+      response = await axios.post(url, {
+        email: TEST_EMAIL,
+        forgotPasswordEmailConfirmationCode: "invalid-code",
+        password: "NewPass123!",
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "user not found",
+      data: null,
+    });
+  }, 60000);
+
+  test("POST /reset-password with invalid email but valid forgotPasswordEmailConfirmationCode should return 400 response", async () => {
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
+    await axios.post(`${API_DOMAIN}/user/forgot-password`, {
+      email: TEST_EMAIL,
+    });
+    const users = await getUsers({ email: TEST_EMAIL });
+    const forgotPasswordCode = users[0].forgotPasswordEmailConfirmationCode;
+    let response;
+    try {
+      response = await axios.post(url, {
+        email: "wrong@example.com",
+        forgotPasswordEmailConfirmationCode: forgotPasswordCode,
+        password: "NewPass123!",
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(400);
+    expect(response.data).toEqual({
+      success: false,
+      message: "user not found",
+      data: null,
+    });
+  }, 60000);
+
+  test("POST /reset-password with all valid inputs should return 200 and update password", async () => {
+    await axios.post(`${API_DOMAIN}/user/register`, {
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+    });
+    await axios.post(`${API_DOMAIN}/user/forgot-password`, {
+      email: TEST_EMAIL,
+    });
+    const usersBefore = await getUsers({ email: TEST_EMAIL });
+    const forgotPasswordCode = usersBefore[0].forgotPasswordEmailConfirmationCode;
+    const newPassword = "NewPass123!";
+    const response = await axios.post(url, {
+      email: TEST_EMAIL,
+      forgotPasswordEmailConfirmationCode: forgotPasswordCode,
+      password: newPassword,
+    });
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual({
+      success: true,
+      message: "password reset successfully",
+      data: null,
+    });
+    const usersAfter = await getUsers({ email: TEST_EMAIL });
+    expect(usersAfter.length).toBe(1);
+    expect(await comparePassword(newPassword, usersAfter[0].password)).toBe(true);
+    expect(await comparePassword(TEST_PASSWORD, usersAfter[0].password)).toBe(false);
   }, 60000);
 
   afterEach(async () => {

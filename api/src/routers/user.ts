@@ -5,6 +5,7 @@ import {
   UserEmailConfirmRequestBody,
   UserLoginRequestBody,
   UserForgotPasswordRequestBody,
+  UserResetPasswordRequestBody,
 } from "../lib/schema";
 import { hashPassword, comparePassword } from "../lib/bcrypt";
 import UserModel from "../models/user";
@@ -37,7 +38,7 @@ router.post(
       email,
       password: hashedPassword,
       registerEmailConfirmationCode,
-      emailConfirmed: false,
+      registerEmailConfirmed: false,
     });
 
     await user.save();
@@ -66,7 +67,7 @@ router.post(
       });
       return;
     }
-    user.emailConfirmed = true;
+    user.registerEmailConfirmed = true;
     await user.save();
     res.status(200).json({
       success: true,
@@ -122,6 +123,31 @@ router.post(
     res.status(200).json({
       success: true,
       message: "forgot password email sent",
+      data: null,
+    });
+  },
+);
+
+router.post(
+  "/reset-password",
+  validateRequestBody(UserResetPasswordRequestBody),
+  async (req, res) => {
+    const { email, forgotPasswordEmailConfirmationCode, password } = req.body;
+    const user = await UserModel.findOne({ email, forgotPasswordEmailConfirmationCode });
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: "user not found",
+        data: null,
+      });
+      return;
+    }
+    const hashedPassword = await hashPassword(password);
+    user.password = hashedPassword;
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: "password reset successfully",
       data: null,
     });
   },

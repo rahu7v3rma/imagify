@@ -14,7 +14,7 @@ const userSchema = new Schema({
     type: String,
     required: false,
   },
-  emailConfirmed: {
+  registerEmailConfirmed: {
     type: Boolean,
     required: true,
     default: false,

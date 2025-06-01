@@ -27,12 +27,12 @@ export const createUser = async ({
   email,
   password,
   registerEmailConfirmationCode,
-  emailConfirmed,
+  registerEmailConfirmed,
 }: {
   email: string;
   password: string;
   registerEmailConfirmationCode?: string;
-  emailConfirmed: boolean;
+  registerEmailConfirmed: boolean;
 }) => {
   const { client, db } = await getClient();
   const collection = db.collection("users");
@@ -40,7 +40,7 @@ export const createUser = async ({
     email,
     password,
     registerEmailConfirmationCode,
-    emailConfirmed,
+    registerEmailConfirmed,
   });
   await client.close();
 };
