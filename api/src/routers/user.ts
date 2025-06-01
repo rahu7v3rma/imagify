@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { validateRequestBody } from "../middlewares/validation";
+import { authMiddleware } from "../middlewares/auth";
 import {
   UserRegisterRequestBody,
   UserEmailConfirmRequestBody,
@@ -12,8 +13,17 @@ import UserModel from "../models/user";
 import { generateJWT } from "../lib/jwt";
 import { generateEmailConfirmationCode } from "../utils/general";
 import { sendRegistrationEmail, sendForgotPasswordEmail } from "../lib/email";
+import { UserRequest } from "../utils/types";
 
 const router = Router();
+
+router.get("/profile", authMiddleware, async (req: UserRequest, res) => {
+  res.status(200).json({
+    success: true,
+    message: "profile retrieved",
+    data: { email: req.user.email },
+  });
+});
 
 router.post(
   "/register",

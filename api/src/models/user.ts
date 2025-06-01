@@ -1,6 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 
-const userSchema = new Schema({
+export interface User extends Document {
+  email: string;
+  password: string;
+  registerEmailConfirmationCode: string;
+  registerEmailConfirmed: boolean;
+  forgotPasswordEmailConfirmationCode: string;
+}
+
+const userSchema = new Schema<User>({
   email: {
     type: String,
     required: true,
@@ -25,6 +33,6 @@ const userSchema = new Schema({
   },
 });
 
-const UserModel = mongoose.model("User", userSchema);
+const UserModel = mongoose.model<User>("User", userSchema);
 
 export default UserModel;

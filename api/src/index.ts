@@ -9,19 +9,21 @@ import rateLimit from "express-rate-limit";
 
 const app = express();
 
-app.use(
-  rateLimit({
-    windowMs: 1000,
-    max: 1,
-    handler: (req, res) => {
-      res.status(429).json({
-        success: false,
-        message: "too many requests",
-        data: null,
-      });
-    },
-  })
-);
+if (process.env.NODE_ENV === "production") {
+  app.use(
+    rateLimit({
+      windowMs: 1000,
+      max: 1,
+      handler: (req, res) => {
+        res.status(429).json({
+          success: false,
+          message: "too many requests",
+          data: null,
+        });
+      },
+    })
+  );
+}
 app.use(
   cors({
     origin: ALLOWED_ORIGINS.split(","),
@@ -29,9 +31,11 @@ app.use(
 );
 
 app.use(morgan("dev"));
-app.use(express.json({
-  limit: '10kb'
-}));
+app.use(
+  express.json({
+    limit: "10kb",
+  })
+);
 
 app.use("/user", userRouter);
 
@@ -69,7 +73,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     method: req.method,
   });
 
-  if(err?.type === 'entity.too.large') {
+  if (err?.type === "entity.too.large") {
     res.status(413).json({
       success: false,
       message: "request body too large",

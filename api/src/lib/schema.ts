@@ -8,14 +8,10 @@ export const UserRegisterRequestBody = z.object({
     .min(1)
     .max(255)
     .refine(isEmail, { message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(1)
-    .max(255)
-    .refine(isStrongPassword, {
-      message:
-        "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol.",
-    }),
+  password: z.string().min(1).max(255).refine(isStrongPassword, {
+    message:
+      "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol.",
+  }),
 });
 export const UserEmailConfirmRequestBody = z.object({
   email: z
@@ -50,12 +46,8 @@ export const UserResetPasswordRequestBody = z.object({
     .max(255)
     .refine(isEmail, { message: "Invalid email address" }),
   forgotPasswordEmailConfirmationCode: z.string().min(1).max(255),
-  password: z
-    .string()
-    .min(1)
-    .max(255)
-    .refine(isStrongPassword, {
-      message:
-        "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol.",
-    }),
+  password: z.string().min(1).max(255).refine(isStrongPassword, {
+    message:
+      "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol.",
+  }),
 });

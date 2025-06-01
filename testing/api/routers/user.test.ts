@@ -1,8 +1,10 @@
 import axios from "axios";
+import jwt from "jsonwebtoken";
 import { API_DOMAIN, TEST_EMAIL, TEST_PASSWORD } from "../../utils/env";
 import { deleteUsers, getUsers, createUser } from "../../lib/mongodb";
 import gmail from "../../lib/gmail";
 import { comparePassword } from "../../lib/bcrypt";
+import { generateJWT } from "../../lib/jwt";
 
 describe("register routes", () => {
   const url = `${API_DOMAIN}/user/register`;
@@ -100,6 +102,133 @@ describe("register routes", () => {
       data: null,
     });
   }, 60000);
+
+  afterEach(async () => {
+    await deleteUsers({ email: TEST_EMAIL });
+  });
+});
+
+describe("profile routes", () => {
+  const url = `${API_DOMAIN}/user/profile`;
+  beforeEach(async () => {
+    await deleteUsers({ email: TEST_EMAIL });
+  });
+
+  test("GET /profile without authorization header should return 401 response", async () => {
+    let response;
+    try {
+      response = await axios.get(url);
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(401);
+    expect(response.data).toEqual({
+      success: false,
+      message: "unauthorized",
+      data: null,
+    });
+  });
+
+  test("GET /profile with empty authorization header should return 401 response", async () => {
+    let response;
+    try {
+      response = await axios.get(url, {
+        headers: {
+          authorization: "",
+        },
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(401);
+    expect(response.data).toEqual({
+      success: false,
+      message: "unauthorized",
+      data: null,
+    });
+  });
+
+  test("GET /profile with invalid auth header should return 401 response", async () => {
+    let response;
+    try {
+      response = await axios.get(url, {
+        headers: {
+          authorization: "invalid-token",
+        },
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(401);
+    expect(response.data).toEqual({
+      success: false,
+      message: "unauthorized",
+      data: null,
+    });
+  });
+
+  test("GET /profile with valid jwt but invalid object should return 401 response", async () => {
+    const invalidToken = jwt.sign({ id: "something" }, process.env.JWT_SECRET);
+    let response;
+    try {
+      response = await axios.get(url, {
+        headers: {
+          authorization: `${invalidToken}`,
+        },
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(401);
+    expect(response.data).toEqual({
+      success: false,
+      message: "unauthorized",
+      data: null,
+    });
+  });
+
+  test("GET /profile with valid jwt but invalid userId should return 401 response", async () => {
+    const invalidUserId = "507f1f77bcf86cd799439011";
+    const invalidToken = generateJWT({ userId: invalidUserId });
+    let response;
+    try {
+      response = await axios.get(url, {
+        headers: {
+          authorization: `${invalidToken}`,
+        },
+      });
+    } catch (error) {
+      response = error.response;
+    }
+    expect(response.status).toBe(401);
+    expect(response.data).toEqual({
+      success: false,
+      message: "unauthorized",
+      data: null,
+    });
+  });
+
+  test("GET /profile with valid user id should return 200 response with email", async () => {
+    await createUser({
+      email: TEST_EMAIL,
+      password: TEST_PASSWORD,
+      registerEmailConfirmationCode: "test-code",
+      registerEmailConfirmed: true,
+    });
+    const getUser = await getUsers({ email: TEST_EMAIL });
+    const validToken = generateJWT({ userId: getUser[0]._id.toString() });
+    const response = await axios.get(url, {
+      headers: {
+        authorization: `${validToken}`,
+      },
+    });
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual({
+      success: true,
+      message: "profile retrieved",
+      data: { email: TEST_EMAIL },
+    });
+  });
 
   afterEach(async () => {
     await deleteUsers({ email: TEST_EMAIL });
