@@ -82,11 +82,11 @@ test("Rate limit: 1 request per second should pass", async () => {
 
 test("POST /status with JSON body over 10kb should return 413", async () => {
   await new Promise((resolve) => setTimeout(resolve, 1100));
-  
+
   const largeData = {
-    data: "a".repeat(12000)
+    data: "a".repeat(12000),
   };
-  
+
   try {
     await axios.post(`${API_DOMAIN}/status`, largeData);
   } catch (error) {
@@ -101,14 +101,14 @@ test("POST /status with JSON body over 10kb should return 413", async () => {
 
 test("POST /status with text body over 10kb should return 413", async () => {
   await new Promise((resolve) => setTimeout(resolve, 1100));
-  
+
   const largeText = "a".repeat(12000);
-  
+
   try {
     await axios.post(`${API_DOMAIN}/status`, largeText, {
       headers: {
-        'Content-Type': 'text/plain'
-      }
+        "Content-Type": "text/plain",
+      },
     });
   } catch (error) {
     expect(error.response.status).toBe(413);
@@ -122,11 +122,11 @@ test("POST /status with text body over 10kb should return 413", async () => {
 
 test("POST /status with JSON body under 10kb should return 200", async () => {
   await new Promise((resolve) => setTimeout(resolve, 1100));
-  
+
   const smallData = {
-    data: "a".repeat(5000)
+    data: "a".repeat(5000),
   };
-  
+
   const response = await axios.post(`${API_DOMAIN}/status`, smallData);
   expect(response.status).toBe(200);
   expect(response.data).toEqual({

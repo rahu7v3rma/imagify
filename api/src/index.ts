@@ -21,20 +21,20 @@ if (process.env.NODE_ENV === "production") {
           data: null,
         });
       },
-    })
+    }),
   );
 }
 app.use(
   cors({
     origin: ALLOWED_ORIGINS.split(","),
-  })
+  }),
 );
 
 app.use(morgan("dev"));
 app.use(
   express.json({
     limit: "10kb",
-  })
+  }),
 );
 
 app.use("/user", userRouter);

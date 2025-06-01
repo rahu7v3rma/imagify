@@ -1,7 +1,12 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { API_DOMAIN, TEST_EMAIL, TEST_PASSWORD } from "../../utils/env";
-import { deleteUsers, getUsers, createUser, updateUser } from "../../lib/mongodb";
+import {
+  deleteUsers,
+  getUsers,
+  createUser,
+  updateUser,
+} from "../../lib/mongodb";
 import gmail from "../../lib/gmail";
 import { comparePassword } from "../../lib/bcrypt";
 import { generateJWT } from "../../lib/jwt";
@@ -48,7 +53,7 @@ describe("register routes", () => {
         email: ["Invalid email address"],
         password: [
           "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol.",
-        ]
+        ],
       },
     });
   });
@@ -349,7 +354,8 @@ describe("forgot password routes", () => {
     });
     await axios.post(`${API_DOMAIN}/user/email/confirm`, {
       email: TEST_EMAIL,
-      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0]
+        .registerEmailConfirmationCode,
     });
     const response = await axios.post(url, {
       email: TEST_EMAIL,
@@ -362,11 +368,15 @@ describe("forgot password routes", () => {
     });
     const users = await getUsers({ email: TEST_EMAIL });
     expect(users.length).toBe(1);
-    expect(users[0].forgotPasswordEmailConfirmationCode?.length).toBeGreaterThan(1);
+    expect(
+      users[0].forgotPasswordEmailConfirmationCode?.length,
+    ).toBeGreaterThan(1);
     await new Promise((resolve) => setTimeout(resolve, 5000));
     const latestEmail = await gmail.getLatestEmail();
     expect(latestEmail.subject).toBe("Socialify forgot password");
-    expect(latestEmail.body).toContain(users[0].forgotPasswordEmailConfirmationCode);
+    expect(latestEmail.body).toContain(
+      users[0].forgotPasswordEmailConfirmationCode,
+    );
   }, 60000);
 
   afterEach(async () => {
@@ -471,7 +481,8 @@ describe("login routes", () => {
     });
     await axios.post(`${API_DOMAIN}/user/email/confirm`, {
       email: TEST_EMAIL,
-      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0]
+        .registerEmailConfirmationCode,
     });
     const response = await axios.post(url, {
       email: TEST_EMAIL,
@@ -626,7 +637,9 @@ describe("reset password routes", () => {
       message: "invalid request body",
       data: {
         email: ["Invalid email address"],
-        forgotPasswordEmailConfirmationCode: ["String must contain at least 1 character(s)"],
+        forgotPasswordEmailConfirmationCode: [
+          "String must contain at least 1 character(s)",
+        ],
         password: [
           "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol.",
         ],
@@ -641,7 +654,8 @@ describe("reset password routes", () => {
     });
     await axios.post(`${API_DOMAIN}/user/email/confirm`, {
       email: TEST_EMAIL,
-      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0]
+        .registerEmailConfirmationCode,
     });
     await axios.post(`${API_DOMAIN}/user/forgot-password`, {
       email: TEST_EMAIL,
@@ -671,7 +685,8 @@ describe("reset password routes", () => {
     });
     await axios.post(`${API_DOMAIN}/user/email/confirm`, {
       email: TEST_EMAIL,
-      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0]
+        .registerEmailConfirmationCode,
     });
     await axios.post(`${API_DOMAIN}/user/forgot-password`, {
       email: TEST_EMAIL,
@@ -695,7 +710,7 @@ describe("reset password routes", () => {
       data: null,
     });
   }, 60000);
-  
+
   test("POST /reset-password with unconfirmed email should return 400 response", async () => {
     await axios.post(`${API_DOMAIN}/user/register`, {
       email: TEST_EMAIL,
@@ -703,7 +718,8 @@ describe("reset password routes", () => {
     });
     await axios.post(`${API_DOMAIN}/user/email/confirm`, {
       email: TEST_EMAIL,
-      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0]
+        .registerEmailConfirmationCode,
     });
     await axios.post(`${API_DOMAIN}/user/forgot-password`, {
       email: TEST_EMAIL,
@@ -736,13 +752,15 @@ describe("reset password routes", () => {
     });
     await axios.post(`${API_DOMAIN}/user/email/confirm`, {
       email: TEST_EMAIL,
-      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0].registerEmailConfirmationCode,
+      registerEmailConfirmationCode: (await getUsers({ email: TEST_EMAIL }))[0]
+        .registerEmailConfirmationCode,
     });
     await axios.post(`${API_DOMAIN}/user/forgot-password`, {
       email: TEST_EMAIL,
     });
     const usersBefore = await getUsers({ email: TEST_EMAIL });
-    const forgotPasswordCode = usersBefore[0].forgotPasswordEmailConfirmationCode;
+    const forgotPasswordCode =
+      usersBefore[0].forgotPasswordEmailConfirmationCode;
     const newPassword = "NewPass123!";
     const response = await axios.post(url, {
       email: TEST_EMAIL,
@@ -757,8 +775,12 @@ describe("reset password routes", () => {
     });
     const usersAfter = await getUsers({ email: TEST_EMAIL });
     expect(usersAfter.length).toBe(1);
-    expect(await comparePassword(newPassword, usersAfter[0].password)).toBe(true);
-    expect(await comparePassword(TEST_PASSWORD, usersAfter[0].password)).toBe(false);
+    expect(await comparePassword(newPassword, usersAfter[0].password)).toBe(
+      true,
+    );
+    expect(await comparePassword(TEST_PASSWORD, usersAfter[0].password)).toBe(
+      false,
+    );
   }, 60000);
 
   afterEach(async () => {

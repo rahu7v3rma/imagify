@@ -51,7 +51,7 @@ export const updateUser = async (
     registerEmailConfirmed,
   }: {
     registerEmailConfirmed: boolean;
-  }
+  },
 ) => {
   const { client, db } = await getClient();
   const collection = db.collection("users");

@@ -68,7 +68,10 @@ router.post(
   validateRequestBody(UserEmailConfirmRequestBody),
   async (req, res) => {
     const { email, registerEmailConfirmationCode } = req.body;
-    const user = await UserModel.findOne({ email, registerEmailConfirmationCode });
+    const user = await UserModel.findOne({
+      email,
+      registerEmailConfirmationCode,
+    });
     if (!user) {
       res.status(400).json({
         success: false,
@@ -143,9 +146,13 @@ router.post(
       return;
     }
     const forgotPasswordEmailConfirmationCode = generateEmailConfirmationCode();
-    user.forgotPasswordEmailConfirmationCode = forgotPasswordEmailConfirmationCode;
+    user.forgotPasswordEmailConfirmationCode =
+      forgotPasswordEmailConfirmationCode;
     await user.save();
-    await sendForgotPasswordEmail({ to: email, forgotPasswordEmailConfirmationCode });
+    await sendForgotPasswordEmail({
+      to: email,
+      forgotPasswordEmailConfirmationCode,
+    });
     res.status(200).json({
       success: true,
       message: "forgot password email sent",
@@ -159,7 +166,10 @@ router.post(
   validateRequestBody(UserResetPasswordRequestBody),
   async (req, res) => {
     const { email, forgotPasswordEmailConfirmationCode, password } = req.body;
-    const user = await UserModel.findOne({ email, forgotPasswordEmailConfirmationCode });
+    const user = await UserModel.findOne({
+      email,
+      forgotPasswordEmailConfirmationCode,
+    });
     if (!user) {
       res.status(400).json({
         success: false,

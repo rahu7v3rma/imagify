@@ -6,7 +6,7 @@ import { UserRequest } from "../utils/types";
 export const authMiddleware = async (
   req: UserRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req.headers?.authorization) {
