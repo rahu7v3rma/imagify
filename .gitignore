@@ -1,5 +1,5 @@
-.env
-.DS_Store
 node_modules
-package-lock.json
-tasks.md
+.next
+.env
+.cursor
+.DS_Store
