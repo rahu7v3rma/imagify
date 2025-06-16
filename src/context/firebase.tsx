@@ -3,6 +3,7 @@ import {
   listenAuthState,
   loginUser,
   logoutUser,
+  resetPasswordEmail,
 } from "@/lib/firebase";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
@@ -15,22 +16,26 @@ import {
   useState,
 } from "react";
 import { useLoader } from "./loader";
+import { useRouter } from "next/navigation";
 
 const FirebaseContext = createContext<{
   user: User | null;
   signup: (email: string, password: string) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<boolean>;
+  forgotPassword: (email: string) => Promise<boolean>;
 }>({
   user: null,
   signup: async () => false,
   login: async () => false,
   logout: async () => false,
+  forgotPassword: async () => false,
 });
 
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const { setIsLoading } = useLoader();
+  const router = useRouter();
 
   const signup = async (email: string, password: string) => {
     try {
@@ -120,14 +125,37 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const forgotPassword = async (email: string) => {
+    try {
+      setIsLoading(true);
+      await resetPasswordEmail(email);
+      addToast({
+        title: "Password reset email sent!",
+        color: "success",
+      });
+      return true;
+    } catch {
+      addToast({
+        title: "Failed to send password reset email",
+        color: "danger",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = listenAuthState((user) => {
-      setUser(user);
+      if (user) {
+        setUser(user);
+        router.push("/profile");
+      }
       setIsLoading(false);
     });
 
     return () => unsubscribe();
-  }, [setIsLoading]);
+  }, [setIsLoading, router]);
 
   return (
     <FirebaseContext.Provider
@@ -136,6 +164,7 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
         signup,
         login,
         logout,
+        forgotPassword,
       }}
     >
       {children}
