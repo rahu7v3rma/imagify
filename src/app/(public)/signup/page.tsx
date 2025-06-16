@@ -37,7 +37,7 @@ export default function SignupPage() {
     }
     const success = await signup(email, password);
     if (success) {
-      router.push("/profile");
+      router.push("/dashboard");
     }
   };
 

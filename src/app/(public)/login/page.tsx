@@ -22,7 +22,7 @@ export default function LoginPage() {
     }
     const success = await login(email, password);
     if (success) {
-      router.push("/profile");
+      router.push("/dashboard");
     }
   };
 
