@@ -16,7 +16,6 @@ import {
   useState,
 } from "react";
 import { useLoader } from "./loader";
-import { useRouter } from "next/navigation";
 
 const FirebaseContext = createContext<{
   user: User | null;
@@ -35,7 +34,6 @@ const FirebaseContext = createContext<{
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const { setIsLoading } = useLoader();
-  const router = useRouter();
 
   const signup = async (email: string, password: string) => {
     try {
@@ -149,13 +147,12 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = listenAuthState((user) => {
       if (user) {
         setUser(user);
-        router.push("/profile");
       }
       setIsLoading(false);
     });
 
     return () => unsubscribe();
-  }, [setIsLoading, router]);
+  }, [setIsLoading]);
 
   return (
     <FirebaseContext.Provider

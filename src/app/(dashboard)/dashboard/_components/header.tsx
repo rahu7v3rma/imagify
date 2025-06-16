@@ -1,24 +1,25 @@
 "use client";
 
 import {
-  Button,
-  Link,
+  Avatar,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
+import { useFirebase } from "@/context/firebase";
 
-export default function NavbarComponent() {
+export default function Header() {
   const router = useRouter();
+  const { user } = useFirebase();
 
   const handleBrandClick = () => {
-    router.push("/");
+    router.push("/dashboard");
   };
 
   return (
-    <Navbar>
+    <Navbar className="w-screen">
       <NavbarBrand>
         <p
           className="font-bold text-inherit cursor-pointer"
@@ -27,18 +28,14 @@ export default function NavbarComponent() {
           Socialify
         </p>
       </NavbarBrand>
-      <NavbarContent
-        className="hidden sm:flex gap-4"
-        justify="center"
-      ></NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="lg:flex">
-          <Link href="/login">Login</Link>
-        </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="/signup" variant="flat">
-            Sign Up
-          </Button>
+          <Avatar
+            src={user?.photoURL ?? undefined}
+            name={user?.email ?? "Guest"}
+            showFallback
+            isBordered
+          />
         </NavbarItem>
       </NavbarContent>
     </Navbar>
