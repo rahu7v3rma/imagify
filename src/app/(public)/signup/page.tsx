@@ -1,79 +1,84 @@
 "use client";
 
 import { useFirebase } from "@/context/firebase";
-import { Button, Input, addToast } from "@heroui/react";
-import { useState } from "react";
+import { Button, Input } from "@heroui/react";
 import { PasswordInput } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import validator from "validator";
+
+const schema = z
+  .object({
+    email: z.string().email("Invalid email address"),
+    password: z
+      .string()
+      .refine((password) => validator.isStrongPassword(password), {
+        message:
+          "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 symbol",
+      }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type Schema = z.infer<typeof schema>;
 
 export default function SignupPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const { signup } = useFirebase();
   const router = useRouter();
 
-  const handleSignup = async () => {
-    if (!/^.+@.+\..+$/.test(email)) {
-      addToast({
-        title: "Invalid email",
-        color: "danger",
-      });
-      return;
-    }
-    if (password.length < 6) {
-      addToast({
-        title: "Password must be at least 6 characters",
-        color: "danger",
-      });
-      return;
-    }
-    if (password !== confirmPassword) {
-      addToast({
-        title: "Passwords do not match",
-        color: "danger",
-      });
-      return;
-    }
-    const success = await signup(email, password);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<Schema>({
+    resolver: zodResolver(schema),
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data: Schema) => {
+    const success = await signup(data.email, data.password);
     if (success) {
       router.push("/dashboard");
     }
   };
 
-  const isSubmitDisabled =
-    !email.trim() || !password.trim() || !confirmPassword.trim();
-
   return (
     <div className="flex flex-col gap-2 w-60">
       <h1 className="text-2xl font-bold">Signup</h1>
-      <Input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSignup()}
-      />
-      <PasswordInput
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSignup()}
-      />
-      <PasswordInput
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSignup()}
-      />
-      <Button
-        onPress={handleSignup}
-        isDisabled={isSubmitDisabled}
-        variant="solid"
-        color="primary"
-      >
-        Submit
-      </Button>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+        <Input
+          type="email"
+          placeholder="Email"
+          {...register("email")}
+          isInvalid={!!errors.email}
+          errorMessage={errors.email?.message}
+        />
+        <PasswordInput
+          placeholder="Password"
+          {...register("password")}
+          isInvalid={!!errors.password}
+          errorMessage={errors.password?.message}
+        />
+        <PasswordInput
+          placeholder="Confirm Password"
+          {...register("confirmPassword")}
+          isInvalid={!!errors.confirmPassword}
+          errorMessage={errors.confirmPassword?.message}
+        />
+        <Button
+          type="submit"
+          isDisabled={!isValid}
+          variant="solid"
+          color="primary"
+        >
+          Submit
+        </Button>
+      </form>
     </div>
   );
 }
