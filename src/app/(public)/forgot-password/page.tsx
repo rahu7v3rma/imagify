@@ -1,30 +1,37 @@
 "use client";
 
 import { useFirebase } from "@/context/firebase";
-import { addToast, Button, Input, Link } from "@heroui/react";
-import { useState } from "react";
+import { Button, Input, Link } from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const schema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+type Schema = z.infer<typeof schema>;
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
   const { forgotPassword } = useFirebase();
   const router = useRouter();
 
-  const handleForgotPassword = async () => {
-    if (!/^.+@.+\..+$/.test(email)) {
-      addToast({
-        title: "Invalid email",
-        color: "danger",
-      });
-      return;
-    }
-    const success = await forgotPassword(email);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<Schema>({
+    resolver: zodResolver(schema),
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data: Schema) => {
+    const success = await forgotPassword(data.email);
     if (success) {
       router.push("/login");
     }
   };
-
-  const isSubmitDisabled = !email.trim();
 
   return (
     <div className="flex flex-col gap-2 w-60">
@@ -33,32 +40,35 @@ export default function ForgotPasswordPage() {
         Enter your email address and we&apos;ll send you a link to reset your
         password.
       </p>
-      <Input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleForgotPassword()}
-      />
-      <Button
-        onPress={handleForgotPassword}
-        isDisabled={isSubmitDisabled}
-        variant="solid"
-        color="primary"
-      >
-        Send Reset Email
-      </Button>
-      <div className="text-center mt-2">
-        <Link
-          href="/login"
-          size="sm"
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+        <Input
+          type="email"
+          placeholder="Email"
+          {...register("email")}
+          isInvalid={!!errors.email}
+          errorMessage={errors.email?.message}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit(onSubmit)()}
+        />
+        <Button
+          type="submit"
+          isDisabled={!isValid}
+          variant="solid"
           color="primary"
-          underline="hover"
-          className="text-xs"
         >
-          Back to Login
-        </Link>
-      </div>
+          Send Reset Email
+        </Button>
+        <div className="text-center mt-2">
+          <Link
+            href="/login"
+            size="sm"
+            color="primary"
+            underline="hover"
+            className="text-xs"
+          >
+            Back to Login
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }
