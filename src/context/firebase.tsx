@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   resetPasswordEmail,
+  updateUserEmail,
 } from "@/lib/firebase";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
@@ -23,12 +24,14 @@ const FirebaseContext = createContext<{
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<boolean>;
   forgotPassword: (email: string) => Promise<boolean>;
+  updateEmail: (email: string) => Promise<boolean>;
 }>({
   user: null,
   signup: async () => false,
   login: async () => false,
   logout: async () => false,
   forgotPassword: async () => false,
+  updateEmail: async () => false,
 });
 
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
@@ -143,6 +146,49 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const updateEmail = async (email: string) => {
+    try {
+      setIsLoading(true);
+      await updateUserEmail(email);
+      addToast({
+        title: "Email updated successfully!",
+        color: "success",
+      });
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/requires-recent-login") {
+          addToast({
+            title: "Please log in again to update your email",
+            color: "danger",
+          });
+          return false;
+        }
+        if (error.code === "auth/email-already-in-use") {
+          addToast({
+            title: "Email already in use",
+            color: "danger",
+          });
+          return false;
+        }
+        if (error.code === "auth/invalid-email") {
+          addToast({
+            title: "Invalid email format",
+            color: "danger",
+          });
+          return false;
+        }
+      }
+      addToast({
+        title: "Failed to update email",
+        color: "danger",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = listenAuthState((user) => {
       if (user) {
@@ -162,6 +208,7 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         forgotPassword,
+        updateEmail,
       }}
     >
       {children}

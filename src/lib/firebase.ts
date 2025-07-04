@@ -6,6 +6,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  updateEmail,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -42,4 +43,11 @@ export const logoutUser = () => {
 
 export const resetPasswordEmail = (email: string) => {
   return sendPasswordResetEmail(auth, email);
+};
+
+export const updateUserEmail = (email: string) => {
+  if (!auth.currentUser) {
+    throw new Error("No user is currently authenticated");
+  }
+  return updateEmail(auth.currentUser, email);
 };
