@@ -10,6 +10,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Switch,
 } from "@heroui/react";
 import { deleteCurrentUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
@@ -17,12 +18,19 @@ import { useRouter } from "next/navigation";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
+import { useTheme } from "@/context/theme";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 
 export default function SettingsPage() {
   const { setUser } = useFirebase();
   const { setIsLoading } = useLoader();
+  const { mode, setMode } = useTheme();
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const handleThemeToggle = (isSelected: boolean) => {
+    setMode(isSelected ? "dark" : "light");
+  };
 
   const deleteAccount = async () => {
     try {
@@ -63,7 +71,7 @@ export default function SettingsPage() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">Settings</h1>
+      <h1 className="text-2xl font-bold mb-6 dark:text-white">Settings</h1>
 
       <Tabs aria-label="Settings tabs" color="primary" variant="underlined">
         <Tab key="account" title="Account">
@@ -71,6 +79,28 @@ export default function SettingsPage() {
             <Button color="danger" variant="bordered" onPress={onOpen}>
               Delete Account
             </Button>
+          </div>
+        </Tab>
+        <Tab key="preferences" title="Preferences">
+          <div className="py-4">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-lg font-medium dark:text-white">Theme</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Switch between light and dark mode
+                  </p>
+                </div>
+                <Switch
+                  isSelected={mode === "dark"}
+                  onValueChange={handleThemeToggle}
+                  size="lg"
+                  color="primary"
+                  startContent={<SunIcon className="w-4 h-4" />}
+                  endContent={<MoonIcon className="w-4 h-4" />}
+                />
+              </div>
+            </div>
           </div>
         </Tab>
       </Tabs>

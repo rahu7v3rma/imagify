@@ -48,7 +48,7 @@ export default function Header() {
   };
 
   return (
-    <Navbar maxWidth="full" className="w-full shadow-md">
+    <Navbar maxWidth="full" className="w-full backdrop-blur-sm border-b border-divider bg-inherit">
       <NavbarBrand>
         <p
           className="font-bold text-inherit cursor-pointer"

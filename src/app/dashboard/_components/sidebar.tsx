@@ -20,10 +20,10 @@ const SidebarLink = ({
   return (
     <Link
       href={href}
-      className={`flex items-center space-x-3 rounded-md px-2 py-2 text-sm font-medium ${
+      className={`flex items-center space-x-3 rounded-md px-2 py-2 text-sm font-medium transition-colors ${
         isActive
-          ? "bg-gray-200 text-gray-900"
-          : "text-gray-700 hover:bg-gray-100"
+          ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
+          : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
       }`}
     >
       <Icon className="h-5 w-5" />
@@ -41,7 +41,7 @@ const Sidebar = () => {
   const isSettingsActive = pathname.startsWith("/dashboard/settings");
 
   return (
-    <aside className="w-56 h-full border-r border-gray-200 bg-white">
+    <aside className="w-56 h-full border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-zinc-800">
       <nav className="flex flex-col h-full p-4">
         <div className="space-y-2">
           <SidebarLink
