@@ -1,9 +1,9 @@
 "use client";
 
-import { PasswordInput } from "@/components/ui/input";
+import { PasswordInput, CustomInput } from "@/components/ui/input";
 import { loginUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
-import { Button, Input, Link } from "@heroui/react";
+import { Button, Link } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -74,7 +74,7 @@ export default function LoginPage() {
     <div className="flex flex-col gap-2 w-60">
       <h1 className="text-2xl font-bold">Login</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-        <Input
+        <CustomInput
           type="email"
           placeholder="Email"
           {...register("email")}

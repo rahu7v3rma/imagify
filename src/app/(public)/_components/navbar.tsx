@@ -20,7 +20,7 @@ export default function NavbarComponent() {
   };
 
   return (
-    <Navbar>
+    <Navbar className="backdrop-blur-sm border-b border-divider bg-inherit">
       <NavbarBrand>
         <p
           className="font-bold text-inherit cursor-pointer"
@@ -36,17 +36,19 @@ export default function NavbarComponent() {
       <NavbarContent justify="end">
         {user ? (
           <NavbarItem>
-            <Button as={Link} color="primary" href="/dashboard" variant="flat">
+            <Button as={Link} color="primary" href="/dashboard" variant="solid">
               Dashboard
             </Button>
           </NavbarItem>
         ) : (
           <>
             <NavbarItem className="lg:flex">
-              <Link href="/login">Login</Link>
+              <Link href="/login" className="dark:text-white">
+                Login
+              </Link>
             </NavbarItem>
             <NavbarItem>
-              <Button as={Link} color="primary" href="/signup" variant="flat">
+              <Button as={Link} href="/signup" variant="solid" color="primary">
                 Sign Up
               </Button>
             </NavbarItem>

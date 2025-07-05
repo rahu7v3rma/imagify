@@ -12,6 +12,7 @@
     "@heroicons/react": "^2.2.0",
     "@heroui/react": "^2.7.10",
     "@hookform/resolvers": "^5.1.1",
+    "clsx": "^2.1.1",
     "firebase": "^11.9.1",
     "framer-motion": "^12.18.1",
     "next": "15.3.3",

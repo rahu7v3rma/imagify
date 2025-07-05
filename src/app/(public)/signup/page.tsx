@@ -2,8 +2,8 @@
 
 import { createUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
-import { Button, Input } from "@heroui/react";
-import { PasswordInput } from "@/components/ui/input";
+import { Button } from "@heroui/react";
+import { PasswordInput, CustomInput } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -93,7 +93,7 @@ export default function SignupPage() {
     <div className="flex flex-col gap-2 w-60">
       <h1 className="text-2xl font-bold">Signup</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-        <Input
+        <CustomInput
           type="email"
           placeholder="Email"
           {...register("email")}
