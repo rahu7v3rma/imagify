@@ -1,4 +1,4 @@
-# Socialify
+# Imagify
 - Social media scheduling tool
 
 # Tech Stack

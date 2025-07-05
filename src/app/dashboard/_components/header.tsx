@@ -29,7 +29,7 @@ export default function Header() {
           className="font-bold text-inherit cursor-pointer"
           onClick={handleBrandClick}
         >
-          Socialify
+          Imagify
         </p>
       </NavbarBrand>
       <NavbarContent justify="end">

@@ -26,7 +26,7 @@ export default function NavbarComponent() {
           className="font-bold text-inherit cursor-pointer"
           onClick={handleBrandClick}
         >
-          Socialify
+          Imagify
         </p>
       </NavbarBrand>
       <NavbarContent
