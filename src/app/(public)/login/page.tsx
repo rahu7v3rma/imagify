@@ -1,12 +1,16 @@
 "use client";
 
 import { PasswordInput } from "@/components/ui/input";
+import { loginUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Input, Link } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { addToast } from "@heroui/react";
+import { FirebaseError } from "firebase/app";
+import { useLoader } from "@/context/loader";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -16,7 +20,8 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 export default function LoginPage() {
-  const { login } = useFirebase();
+  const { setUser } = useFirebase();
+  const { setIsLoading } = useLoader();
   const router = useRouter();
 
   const {
@@ -27,6 +32,36 @@ export default function LoginPage() {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+
+  const login = async (email: string, password: string) => {
+    try {
+      setIsLoading(true);
+      const userCredential = await loginUser(email, password);
+      setUser(userCredential.user);
+      addToast({
+        title: "Logged in successfully!",
+        color: "success",
+      });
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/invalid-credential") {
+          addToast({
+            title: "User not found",
+            color: "danger",
+          });
+          return false;
+        }
+      }
+      addToast({
+        title: "Failed to login",
+        color: "danger",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (data: Schema) => {
     const success = await login(data.email, data.password);

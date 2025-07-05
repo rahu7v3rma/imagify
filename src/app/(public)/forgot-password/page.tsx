@@ -1,11 +1,13 @@
 "use client";
 
-import { useFirebase } from "@/context/firebase";
+import { resetPasswordEmail } from "@/lib/firebase";
 import { Button, Input, Link } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { addToast } from "@heroui/react";
+import { useLoader } from "@/context/loader";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -14,7 +16,7 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 export default function ForgotPasswordPage() {
-  const { forgotPassword } = useFirebase();
+  const { setIsLoading } = useLoader();
   const router = useRouter();
 
   const {
@@ -25,6 +27,26 @@ export default function ForgotPasswordPage() {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+
+  const forgotPassword = async (email: string) => {
+    try {
+      setIsLoading(true);
+      await resetPasswordEmail(email);
+      addToast({
+        title: "Password reset email sent!",
+        color: "success",
+      });
+      return true;
+    } catch {
+      addToast({
+        title: "Failed to send password reset email",
+        color: "danger",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (data: Schema) => {
     const success = await forgotPassword(data.email);

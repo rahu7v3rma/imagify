@@ -11,13 +11,48 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@heroui/react";
+import { deleteCurrentUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { useRouter } from "next/navigation";
+import { addToast } from "@heroui/react";
+import { FirebaseError } from "firebase/app";
+import { useLoader } from "@/context/loader";
 
 export default function SettingsPage() {
-  const { deleteAccount } = useFirebase();
+  const { setUser } = useFirebase();
+  const { setIsLoading } = useLoader();
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const deleteAccount = async () => {
+    try {
+      setIsLoading(true);
+      await deleteCurrentUser();
+      setUser(null);
+      addToast({
+        title: "Account deleted successfully!",
+        color: "success",
+      });
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/requires-recent-login") {
+          addToast({
+            title: "Please log in again to delete your account",
+            color: "danger",
+          });
+          return false;
+        }
+      }
+      addToast({
+        title: "Failed to delete account",
+        color: "danger",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleDeleteAccount = async () => {
     const success = await deleteAccount();

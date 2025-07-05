@@ -13,10 +13,35 @@ import {
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useFirebase } from "@/context/firebase";
+import { logoutUser } from "@/lib/firebase";
+import { addToast } from "@heroui/react";
+import { useLoader } from "@/context/loader";
 
 export default function Header() {
   const router = useRouter();
-  const { user, logout } = useFirebase();
+  const { user, setUser } = useFirebase();
+  const { setIsLoading } = useLoader();
+
+  const logout = async () => {
+    try {
+      setIsLoading(true);
+      await logoutUser();
+      setUser(null);
+      addToast({
+        title: "Logged out successfully!",
+        color: "success",
+      });
+      return true;
+    } catch {
+      addToast({
+        title: "Failed to logout",
+        color: "danger",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleBrandClick = () => {
     router.push("/dashboard");

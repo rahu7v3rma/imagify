@@ -1,5 +1,6 @@
 "use client";
 
+import { createUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Input } from "@heroui/react";
 import { PasswordInput } from "@/components/ui/input";
@@ -8,6 +9,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import validator from "validator";
+import { addToast } from "@heroui/react";
+import { FirebaseError } from "firebase/app";
+import { useLoader } from "@/context/loader";
 
 const schema = z
   .object({
@@ -28,7 +32,8 @@ const schema = z
 type Schema = z.infer<typeof schema>;
 
 export default function SignupPage() {
-  const { signup } = useFirebase();
+  const { setUser } = useFirebase();
+  const { setIsLoading } = useLoader();
   const router = useRouter();
 
   const {
@@ -39,6 +44,43 @@ export default function SignupPage() {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+
+  const signup = async (email: string, password: string) => {
+    try {
+      setIsLoading(true);
+      const userCredential = await createUser(email, password);
+      setUser(userCredential.user);
+      addToast({
+        title: "Account created successfully!",
+        color: "success",
+      });
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/email-already-in-use") {
+          addToast({
+            title: "Email already in use",
+            color: "danger",
+          });
+          return false;
+        }
+        if (error.code === "auth/invalid-email") {
+          addToast({
+            title: "Invalid email",
+            color: "danger",
+          });
+          return false;
+        }
+      }
+      addToast({
+        title: "Failed to create account",
+        color: "danger",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (data: Schema) => {
     const success = await signup(data.email, data.password);
