@@ -1,5 +1,5 @@
 # Imagify
-- Social media scheduling tool
+- Image processing tools
 
 # Tech Stack
 - Firebase

@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   getAuth,
   onAuthStateChanged,
   sendPasswordResetEmail,
@@ -50,4 +51,11 @@ export const updateUserEmail = (email: string) => {
     throw new Error("No user is currently authenticated");
   }
   return updateEmail(auth.currentUser, email);
+};
+
+export const deleteCurrentUser = () => {
+  if (!auth.currentUser) {
+    throw new Error("No user is currently authenticated");
+  }
+  return deleteUser(auth.currentUser);
 };

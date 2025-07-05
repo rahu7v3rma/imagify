@@ -1,5 +1,6 @@
 import {
   createUser,
+  deleteCurrentUser,
   listenAuthState,
   loginUser,
   logoutUser,
@@ -25,6 +26,7 @@ const FirebaseContext = createContext<{
   logout: () => Promise<boolean>;
   forgotPassword: (email: string) => Promise<boolean>;
   updateEmail: (email: string) => Promise<boolean>;
+  deleteAccount: () => Promise<boolean>;
 }>({
   user: null,
   signup: async () => false,
@@ -32,6 +34,7 @@ const FirebaseContext = createContext<{
   logout: async () => false,
   forgotPassword: async () => false,
   updateEmail: async () => false,
+  deleteAccount: async () => false,
 });
 
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
@@ -189,6 +192,36 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const deleteAccount = async () => {
+    try {
+      setIsLoading(true);
+      await deleteCurrentUser();
+      setUser(null);
+      addToast({
+        title: "Account deleted successfully!",
+        color: "success",
+      });
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/requires-recent-login") {
+          addToast({
+            title: "Please log in again to delete your account",
+            color: "danger",
+          });
+          return false;
+        }
+      }
+      addToast({
+        title: "Failed to delete account",
+        color: "danger",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = listenAuthState((user) => {
       if (user) {
@@ -209,6 +242,7 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
         logout,
         forgotPassword,
         updateEmail,
+        deleteAccount,
       }}
     >
       {children}
