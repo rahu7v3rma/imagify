@@ -47,7 +47,7 @@ const Sidebar = () => {
   const isSettingsActive = pathname.startsWith("/dashboard/settings");
 
   return (
-    <aside className="w-56 h-full border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-zinc-800">
+    <aside className="w-56 min-w-56 h-full border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-zinc-800">
       <nav className="flex flex-col h-full p-4">
         <div className="space-y-2">
           <SidebarLink

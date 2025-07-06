@@ -11,8 +11,13 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { addToast } from "@heroui/react";
 import { Controller } from "react-hook-form";
-import { uploadFileString, getFileDownloadURL } from "@/lib/firebase";
+import {
+  uploadFileString,
+  getFileDownloadURL,
+  getUserCredits,
+} from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
+import { useFirebase } from "@/context/firebase";
 
 const schema = z
   .object({
@@ -45,7 +50,9 @@ type Schema = z.infer<typeof schema>;
 export default function RemoveBackgroundPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
+  const [processedImage, setProcessedImage] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
+  const { user, setUserCredits } = useFirebase();
 
   const {
     register,
@@ -147,20 +154,49 @@ export default function RemoveBackgroundPage() {
 
   const onSubmit = async () => {
     if (!selectedImage) return;
+    if (!user) {
+      addToast({
+        title: "Authentication required",
+        description: "Please log in to remove background",
+        color: "danger",
+      });
+      return;
+    }
 
     setIsLoading(true);
 
     try {
       let finalImageUrl = selectedImage;
 
+      // If it's a data URL, upload to Firebase storage first
       if (selectedImage.startsWith("data:image")) {
         const timestamp = Date.now();
         const filename = `public/reference/image-${timestamp}.jpg`;
 
         await uploadFileString(selectedImage, filename, "data_url");
         finalImageUrl = await getFileDownloadURL(filename);
+      }
 
+      // Make API call to remove background
+      const response = await axios.post(
+        "/dashboard/remove-background/process",
+        {
+          imageUrl: finalImageUrl,
+        },
+        {
+          headers: {
+            Authorization: user.uid,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      if (response.data.success) {
+        setProcessedImage(response.data.image_url);
+
+        // Refresh user credits
+        const updatedCredits = await getUserCredits(user.uid);
+        setUserCredits(updatedCredits);
 
         addToast({
           title: "Background removed successfully",
@@ -169,12 +205,14 @@ export default function RemoveBackgroundPage() {
         });
       } else {
         addToast({
-          title: "Background removed successfully",
-          description: "Your image background has been removed",
-          color: "success",
+          title: "Background removal failed",
+          description: response.data.message || "Failed to remove background",
+          color: "danger",
         });
       }
-    } catch {
+    } catch (error) {
+      console.error("Error removing background:", error);
+
       addToast({
         title: "Background removal failed",
         description: "Failed to remove background. Please try again.",
@@ -186,7 +224,7 @@ export default function RemoveBackgroundPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 w-full">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
         Remove Background
       </h1>
@@ -194,73 +232,102 @@ export default function RemoveBackgroundPage() {
         Upload an image to remove its background automatically.
       </p>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 max-w-md"
-      >
-        <FileInput
-          accept="image/*"
-          {...register("uploadedImage", {
-            onChange: handleImageChange,
-          })}
-          isInvalid={!!errors.uploadedImage}
-          errorMessage={errors.uploadedImage?.message as string}
-        />
-
-        <Controller
-          control={control}
-          name="imageUrl"
-          render={({ field }) => (
-            <CustomInput
-              type="url"
-              {...field}
-              isInvalid={!!errors.imageUrl}
-              errorMessage={errors.imageUrl?.message}
-              label="Image URL"
-              placeholder="https://example.com/image.jpg"
-              actionButton={{
-                text: isValidatingUrl ? "Validating..." : "Use",
-                onClick: handleUseImageUrl,
-                disabled:
-                  !field.value || !field.value.trim() || isValidatingUrl,
-              }}
+      <div className="flex gap-8">
+        {/* Left side - Form and selected image */}
+        <div className="flex-1 max-w-md">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
+            <FileInput
+              accept="image/*"
+              {...register("uploadedImage", {
+                onChange: handleImageChange,
+              })}
+              isInvalid={!!errors.uploadedImage}
+              errorMessage={errors.uploadedImage?.message as string}
             />
+
+            <Controller
+              control={control}
+              name="imageUrl"
+              render={({ field }) => (
+                <CustomInput
+                  type="url"
+                  {...field}
+                  isInvalid={!!errors.imageUrl}
+                  errorMessage={errors.imageUrl?.message}
+                  label="Image URL"
+                  placeholder="https://example.com/image.jpg"
+                  actionButton={{
+                    text: isValidatingUrl ? "Validating..." : "Use",
+                    onClick: handleUseImageUrl,
+                    disabled:
+                      !field.value || !field.value.trim() || isValidatingUrl,
+                  }}
+                />
+              )}
+            />
+
+            <Button
+              type="submit"
+              isDisabled={!isValid}
+              variant="solid"
+              color="primary"
+            >
+              Remove Background
+            </Button>
+          </form>
+
+          {selectedImage && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                Selected Image
+              </label>
+              <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
+                <Image
+                  src={selectedImage}
+                  alt="Selected Image"
+                  fill
+                  className="object-contain"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="absolute top-2 right-2 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors duration-200 z-10"
+                  aria-label="Remove image"
+                >
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           )}
-        />
+        </div>
 
-        <Button
-          type="submit"
-          isDisabled={!isValid}
-          variant="solid"
-          color="primary"
-        >
-          Remove Background
-        </Button>
-
-        {selectedImage && (
-          <div className="mt-4">
+        {/* Right side - Processed image */}
+        {processedImage && (
+          <div className="flex-1 max-w-md">
             <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
-              Selected Image
+              Processed Image
             </label>
-            <div className="w-128 h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
+            <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
               <Image
-                src={selectedImage}
-                alt="Selected Image"
+                src={processedImage}
+                alt="Processed Image"
                 fill
                 className="object-contain"
               />
-              <button
-                type="button"
-                onClick={handleRemoveImage}
-                className="absolute top-2 right-2 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors duration-200 z-10"
-                aria-label="Remove image"
+              <a
+                href={processedImage}
+                download="background-removed.png"
+                className="absolute top-2 right-2 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm transition-colors duration-200 z-10"
               >
-                <XMarkIcon className="w-5 h-5" />
-              </button>
+                Download
+              </a>
             </div>
           </div>
         )}
-      </form>
+      </div>
     </div>
   );
 }
