@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { PhotoIcon, CogIcon, HomeIcon } from "@heroicons/react/24/outline";
+import {
+  PhotoIcon,
+  CogIcon,
+  HomeIcon,
+  CreditCardIcon,
+} from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 
 interface SidebarLinkProps {
@@ -38,6 +43,7 @@ const Sidebar = () => {
   const isRemoveBackgroundActive = pathname.startsWith(
     "/dashboard/remove-background"
   );
+  const isBillingActive = pathname.startsWith("/dashboard/billing");
   const isSettingsActive = pathname.startsWith("/dashboard/settings");
 
   return (
@@ -57,7 +63,13 @@ const Sidebar = () => {
             isActive={isRemoveBackgroundActive}
           />
         </div>
-        <div className="mt-auto">
+        <div className="mt-auto space-y-2">
+          <SidebarLink
+            href="/dashboard/billing"
+            icon={CreditCardIcon}
+            label="Billing"
+            isActive={isBillingActive}
+          />
           <SidebarLink
             href="/dashboard/settings"
             icon={CogIcon}
