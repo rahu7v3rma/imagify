@@ -4,15 +4,15 @@ import { Tabs, Tab, Card, CardBody, Button } from "@heroui/react";
 import { BoltIcon } from "@heroicons/react/24/outline";
 import { useFirebase } from "@/context/firebase";
 import { useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import { addToast } from "@heroui/react";
+import { useRouter } from "next/navigation";
 
 export default function BillingPage() {
   const { userCredits, user } = useFirebase();
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
     const paymentStatus = searchParams.get("payment");
     const message = searchParams.get("message");
     const amount = searchParams.get("amount");
@@ -21,10 +21,12 @@ export default function BillingPage() {
       // Show toast based on payment status
       if (paymentStatus === "success") {
         // Success toast
-        const successMessage = amount 
-          ? `Payment successful! $${(parseInt(amount) / 100).toFixed(2)} charged.`
+        const successMessage = amount
+          ? `Payment successful! $${(parseInt(amount) / 100).toFixed(
+              2
+            )} charged.`
           : "Payment successful!";
-        
+
         addToast({
           title: successMessage,
           color: "success",
@@ -39,7 +41,8 @@ export default function BillingPage() {
         });
       } else if (paymentStatus === "error") {
         // Error toast
-        const errorMessage = message || "An error occurred during payment verification.";
+        const errorMessage =
+          message || "An error occurred during payment verification.";
         addToast({
           title: "Error",
           description: errorMessage,
@@ -51,10 +54,10 @@ export default function BillingPage() {
       const newUrl = window.location.pathname;
       router.replace(newUrl);
     }
-  }, [searchParams, router]);
+  }, [router]);
 
   // Generate Stripe URL with Firebase user ID
-  const stripeUrl = user?.uid 
+  const stripeUrl = user?.uid
     ? `https://buy.stripe.com/test_9B6cMYer65B36QXg4j6Ri00?client_reference_id=${user.uid}`
     : "#";
 
