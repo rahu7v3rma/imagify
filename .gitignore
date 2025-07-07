@@ -4,3 +4,5 @@ node_modules
 .cursor
 .DS_Store
 tasks.md
+firebase-debug.log
+pglite-debug.log
