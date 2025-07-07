@@ -13,6 +13,10 @@ const CREDIT_REQUIREMENT = 1;
 
 const requestSchema = z.object({
   imageUrl: z.string().max(1000, "Image URL must be at most 1000 characters"),
+  prompt: z
+    .string()
+    .min(1, "Prompt is required")
+    .max(500, "Prompt must be at most 500 characters"),
 });
 
 export async function POST(request: NextRequest) {
@@ -46,21 +50,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Use Replicate to remove background
+    // Use Replicate to edit image
     const input = {
-      image: validatedData.imageUrl,
+      prompt: validatedData.prompt,
+      input_images: [validatedData.imageUrl],
+      openai_api_key: process.env.OPENAI_API_KEY,
     };
 
     const replicate = new Replicate({
       auth: process.env.REPLICATE_API_TOKEN,
     });
 
-    const output = await replicate.run(
-      "lucataco/remove-bg:95fcc2a26d3899cd6c2691c900465aaeff466285a65c14638cc5f36f34befaf1",
-      { input }
-    );
+    const output = await replicate.run("openai/gpt-image-1", { input });
+
+    // The output is an array, get the first element (URL)
     // @ts-expect-error - Replicate types are not up to date
-    const outputUrl = output.url();
+    const outputUrl = Array.isArray(output) ? output[0].url() : output.url();
+
+    if (!outputUrl) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "No output image generated",
+        },
+        { status: 500 }
+      );
+    }
 
     // Fetch the image from the Replicate output URL
     const imageResponse = await axios.get(outputUrl, {
@@ -71,7 +86,7 @@ export async function POST(request: NextRequest) {
     // Upload the output image to Firebase Storage
     const timestamp = Date.now();
     const fileName = `image-${timestamp}.png`;
-    const filePath = `user_images/${userId}/remove-background/${fileName}`;
+    const filePath = `user_images/${userId}/edit-image/${fileName}`;
 
     await uploadFile(new Uint8Array(imageBuffer), filePath);
     const firebaseImageUrl = await getFileDownloadURL(filePath);
@@ -81,11 +96,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Background removed successfully",
+      message: "Image edited successfully",
       image_url: firebaseImageUrl,
     });
   } catch (error) {
-    console.error("Error removing background:", error);
+    console.error("Error editing image:", error);
     return NextResponse.json(
       {
         success: false,
@@ -94,4 +109,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+} 

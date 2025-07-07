@@ -28,13 +28,13 @@ import {
 } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyBbINpzpn-u3X79Dvdof1amVNL2X-ow60w",
+  authDomain: "socialify-feab1.firebaseapp.com",
+  projectId: "socialify-feab1",
+  storageBucket: "socialify-feab1.firebasestorage.app",
+  messagingSenderId: "534705204397",
+  appId: "1:534705204397:web:e086f54e154fa342602a24",
+  measurementId: "G-DS27BKTKVS",
 };
 
 const app = initializeApp(firebaseConfig);

@@ -47,7 +47,7 @@ const schema = z
 
 type Schema = z.infer<typeof schema>;
 
-export default function RemoveBackgroundPage() {
+export default function UpscalePage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
@@ -157,7 +157,7 @@ export default function RemoveBackgroundPage() {
     if (!user) {
       addToast({
         title: "Authentication required",
-        description: "Please log in to remove background",
+        description: "Please log in to upscale image",
         color: "danger",
       });
       return;
@@ -177,9 +177,9 @@ export default function RemoveBackgroundPage() {
         finalImageUrl = await getFileDownloadURL(filename);
       }
 
-      // Make API call to remove background
+      // Make API call to upscale image
       const response = await axios.post(
-        "/dashboard/remove-background/process",
+        "/dashboard/upscale/process",
         {
           imageUrl: finalImageUrl,
         },
@@ -199,23 +199,23 @@ export default function RemoveBackgroundPage() {
         setUserCredits(updatedCredits);
 
         addToast({
-          title: "Background removed successfully",
-          description: "Your image background has been removed",
+          title: "Image upscaled successfully",
+          description: "Your image has been upscaled",
           color: "success",
         });
       } else {
         addToast({
-          title: "Background removal failed",
-          description: response.data.message || "Failed to remove background",
+          title: "Image upscaling failed",
+          description: response.data.message || "Failed to upscale image",
           color: "danger",
         });
       }
     } catch (error) {
-      console.error("Error removing background:", error);
+      console.error("Error upscaling image:", error);
 
       addToast({
-        title: "Background removal failed",
-        description: "Failed to remove background. Please try again.",
+        title: "Image upscaling failed",
+        description: "Failed to upscale image. Please try again.",
         color: "danger",
       });
     } finally {
@@ -226,10 +226,10 @@ export default function RemoveBackgroundPage() {
   return (
     <div className="p-6 w-full">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-        Remove Background
+        Upscale Image
       </h1>
       <p className="text-gray-600 dark:text-zinc-300 mb-2">
-        Upload an image or provide an image URL to remove its background automatically.
+        Upload an image or provide an image URL to upscale it automatically.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
         💳 This operation requires 1 credit
@@ -278,7 +278,7 @@ export default function RemoveBackgroundPage() {
               variant="solid"
               color="primary"
             >
-              Remove Background
+              Upscale Image
             </Button>
           </form>
 
@@ -311,18 +311,18 @@ export default function RemoveBackgroundPage() {
         {processedImage && (
           <div className="flex-1 max-w-md">
             <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
-              Processed Image
+              Upscaled Image
             </label>
             <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
               <Image
                 src={processedImage}
-                alt="Processed Image"
+                alt="Upscaled Image"
                 fill
                 className="object-contain"
               />
               <a
                 href={processedImage}
-                download="background-removed.png"
+                download="upscaled-image.png"
                 className="absolute top-2 right-2 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm transition-colors duration-200 z-10"
               >
                 Download

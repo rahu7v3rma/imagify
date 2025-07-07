@@ -46,9 +46,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Use Replicate to remove background
+    // Use Replicate to upscale image
     const input = {
       image: validatedData.imageUrl,
+      scale: 2, // Fixed scale value
     };
 
     const replicate = new Replicate({
@@ -56,9 +57,10 @@ export async function POST(request: NextRequest) {
     });
 
     const output = await replicate.run(
-      "lucataco/remove-bg:95fcc2a26d3899cd6c2691c900465aaeff466285a65c14638cc5f36f34befaf1",
+      "nightmareai/real-esrgan:f121d640bd286e1fdc67f9799164c1d5be36ff74576ee11c803ae5b665dd46aa",
       { input }
     );
+
     // @ts-expect-error - Replicate types are not up to date
     const outputUrl = output.url();
 
@@ -71,7 +73,7 @@ export async function POST(request: NextRequest) {
     // Upload the output image to Firebase Storage
     const timestamp = Date.now();
     const fileName = `image-${timestamp}.png`;
-    const filePath = `user_images/${userId}/remove-background/${fileName}`;
+    const filePath = `user_images/${userId}/upscale/${fileName}`;
 
     await uploadFile(new Uint8Array(imageBuffer), filePath);
     const firebaseImageUrl = await getFileDownloadURL(filePath);
@@ -81,11 +83,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Background removed successfully",
+      message: "Image upscaled successfully",
       image_url: firebaseImageUrl,
     });
   } catch (error) {
-    console.error("Error removing background:", error);
+    console.error("Error upscaling image:", error);
     return NextResponse.json(
       {
         success: false,
@@ -94,4 +96,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+} 

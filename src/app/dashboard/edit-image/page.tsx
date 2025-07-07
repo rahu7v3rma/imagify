@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import { CustomInput, FileInput } from "@/components/ui/input";
+import { CustomInput, FileInput, CustomTextarea } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,6 +30,10 @@ const schema = z
         return files[0]?.type.startsWith("image/");
       }, "Only image files are allowed"),
     imageUrl: z.string().optional(),
+    prompt: z
+      .string()
+      .min(1, "Prompt is required")
+      .max(500, "Prompt must be at most 500 characters"),
   })
   .refine(
     (data) => {
@@ -47,7 +51,7 @@ const schema = z
 
 type Schema = z.infer<typeof schema>;
 
-export default function RemoveBackgroundPage() {
+export default function EditImagePage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
@@ -152,12 +156,12 @@ export default function RemoveBackgroundPage() {
     }
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: Schema) => {
     if (!selectedImage) return;
     if (!user) {
       addToast({
         title: "Authentication required",
-        description: "Please log in to remove background",
+        description: "Please log in to edit image",
         color: "danger",
       });
       return;
@@ -177,11 +181,12 @@ export default function RemoveBackgroundPage() {
         finalImageUrl = await getFileDownloadURL(filename);
       }
 
-      // Make API call to remove background
+      // Make API call to edit image
       const response = await axios.post(
-        "/dashboard/remove-background/process",
+        "/dashboard/edit-image/process",
         {
           imageUrl: finalImageUrl,
+          prompt: data.prompt,
         },
         {
           headers: {
@@ -199,23 +204,23 @@ export default function RemoveBackgroundPage() {
         setUserCredits(updatedCredits);
 
         addToast({
-          title: "Background removed successfully",
-          description: "Your image background has been removed",
+          title: "Image edited successfully",
+          description: "Your image has been edited",
           color: "success",
         });
       } else {
         addToast({
-          title: "Background removal failed",
-          description: response.data.message || "Failed to remove background",
+          title: "Image editing failed",
+          description: response.data.message || "Failed to edit image",
           color: "danger",
         });
       }
     } catch (error) {
-      console.error("Error removing background:", error);
+      console.error("Error editing image:", error);
 
       addToast({
-        title: "Background removal failed",
-        description: "Failed to remove background. Please try again.",
+        title: "Image editing failed",
+        description: "Failed to edit image. Please try again.",
         color: "danger",
       });
     } finally {
@@ -226,10 +231,10 @@ export default function RemoveBackgroundPage() {
   return (
     <div className="p-6 w-full">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-        Remove Background
+        Edit Image
       </h1>
       <p className="text-gray-600 dark:text-zinc-300 mb-2">
-        Upload an image or provide an image URL to remove its background automatically.
+        Upload an image or provide an image URL, then describe the changes you want to make.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
         💳 This operation requires 1 credit
@@ -272,13 +277,28 @@ export default function RemoveBackgroundPage() {
               )}
             />
 
+            <Controller
+              control={control}
+              name="prompt"
+              render={({ field }) => (
+                <CustomTextarea
+                  {...field}
+                  isInvalid={!!errors.prompt}
+                  errorMessage={errors.prompt?.message}
+                  label="Edit Prompt"
+                  placeholder="Describe the changes you want to make (e.g., 'Add flowers to the background')"
+                  rows={4}
+                />
+              )}
+            />
+
             <Button
               type="submit"
               isDisabled={!isValid}
               variant="solid"
               color="primary"
             >
-              Remove Background
+              Edit Image
             </Button>
           </form>
 
@@ -311,18 +331,18 @@ export default function RemoveBackgroundPage() {
         {processedImage && (
           <div className="flex-1 max-w-md">
             <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
-              Processed Image
+              Edited Image
             </label>
             <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
               <Image
                 src={processedImage}
-                alt="Processed Image"
+                alt="Edited Image"
                 fill
                 className="object-contain"
               />
               <a
                 href={processedImage}
-                download="background-removed.png"
+                download="edited-image.png"
                 className="absolute top-2 right-2 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm transition-colors duration-200 z-10"
               >
                 Download
@@ -333,4 +353,4 @@ export default function RemoveBackgroundPage() {
       </div>
     </div>
   );
-}
+} 

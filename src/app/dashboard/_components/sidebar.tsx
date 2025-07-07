@@ -6,6 +6,8 @@ import {
   CogIcon,
   HomeIcon,
   CreditCardIcon,
+  ArrowUpIcon,
+  PencilIcon,
 } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 
@@ -43,6 +45,8 @@ const Sidebar = () => {
   const isRemoveBackgroundActive = pathname.startsWith(
     "/dashboard/remove-background"
   );
+  const isUpscaleActive = pathname.startsWith("/dashboard/upscale");
+  const isEditImageActive = pathname.startsWith("/dashboard/edit-image");
   const isBillingActive = pathname.startsWith("/dashboard/billing");
   const isSettingsActive = pathname.startsWith("/dashboard/settings");
 
@@ -61,6 +65,18 @@ const Sidebar = () => {
             icon={PhotoIcon}
             label="Remove Background"
             isActive={isRemoveBackgroundActive}
+          />
+          <SidebarLink
+            href="/dashboard/upscale"
+            icon={ArrowUpIcon}
+            label="Upscale Image"
+            isActive={isUpscaleActive}
+          />
+          <SidebarLink
+            href="/dashboard/edit-image"
+            icon={PencilIcon}
+            label="Edit Image"
+            isActive={isEditImageActive}
           />
         </div>
         <div className="mt-auto space-y-2">

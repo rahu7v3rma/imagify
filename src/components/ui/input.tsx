@@ -220,3 +220,79 @@ export const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
 );
 
 CustomInput.displayName = "CustomInput";
+
+interface CustomTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string;
+  isInvalid?: boolean;
+  errorMessage?: string;
+  description?: string;
+  classNames?: {
+    base?: string;
+    wrapper?: string;
+    textarea?: string;
+    label?: string;
+    description?: string;
+    errorMessage?: string;
+  };
+}
+
+export const CustomTextarea = forwardRef<HTMLTextAreaElement, CustomTextareaProps>(
+  ({ className, classNames, label, isInvalid, errorMessage, description, ...props }, ref) => {
+    return (
+      <div className={clsx("w-full", classNames?.base)}>
+        {label && (
+          <label className={clsx(
+            "block text-sm font-medium mb-2",
+            "text-default-600 dark:text-zinc-300",
+            classNames?.label
+          )}>
+            {label}
+          </label>
+        )}
+        <div className={clsx(
+          "relative w-full",
+          classNames?.wrapper
+        )}>
+          <textarea
+            ref={ref}
+            className={clsx(
+              "w-full min-h-[80px] p-3 rounded-lg",
+              "border-2 border-default-200 hover:border-default-300 focus:border-primary-500",
+              "dark:border-zinc-600 dark:hover:border-zinc-500 dark:focus:border-primary-400",
+              "bg-default-50 dark:bg-zinc-800/50",
+              "text-default-900 dark:text-white",
+              "placeholder:text-default-400 dark:placeholder:text-zinc-400",
+              "transition-colors duration-200",
+              "focus:outline-none focus:ring-0",
+              "resize-y",
+              isInvalid && "border-danger-500 dark:border-danger-400 focus:border-danger-500 dark:focus:border-danger-400",
+              className,
+              classNames?.textarea
+            )}
+            {...props}
+          />
+        </div>
+        {description && !isInvalid && (
+          <p className={clsx(
+            "text-sm mt-1",
+            "text-default-500 dark:text-zinc-400",
+            classNames?.description
+          )}>
+            {description}
+          </p>
+        )}
+        {isInvalid && errorMessage && (
+          <p className={clsx(
+            "text-sm mt-1",
+            "text-danger-500 dark:text-danger-400",
+            classNames?.errorMessage
+          )}>
+            {errorMessage}
+          </p>
+        )}
+      </div>
+    );
+  }
+);
+
+CustomTextarea.displayName = "CustomTextarea";
