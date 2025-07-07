@@ -56,16 +56,19 @@ env:
   - variable: STRIPE_SECRET_KEY
     secret: STRIPE_SECRET_KEY
     availability:
+      - BUILD 
       - RUNTIME
   
   - variable: REPLICATE_API_TOKEN
     secret: REPLICATE_API_TOKEN
     availability:
+      - BUILD
       - RUNTIME
   
   - variable: OPENAI_API_KEY
     secret: OPENAI_API_KEY
     availability:
+      - BUILD
       - RUNTIME
 
   # Grant access to secrets in Cloud Secret Manager.
