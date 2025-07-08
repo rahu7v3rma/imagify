@@ -18,6 +18,10 @@ function RootApp({ children }: { children: React.ReactNode }) {
 
   return (
     <html lang="en" className={mode === "dark" ? "dark" : ""}>
+      <head>
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+      </head>
       <body className={clsx(geist.className, "dark:bg-zinc-800 min-h-screen")}>
         <HeroUIProvider>
           <LoaderProvider>
