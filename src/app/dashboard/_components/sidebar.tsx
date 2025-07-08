@@ -8,6 +8,7 @@ import {
   CreditCardIcon,
   ArrowUpIcon,
   PencilIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 
@@ -45,6 +46,7 @@ const Sidebar = () => {
   const isRemoveBackgroundActive = pathname.startsWith(
     "/dashboard/remove-background"
   );
+  const isExtractTextActive = pathname.startsWith("/dashboard/extract-text");
   const isUpscaleActive = pathname.startsWith("/dashboard/upscale");
   const isEditImageActive = pathname.startsWith("/dashboard/edit-image");
   const isBillingActive = pathname.startsWith("/dashboard/billing");
@@ -65,6 +67,12 @@ const Sidebar = () => {
             icon={PhotoIcon}
             label="Remove Background"
             isActive={isRemoveBackgroundActive}
+          />
+          <SidebarLink
+            href="/dashboard/extract-text"
+            icon={DocumentTextIcon}
+            label="Extract Text"
+            isActive={isExtractTextActive}
           />
           <SidebarLink
             href="/dashboard/upscale"
