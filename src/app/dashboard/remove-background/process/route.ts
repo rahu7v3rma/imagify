@@ -1,9 +1,9 @@
 import {
-  getFileDownloadURL,
-  getUserCredits,
-  updateUserCredits,
-  uploadFile,
-} from "@/lib/firebase";
+  adminGetFileDownloadURL,
+  adminGetUserCredits,
+  adminUpdateUserCredits,
+  adminUploadFile,
+} from "@/lib/firebase-admin";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 import axios from "axios";
@@ -34,8 +34,8 @@ export async function POST(request: NextRequest) {
     // Validate request body with Zod schema
     const validatedData = requestSchema.parse(body);
 
-    // Check user credits
-    const userCredits = await getUserCredits(userId);
+    // Check user credits using Admin SDK
+    const userCredits = await adminGetUserCredits(userId);
     if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
       return NextResponse.json(
         {
@@ -66,18 +66,18 @@ export async function POST(request: NextRequest) {
     const imageResponse = await axios.get(outputUrl, {
       responseType: "arraybuffer",
     });
-    const imageBuffer = imageResponse.data;
+    const imageBuffer = Buffer.from(imageResponse.data);
 
-    // Upload the output image to Firebase Storage
+    // Upload the output image to Firebase Storage using Admin SDK
     const timestamp = Date.now();
     const fileName = `image-${timestamp}.png`;
     const filePath = `user_images/${userId}/remove-background/${fileName}`;
 
-    await uploadFile(new Uint8Array(imageBuffer), filePath);
-    const firebaseImageUrl = await getFileDownloadURL(filePath);
+    await adminUploadFile(imageBuffer, filePath);
+    const firebaseImageUrl = await adminGetFileDownloadURL(filePath);
 
-    // Deduct credits
-    await updateUserCredits(userId, userCredits.credits - CREDIT_REQUIREMENT);
+    // Deduct credits using Admin SDK
+    await adminUpdateUserCredits(userId, userCredits.credits - CREDIT_REQUIREMENT);
 
     return NextResponse.json({
       success: true,
