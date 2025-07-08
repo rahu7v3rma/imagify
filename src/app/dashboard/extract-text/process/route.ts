@@ -1,13 +1,13 @@
 import {
-  adminGetUserCredits,
-  adminUpdateUserCredits,
+  adminGetUserCents,
+  adminUpdateUserCents,
   admin,
 } from "@/lib/firebase-admin";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 import * as z from "zod";
 
-const CREDIT_REQUIREMENT = 1;
+const CENT_REQUIREMENT = 1;
 
 const requestSchema = z.object({
   imageUrl: z.string().max(1000, "Image URL must be at most 1000 characters"),
@@ -49,13 +49,13 @@ export async function POST(request: NextRequest) {
     // Validate request body with Zod schema
     const validatedData = requestSchema.parse(body);
 
-    // Check user credits using Admin SDK
-    const userCredits = await adminGetUserCredits(userId);
-    if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
+    // Check user cents using Admin SDK
+    const userCents = await adminGetUserCents(userId);
+    if (!userCents || userCents.cents < CENT_REQUIREMENT) {
       return NextResponse.json(
         {
           success: false,
-          message: "Insufficient credits",
+          message: "Insufficient cents",
         },
         { status: 400 }
       );
@@ -79,8 +79,8 @@ export async function POST(request: NextRequest) {
     // @ts-expect-error - output is a string for this OCR model
     const extractedText = output as string;
 
-    // Deduct credits using Admin SDK
-    await adminUpdateUserCredits(userId, userCredits.credits - CREDIT_REQUIREMENT);
+    // Deduct cents using Admin SDK
+    await adminUpdateUserCents(userId, userCents.cents - CENT_REQUIREMENT);
 
     return NextResponse.json({
       success: true,

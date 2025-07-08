@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import {
-  getUserCredits,
-  createUserCredits,
-  updateUserCredits,
-} from "@/lib/firebase";
+  adminGetUserCents,
+  adminCreateUserCents,
+  adminUpdateUserCents,
+} from "@/lib/firebase-admin";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -29,15 +29,15 @@ export async function GET(request: NextRequest) {
     const clientReferenceId = session.client_reference_id;
 
     if (isPaid && clientReferenceId && amountTotal) {
-      const creditsToAdd = Math.floor(amountTotal);
+      const centsToAdd = Math.floor(amountTotal);
 
-      const existingCredits = await getUserCredits(clientReferenceId);
+      const existingCents = await adminGetUserCents(clientReferenceId);
 
-      if (existingCredits) {
-        const totalCredits = existingCredits.credits + creditsToAdd;
-        await updateUserCredits(clientReferenceId, totalCredits);
+      if (existingCents) {
+        const totalCents = existingCents.cents + centsToAdd;
+        await adminUpdateUserCents(clientReferenceId, totalCents);
       } else {
-        await createUserCredits(clientReferenceId, creditsToAdd);
+        await adminCreateUserCents(clientReferenceId, centsToAdd);
       }
 
       return NextResponse.redirect(
@@ -54,7 +54,9 @@ export async function GET(request: NextRequest) {
         )
       );
     }
-  } catch {
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    console.error("Failed to verify payment");
     return NextResponse.redirect(
       new URL(
         "/dashboard/billing?payment=error&message=Failed to verify payment",

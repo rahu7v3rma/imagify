@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
         </li>
         <li>
           <strong>Usage information</strong> such as remaining processing&nbsp;
-          <em>credits</em> &mdash; stored in database to enable billing logic.
+          <em>cents</em> &mdash; stored in database to enable billing logic.
         </li>
         <li>
           <strong>Payment information</strong> &mdash; handled directly by
@@ -63,7 +63,7 @@ export default function PrivacyPolicyPage() {
       <ul className="list-disc list-inside space-y-1">
         <li>To authenticate and secure your account.</li>
         <li>To process images and return the requested output.</li>
-        <li>To manage usage credits.</li>
+        <li>To manage usage cents.</li>
         <li>To process payments and send transactional emails.</li>
         <li>To respond to inquiries and provide customer support.</li>
       </ul>
@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
         5. Data Retention
       </h2>
       <p>
-        Email addresses, usage credits, and images are retained for as long as
+        Email addresses, usage cents, and images are retained for as long as
         your account remains active. You may delete your account at any time
         from the <em>Settings</em> page, which will permanently remove your
         personal data and stored files.

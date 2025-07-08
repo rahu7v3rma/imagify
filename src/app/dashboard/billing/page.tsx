@@ -8,7 +8,7 @@ import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
 export default function BillingPage() {
-  const { userCredits, user } = useFirebase();
+  const { userCents, user } = useFirebase();
   const router = useRouter();
 
   useEffect(() => {
@@ -67,11 +67,11 @@ export default function BillingPage() {
 
       <Tabs aria-label="Billing tabs" color="primary" variant="underlined">
         <Tab
-          key="credits"
+          key="cents"
           title={
             <div className="flex items-center space-x-2">
               <BoltIcon className="w-4 h-4" />
-              <span>Credits</span>
+              <span>Cents</span>
             </div>
           }
         >
@@ -80,10 +80,10 @@ export default function BillingPage() {
               <CardBody className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Total Credits
+                    Total Cents
                   </h3>
                   <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 ml-8">
-                    {userCredits?.credits ?? 0}
+                    {userCents?.cents ?? 0}
                   </div>
                 </div>
                 <div className="flex justify-end">
@@ -97,7 +97,7 @@ export default function BillingPage() {
                     rel="noopener noreferrer"
                     isDisabled={!user?.uid}
                   >
-                    Buy Credits
+                    Buy Cents
                   </Button>
                 </div>
               </CardBody>

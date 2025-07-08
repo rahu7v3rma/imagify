@@ -103,9 +103,9 @@ export const createStorageRef = (path: string) => {
 };
 
 // Firestore types
-export interface UserCreditsDocument {
+export interface UserCentsDocument {
   user_id: string;
-  credits: number;
+  cents: number;
 }
 
 export interface ContactMessage {
@@ -114,41 +114,41 @@ export interface ContactMessage {
 }
 
 // Firestore functions
-export const getUserCredits = async (
+export const getUserCents = async (
   userId: string
-): Promise<UserCreditsDocument | null> => {
+): Promise<UserCentsDocument | null> => {
   const q = query(
-    collection(db, "user_credits"),
+    collection(db, "user_cents"),
     where("user_id", "==", userId)
   );
   const querySnapshot = await getDocs(q);
 
   if (!querySnapshot.empty) {
-    const docData = querySnapshot.docs[0].data() as UserCreditsDocument;
+    const docData = querySnapshot.docs[0].data() as UserCentsDocument;
     return docData;
   } else {
     return null;
   }
 };
 
-export const createUserCredits = async (
+export const createUserCents = async (
   userId: string,
-  initialCredits: number = 0
+  initialCents: number = 0
 ): Promise<void> => {
-  const userCreditsData: UserCreditsDocument = {
+  const userCentsData: UserCentsDocument = {
     user_id: userId,
-    credits: initialCredits,
+    cents: initialCents,
   };
 
-  await addDoc(collection(db, "user_credits"), userCreditsData);
+  await addDoc(collection(db, "user_cents"), userCentsData);
 };
 
-export const updateUserCredits = async (
+export const updateUserCents = async (
   userId: string,
-  credits: number
+  cents: number
 ): Promise<void> => {
   const q = query(
-    collection(db, "user_credits"),
+    collection(db, "user_cents"),
     where("user_id", "==", userId)
   );
   const querySnapshot = await getDocs(q);
@@ -157,7 +157,7 @@ export const updateUserCredits = async (
     // Update existing document
     const docRef = querySnapshot.docs[0].ref;
     await updateDoc(docRef, {
-      credits: credits,
+      cents: cents,
     });
   }
 };

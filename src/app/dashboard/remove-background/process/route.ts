@@ -1,7 +1,7 @@
 import {
   adminGetFileDownloadURL,
-  adminGetUserCredits,
-  adminUpdateUserCredits,
+  adminGetUserCents,
+  adminUpdateUserCents,
   adminUploadFile,
   admin,
 } from "@/lib/firebase-admin";
@@ -10,7 +10,7 @@ import Replicate from "replicate";
 import axios from "axios";
 import * as z from "zod";
 
-const CREDIT_REQUIREMENT = 1;
+const CENT_REQUIREMENT = 1;
 
 const requestSchema = z.object({
   imageUrl: z.string().max(1000, "Image URL must be at most 1000 characters"),
@@ -52,13 +52,13 @@ export async function POST(request: NextRequest) {
     // Validate request body with Zod schema
     const validatedData = requestSchema.parse(body);
 
-    // Check user credits using Admin SDK
-    const userCredits = await adminGetUserCredits(userId);
-    if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
+    // Check user cents using Admin SDK
+    const userCents = await adminGetUserCents(userId);
+    if (!userCents || userCents.cents < CENT_REQUIREMENT) {
       return NextResponse.json(
         {
           success: false,
-          message: "Insufficient credits",
+          message: "Insufficient cents",
         },
         { status: 400 }
       );
@@ -94,8 +94,8 @@ export async function POST(request: NextRequest) {
     await adminUploadFile(imageBuffer, filePath);
     const firebaseImageUrl = await adminGetFileDownloadURL(filePath);
 
-    // Deduct credits using Admin SDK
-    await adminUpdateUserCredits(userId, userCredits.credits - CREDIT_REQUIREMENT);
+    // Deduct cents using Admin SDK
+    await adminUpdateUserCents(userId, userCents.cents - CENT_REQUIREMENT);
 
     return NextResponse.json({
       success: true,

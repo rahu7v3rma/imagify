@@ -59,34 +59,34 @@ export const adminGetFileDownloadURL = async (filePath: string) => {
 };
 
 // Admin Firestore types
-export interface UserCreditsDocument {
+export interface UserCentsDocument {
   user_id: string;
-  credits: number;
+  cents: number;
 }
 
 // Admin Firestore functions
-export const adminGetUserCredits = async (
+export const adminGetUserCents = async (
   userId: string
-): Promise<UserCreditsDocument | null> => {
+): Promise<UserCentsDocument | null> => {
   const querySnapshot = await adminDb
-    .collection("user_credits")
+    .collection("user_cents")
     .where("user_id", "==", userId)
     .get();
 
   if (!querySnapshot.empty) {
-    const docData = querySnapshot.docs[0].data() as UserCreditsDocument;
+    const docData = querySnapshot.docs[0].data() as UserCentsDocument;
     return docData;
   } else {
     return null;
   }
 };
 
-export const adminUpdateUserCredits = async (
+export const adminUpdateUserCents = async (
   userId: string,
-  credits: number
+  cents: number
 ): Promise<void> => {
   const querySnapshot = await adminDb
-    .collection("user_credits")
+    .collection("user_cents")
     .where("user_id", "==", userId)
     .get();
 
@@ -94,9 +94,21 @@ export const adminUpdateUserCredits = async (
     // Update existing document
     const docRef = querySnapshot.docs[0].ref;
     await docRef.update({
-      credits: credits
+      cents: cents
     });
   }
+};
+
+export const adminCreateUserCents = async (
+  userId: string,
+  initialCents: number = 0
+): Promise<void> => {
+  const userCentsData: UserCentsDocument = {
+    user_id: userId,
+    cents: initialCents,
+  };
+
+  await adminDb.collection("user_cents").add(userCentsData);
 };
 
 export { admin };

@@ -14,7 +14,7 @@ import { Controller } from "react-hook-form";
 import {
   uploadFileString,
   getFileDownloadURL,
-  getUserCredits,
+  getUserCents,
 } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
 import { useFirebase } from "@/context/firebase";
@@ -56,7 +56,7 @@ export default function EditImagePage() {
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
-  const { user, setUserCredits } = useFirebase();
+  const { user, setUserCents } = useFirebase();
 
   const {
     register,
@@ -202,9 +202,9 @@ export default function EditImagePage() {
       if (response.data.success) {
         setProcessedImage(response.data.image_url);
 
-        // Refresh user credits
-        const updatedCredits = await getUserCredits(user.uid);
-        setUserCredits(updatedCredits);
+        // Refresh user cents
+        const updatedCents = await getUserCents(user.uid);
+        setUserCents(updatedCents);
 
         addToast({
           title: "Image edited successfully",
@@ -240,7 +240,7 @@ export default function EditImagePage() {
         Upload an image or provide an image URL, then describe the changes you want to make.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 This operation requires 1 credit
+        💳 This operation requires 1 cent
       </div>
 
       <div className="flex gap-8">
