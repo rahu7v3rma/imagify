@@ -15,7 +15,7 @@ import {
   query,
   updateDoc,
   where,
-  addDoc
+  addDoc,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -108,6 +108,11 @@ export interface UserCreditsDocument {
   credits: number;
 }
 
+export interface ContactMessage {
+  email: string;
+  message: string;
+}
+
 // Firestore functions
 export const getUserCredits = async (
   userId: string
@@ -132,7 +137,7 @@ export const createUserCredits = async (
 ): Promise<void> => {
   const userCreditsData: UserCreditsDocument = {
     user_id: userId,
-    credits: initialCredits
+    credits: initialCredits,
   };
 
   await addDoc(collection(db, "user_credits"), userCreditsData);
@@ -152,7 +157,19 @@ export const updateUserCredits = async (
     // Update existing document
     const docRef = querySnapshot.docs[0].ref;
     await updateDoc(docRef, {
-      credits: credits
+      credits: credits,
     });
   }
+};
+
+export const contactUs = async (
+  email: string,
+  message: string
+): Promise<void> => {
+  const contactMessageData = {
+    email,
+    message,
+  };
+
+  await addDoc(collection(db, "contact_us_messages"), contactMessageData);
 };
