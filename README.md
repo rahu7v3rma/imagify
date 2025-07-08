@@ -4,3 +4,5 @@
 # Tech Stack
 - Firebase
 - NextJS
+- Replicate
+- Stripe

@@ -3,6 +3,7 @@
 import { Switch } from "@heroui/react";
 import { useTheme } from "@/context/theme";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function FooterComponent() {
   const { mode, setMode } = useTheme();
@@ -12,8 +13,30 @@ export default function FooterComponent() {
   };
 
   return (
-    <footer className="absolute bottom-0 left-0 right-0 backdrop-blur-sm border-t border-divider">
-      <div className="flex justify-end items-center p-4">
+    <footer className="backdrop-blur-sm border-t border-divider mt-auto">
+      <div className="flex justify-between items-center p-4">
+        {/* Left side - Contact and Privacy links */}
+        <div className="flex items-center gap-4 text-sm">
+          <Link
+            href="/contact"
+            className="hover:text-primary transition-colors"
+          >
+            Contact Us
+          </Link>
+          <Link
+            href="/privacy-policy"
+            className="hover:text-primary transition-colors"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+
+        {/* Center - Copyright */}
+        <div className="text-sm text-default-500">
+          © {new Date().getFullYear()} Imagify. All rights reserved.
+        </div>
+
+        {/* Right side - Theme toggle */}
         <div className="flex items-center gap-2">
           <Switch
             isSelected={mode === "dark"}
