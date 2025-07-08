@@ -3,6 +3,7 @@ import {
   adminGetUserCredits,
   adminUpdateUserCredits,
   adminUploadFile,
+  admin,
 } from "@/lib/firebase-admin";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
@@ -17,13 +18,30 @@ const requestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    // Get user ID from authorization header
-    const userId = request.headers.get("authorization");
-    if (!userId) {
+    // Get and verify Firebase ID token from authorization header
+    const authHeader = request.headers.get("authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json(
         {
           success: false,
-          message: "Authorization header is required",
+          message: "Authorization header with Bearer token is required",
+        },
+        { status: 401 }
+      );
+    }
+
+    const idToken = authHeader.split("Bearer ")[1];
+    let userId: string;
+
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      userId = decodedToken.uid;
+    } catch (error) {
+      console.error("Error verifying ID token:", error);
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid or expired token",
         },
         { status: 401 }
       );

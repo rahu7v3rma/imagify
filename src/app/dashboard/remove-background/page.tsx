@@ -177,6 +177,9 @@ export default function RemoveBackgroundPage() {
         finalImageUrl = await getFileDownloadURL(filename);
       }
 
+      // Get Firebase ID token
+      const idToken = await user.getIdToken();
+
       // Make API call to remove background
       const response = await axios.post(
         "/dashboard/remove-background/process",
@@ -185,7 +188,7 @@ export default function RemoveBackgroundPage() {
         },
         {
           headers: {
-            Authorization: user.uid,
+            Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
         }

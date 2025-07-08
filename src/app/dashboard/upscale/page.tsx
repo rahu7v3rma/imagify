@@ -177,6 +177,9 @@ export default function UpscalePage() {
         finalImageUrl = await getFileDownloadURL(filename);
       }
 
+      // Get Firebase ID token
+      const idToken = await user.getIdToken();
+
       // Make API call to upscale image
       const response = await axios.post(
         "/dashboard/upscale/process",
@@ -185,7 +188,7 @@ export default function UpscalePage() {
         },
         {
           headers: {
-            Authorization: user.uid,
+            Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
         }

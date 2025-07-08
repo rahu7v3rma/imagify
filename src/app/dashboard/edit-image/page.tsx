@@ -181,6 +181,9 @@ export default function EditImagePage() {
         finalImageUrl = await getFileDownloadURL(filename);
       }
 
+      // Get Firebase ID token
+      const idToken = await user.getIdToken();
+
       // Make API call to edit image
       const response = await axios.post(
         "/dashboard/edit-image/process",
@@ -190,7 +193,7 @@ export default function EditImagePage() {
         },
         {
           headers: {
-            Authorization: user.uid,
+            Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
         }
