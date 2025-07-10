@@ -69,7 +69,18 @@ export default function PrivacyPolicyPage() {
       </ul>
 
       <h2 className="text-2xl font-semibold dark:text-white">
-        4. Cookie Policy
+        4. We Do Not Sell Your Data
+      </h2>
+      <p>
+        Imagify does not sell, rent, lease, or otherwise monetize any of your uploaded 
+        images, generated images, or personal data to third parties. Your content and 
+        data remain yours, and we only use them to provide the services you have 
+        requested. We do not share your images or data with advertisers, data brokers, 
+        or any other parties for commercial purposes.
+      </p>
+
+      <h2 className="text-2xl font-semibold dark:text-white">
+        5. Cookie Policy
       </h2>
       <p>
         Firebase sets cookies that are strictly necessary for authentication and
@@ -79,7 +90,7 @@ export default function PrivacyPolicyPage() {
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">
-        5. Data Retention
+        6. Data Retention
       </h2>
       <p>
         Email addresses, usage cents, and images are retained for as long as
@@ -88,14 +99,14 @@ export default function PrivacyPolicyPage() {
         personal data and stored files.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">6. Your Rights</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">7. Your Rights</h2>
       <p>
         Depending on your jurisdiction, you may have the right to access,
         correct, download, or delete the personal data we hold about you. To
         exercise these rights, please contact us using the details below.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">7. Contact</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">8. Contact</h2>
       <p>
         If you have any questions or concerns about this Privacy Policy, email
         us at{" "}

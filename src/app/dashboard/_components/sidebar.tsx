@@ -9,6 +9,7 @@ import {
   ArrowUpIcon,
   PencilIcon,
   DocumentTextIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 
@@ -43,6 +44,7 @@ const SidebarLink = ({
 const Sidebar = () => {
   const pathname = usePathname();
   const isDashboardActive = pathname === "/dashboard";
+  const isGenerateImageActive = pathname.startsWith("/dashboard/generate-image");
   const isRemoveBackgroundActive = pathname.startsWith(
     "/dashboard/remove-background"
   );
@@ -61,6 +63,12 @@ const Sidebar = () => {
             icon={HomeIcon}
             label="Dashboard"
             isActive={isDashboardActive}
+          />
+          <SidebarLink
+            href="/dashboard/generate-image"
+            icon={SparklesIcon}
+            label="Generate Image"
+            isActive={isGenerateImageActive}
           />
           <SidebarLink
             href="/dashboard/remove-background"

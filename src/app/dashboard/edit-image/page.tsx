@@ -240,7 +240,7 @@ export default function EditImagePage() {
         Upload an image or provide an image URL, then describe the changes you want to make.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 This operation requires 1 cent
+        💳 1 cent
       </div>
 
       <div className="flex gap-8">

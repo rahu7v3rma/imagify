@@ -29,6 +29,12 @@ export default function FooterComponent() {
           >
             Privacy Policy
           </Link>
+          <Link
+            href="/terms-of-service"
+            className="hover:text-primary transition-colors"
+          >
+            Terms of Service
+          </Link>
         </div>
 
         {/* Center - Copyright */}
