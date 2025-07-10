@@ -4,6 +4,7 @@ import {
   PencilIcon,
   ArrowUpIcon,
   DocumentTextIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 
 interface ToolCardProps {
@@ -59,6 +60,12 @@ export default function Home() {
       icon: PencilIcon,
       title: "Edit Image",
       description: "Professional image editing tools",
+    },
+    {
+      href: "/dashboard/generate-image",
+      icon: SparklesIcon,
+      title: "Generate Image",
+      description: "Create stunning images from text using AI",
     },
   ];
 
