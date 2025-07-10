@@ -19,7 +19,11 @@ import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
 import { useTheme } from "@/context/theme";
-import { MoonIcon, SunIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import {
+  MoonIcon,
+  SunIcon,
+  ArrowDownTrayIcon,
+} from "@heroicons/react/24/outline";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 export default function SettingsPage() {
@@ -44,7 +48,7 @@ export default function SettingsPage() {
 
     try {
       setIsLoading(true);
-      
+
       // Gather user data
       const userData: any = {
         account: {
@@ -74,9 +78,9 @@ export default function SettingsPage() {
           where("email", "==", user.email)
         );
         const contactSnapshot = await getDocs(contactQuery);
-        userData.contactMessages = contactSnapshot.docs.map(doc => ({
+        userData.contactMessages = contactSnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
       } catch (error) {
         console.warn("Could not fetch contact messages:", error);
@@ -87,11 +91,13 @@ export default function SettingsPage() {
       const dataBlob = new Blob([JSON.stringify(userData, null, 2)], {
         type: "application/json",
       });
-      
+
       const url = URL.createObjectURL(dataBlob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `my-data-export-${new Date().toISOString().split('T')[0]}.json`;
+      link.download = `my-data-export-${
+        new Date().toISOString().split("T")[0]
+      }.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -156,9 +162,9 @@ export default function SettingsPage() {
       <Tabs aria-label="Settings tabs" color="primary" variant="underlined">
         <Tab key="account" title="Account">
           <div className="py-4 space-y-4">
-            <Button 
-              color="primary" 
-              variant="bordered" 
+            <Button
+              color="primary"
+              variant="bordered"
               onPress={downloadMyData}
               startContent={<ArrowDownTrayIcon className="w-4 h-4" />}
             >
