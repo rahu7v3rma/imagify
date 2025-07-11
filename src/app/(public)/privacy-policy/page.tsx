@@ -5,7 +5,7 @@ export default function PrivacyPolicyPage() {
     <div className="max-w-3xl mx-auto space-y-6 text-gray-800 dark:text-zinc-200">
       <h1 className="text-3xl font-bold dark:text-white">Privacy Policy</h1>
       <p>
-        This Privacy Policy explains how Imagify (&quot;we&quot;,
+        This Privacy Policy explains how imagify.pro (&quot;we&quot;,
         &quot;our&quot;, or &quot;us&quot;) collects, uses, and safeguards your
         information when you use our application.
       </p>
@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
         1. Services We Use
       </h2>
       <p>
-        Imagify relies on the following third-party service providers to operate
+        imagify.pro relies on the following third-party service providers to operate
         the platform:
       </p>
       <ul className="list-disc list-inside space-y-1">
@@ -72,7 +72,7 @@ export default function PrivacyPolicyPage() {
         4. We Do Not Sell Your Data
       </h2>
       <p>
-        Imagify does not sell, rent, lease, or otherwise monetize any of your uploaded 
+        imagify.pro does not sell, rent, lease, or otherwise monetize any of your uploaded 
         images, generated images, or personal data to third parties. Your content and 
         data remain yours, and we only use them to provide the services you have 
         requested. We do not share your images or data with advertisers, data brokers, 
@@ -85,7 +85,7 @@ export default function PrivacyPolicyPage() {
       <p>
         Firebase sets cookies that are strictly necessary for authentication and
         session persistence (e.g.&nbsp;to keep you signed in as you navigate the
-        dashboard). Imagify does not set additional advertising or analytics
+        dashboard). imagify.pro does not set additional advertising or analytics
         cookies.
       </p>
 

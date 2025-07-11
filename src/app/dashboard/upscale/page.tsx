@@ -30,6 +30,7 @@ const schema = z
         return files[0]?.type.startsWith("image/");
       }, "Only image files are allowed"),
     imageUrl: z.string().optional(),
+    generateType: z.string().min(1, "Generate type is required"),
   })
   .refine(
     (data) => {
@@ -54,6 +55,17 @@ export default function UpscalePage() {
   const { setIsLoading } = useLoader();
   const { user, setUserCents } = useFirebase();
 
+  const getCreditRequirement = (type: string) => {
+    switch (type) {
+      case "standard":
+        return 1;
+      case "pro":
+        return 2;
+      default:
+        return 1;
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -64,9 +76,17 @@ export default function UpscalePage() {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues: {
+      generateType: "standard",
+    },
   });
 
   const imageUrl = watch("imageUrl");
+  const generateType = watch("generateType");
+
+  const handleGenerateTypeChange = (type: string) => {
+    setValue("generateType", type, { shouldValidate: true });
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -185,6 +205,7 @@ export default function UpscalePage() {
         "/dashboard/upscale/process",
         {
           imageUrl: finalImageUrl,
+          generateType: generateType,
         },
         {
           headers: {
@@ -235,7 +256,7 @@ export default function UpscalePage() {
         Upload an image or provide an image URL to upscale it automatically.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 1 cent
+        💳 {getCreditRequirement(generateType)} {getCreditRequirement(generateType) === 1 ? 'cent' : 'cents'}
       </div>
 
       <div className="flex gap-8">
@@ -274,6 +295,28 @@ export default function UpscalePage() {
                 />
               )}
             />
+
+            {/* Generate Type Selection */}
+            <div className="flex flex-col gap-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
+                Generation Type
+              </label>
+              <div className="flex gap-2">
+                {["standard", "pro"].map((type) => (
+                  <Button
+                    key={type}
+                    type="button"
+                    variant={generateType === type ? "solid" : "bordered"}
+                    color={generateType === type ? "primary" : "default"}
+                    size="sm"
+                    onClick={() => handleGenerateTypeChange(type)}
+                    className="capitalize"
+                  >
+                    {type}
+                  </Button>
+                ))}
+              </div>
+            </div>
 
             <Button
               type="submit"

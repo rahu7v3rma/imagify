@@ -6,14 +6,14 @@ export default function TermsOfServicePage() {
       <h1 className="text-3xl font-bold dark:text-white">Terms of Service</h1>
       <p>
         These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of
-        Imagify (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;). By creating an account or using the
+        imagify.pro (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;). By creating an account or using the
         platform in any way, you agree to be bound by these Terms. If you do
-        not agree with any part of the Terms, you may not use Imagify.
+        not agree with any part of the Terms, you may not use imagify.pro.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">1. Services Provided</h2>
       <p>
-        Imagify offers cloud-based tools to manipulate images, including but not
+        imagify.pro offers cloud-based tools to manipulate images, including but not
         limited to background removal, upscaling, text extraction, and other
         AI-assisted transformations. The exact feature set may evolve over time.
       </p>
@@ -36,7 +36,7 @@ export default function TermsOfServicePage() {
       <h2 className="text-2xl font-semibold dark:text-white">4. Acceptable Use</h2>
       <ul className="list-disc list-inside space-y-1">
         <li>Do not upload any content that you do not have the right to use.</li>
-        <li>Do not use Imagify for unlawful, harmful, or hateful purposes.</li>
+        <li>Do not use imagify.pro for unlawful, harmful, or hateful purposes.</li>
         <li>
           Do not attempt to reverse-engineer, interfere with, or disrupt the
           platform or its infrastructure.
@@ -45,7 +45,7 @@ export default function TermsOfServicePage() {
 
       <h2 className="text-2xl font-semibold dark:text-white">5. Intellectual Property</h2>
       <p>
-        Imagify retains all rights, title, and interest in the platform. You
+        imagify.pro retains all rights, title, and interest in the platform. You
         retain ownership of images and content you upload. By uploading content
         you grant us a limited licence to process and store that content solely
         for the purpose of providing the requested services.
@@ -58,7 +58,7 @@ export default function TermsOfServicePage() {
         limited to images with backgrounds removed, upscaled images, and any other outputs
         produced by our AI-powered tools. You may use these generated images for any lawful
         purpose, including commercial use, without any additional licensing fees or royalties
-        to Imagify.
+        to imagify.pro.
       </p>
       <p>
         However, you acknowledge that similar or identical outputs may be generated for other
@@ -68,14 +68,14 @@ export default function TermsOfServicePage() {
 
       <h2 className="text-2xl font-semibold dark:text-white">7. Disclaimer of Warranties</h2>
       <p>
-        Imagify is provided on an &ldquo;as-is&rdquo; basis without warranties of any kind.
+        imagify.pro is provided on an &ldquo;as-is&rdquo; basis without warranties of any kind.
         We do not guarantee that the platform will be uninterrupted, secure, or
         error-free, or that the outputs will meet your expectations.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">8. Limitation of Liability</h2>
       <p>
-        To the fullest extent permitted by law, in no event shall Imagify be
+        To the fullest extent permitted by law, in no event shall imagify.pro be
         liable for any indirect, incidental, special, consequential or punitive
         damages, or any loss of profits or revenues, arising from your use of
         the platform.
@@ -98,7 +98,7 @@ export default function TermsOfServicePage() {
       <h2 className="text-2xl font-semibold dark:text-white">11. Governing Law</h2>
       <p>
         These Terms shall be governed by and construed in accordance with the
-        laws of the jurisdiction in which Imagify is operated, without regard
+        laws of the jurisdiction in which imagify.pro is operated, without regard
         to conflict of law principles.
       </p>
 

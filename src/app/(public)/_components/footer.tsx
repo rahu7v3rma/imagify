@@ -39,7 +39,7 @@ export default function FooterComponent() {
 
         {/* Center - Copyright */}
         <div className="text-sm text-default-500">
-          © {new Date().getFullYear()} Imagify. All rights reserved.
+          © {new Date().getFullYear()} imagify.pro. All rights reserved.
         </div>
 
         {/* Right side - Theme toggle */}
