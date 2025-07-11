@@ -34,6 +34,7 @@ const schema = z
       .string()
       .min(1, "Prompt is required")
       .max(500, "Prompt must be at most 500 characters"),
+    generateType: z.string().min(1, "Generate type is required"),
   })
   .refine(
     (data) => {
@@ -68,9 +69,30 @@ export default function EditImagePage() {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues: {
+      generateType: "standard",
+    },
   });
 
   const imageUrl = watch("imageUrl");
+  const generateType = watch("generateType");
+
+  const handleGenerateTypeChange = (type: string) => {
+    setValue("generateType", type, { shouldValidate: true });
+  };
+
+  const getCreditRequirement = (type: string) => {
+    switch (type) {
+      case "standard":
+        return 1;
+      case "pro":
+        return 5;
+      case "max":
+        return 9;
+      default:
+        return 1;
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -190,6 +212,7 @@ export default function EditImagePage() {
         {
           imageUrl: finalImageUrl,
           prompt: data.prompt,
+          generateType: data.generateType,
         },
         {
           headers: {
@@ -240,7 +263,7 @@ export default function EditImagePage() {
         Upload an image or provide an image URL, then describe the changes you want to make.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 1 cent
+        💳 {getCreditRequirement(generateType)} {getCreditRequirement(generateType) === 1 ? 'cent' : 'cents'}
       </div>
 
       <div className="flex gap-8">
@@ -292,6 +315,33 @@ export default function EditImagePage() {
                   placeholder="Describe the changes you want to make (e.g., 'Add flowers to the background')"
                   rows={4}
                 />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="generateType"
+              render={({ field }) => (
+                <div className="flex flex-col gap-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
+                    Generate Type
+                  </label>
+                  <div className="flex gap-2">
+                    {["standard", "pro", "max"].map((type) => (
+                      <Button
+                        key={type}
+                        type="button"
+                        variant={generateType === type ? "solid" : "bordered"}
+                        color={generateType === type ? "primary" : "default"}
+                        size="sm"
+                        onClick={() => handleGenerateTypeChange(type)}
+                        className="capitalize"
+                      >
+                        {type}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
               )}
             />
 

@@ -10,7 +10,18 @@ import Replicate from "replicate";
 import axios from "axios";
 import * as z from "zod";
 
-const CENT_REQUIREMENT = 1;
+const getCentRequirement = (generateType: string) => {
+  switch (generateType) {
+    case "standard":
+      return 1;
+    case "pro":
+      return 5;
+    case "max":
+      return 9;
+    default:
+      return 1;
+  }
+};
 
 const requestSchema = z.object({
   imageUrl: z.string().max(1000, "Image URL must be at most 1000 characters"),
@@ -18,6 +29,7 @@ const requestSchema = z.object({
     .string()
     .min(1, "Prompt is required")
     .max(500, "Prompt must be at most 500 characters"),
+  generateType: z.string().min(1, "Generate type is required"),
 });
 
 export async function POST(request: NextRequest) {
@@ -55,10 +67,13 @@ export async function POST(request: NextRequest) {
 
     // Validate request body with Zod schema
     const validatedData = requestSchema.parse(body);
+    
+    // Get credit requirement based on generate type
+    const centRequirement = getCentRequirement(validatedData.generateType);
 
     // Check user cents using Admin SDK
     const userCents = await adminGetUserCents(userId);
-    if (!userCents || userCents.cents < CENT_REQUIREMENT) {
+    if (!userCents || userCents.cents < centRequirement) {
       return NextResponse.json(
         {
           success: false,
@@ -69,17 +84,47 @@ export async function POST(request: NextRequest) {
     }
 
     // Use Replicate to edit image
-    const input = {
-      prompt: validatedData.prompt,
-      input_images: [validatedData.imageUrl],
-      openai_api_key: process.env.OPENAI_API_KEY,
-    };
+    let input: any;
+    let model: string;
+
+    // Select model and input based on generate type
+    switch (validatedData.generateType) {
+      case "standard":
+        model = "openai/gpt-image-1";
+        input = {
+          prompt: validatedData.prompt,
+          input_images: [validatedData.imageUrl],
+          openai_api_key: process.env.OPENAI_API_KEY,
+        };
+        break;
+      case "pro":
+        model = "black-forest-labs/flux-kontext-pro";
+        input = {
+          prompt: validatedData.prompt,
+          image: validatedData.imageUrl,
+        };
+        break;
+      case "max":
+        model = "black-forest-labs/flux-kontext-max";
+        input = {
+          prompt: validatedData.prompt,
+          image: validatedData.imageUrl,
+        };
+        break;
+      default:
+        model = "openai/gpt-image-1";
+        input = {
+          prompt: validatedData.prompt,
+          input_images: [validatedData.imageUrl],
+          openai_api_key: process.env.OPENAI_API_KEY,
+        };
+    }
 
     const replicate = new Replicate({
       auth: process.env.REPLICATE_API_TOKEN,
     });
 
-    const output = await replicate.run("openai/gpt-image-1", { input });
+    const output = await replicate.run(model as `${string}/${string}`, { input });
 
     // The output is an array, get the first element (URL)
     // @ts-expect-error - Replicate types are not up to date
@@ -110,7 +155,7 @@ export async function POST(request: NextRequest) {
     const firebaseImageUrl = await adminGetFileDownloadURL(filePath);
 
     // Deduct cents using Admin SDK
-    await adminUpdateUserCents(userId, userCents.cents - CENT_REQUIREMENT);
+    await adminUpdateUserCents(userId, userCents.cents - centRequirement);
 
     return NextResponse.json({
       success: true,
