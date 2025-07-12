@@ -1,5 +1,6 @@
 import Header from "./_components/header";
 import Sidebar from "./_components/sidebar";
+import { SearchProvider } from "@/context/search";
 
 export default function DashboardLayout({
   children,
@@ -7,14 +8,16 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-screen flex flex-col">
-      <div className="h-[8%]">
-        <Header />
+    <SearchProvider>
+      <div className="h-screen flex flex-col">
+        <div className="h-[8%]">
+          <Header />
+        </div>
+        <div className="flex h-[92%] w-full">
+          <Sidebar />
+          <main className="p-4 w-full overflow-y-auto">{children}</main>
+        </div>
       </div>
-      <div className="flex h-[92%] w-full">
-        <Sidebar />
-        <main className="p-4 w-full overflow-y-auto">{children}</main>
-      </div>
-    </div>
+    </SearchProvider>
   );
 }
