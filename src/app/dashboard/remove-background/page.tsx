@@ -237,8 +237,6 @@ export default function RemoveBackgroundPage() {
         });
       }
     } catch (error) {
-      console.error("Error removing background:", error);
-
       addToast({
         title: "Background removal failed",
         description: "Failed to remove background. Please try again.",

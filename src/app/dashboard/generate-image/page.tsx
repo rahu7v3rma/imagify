@@ -113,8 +113,6 @@ export default function GenerateImagePage() {
         });
       }
     } catch (error) {
-      console.error("Error generating image:", error);
-
       addToast({
         title: "Image generation failed",
         description: "Failed to generate image. Please try again.",

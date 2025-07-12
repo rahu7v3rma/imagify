@@ -47,7 +47,6 @@ export async function POST(request: NextRequest) {
       const decodedToken = await admin.auth().verifyIdToken(idToken);
       userId = decodedToken.uid;
     } catch (error) {
-      console.error("Error verifying ID token:", error);
       return NextResponse.json(
         {
           success: false,
@@ -147,7 +146,6 @@ export async function POST(request: NextRequest) {
       image_url: firebaseImageUrl,
     });
   } catch (error) {
-    console.error("Error upscaling image:", error);
     return NextResponse.json(
       {
         success: false,

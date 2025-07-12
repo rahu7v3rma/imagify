@@ -235,8 +235,6 @@ export default function UpscalePage() {
         });
       }
     } catch (error) {
-      console.error("Error upscaling image:", error);
-
       addToast({
         title: "Image upscaling failed",
         description: "Failed to upscale image. Please try again.",

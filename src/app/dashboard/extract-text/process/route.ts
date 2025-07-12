@@ -34,7 +34,6 @@ export async function POST(request: NextRequest) {
       const decodedToken = await admin.auth().verifyIdToken(idToken);
       userId = decodedToken.uid;
     } catch (error) {
-      console.error("Error verifying ID token:", error);
       return NextResponse.json(
         {
           success: false,
@@ -88,7 +87,6 @@ export async function POST(request: NextRequest) {
       extracted_text: extractedText,
     });
   } catch (error) {
-    console.error("Error extracting text:", error);
     return NextResponse.json(
       {
         success: false,

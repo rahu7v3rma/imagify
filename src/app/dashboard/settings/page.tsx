@@ -67,7 +67,6 @@ export default function SettingsPage() {
         const userCents = await getUserCents(user.uid);
         userData.credits = userCents;
       } catch (error) {
-        console.warn("Could not fetch user cents:", error);
         userData.credits = null;
       }
 
@@ -83,7 +82,6 @@ export default function SettingsPage() {
           ...doc.data(),
         }));
       } catch (error) {
-        console.warn("Could not fetch contact messages:", error);
         userData.contactMessages = [];
       }
 
@@ -108,7 +106,6 @@ export default function SettingsPage() {
         color: "success",
       });
     } catch (error) {
-      console.error("Error downloading data:", error);
       addToast({
         title: "Failed to export data",
         color: "danger",

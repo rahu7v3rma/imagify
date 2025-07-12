@@ -233,8 +233,6 @@ export default function ExtractTextPage() {
         });
       }
     } catch (error) {
-      console.error("Error extracting text:", error);
-
       addToast({
         title: "Text extraction failed",
         description: "Failed to extract text. Please try again.",

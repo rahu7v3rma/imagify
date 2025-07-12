@@ -219,8 +219,6 @@ export default function EditImagePage() {
         });
       }
     } catch (error) {
-      console.error("Error editing image:", error);
-
       addToast({
         title: "Image editing failed",
         description: "Failed to edit image. Please try again.",
