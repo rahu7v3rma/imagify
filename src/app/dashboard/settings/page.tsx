@@ -108,7 +108,7 @@ export default function SettingsPage() {
             </div>
           </div>
         </Tab>
-        <Tab key="preferences" title="Preferences">
+        {/* <Tab key="preferences" title="Preferences">
           <div className="py-4">
             <div className="space-y-4">
               <div className="flex items-center justify-between gap-4">
@@ -129,7 +129,7 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
-        </Tab>
+        </Tab> */}
       </Tabs>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
