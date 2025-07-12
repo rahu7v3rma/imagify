@@ -52,13 +52,13 @@ export default function GenerateImagePage() {
   const getCreditRequirement = (type: string) => {
     switch (type) {
       case "standard":
-        return 1;
+        return 2;
       case "pro":
-        return 5;
+        return 6;
       case "max":
-        return 9;
+        return 10;
       default:
-        return 1;
+        return 2;
     }
   };
 
@@ -113,8 +113,6 @@ export default function GenerateImagePage() {
         });
       }
     } catch (error) {
-      console.error("Error generating image:", error);
-
       addToast({
         title: "Image generation failed",
         description: "Failed to generate image. Please try again.",
@@ -134,7 +132,7 @@ export default function GenerateImagePage() {
         Enter a prompt to generate an image using AI.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 {getCreditRequirement(generateType)} {getCreditRequirement(generateType) === 1 ? 'cent' : 'cents'}
+        💳 {getCreditRequirement(generateType)} {'cents'}
       </div>
 
       <div className="flex gap-8">
@@ -198,6 +196,9 @@ export default function GenerateImagePage() {
             <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
               Generated Image
             </label>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+              ℹ️ Download link will be available until midnight UTC
+            </p>
             <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
               <Image
                 src={generatedImage}

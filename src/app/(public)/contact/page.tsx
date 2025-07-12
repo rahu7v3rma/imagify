@@ -36,7 +36,6 @@ export default function ContactPage() {
 
       return true;
     } catch (error) {
-      console.error("Error sending contact message:", error);
       addToast({
         title: "Failed to send message",
         color: "danger",

@@ -72,10 +72,10 @@ export default function PrivacyPolicyPage() {
         4. We Do Not Sell Your Data
       </h2>
       <p>
-        imagify.pro does not sell, rent, lease, or otherwise monetize any of your uploaded 
-        images, generated images, or personal data to third parties. Your content and 
-        data remain yours, and we only use them to provide the services you have 
-        requested. We do not share your images or data with advertisers, data brokers, 
+        imagify.pro does not sell, rent, lease, or otherwise monetize any of your uploaded
+        images, generated images, or personal data to third parties. Your content and
+        data remain yours, and we only use them to provide the services you have
+        requested. We do not share your images or data with advertisers, data brokers,
         or any other parties for commercial purposes.
       </p>
 
@@ -93,10 +93,15 @@ export default function PrivacyPolicyPage() {
         6. Data Retention
       </h2>
       <p>
-        Email addresses, usage cents, and images are retained for as long as
-        your account remains active. You may delete your account at any time
-        from the <em>Settings</em> page, which will permanently remove your
-        personal data and stored files.
+        Email addresses and usage cents are retained for as long as your account
+        remains active. You may delete your account at any time from the <em>Settings</em> page,
+        which will permanently remove your personal data and stored files.
+      </p>
+      <p>
+        <strong>Image Storage Policy:</strong> Both uploaded images and generated images
+        are automatically deleted from our servers after 24 hours. This ensures your
+        privacy and minimizes data storage. We recommend downloading any images you
+        wish to keep before this time period expires.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">7. Your Rights</h2>

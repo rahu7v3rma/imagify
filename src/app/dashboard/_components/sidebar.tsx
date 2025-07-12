@@ -10,6 +10,7 @@ import {
   PencilIcon,
   DocumentTextIcon,
   SparklesIcon,
+  ArchiveBoxArrowDownIcon,
 } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 
@@ -51,6 +52,7 @@ const Sidebar = () => {
   const isExtractTextActive = pathname.startsWith("/dashboard/extract-text");
   const isUpscaleActive = pathname.startsWith("/dashboard/upscale");
   const isEditImageActive = pathname.startsWith("/dashboard/edit-image");
+  const isCompressImageActive = pathname.startsWith("/dashboard/compress-image");
   const isBillingActive = pathname.startsWith("/dashboard/billing");
   const isSettingsActive = pathname.startsWith("/dashboard/settings");
 
@@ -87,6 +89,12 @@ const Sidebar = () => {
             icon={ArrowUpIcon}
             label="Upscale Image"
             isActive={isUpscaleActive}
+          />
+          <SidebarLink
+            href="/dashboard/compress-image"
+            icon={ArchiveBoxArrowDownIcon}
+            label="Compress Image"
+            isActive={isCompressImageActive}
           />
           <SidebarLink
             href="/dashboard/edit-image"

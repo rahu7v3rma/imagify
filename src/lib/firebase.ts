@@ -16,6 +16,10 @@ import {
   updateDoc,
   where,
   addDoc,
+  setDoc,
+  doc,
+  getDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -104,7 +108,6 @@ export const createStorageRef = (path: string) => {
 
 // Firestore types
 export interface UserCentsDocument {
-  user_id: string;
   cents: number;
 }
 
@@ -117,15 +120,11 @@ export interface ContactMessage {
 export const getUserCents = async (
   userId: string
 ): Promise<UserCentsDocument | null> => {
-  const q = query(
-    collection(db, "user_cents"),
-    where("user_id", "==", userId)
-  );
-  const querySnapshot = await getDocs(q);
+  const docRef = doc(db, "user_cents", userId);
+  const docSnap = await getDoc(docRef);
 
-  if (!querySnapshot.empty) {
-    const docData = querySnapshot.docs[0].data() as UserCentsDocument;
-    return docData;
+  if (docSnap.exists()) {
+    return docSnap.data() as UserCentsDocument;
   } else {
     return null;
   }
@@ -136,30 +135,25 @@ export const createUserCents = async (
   initialCents: number = 0
 ): Promise<void> => {
   const userCentsData: UserCentsDocument = {
-    user_id: userId,
     cents: initialCents,
   };
 
-  await addDoc(collection(db, "user_cents"), userCentsData);
+  await setDoc(doc(db, "user_cents", userId), userCentsData);
 };
 
 export const updateUserCents = async (
   userId: string,
   cents: number
 ): Promise<void> => {
-  const q = query(
-    collection(db, "user_cents"),
-    where("user_id", "==", userId)
-  );
-  const querySnapshot = await getDocs(q);
+  const docRef = doc(db, "user_cents", userId);
+  await updateDoc(docRef, {
+    cents: cents,
+  });
+};
 
-  if (!querySnapshot.empty) {
-    // Update existing document
-    const docRef = querySnapshot.docs[0].ref;
-    await updateDoc(docRef, {
-      cents: cents,
-    });
-  }
+export const deleteUserCents = async (userId: string): Promise<void> => {
+  const docRef = doc(db, "user_cents", userId);
+  await deleteDoc(docRef);
 };
 
 export const contactUs = async (

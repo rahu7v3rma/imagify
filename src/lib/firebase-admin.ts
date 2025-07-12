@@ -34,7 +34,7 @@ export const adminUploadFile = async (
 ) => {
   const bucket = adminStorage.bucket();
   const file = bucket.file(filePath);
-  
+
   const options = {
     metadata: {
       metadata: metadata || {},
@@ -48,19 +48,18 @@ export const adminUploadFile = async (
 export const adminGetFileDownloadURL = async (filePath: string) => {
   const bucket = adminStorage.bucket();
   const file = bucket.file(filePath);
-  
+
   // Make the file publicly readable and get signed URL
   const [url] = await file.getSignedUrl({
     action: 'read',
     expires: '03-01-2500', // Far future date
   });
-  
+
   return url;
 };
 
 // Admin Firestore types
 export interface UserCentsDocument {
-  user_id: string;
   cents: number;
 }
 
@@ -68,14 +67,11 @@ export interface UserCentsDocument {
 export const adminGetUserCents = async (
   userId: string
 ): Promise<UserCentsDocument | null> => {
-  const querySnapshot = await adminDb
-    .collection("user_cents")
-    .where("user_id", "==", userId)
-    .get();
+  const docRef = adminDb.collection("user_cents").doc(userId);
+  const docSnap = await docRef.get();
 
-  if (!querySnapshot.empty) {
-    const docData = querySnapshot.docs[0].data() as UserCentsDocument;
-    return docData;
+  if (docSnap.exists) {
+    return docSnap.data() as UserCentsDocument;
   } else {
     return null;
   }
@@ -85,18 +81,15 @@ export const adminUpdateUserCents = async (
   userId: string,
   cents: number
 ): Promise<void> => {
-  const querySnapshot = await adminDb
-    .collection("user_cents")
-    .where("user_id", "==", userId)
-    .get();
+  const docRef = adminDb.collection("user_cents").doc(userId);
+  await docRef.update({
+    cents: cents
+  });
+};
 
-  if (!querySnapshot.empty) {
-    // Update existing document
-    const docRef = querySnapshot.docs[0].ref;
-    await docRef.update({
-      cents: cents
-    });
-  }
+export const adminDeleteUserCents = async (userId: string): Promise<void> => {
+  const docRef = adminDb.collection("user_cents").doc(userId);
+  await docRef.delete();
 };
 
 export const adminCreateUserCents = async (
@@ -104,11 +97,10 @@ export const adminCreateUserCents = async (
   initialCents: number = 0
 ): Promise<void> => {
   const userCentsData: UserCentsDocument = {
-    user_id: userId,
     cents: initialCents,
   };
 
-  await adminDb.collection("user_cents").add(userCentsData);
+  await adminDb.collection("user_cents").doc(userId).set(userCentsData);
 };
 
 export { admin };

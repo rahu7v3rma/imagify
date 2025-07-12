@@ -13,11 +13,11 @@ import * as z from "zod";
 const getCentRequirement = (generateType: string) => {
   switch (generateType) {
     case "standard":
-      return 1;
-    case "pro":
       return 2;
+    case "pro":
+      return 3;
     default:
-      return 1;
+      return 2;
   }
 };
 
@@ -47,7 +47,6 @@ export async function POST(request: NextRequest) {
       const decodedToken = await admin.auth().verifyIdToken(idToken);
       userId = decodedToken.uid;
     } catch (error) {
-      console.error("Error verifying ID token:", error);
       return NextResponse.json(
         {
           success: false,
@@ -147,7 +146,6 @@ export async function POST(request: NextRequest) {
       image_url: firebaseImageUrl,
     });
   } catch (error) {
-    console.error("Error upscaling image:", error);
     return NextResponse.json(
       {
         success: false,

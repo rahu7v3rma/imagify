@@ -5,6 +5,7 @@ import {
   ArrowUpIcon,
   DocumentTextIcon,
   SparklesIcon,
+  ArchiveBoxArrowDownIcon,
 } from "@heroicons/react/24/outline";
 
 interface ToolCardProps {
@@ -54,6 +55,12 @@ export default function Home() {
       icon: ArrowUpIcon,
       title: "Upscale Image",
       description: "Enhance and upscale your images",
+    },
+    {
+      href: "/dashboard/compress-image",
+      icon: ArchiveBoxArrowDownIcon,
+      title: "Compress Image",
+      description: "Reduce image file size without losing quality",
     },
     {
       href: "/dashboard/edit-image",

@@ -1,13 +1,16 @@
 import {
+  adminGetFileDownloadURL,
   adminGetUserCents,
   adminUpdateUserCents,
+  adminUploadFile,
   admin,
 } from "@/lib/firebase-admin";
 import { NextRequest, NextResponse } from "next/server";
-import Replicate from "replicate";
 import * as z from "zod";
+import tinify from "tinify";
+import axios from "axios";
 
-const CENT_REQUIREMENT = 2;
+const CENT_REQUIREMENT = 3;
 
 const requestSchema = z.object({
   imageUrl: z.string().max(1000, "Image URL must be at most 1000 characters"),
@@ -60,33 +63,53 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Use Replicate to extract text
-    const input = {
-      image: validatedData.imageUrl,
-    };
+    // Check if TINIFY_API_KEY is set
+    if (!process.env.TINIFY_API_KEY) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "TinyPNG API key is not configured",
+        },
+        { status: 500 }
+      );
+    }
 
-    const replicate = new Replicate({
-      auth: process.env.REPLICATE_API_TOKEN,
+    // Set up TinyPNG API key
+    tinify.key = process.env.TINIFY_API_KEY;
+
+    // Fetch the image from the provided URL
+    const imageResponse = await axios.get(validatedData.imageUrl, {
+      responseType: "arraybuffer",
     });
+    const imageBuffer = Buffer.from(imageResponse.data);
 
-    const output = await replicate.run(
-      "abiruyt/text-extract-ocr:a524caeaa23495bc9edc805ab08ab5fe943afd3febed884a4f3747aa32e9cd61",
-      { input }
-    );
+    // Compress the image using TinyPNG
+    const compressedBuffer = await tinify.fromBuffer(imageBuffer).toBuffer();
 
-    // The output is already a string for this OCR model
-    // @ts-expect-error - output is a string for this OCR model
-    const extractedText = output as string;
+    // Upload the compressed image to Firebase Storage using Admin SDK
+    const timestamp = Date.now();
+    const fileName = `image-${timestamp}.png`;
+    const filePath = `user_images/${userId}/compress-image/${fileName}`;
+
+    await adminUploadFile(compressedBuffer, filePath);
+    const firebaseImageUrl = await adminGetFileDownloadURL(filePath);
 
     // Deduct cents using Admin SDK
     await adminUpdateUserCents(userId, userCents.cents - CENT_REQUIREMENT);
 
+    // Calculate file sizes
+    const originalSize = imageBuffer.length;
+    const compressedSize = compressedBuffer.length;
+
     return NextResponse.json({
       success: true,
-      message: "Text extracted successfully",
-      extracted_text: extractedText,
+      message: "Image compressed successfully",
+      image_url: firebaseImageUrl,
+      original_size: originalSize,
+      compressed_size: compressedSize,
     });
   } catch (error) {
+    console.error("Error compressing image:", error);
     return NextResponse.json(
       {
         success: false,

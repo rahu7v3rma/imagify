@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
 import Image from "next/image";
-import { XMarkIcon, ClipboardIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { addToast } from "@heroui/react";
 import { Controller } from "react-hook-form";
@@ -47,10 +47,12 @@ const schema = z
 
 type Schema = z.infer<typeof schema>;
 
-export default function ExtractTextPage() {
+export default function CompressImagePage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
-  const [extractedText, setExtractedText] = useState<string | null>(null);
+  const [compressedImage, setCompressedImage] = useState<string | null>(null);
+  const [originalFileSize, setOriginalFileSize] = useState<number | null>(null);
+  const [compressedFileSize, setCompressedFileSize] = useState<number | null>(null);
   const { setIsLoading } = useLoader();
   const { user, setUserCents } = useFirebase();
 
@@ -68,10 +70,19 @@ export default function ExtractTextPage() {
 
   const imageUrl = watch("imageUrl");
 
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.type.startsWith("image/")) {
+        setOriginalFileSize(file.size);
         const reader = new FileReader();
         reader.onload = async (e) => {
           setSelectedImage(e.target?.result as string);
@@ -80,14 +91,16 @@ export default function ExtractTextPage() {
         reader.readAsDataURL(file);
       } else {
         setSelectedImage(null);
+        setOriginalFileSize(null);
         e.target.value = "";
       }
     } else {
       setSelectedImage(null);
+      setOriginalFileSize(null);
     }
   };
 
-  const validateImageUrl = async (url: string): Promise<boolean> => {
+  const validateImageUrl = async (url: string): Promise<{isValid: boolean, size?: number}> => {
     try {
       const urlObj = new URL(url);
 
@@ -98,12 +111,15 @@ export default function ExtractTextPage() {
       const contentType = response.headers["content-type"];
 
       if (!contentType || !contentType.startsWith("image/")) {
-        return false;
+        return { isValid: false };
       }
 
-      return true;
+      const contentLength = response.headers["content-length"];
+      const size = contentLength ? parseInt(contentLength, 10) : undefined;
+
+      return { isValid: true, size };
     } catch {
-      return false;
+      return { isValid: false };
     }
   };
 
@@ -112,9 +128,9 @@ export default function ExtractTextPage() {
       setIsValidatingUrl(true);
 
       try {
-        const isValidImage = await validateImageUrl(imageUrl.trim());
+        const { isValid, size } = await validateImageUrl(imageUrl.trim());
 
-        if (!isValidImage) {
+        if (!isValid) {
           addToast({
             title: "Invalid image URL",
             description: "The URL does not point to a valid image file",
@@ -124,6 +140,7 @@ export default function ExtractTextPage() {
         }
 
         setSelectedImage(imageUrl.trim());
+        setOriginalFileSize(size || null);
         const fileInput = document.querySelector(
           'input[type="file"]'
         ) as HTMLInputElement;
@@ -144,6 +161,9 @@ export default function ExtractTextPage() {
 
   const handleRemoveImage = () => {
     setSelectedImage(null);
+    setOriginalFileSize(null);
+    setCompressedFileSize(null);
+    setCompressedImage(null);
     const fileInput = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
@@ -152,31 +172,12 @@ export default function ExtractTextPage() {
     }
   };
 
-  const copyToClipboard = async () => {
-    if (extractedText) {
-      try {
-        await navigator.clipboard.writeText(extractedText);
-        addToast({
-          title: "Text copied",
-          description: "Extracted text has been copied to clipboard",
-          color: "success",
-        });
-      } catch {
-        addToast({
-          title: "Copy failed",
-          description: "Failed to copy text to clipboard",
-          color: "danger",
-        });
-      }
-    }
-  };
-
   const onSubmit = async () => {
     if (!selectedImage) return;
     if (!user) {
       addToast({
         title: "Authentication required",
-        description: "Please log in to extract text",
+        description: "Please log in to compress image",
         color: "danger",
       });
       return;
@@ -199,9 +200,9 @@ export default function ExtractTextPage() {
       // Get Firebase ID token
       const idToken = await user.getIdToken();
 
-      // Make API call to extract text
+      // Make API call to compress image
       const response = await axios.post(
-        "/dashboard/extract-text/process",
+        "/dashboard/compress-image/process",
         {
           imageUrl: finalImageUrl,
         },
@@ -214,28 +215,29 @@ export default function ExtractTextPage() {
       );
 
       if (response.data.success) {
-        setExtractedText(response.data.extracted_text);
+        setCompressedImage(response.data.image_url);
+        setCompressedFileSize(response.data.compressed_size);
 
         // Refresh user cents
         const updatedCents = await getUserCents(user.uid);
         setUserCents(updatedCents);
 
         addToast({
-          title: "Text extracted successfully",
-          description: "Text has been extracted from your image",
+          title: "Image compressed successfully",
+          description: "Your image has been compressed",
           color: "success",
         });
       } else {
         addToast({
-          title: "Text extraction failed",
-          description: response.data.message || "Failed to extract text",
+          title: "Image compression failed",
+          description: response.data.message || "Failed to compress image",
           color: "danger",
         });
       }
     } catch (error) {
       addToast({
-        title: "Text extraction failed",
-        description: "Failed to extract text. Please try again.",
+        title: "Image compression failed",
+        description: "Failed to compress image. Please try again.",
         color: "danger",
       });
     } finally {
@@ -246,13 +248,13 @@ export default function ExtractTextPage() {
   return (
     <div className="p-6 w-full">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-        Extract Text
+        Compress Image
       </h1>
       <p className="text-gray-600 dark:text-zinc-300 mb-2">
-        Upload an image or provide an image URL to extract text using OCR technology.
+        Upload an image or provide an image URL to compress it and reduce file size.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 2 cents
+        💳 3 cents
       </div>
 
       <div className="flex gap-8">
@@ -298,14 +300,14 @@ export default function ExtractTextPage() {
               variant="solid"
               color="primary"
             >
-              Extract Text
+              Compress Image
             </Button>
           </form>
 
           {selectedImage && (
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
-                Selected Image
+                Selected Image {originalFileSize && `(${formatFileSize(originalFileSize)})`}
               </label>
               <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
                 <Image
@@ -327,24 +329,29 @@ export default function ExtractTextPage() {
           )}
         </div>
 
-        {/* Right side - Extracted text */}
-        {extractedText && (
+        {/* Right side - Compressed image */}
+        {compressedImage && (
           <div className="flex-1 max-w-md">
             <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
-              Extracted Text
+              Compressed Image {compressedFileSize && `(${formatFileSize(compressedFileSize)})`}
             </label>
-            <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-800 p-4 relative overflow-y-auto">
-              <div className="text-gray-900 dark:text-white whitespace-pre-wrap text-sm">
-                {extractedText}
-              </div>
-              <button
-                type="button"
-                onClick={copyToClipboard}
-                className="absolute top-2 right-2 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm transition-colors duration-200 z-10 flex items-center gap-1"
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+              ℹ️ Download link will be available until midnight UTC
+            </p>
+            <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
+              <Image
+                src={compressedImage}
+                alt="Compressed Image"
+                fill
+                className="object-contain"
+              />
+              <a
+                href={compressedImage}
+                download="compressed-image.png"
+                className="absolute top-2 right-2 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm transition-colors duration-200 z-10"
               >
-                <ClipboardIcon className="w-4 h-4" />
-                Copy
-              </button>
+                Download
+              </a>
             </div>
           </div>
         )}

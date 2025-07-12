@@ -10,16 +10,18 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useFirebase } from "@/context/firebase";
 import { logoutUser } from "@/lib/firebase";
 import { addToast } from "@heroui/react";
 import { useLoader } from "@/context/loader";
+import { BoltIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
   const router = useRouter();
-  const { user, setUser } = useFirebase();
+  const { user, setUser, userCents } = useFirebase();
   const { setIsLoading } = useLoader();
 
   const logout = async () => {
@@ -47,6 +49,10 @@ export default function Header() {
     router.push("/dashboard");
   };
 
+  const handleCentsClick = () => {
+    router.push("/dashboard/billing");
+  };
+
   return (
     <Navbar maxWidth="full" className="w-full backdrop-blur-sm border-b border-divider bg-inherit">
       <NavbarBrand>
@@ -58,6 +64,17 @@ export default function Header() {
         </p>
       </NavbarBrand>
       <NavbarContent justify="end">
+        <NavbarItem>
+          <Button
+            variant="flat"
+            size="sm"
+            startContent={<BoltIcon className="w-4 h-4" />}
+            onClick={handleCentsClick}
+            className="text-sm font-medium"
+          >
+            {userCents?.cents ?? 0} cents
+          </Button>
+        </NavbarItem>
         <NavbarItem>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>

@@ -55,8 +55,6 @@ export async function GET(request: NextRequest) {
       );
     }
   } catch (error) {
-    console.error("Error verifying payment:", error);
-    console.error("Failed to verify payment");
     return NextResponse.redirect(
       new URL(
         "/dashboard/billing?payment=error&message=Failed to verify payment",
