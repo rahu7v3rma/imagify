@@ -48,6 +48,9 @@ const schema = z
 
 type Schema = z.infer<typeof schema>;
 
+// File size limit: 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+
 export default function RemoveBackgroundPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
@@ -94,6 +97,17 @@ export default function RemoveBackgroundPage() {
     const file = e.target.files?.[0];
     if (file) {
       if (file.type.startsWith("image/")) {
+        // Check file size
+        if (file.size > MAX_FILE_SIZE) {
+          addToast({
+            title: "File too large",
+            description: "Image file must be smaller than 10MB",
+            color: "danger",
+          });
+          e.target.value = "";
+          return;
+        }
+        
         const reader = new FileReader();
         reader.onload = async (e) => {
           setSelectedImage(e.target?.result as string);
@@ -123,6 +137,15 @@ export default function RemoveBackgroundPage() {
         return false;
       }
 
+      // Check file size for URL images too
+      const contentLength = response.headers["content-length"];
+      if (contentLength) {
+        const size = parseInt(contentLength, 10);
+        if (size > MAX_FILE_SIZE) {
+          return false;
+        }
+      }
+
       return true;
     } catch {
       return false;
@@ -139,7 +162,7 @@ export default function RemoveBackgroundPage() {
         if (!isValidImage) {
           addToast({
             title: "Invalid image URL",
-            description: "The URL does not point to a valid image file",
+            description: "The URL does not point to a valid image file or the file is larger than 10MB",
             color: "danger",
           });
           return;
@@ -273,6 +296,7 @@ export default function RemoveBackgroundPage() {
               })}
               isInvalid={!!errors.uploadedImage}
               errorMessage={errors.uploadedImage?.message as string}
+              description="Maximum file size: 10MB"
             />
 
             <Controller
