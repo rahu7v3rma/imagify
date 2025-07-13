@@ -24,7 +24,7 @@ export default function AboutUsPage() {
 
       <p>
         Everything runs in the browser—no plugins to install, no GPUs to maintain. Simply pay for the processing
-        you use via <em>cents</em>, our lightweight credit system powered by Stripe. Behind the scenes we rely on
+        you use via <em>cents</em>, our lightweight credit system powered by Razorpay. Behind the scenes we rely on
         trusted infrastructure from Firebase (auth & hosting) and Replicate (state-of-the-art ML models) to deliver
         fast, secure, and reliable results.
       </p>

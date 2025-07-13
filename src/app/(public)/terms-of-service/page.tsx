@@ -30,7 +30,7 @@ export default function TermsOfServicePage() {
       <p>
         Certain features require prepaid processing credits (&ldquo;cents&rdquo;). Credits
         are non-transferable and non-refundable except where required by law.
-        Payments are processed securely by our third-party provider, Stripe.
+        Payments are processed securely by our third-party provider, Razorpay.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">4. Acceptable Use</h2>

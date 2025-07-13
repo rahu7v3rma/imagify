@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
           <strong><a href="https://firebase.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Firebase</a></strong> &mdash; authentication, database, file storage, and hosting.
         </li>
         <li>
-          <strong><a href="https://stripe.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Stripe</a></strong> &mdash; secure payment collection and
+          <strong><a href="https://razorpay.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Razorpay</a></strong> &mdash; secure payment collection and
           subscription management.
         </li>
         <li>
@@ -53,7 +53,7 @@ export default function PrivacyPolicyPage() {
         </li>
         <li>
           <strong>Payment information</strong> &mdash; handled directly by
-          Stripe. We do not store your full card details on our servers.
+          Razorpay. We do not store your full card details on our servers.
         </li>
       </ul>
 

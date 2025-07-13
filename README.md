@@ -5,4 +5,4 @@
 - Firebase
 - NextJS
 - Replicate
-- Stripe
+- Razorpay
