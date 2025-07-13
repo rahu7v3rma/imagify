@@ -29,10 +29,23 @@ export default function NavbarComponent() {
           imagify.pro
         </p>
       </NavbarBrand>
-      <NavbarContent
-        className="hidden sm:flex gap-4"
-        justify="center"
-      ></NavbarContent>
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarItem>
+          <Link href="/about-us" className="dark:text-white">
+            About
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link href="/pricing" className="dark:text-white">
+            Pricing
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link href="/contact" className="dark:text-white">
+            Contact
+          </Link>
+        </NavbarItem>
+      </NavbarContent>
       <NavbarContent justify="end">
         {user ? (
           <NavbarItem>

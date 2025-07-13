@@ -37,7 +37,20 @@ export default function AboutUsPage() {
 
       <p>
         Whether you need to prepare a product photo, clean up a slide deck, or craft marketing visuals at scale,
-        imagify.pro gives you professional-grade results in seconds. We can’t wait to see what you create. 💜
+        imagify.pro gives you professional-grade results in seconds. We can't wait to see what you create. 💜
+      </p>
+
+      <h2 className="text-2xl font-semibold dark:text-white">Get in Touch</h2>
+      <p>
+        Have questions, feedback, or need help? We'd love to hear from you! 
+        Reach out to us at{" "}
+        <a
+          href="mailto:support@imagify.pro"
+          className="text-primary-600 underline"
+        >
+          support@imagify.pro
+        </a>
+        .
       </p>
     </div>
   );
