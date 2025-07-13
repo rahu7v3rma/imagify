@@ -47,8 +47,7 @@ export default function AboutUsPage() {
         maintain. Simply pay for the processing you use via <em>credits</em>,
         our lightweight credit system powered by Razorpay. Behind the scenes we
         rely on trusted infrastructure from Firebase (auth & hosting), Replicate
-        (state-of-the-art ML models), Tinify (image compression), and OpenAI (AI
-        processing) to deliver fast, secure, and reliable results.
+        (state-of-the-art ML models), and OpenAI (AI processing) to deliver fast, secure, and reliable results.
       </p>
 
       <p>

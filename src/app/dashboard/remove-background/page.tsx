@@ -256,7 +256,7 @@ export default function RemoveBackgroundPage() {
       } else {
         addToast({
           title: "Background removal failed",
-          description: response.data.message || "Failed to remove background",
+          description: "Failed to remove background. Please try again.",
           color: "danger",
         });
       }

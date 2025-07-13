@@ -62,20 +62,6 @@ export default function PrivacyPolicyPage() {
         <li>
           <strong>
             <a
-              href="https://tinify.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 underline"
-            >
-              Tinify
-            </a>
-          </strong>{" "}
-          &mdash; image compression services used to optimize and compress
-          images efficiently.
-        </li>
-        <li>
-          <strong>
-            <a
               href="https://openai.com/"
               target="_blank"
               rel="noopener noreferrer"

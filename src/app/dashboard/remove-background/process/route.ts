@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     // Upload the output image to Firebase Storage using Admin SDK
     const timestamp = Date.now();
     const fileName = `image-${timestamp}.png`;
-    const filePath = `user_images/${userId}/remove-background/${fileName}`;
+    const filePath = `remove-background/${fileName}`;
 
     await adminUploadFile(imageBuffer, filePath);
     const firebaseImageUrl = await adminGetFileDownloadURL(filePath);

@@ -261,7 +261,7 @@ export default function EditImagePage() {
       } else {
         addToast({
           title: "Image editing failed",
-          description: response.data.message || "Failed to edit image",
+          description: "Failed to edit image. Please try again.",
           color: "danger",
         });
       }

@@ -33,19 +33,16 @@ export default function BillingPage() {
         });
       } else if (paymentStatus === "failed") {
         // Failed toast
-        const failedMessage = message || "Payment failed. Please try again.";
         addToast({
           title: "Payment Failed",
-          description: failedMessage,
+          description: "Payment failed. Please try again.",
           color: "danger",
         });
       } else if (paymentStatus === "error") {
         // Error toast
-        const errorMessage =
-          message || "An error occurred during payment verification.";
         addToast({
           title: "Error",
-          description: errorMessage,
+          description: "An error occurred during payment verification.",
           color: "danger",
         });
       }

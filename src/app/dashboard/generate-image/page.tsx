@@ -108,7 +108,7 @@ export default function GenerateImagePage() {
       } else {
         addToast({
           title: "Image generation failed",
-          description: response.data.message || "Failed to generate image",
+          description: "Failed to generate image. Please try again.",
           color: "danger",
         });
       }

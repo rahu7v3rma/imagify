@@ -252,7 +252,7 @@ export default function ExtractTextPage() {
       } else {
         addToast({
           title: "Text extraction failed",
-          description: response.data.message || "Failed to extract text",
+          description: "Failed to extract text. Please try again.",
           color: "danger",
         });
       }

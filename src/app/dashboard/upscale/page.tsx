@@ -254,7 +254,7 @@ export default function UpscalePage() {
       } else {
         addToast({
           title: "Image upscaling failed",
-          description: response.data.message || "Failed to upscale image",
+          description: "Failed to upscale image. Please try again.",
           color: "danger",
         });
       }

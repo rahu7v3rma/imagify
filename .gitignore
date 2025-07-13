@@ -7,3 +7,5 @@ tasks.md
 firebase-debug.log
 pglite-debug.log
 functions/lib
+cloud-run/compress-image/dist
+cloud-run/compress-image/service.yaml
