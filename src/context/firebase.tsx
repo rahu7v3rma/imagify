@@ -36,6 +36,7 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = listenAuthState(async (user) => {
       if (user) {
+        setIsLoading(true);
 
         setUser(user);
 
