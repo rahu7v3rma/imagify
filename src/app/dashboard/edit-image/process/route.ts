@@ -1,7 +1,7 @@
 import {
   adminGetFileDownloadURL,
-  adminGetUserCents,
-  adminUpdateUserCents,
+  adminGetUserCredits,
+  adminUpdateUserCredits,
   adminUploadFile,
   admin,
 } from "@/lib/firebase-admin";
@@ -10,7 +10,7 @@ import Replicate from "replicate";
 import axios from "axios";
 import * as z from "zod";
 
-const getCentRequirement = (generateType: string) => {
+const getCreditRequirement = (generateType: string) => {
   switch (generateType) {
     case "standard":
       return 2;
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "Authorization header with Bearer token is required",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "Invalid or expired token",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -66,19 +66,19 @@ export async function POST(request: NextRequest) {
 
     // Validate request body with Zod schema
     const validatedData = requestSchema.parse(body);
-    
-    // Get credit requirement based on generate type
-    const centRequirement = getCentRequirement(validatedData.generateType);
 
-    // Check user cents using Admin SDK
-    const userCents = await adminGetUserCents(userId);
-    if (!userCents || userCents.cents < centRequirement) {
+    // Get credit requirement based on generate type
+    const creditRequirement = getCreditRequirement(validatedData.generateType);
+
+    // Check user credits using Admin SDK
+    const userCredits = await adminGetUserCredits(userId);
+    if (!userCredits || userCredits.credits < creditRequirement) {
       return NextResponse.json(
         {
           success: false,
-          message: "Insufficient cents",
+          message: "Insufficient credits",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -123,7 +123,9 @@ export async function POST(request: NextRequest) {
       auth: process.env.REPLICATE_API_TOKEN,
     });
 
-    const output = await replicate.run(model as `${string}/${string}`, { input });
+    const output = await replicate.run(model as `${string}/${string}`, {
+      input,
+    });
 
     // The output is an array, get the first element (URL)
     // @ts-expect-error - Replicate types are not up to date
@@ -135,7 +137,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "No output image generated",
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -153,8 +155,11 @@ export async function POST(request: NextRequest) {
     await adminUploadFile(imageBuffer, filePath);
     const firebaseImageUrl = await adminGetFileDownloadURL(filePath);
 
-    // Deduct cents using Admin SDK
-    await adminUpdateUserCents(userId, userCents.cents - centRequirement);
+    // Deduct credits using Admin SDK
+    await adminUpdateUserCredits(
+      userId,
+      userCredits.credits - creditRequirement,
+    );
 
     return NextResponse.json({
       success: true,
@@ -167,7 +172,7 @@ export async function POST(request: NextRequest) {
         success: false,
         message: "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

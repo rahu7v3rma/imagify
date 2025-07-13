@@ -21,7 +21,7 @@ import { BoltIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
   const router = useRouter();
-  const { user, setUser, userCents } = useFirebase();
+  const { user, setUser, userCredits } = useFirebase();
   const { setIsLoading } = useLoader();
 
   const logout = async () => {
@@ -49,12 +49,15 @@ export default function Header() {
     router.push("/dashboard");
   };
 
-  const handleCentsClick = () => {
+  const handleCreditsClick = () => {
     router.push("/dashboard/billing");
   };
 
   return (
-    <Navbar maxWidth="full" className="w-full backdrop-blur-sm border-b border-divider bg-inherit">
+    <Navbar
+      maxWidth="full"
+      className="w-full backdrop-blur-sm border-b border-divider bg-inherit"
+    >
       <NavbarBrand>
         <p
           className="font-bold text-inherit cursor-pointer"
@@ -69,10 +72,10 @@ export default function Header() {
             variant="flat"
             size="sm"
             startContent={<BoltIcon className="w-4 h-4" />}
-            onClick={handleCentsClick}
+            onClick={handleCreditsClick}
             className="text-sm font-medium"
           >
-            {userCents?.cents ?? 0} cents
+            {userCredits?.credits ?? 0} credits
           </Button>
         </NavbarItem>
         <NavbarItem>

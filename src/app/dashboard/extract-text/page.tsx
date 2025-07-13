@@ -42,7 +42,7 @@ const schema = z
     {
       message: "Either upload an image or provide an image URL",
       path: ["uploadedImage"],
-    }
+    },
   );
 
 type Schema = z.infer<typeof schema>;
@@ -85,7 +85,7 @@ export default function ExtractTextPage() {
           e.target.value = "";
           return;
         }
-        
+
         const reader = new FileReader();
         reader.onload = async (e) => {
           setSelectedImage(e.target?.result as string);
@@ -140,7 +140,8 @@ export default function ExtractTextPage() {
         if (!isValidImage) {
           addToast({
             title: "Invalid image URL",
-            description: "The URL does not point to a valid image file or the file is larger than 10MB",
+            description:
+              "The URL does not point to a valid image file or the file is larger than 10MB",
             color: "danger",
           });
           return;
@@ -148,7 +149,7 @@ export default function ExtractTextPage() {
 
         setSelectedImage(imageUrl.trim());
         const fileInput = document.querySelector(
-          'input[type="file"]'
+          'input[type="file"]',
         ) as HTMLInputElement;
         if (fileInput) {
           fileInput.value = "";
@@ -168,7 +169,7 @@ export default function ExtractTextPage() {
   const handleRemoveImage = () => {
     setSelectedImage(null);
     const fileInput = document.querySelector(
-      'input[type="file"]'
+      'input[type="file"]',
     ) as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
@@ -233,7 +234,7 @@ export default function ExtractTextPage() {
             Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.data.success) {
@@ -272,7 +273,8 @@ export default function ExtractTextPage() {
         Extract Text
       </h1>
       <p className="text-gray-600 dark:text-zinc-300 mb-2">
-        Upload an image or provide an image URL to extract text using OCR technology.
+        Upload an image or provide an image URL to extract text using OCR
+        technology.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
         💳 2 cents
@@ -375,4 +377,4 @@ export default function ExtractTextPage() {
       </div>
     </div>
   );
-} 
+}

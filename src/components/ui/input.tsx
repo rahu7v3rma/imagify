@@ -46,21 +46,21 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             "dark:border-zinc-600 dark:hover:border-zinc-500 dark:focus-within:border-primary-400",
             "bg-default-50 dark:bg-zinc-800/50",
             "transition-colors duration-200",
-            classNames?.inputWrapper
+            classNames?.inputWrapper,
           ),
           innerWrapper: clsx("bg-transparent", classNames?.innerWrapper),
           input: clsx(
             "bg-transparent text-default-900 dark:text-white placeholder:text-default-400 dark:placeholder:text-zinc-400",
-            classNames?.input
+            classNames?.input,
           ),
           label: clsx("text-default-600 dark:text-zinc-300", classNames?.label),
           description: clsx(
             "text-default-500 dark:text-zinc-400",
-            classNames?.description
+            classNames?.description,
           ),
           errorMessage: clsx(
             "text-danger-500 dark:text-danger-400",
-            classNames?.errorMessage
+            classNames?.errorMessage,
           ),
           ...classNames,
         }}
@@ -81,7 +81,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 PasswordInput.displayName = "PasswordInput";
@@ -112,7 +112,7 @@ export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
             "bg-default-50 dark:bg-zinc-800/50",
             "transition-colors duration-200",
             "min-h-[56px]",
-            classNames?.inputWrapper
+            classNames?.inputWrapper,
           ),
           innerWrapper: clsx("bg-transparent", classNames?.innerWrapper),
           input: clsx(
@@ -130,16 +130,16 @@ export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
             "hover:[&::-webkit-file-upload-button]:bg-primary-200",
             "dark:[&::-webkit-file-upload-button]:bg-zinc-700 dark:[&::-webkit-file-upload-button]:text-zinc-200",
             "dark:hover:[&::-webkit-file-upload-button]:bg-zinc-600",
-            classNames?.input
+            classNames?.input,
           ),
           label: clsx("text-default-600 dark:text-zinc-300", classNames?.label),
           description: clsx(
             "text-default-500 dark:text-zinc-400",
-            classNames?.description
+            classNames?.description,
           ),
           errorMessage: clsx(
             "text-danger-500 dark:text-danger-400",
-            classNames?.errorMessage
+            classNames?.errorMessage,
           ),
           ...classNames,
         }}
@@ -152,7 +152,7 @@ export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 FileInput.displayName = "FileInput";
@@ -172,21 +172,21 @@ export const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
             "dark:border-zinc-600 dark:hover:border-zinc-500 dark:focus-within:border-primary-400",
             "bg-default-50 dark:bg-zinc-800/50",
             "transition-colors duration-200",
-            classNames?.inputWrapper
+            classNames?.inputWrapper,
           ),
           innerWrapper: clsx("bg-transparent", classNames?.innerWrapper),
           input: clsx(
             "bg-transparent text-default-900 dark:text-white placeholder:text-default-400 dark:placeholder:text-zinc-400",
-            classNames?.input
+            classNames?.input,
           ),
           label: clsx("text-default-600 dark:text-zinc-300", classNames?.label),
           description: clsx(
             "text-default-500 dark:text-zinc-400",
-            classNames?.description
+            classNames?.description,
           ),
           errorMessage: clsx(
             "text-danger-500 dark:text-danger-400",
-            classNames?.errorMessage
+            classNames?.errorMessage,
           ),
           ...classNames,
         }}
@@ -205,7 +205,7 @@ export const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
                   "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-100",
                   "dark:disabled:hover:bg-zinc-700",
                   "focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
-                  "dark:focus:ring-primary-400 dark:focus:ring-offset-zinc-800"
+                  "dark:focus:ring-primary-400 dark:focus:ring-offset-zinc-800",
                 )}
               >
                 {actionButton.text}
@@ -216,12 +216,13 @@ export const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 CustomInput.displayName = "CustomInput";
 
-interface CustomTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface CustomTextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   isInvalid?: boolean;
   errorMessage?: string;
@@ -236,23 +237,36 @@ interface CustomTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaE
   };
 }
 
-export const CustomTextarea = forwardRef<HTMLTextAreaElement, CustomTextareaProps>(
-  ({ className, classNames, label, isInvalid, errorMessage, description, ...props }, ref) => {
+export const CustomTextarea = forwardRef<
+  HTMLTextAreaElement,
+  CustomTextareaProps
+>(
+  (
+    {
+      className,
+      classNames,
+      label,
+      isInvalid,
+      errorMessage,
+      description,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <div className={clsx("w-full", classNames?.base)}>
         {label && (
-          <label className={clsx(
-            "block text-sm font-medium mb-2",
-            "text-default-600 dark:text-zinc-300",
-            classNames?.label
-          )}>
+          <label
+            className={clsx(
+              "block text-sm font-medium mb-2",
+              "text-default-600 dark:text-zinc-300",
+              classNames?.label,
+            )}
+          >
             {label}
           </label>
         )}
-        <div className={clsx(
-          "relative w-full",
-          classNames?.wrapper
-        )}>
+        <div className={clsx("relative w-full", classNames?.wrapper)}>
           <textarea
             ref={ref}
             className={clsx(
@@ -265,34 +279,39 @@ export const CustomTextarea = forwardRef<HTMLTextAreaElement, CustomTextareaProp
               "transition-colors duration-200",
               "focus:outline-none focus:ring-0",
               "resize-y",
-              isInvalid && "border-danger-500 dark:border-danger-400 focus:border-danger-500 dark:focus:border-danger-400",
+              isInvalid &&
+                "border-danger-500 dark:border-danger-400 focus:border-danger-500 dark:focus:border-danger-400",
               className,
-              classNames?.textarea
+              classNames?.textarea,
             )}
             {...props}
           />
         </div>
         {description && !isInvalid && (
-          <p className={clsx(
-            "text-sm mt-1",
-            "text-default-500 dark:text-zinc-400",
-            classNames?.description
-          )}>
+          <p
+            className={clsx(
+              "text-sm mt-1",
+              "text-default-500 dark:text-zinc-400",
+              classNames?.description,
+            )}
+          >
             {description}
           </p>
         )}
         {isInvalid && errorMessage && (
-          <p className={clsx(
-            "text-sm mt-1",
-            "text-danger-500 dark:text-danger-400",
-            classNames?.errorMessage
-          )}>
+          <p
+            className={clsx(
+              "text-sm mt-1",
+              "text-danger-500 dark:text-danger-400",
+              classNames?.errorMessage,
+            )}
+          >
             {errorMessage}
           </p>
         )}
       </div>
     );
-  }
+  },
 );
 
 CustomTextarea.displayName = "CustomTextarea";

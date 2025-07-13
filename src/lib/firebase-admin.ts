@@ -30,7 +30,7 @@ const adminStorage = admin.storage();
 export const adminUploadFile = async (
   fileBuffer: Buffer | Uint8Array,
   filePath: string,
-  metadata?: { [key: string]: string }
+  metadata?: { [key: string]: string },
 ) => {
   const bucket = adminStorage.bucket();
   const file = bucket.file(filePath);
@@ -51,56 +51,56 @@ export const adminGetFileDownloadURL = async (filePath: string) => {
 
   // Make the file publicly readable and get signed URL
   const [url] = await file.getSignedUrl({
-    action: 'read',
-    expires: '03-01-2500', // Far future date
+    action: "read",
+    expires: "03-01-2500", // Far future date
   });
 
   return url;
 };
 
 // Admin Firestore types
-export interface UserCentsDocument {
-  cents: number;
+export interface UserCreditsDocument {
+  credits: number;
 }
 
 // Admin Firestore functions
-export const adminGetUserCents = async (
-  userId: string
-): Promise<UserCentsDocument | null> => {
-  const docRef = adminDb.collection("user_cents").doc(userId);
+export const adminGetUserCredits = async (
+  userId: string,
+): Promise<UserCreditsDocument | null> => {
+  const docRef = adminDb.collection("user_credits").doc(userId);
   const docSnap = await docRef.get();
 
   if (docSnap.exists) {
-    return docSnap.data() as UserCentsDocument;
+    return docSnap.data() as UserCreditsDocument;
   } else {
     return null;
   }
 };
 
-export const adminUpdateUserCents = async (
+export const adminUpdateUserCredits = async (
   userId: string,
-  cents: number
+  credits: number,
 ): Promise<void> => {
-  const docRef = adminDb.collection("user_cents").doc(userId);
+  const docRef = adminDb.collection("user_credits").doc(userId);
   await docRef.update({
-    cents: cents
+    credits: credits,
   });
 };
 
-export const adminDeleteUserCents = async (userId: string): Promise<void> => {
-  const docRef = adminDb.collection("user_cents").doc(userId);
+export const adminDeleteUserCredits = async (userId: string): Promise<void> => {
+  const docRef = adminDb.collection("user_credits").doc(userId);
   await docRef.delete();
 };
 
-export const adminCreateUserCents = async (
+export const adminCreateUserCredits = async (
   userId: string,
-  initialCents: number = 0
+  initialCredits: number = 0,
 ): Promise<void> => {
-  const userCentsData: UserCentsDocument = {
-    cents: initialCents,
+  const userCreditsData: UserCreditsDocument = {
+    credits: initialCredits,
   };
 
-  await adminDb.collection("user_cents").doc(userId).set(userCentsData);
+  await adminDb.collection("user_credits").doc(userId).set(userCreditsData);
 };
 
 export { admin };

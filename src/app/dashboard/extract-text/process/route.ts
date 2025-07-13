@@ -1,13 +1,13 @@
 import {
-  adminGetUserCents,
-  adminUpdateUserCents,
+  adminGetUserCredits,
+  adminUpdateUserCredits,
   admin,
 } from "@/lib/firebase-admin";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 import * as z from "zod";
 
-const CENT_REQUIREMENT = 2;
+const CREDIT_REQUIREMENT = 2;
 
 const requestSchema = z.object({
   imageUrl: z.string().max(1000, "Image URL must be at most 1000 characters"),
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "Authorization header with Bearer token is required",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "Invalid or expired token",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -48,15 +48,15 @@ export async function POST(request: NextRequest) {
     // Validate request body with Zod schema
     const validatedData = requestSchema.parse(body);
 
-    // Check user cents using Admin SDK
-    const userCents = await adminGetUserCents(userId);
-    if (!userCents || userCents.cents < CENT_REQUIREMENT) {
+    // Check user credits using Admin SDK
+    const userCredits = await adminGetUserCredits(userId);
+    if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
       return NextResponse.json(
         {
           success: false,
-          message: "Insufficient cents",
+          message: "Insufficient credits",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -71,15 +71,18 @@ export async function POST(request: NextRequest) {
 
     const output = await replicate.run(
       "abiruyt/text-extract-ocr:a524caeaa23495bc9edc805ab08ab5fe943afd3febed884a4f3747aa32e9cd61",
-      { input }
+      { input },
     );
 
     // The output is already a string for this OCR model
     // @ts-expect-error - output is a string for this OCR model
     const extractedText = output as string;
 
-    // Deduct cents using Admin SDK
-    await adminUpdateUserCents(userId, userCents.cents - CENT_REQUIREMENT);
+    // Deduct credits using Admin SDK
+    await adminUpdateUserCredits(
+      userId,
+      userCredits.credits - CREDIT_REQUIREMENT,
+    );
 
     return NextResponse.json({
       success: true,
@@ -92,7 +95,7 @@ export async function POST(request: NextRequest) {
         success: false,
         message: "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

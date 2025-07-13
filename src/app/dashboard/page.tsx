@@ -16,7 +16,13 @@ interface FeatureCardProps {
   cost: string;
 }
 
-const FeatureCard = ({ href, icon: Icon, title, description, cost }: FeatureCardProps) => {
+const FeatureCard = ({
+  href,
+  icon: Icon,
+  title,
+  description,
+  cost,
+}: FeatureCardProps) => {
   return (
     <Link
       href={href}
@@ -93,7 +99,8 @@ export default function DashboardPage() {
           Dashboard
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Welcome back! Choose a tool to get started with your image processing needs.
+          Welcome back! Choose a tool to get started with your image processing
+          needs.
         </p>
       </div>
 

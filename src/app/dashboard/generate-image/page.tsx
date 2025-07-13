@@ -90,7 +90,7 @@ export default function GenerateImagePage() {
             Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.data.success) {
@@ -132,7 +132,7 @@ export default function GenerateImagePage() {
         Enter a prompt to generate an image using AI.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 {getCreditRequirement(generateType)} {'cents'}
+        💳 {getCreditRequirement(generateType)} {"cents"}
       </div>
 
       <div className="flex gap-8">

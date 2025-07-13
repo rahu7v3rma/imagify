@@ -23,7 +23,7 @@ export default function BillingPage() {
         // Success toast
         const successMessage = amount
           ? `Payment successful! $${(parseInt(amount) / 100).toFixed(
-              2
+              2,
             )} charged.`
           : "Payment successful!";
 

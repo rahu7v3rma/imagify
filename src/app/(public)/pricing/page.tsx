@@ -24,37 +24,37 @@ const tools: ToolPricing[] = [
     icon: SparklesIcon,
     title: "Generate Image",
     description: "Create stunning images from text using AI",
-    cost: "2–10 cents",
+    cost: "2–10 credits",
   },
   {
     icon: PhotoIcon,
     title: "Remove Background",
     description: "Remove backgrounds from images instantly",
-    cost: "2–4 cents",
+    cost: "2–4 credits",
   },
   {
     icon: DocumentTextIcon,
     title: "Extract Text (OCR)",
     description: "Extract text from screenshots or scanned documents",
-    cost: "2 cents",
+    cost: "2 credits",
   },
   {
     icon: ArrowUpIcon,
     title: "Upscale Image",
     description: "Enlarge images up to 4× while preserving detail",
-    cost: "2–3 cents",
+    cost: "2–3 credits",
   },
   {
     icon: ArchiveBoxArrowDownIcon,
     title: "Compress Image",
     description: "Reduce image file size without losing quality",
-    cost: "3 cents",
+    cost: "3 credits",
   },
   {
     icon: PencilIcon,
     title: "Edit Image",
     description: "Smart adjustments and transformations",
-    cost: "2–10 cents",
+    cost: "2–10 credits",
   },
 ];
 
@@ -70,11 +70,13 @@ export default function PricingPage() {
     <div className="container mx-auto px-4 py-10 space-y-12 text-gray-800 dark:text-zinc-200">
       {/* Heading */}
       <div className="text-center space-y-2 max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold dark:text-white">Simple, pay-as-you-go pricing</h1>
+        <h1 className="text-3xl md:text-4xl font-bold dark:text-white">
+          Simple, pay-as-you-go pricing
+        </h1>
         <p className="text-gray-600 dark:text-zinc-400">
-          Purchase prepaid processing credits (we call them <em>cents</em>) and use them across any tool.
-          No subscriptions, surprise bills, or hidden fees—just straight-forward pricing that scales with your
-          creativity.
+          Purchase prepaid processing credits and use them across any tool. No
+          subscriptions, surprise bills, or hidden fees—just straight-forward
+          pricing that scales with your creativity.
         </p>
       </div>
 
@@ -103,9 +105,11 @@ export default function PricingPage() {
 
       {/* Call-to-action */}
       <div className="text-center space-y-4 pt-4">
-        <h2 className="text-2xl font-semibold dark:text-white">Ready to get started?</h2>
+        <h2 className="text-2xl font-semibold dark:text-white">
+          Ready to get started?
+        </h2>
         <p className="text-gray-600 dark:text-zinc-400 max-w-xl mx-auto">
-          Create a free account and top-up cents whenever you need them.
+          Create a free account and top-up credits whenever you need them.
         </p>
         {user ? (
           <Button
@@ -116,7 +120,7 @@ export default function PricingPage() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Buy Cents
+            Buy Credits
           </Button>
         ) : (
           <Button as={Link} href="/signup" variant="solid" color="primary">
@@ -126,4 +130,4 @@ export default function PricingPage() {
       </div>
     </div>
   );
-} 
+}

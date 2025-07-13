@@ -45,14 +45,18 @@ const SidebarLink = ({
 const Sidebar = () => {
   const pathname = usePathname();
   const isDashboardActive = pathname === "/dashboard";
-  const isGenerateImageActive = pathname.startsWith("/dashboard/generate-image");
+  const isGenerateImageActive = pathname.startsWith(
+    "/dashboard/generate-image",
+  );
   const isRemoveBackgroundActive = pathname.startsWith(
-    "/dashboard/remove-background"
+    "/dashboard/remove-background",
   );
   const isExtractTextActive = pathname.startsWith("/dashboard/extract-text");
   const isUpscaleActive = pathname.startsWith("/dashboard/upscale");
   const isEditImageActive = pathname.startsWith("/dashboard/edit-image");
-  const isCompressImageActive = pathname.startsWith("/dashboard/compress-image");
+  const isCompressImageActive = pathname.startsWith(
+    "/dashboard/compress-image",
+  );
   const isBillingActive = pathname.startsWith("/dashboard/billing");
   const isSettingsActive = pathname.startsWith("/dashboard/settings");
 

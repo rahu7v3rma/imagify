@@ -56,7 +56,7 @@ export const loginUser = (email: string, password: string) => {
 };
 
 export const listenAuthState = (
-  callback: Parameters<typeof onAuthStateChanged>[1]
+  callback: Parameters<typeof onAuthStateChanged>[1],
 ) => {
   return onAuthStateChanged(auth, callback);
 };
@@ -80,7 +80,7 @@ export const deleteCurrentUser = () => {
 export const uploadFile = async (
   file: File | Blob | Uint8Array | ArrayBuffer,
   path: string,
-  metadata?: UploadMetadata
+  metadata?: UploadMetadata,
 ) => {
   const storageRef = ref(storage, path);
   const uploadTask = uploadBytes(storageRef, file, metadata);
@@ -91,7 +91,7 @@ export const uploadFileString = async (
   value: string,
   path: string,
   format?: StringFormat,
-  metadata?: UploadMetadata
+  metadata?: UploadMetadata,
 ) => {
   const storageRef = ref(storage, path);
   return uploadString(storageRef, value, format, metadata);
@@ -107,8 +107,8 @@ export const createStorageRef = (path: string) => {
 };
 
 // Firestore types
-export interface UserCentsDocument {
-  cents: number;
+export interface UserCreditsDocument {
+  credits: number;
 }
 
 export interface ContactMessage {
@@ -117,48 +117,48 @@ export interface ContactMessage {
 }
 
 // Firestore functions
-export const getUserCents = async (
-  userId: string
-): Promise<UserCentsDocument | null> => {
-  const docRef = doc(db, "user_cents", userId);
+export const getUserCredits = async (
+  userId: string,
+): Promise<UserCreditsDocument | null> => {
+  const docRef = doc(db, "user_credits", userId);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return docSnap.data() as UserCentsDocument;
+    return docSnap.data() as UserCreditsDocument;
   } else {
     return null;
   }
 };
 
-export const createUserCents = async (
+export const createUserCredits = async (
   userId: string,
-  initialCents: number = 0
+  initialCredits: number = 0,
 ): Promise<void> => {
-  const userCentsData: UserCentsDocument = {
-    cents: initialCents,
+  const userCreditsData: UserCreditsDocument = {
+    credits: initialCredits,
   };
 
-  await setDoc(doc(db, "user_cents", userId), userCentsData);
+  await setDoc(doc(db, "user_credits", userId), userCreditsData);
 };
 
-export const updateUserCents = async (
+export const updateUserCredits = async (
   userId: string,
-  cents: number
+  credits: number,
 ): Promise<void> => {
-  const docRef = doc(db, "user_cents", userId);
+  const docRef = doc(db, "user_credits", userId);
   await updateDoc(docRef, {
-    cents: cents,
+    credits: credits,
   });
 };
 
-export const deleteUserCents = async (userId: string): Promise<void> => {
-  const docRef = doc(db, "user_cents", userId);
+export const deleteUserCredits = async (userId: string): Promise<void> => {
+  const docRef = doc(db, "user_credits", userId);
   await deleteDoc(docRef);
 };
 
 export const contactUs = async (
   email: string,
-  message: string
+  message: string,
 ): Promise<void> => {
   const contactMessageData = {
     email,

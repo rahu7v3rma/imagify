@@ -14,7 +14,7 @@ import { Controller } from "react-hook-form";
 import {
   uploadFileString,
   getFileDownloadURL,
-  getUserCents,
+  getUserCredits,
 } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
 import { useFirebase } from "@/context/firebase";
@@ -42,7 +42,7 @@ const schema = z
     {
       message: "Either upload an image or provide an image URL",
       path: ["uploadedImage"],
-    }
+    },
   );
 
 type Schema = z.infer<typeof schema>;
@@ -55,9 +55,11 @@ export default function CompressImagePage() {
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [compressedImage, setCompressedImage] = useState<string | null>(null);
   const [originalFileSize, setOriginalFileSize] = useState<number | null>(null);
-  const [compressedFileSize, setCompressedFileSize] = useState<number | null>(null);
+  const [compressedFileSize, setCompressedFileSize] = useState<number | null>(
+    null,
+  );
   const { setIsLoading } = useLoader();
-  const { user, setUserCents } = useFirebase();
+  const { user, setUserCredits } = useFirebase();
 
   const {
     register,
@@ -95,7 +97,7 @@ export default function CompressImagePage() {
           e.target.value = "";
           return;
         }
-        
+
         setOriginalFileSize(file.size);
         const reader = new FileReader();
         reader.onload = async (e) => {
@@ -114,7 +116,9 @@ export default function CompressImagePage() {
     }
   };
 
-  const validateImageUrl = async (url: string): Promise<{isValid: boolean, size?: number}> => {
+  const validateImageUrl = async (
+    url: string,
+  ): Promise<{ isValid: boolean; size?: number }> => {
     try {
       const urlObj = new URL(url);
 
@@ -150,10 +154,11 @@ export default function CompressImagePage() {
         const { isValid, size } = await validateImageUrl(imageUrl.trim());
 
         if (!isValid) {
-          const errorMessage = size && size > MAX_FILE_SIZE 
-            ? "Image file must be smaller than 10MB"
-            : "The URL does not point to a valid image file";
-          
+          const errorMessage =
+            size && size > MAX_FILE_SIZE
+              ? "Image file must be smaller than 10MB"
+              : "The URL does not point to a valid image file";
+
           addToast({
             title: "Invalid image URL",
             description: errorMessage,
@@ -165,7 +170,7 @@ export default function CompressImagePage() {
         setSelectedImage(imageUrl.trim());
         setOriginalFileSize(size || null);
         const fileInput = document.querySelector(
-          'input[type="file"]'
+          'input[type="file"]',
         ) as HTMLInputElement;
         if (fileInput) {
           fileInput.value = "";
@@ -188,7 +193,7 @@ export default function CompressImagePage() {
     setCompressedFileSize(null);
     setCompressedImage(null);
     const fileInput = document.querySelector(
-      'input[type="file"]'
+      'input[type="file"]',
     ) as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
@@ -234,16 +239,16 @@ export default function CompressImagePage() {
             Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.data.success) {
         setCompressedImage(response.data.image_url);
         setCompressedFileSize(response.data.compressed_size);
 
-        // Refresh user cents
-        const updatedCents = await getUserCents(user.uid);
-        setUserCents(updatedCents);
+        // Refresh user credits
+        const updatedCredits = await getUserCredits(user.uid);
+        setUserCredits(updatedCredits);
 
         addToast({
           title: "Image compressed successfully",
@@ -274,10 +279,11 @@ export default function CompressImagePage() {
         Compress Image
       </h1>
       <p className="text-gray-600 dark:text-zinc-300 mb-2">
-        Upload an image or provide an image URL to compress it and reduce file size.
+        Upload an image or provide an image URL to compress it and reduce file
+        size.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 3 cents
+        💳 3 credits
       </div>
 
       <div className="flex gap-8">
@@ -331,7 +337,8 @@ export default function CompressImagePage() {
           {selectedImage && (
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
-                Selected Image {originalFileSize && `(${formatFileSize(originalFileSize)})`}
+                Selected Image{" "}
+                {originalFileSize && `(${formatFileSize(originalFileSize)})`}
               </label>
               <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
                 <Image
@@ -357,7 +364,8 @@ export default function CompressImagePage() {
         {compressedImage && (
           <div className="flex-1 max-w-md">
             <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
-              Compressed Image {compressedFileSize && `(${formatFileSize(compressedFileSize)})`}
+              Compressed Image{" "}
+              {compressedFileSize && `(${formatFileSize(compressedFileSize)})`}
             </label>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
               ℹ️ Download link will be available until midnight UTC
@@ -382,4 +390,4 @@ export default function CompressImagePage() {
       </div>
     </div>
   );
-} 
+}

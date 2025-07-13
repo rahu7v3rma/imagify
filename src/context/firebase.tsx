@@ -1,7 +1,7 @@
 import {
   listenAuthState,
-  getUserCents,
-  UserCentsDocument,
+  getUserCredits,
+  UserCreditsDocument,
 } from "@/lib/firebase";
 import { User } from "firebase/auth";
 import {
@@ -16,19 +16,19 @@ import { useLoader } from "./loader";
 const FirebaseContext = createContext<{
   user: User | null;
   setUser: (user: User | null) => void;
-  userCents: UserCentsDocument | null;
-  setUserCents: (cents: UserCentsDocument | null) => void;
+  userCredits: UserCreditsDocument | null;
+  setUserCredits: (credits: UserCreditsDocument | null) => void;
 }>({
   user: null,
   setUser: () => {},
-  userCents: null,
-  setUserCents: () => {},
+  userCredits: null,
+  setUserCredits: () => {},
 });
 
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [userCents, setUserCents] = useState<UserCentsDocument | null>(
-    null
+  const [userCredits, setUserCredits] = useState<UserCreditsDocument | null>(
+    null,
   );
   const { setIsLoading } = useLoader();
 
@@ -37,14 +37,14 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
       if (user) {
         setUser(user);
         try {
-          const cents = await getUserCents(user.uid);
-          setUserCents(cents);
+          const credits = await getUserCredits(user.uid);
+          setUserCredits(credits);
         } catch {
-          setUserCents(null);
+          setUserCredits(null);
         }
       } else {
         setUser(null);
-        setUserCents(null);
+        setUserCredits(null);
       }
       setIsLoading(false);
     });
@@ -57,8 +57,8 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         setUser,
-        userCents,
-        setUserCents,
+        userCredits,
+        setUserCredits,
       }}
     >
       {children}

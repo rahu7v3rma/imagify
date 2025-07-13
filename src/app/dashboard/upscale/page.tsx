@@ -43,7 +43,7 @@ const schema = z
     {
       message: "Either upload an image or provide an image URL",
       path: ["uploadedImage"],
-    }
+    },
   );
 
 type Schema = z.infer<typeof schema>;
@@ -105,7 +105,7 @@ export default function UpscalePage() {
           e.target.value = "";
           return;
         }
-        
+
         const reader = new FileReader();
         reader.onload = async (e) => {
           setSelectedImage(e.target?.result as string);
@@ -160,7 +160,8 @@ export default function UpscalePage() {
         if (!isValidImage) {
           addToast({
             title: "Invalid image URL",
-            description: "The URL does not point to a valid image file or the file is larger than 10MB",
+            description:
+              "The URL does not point to a valid image file or the file is larger than 10MB",
             color: "danger",
           });
           return;
@@ -168,7 +169,7 @@ export default function UpscalePage() {
 
         setSelectedImage(imageUrl.trim());
         const fileInput = document.querySelector(
-          'input[type="file"]'
+          'input[type="file"]',
         ) as HTMLInputElement;
         if (fileInput) {
           fileInput.value = "";
@@ -188,7 +189,7 @@ export default function UpscalePage() {
   const handleRemoveImage = () => {
     setSelectedImage(null);
     const fileInput = document.querySelector(
-      'input[type="file"]'
+      'input[type="file"]',
     ) as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
@@ -235,7 +236,7 @@ export default function UpscalePage() {
             Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.data.success) {
@@ -277,7 +278,7 @@ export default function UpscalePage() {
         Upload an image or provide an image URL to upscale it automatically.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 {getCreditRequirement(generateType)} {'cents'}
+        💳 {getCreditRequirement(generateType)} {"cents"}
       </div>
 
       <div className="flex gap-8">

@@ -1,6 +1,6 @@
 "use client";
 
-import { createUser, createUserCents } from "@/lib/firebase";
+import { createUser, createUserCredits } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Checkbox } from "@heroui/react";
 import { PasswordInput, CustomInput } from "@/components/ui/input";
@@ -53,10 +53,10 @@ export default function SignupPage() {
     try {
       setIsLoading(true);
       const userCredential = await createUser(email, password);
-      
-      // Create user cents entry with 0 cents
-      await createUserCents(userCredential.user.uid, 0);
-      
+
+      // Create user credits entry with 0 credits
+      await createUserCredits(userCredential.user.uid, 0);
+
       setUser(userCredential.user);
       addToast({
         title: "Account created successfully!",

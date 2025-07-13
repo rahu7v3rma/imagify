@@ -1,7 +1,7 @@
 import {
   adminGetFileDownloadURL,
-  adminGetUserCents,
-  adminUpdateUserCents,
+  adminGetUserCredits,
+  adminUpdateUserCredits,
   adminUploadFile,
   admin,
 } from "@/lib/firebase-admin";
@@ -10,7 +10,7 @@ import * as z from "zod";
 import tinify from "tinify";
 import axios from "axios";
 
-const CENT_REQUIREMENT = 3;
+const CREDIT_REQUIREMENT = 3;
 
 const requestSchema = z.object({
   imageUrl: z.string().max(1000, "Image URL must be at most 1000 characters"),
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "Authorization header with Bearer token is required",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "Invalid or expired token",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -51,15 +51,15 @@ export async function POST(request: NextRequest) {
     // Validate request body with Zod schema
     const validatedData = requestSchema.parse(body);
 
-    // Check user cents using Admin SDK
-    const userCents = await adminGetUserCents(userId);
-    if (!userCents || userCents.cents < CENT_REQUIREMENT) {
+    // Check user credits using Admin SDK
+    const userCredits = await adminGetUserCredits(userId);
+    if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
       return NextResponse.json(
         {
           success: false,
-          message: "Insufficient cents",
+          message: "Insufficient credits",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "TinyPNG API key is not configured",
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -94,8 +94,11 @@ export async function POST(request: NextRequest) {
     await adminUploadFile(compressedBuffer, filePath);
     const firebaseImageUrl = await adminGetFileDownloadURL(filePath);
 
-    // Deduct cents using Admin SDK
-    await adminUpdateUserCents(userId, userCents.cents - CENT_REQUIREMENT);
+    // Deduct credits using Admin SDK
+    await adminUpdateUserCredits(
+      userId,
+      userCredits.credits - CREDIT_REQUIREMENT,
+    );
 
     // Calculate file sizes
     const originalSize = imageBuffer.length;
@@ -115,7 +118,7 @@ export async function POST(request: NextRequest) {
         success: false,
         message: "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

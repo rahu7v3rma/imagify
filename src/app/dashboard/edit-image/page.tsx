@@ -14,7 +14,7 @@ import { Controller } from "react-hook-form";
 import {
   uploadFileString,
   getFileDownloadURL,
-  getUserCents,
+  getUserCredits,
 } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
 import { useFirebase } from "@/context/firebase";
@@ -47,7 +47,7 @@ const schema = z
     {
       message: "Either upload an image or provide an image URL",
       path: ["uploadedImage"],
-    }
+    },
   );
 
 type Schema = z.infer<typeof schema>;
@@ -60,7 +60,7 @@ export default function EditImagePage() {
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
-  const { user, setUserCents } = useFirebase();
+  const { user, setUserCredits } = useFirebase();
 
   const {
     register,
@@ -111,7 +111,7 @@ export default function EditImagePage() {
           e.target.value = "";
           return;
         }
-        
+
         const reader = new FileReader();
         reader.onload = async (e) => {
           setSelectedImage(e.target?.result as string);
@@ -166,7 +166,8 @@ export default function EditImagePage() {
         if (!isValidImage) {
           addToast({
             title: "Invalid image URL",
-            description: "The URL does not point to a valid image file or the file is larger than 10MB",
+            description:
+              "The URL does not point to a valid image file or the file is larger than 10MB",
             color: "danger",
           });
           return;
@@ -174,7 +175,7 @@ export default function EditImagePage() {
 
         setSelectedImage(imageUrl.trim());
         const fileInput = document.querySelector(
-          'input[type="file"]'
+          'input[type="file"]',
         ) as HTMLInputElement;
         if (fileInput) {
           fileInput.value = "";
@@ -194,7 +195,7 @@ export default function EditImagePage() {
   const handleRemoveImage = () => {
     setSelectedImage(null);
     const fileInput = document.querySelector(
-      'input[type="file"]'
+      'input[type="file"]',
     ) as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
@@ -242,15 +243,15 @@ export default function EditImagePage() {
             Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.data.success) {
         setProcessedImage(response.data.image_url);
 
-        // Refresh user cents
-        const updatedCents = await getUserCents(user.uid);
-        setUserCents(updatedCents);
+        // Refresh user credits
+        const updatedCredits = await getUserCredits(user.uid);
+        setUserCredits(updatedCredits);
 
         addToast({
           title: "Image edited successfully",
@@ -281,10 +282,11 @@ export default function EditImagePage() {
         Edit Image
       </h1>
       <p className="text-gray-600 dark:text-zinc-300 mb-2">
-        Upload an image or provide an image URL, then describe the changes you want to make.
+        Upload an image or provide an image URL, then describe the changes you
+        want to make.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 {getCreditRequirement(generateType)} {'cents'}
+        💳 {getCreditRequirement(generateType)} {"credits"}
       </div>
 
       <div className="flex gap-8">
@@ -431,4 +433,4 @@ export default function EditImagePage() {
       </div>
     </div>
   );
-} 
+}

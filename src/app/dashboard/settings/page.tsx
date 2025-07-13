@@ -12,17 +12,14 @@ import {
   useDisclosure,
   Switch,
 } from "@heroui/react";
-import { deleteCurrentUser, deleteUserCents } from "@/lib/firebase";
+import { deleteCurrentUser, deleteUserCredits } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { useRouter } from "next/navigation";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
 import { useTheme } from "@/context/theme";
-import {
-  MoonIcon,
-  SunIcon,
-} from "@heroicons/react/24/outline";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 
 export default function SettingsPage() {
   const { user, setUser } = useFirebase();
@@ -47,12 +44,12 @@ export default function SettingsPage() {
     try {
       setIsLoading(true);
 
-      // Delete user cents document first
+      // Delete user credits document first
       try {
-        await deleteUserCents(user.uid);
+        await deleteUserCredits(user.uid);
       } catch (error) {
-        console.warn("Could not delete user cents:", error);
-        // Continue with account deletion even if user cents deletion fails
+        console.warn("Could not delete user credits:", error);
+        // Continue with account deletion even if user credits deletion fails
       }
 
       // Delete the user account
@@ -98,11 +95,7 @@ export default function SettingsPage() {
         <Tab key="account" title="Account">
           <div className="py-4">
             <div className="flex flex-row gap-4 items-center">
-              <Button
-                color="danger"
-                variant="bordered"
-                onPress={onOpen}
-              >
+              <Button color="danger" variant="bordered" onPress={onOpen}>
                 Delete Account
               </Button>
             </div>

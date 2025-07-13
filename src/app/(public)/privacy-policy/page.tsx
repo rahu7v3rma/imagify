@@ -14,29 +14,78 @@ export default function PrivacyPolicyPage() {
         1. Services We Use
       </h2>
       <p>
-        imagify.pro relies on the following third-party service providers to operate
-        the platform:
+        imagify.pro relies on the following third-party service providers to
+        operate the platform:
       </p>
       <ul className="list-disc list-inside space-y-1">
         <li>
-          <strong><a href="https://firebase.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Firebase</a></strong> &mdash; authentication, database, file storage, and hosting.
+          <strong>
+            <a
+              href="https://firebase.google.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 underline"
+            >
+              Firebase
+            </a>
+          </strong>{" "}
+          &mdash; authentication, database, file storage, and hosting.
         </li>
         <li>
-          <strong><a href="https://razorpay.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Razorpay</a></strong> &mdash; secure payment collection and
-          subscription management.
+          <strong>
+            <a
+              href="https://razorpay.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 underline"
+            >
+              Razorpay
+            </a>
+          </strong>{" "}
+          &mdash; secure payment collection and subscription management.
         </li>
         <li>
-          <strong><a href="https://replicate.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Replicate</a></strong> &mdash; machine-learning infrastructure
-          used to process images. Images you submit for processing are transmitted to Replicate's
-          API solely for the purpose of generating the requested output.
+          <strong>
+            <a
+              href="https://replicate.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 underline"
+            >
+              Replicate
+            </a>
+          </strong>{" "}
+          &mdash; machine-learning infrastructure used to process images. Images
+          you submit for processing are transmitted to Replicate's API solely
+          for the purpose of generating the requested output.
         </li>
         <li>
-          <strong><a href="https://tinify.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Tinify</a></strong> &mdash; image compression services
-          used to optimize and compress images efficiently.
+          <strong>
+            <a
+              href="https://tinify.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 underline"
+            >
+              Tinify
+            </a>
+          </strong>{" "}
+          &mdash; image compression services used to optimize and compress
+          images efficiently.
         </li>
         <li>
-          <strong><a href="https://openai.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">OpenAI</a></strong> &mdash; AI processing services
-          used for advanced image analysis and generation capabilities.
+          <strong>
+            <a
+              href="https://openai.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 underline"
+            >
+              OpenAI
+            </a>
+          </strong>{" "}
+          &mdash; AI processing services used for advanced image analysis and
+          generation capabilities.
         </li>
       </ul>
 
@@ -57,7 +106,7 @@ export default function PrivacyPolicyPage() {
         </li>
         <li>
           <strong>Usage information</strong> such as remaining processing&nbsp;
-          <em>cents</em> &mdash; stored in database to enable billing logic.
+          <em>credits</em> &mdash; stored in database to enable billing logic.
         </li>
         <li>
           <strong>Payment information</strong> &mdash; handled directly by
@@ -71,7 +120,7 @@ export default function PrivacyPolicyPage() {
       <ul className="list-disc list-inside space-y-1">
         <li>To authenticate and secure your account.</li>
         <li>To process images and return the requested output.</li>
-        <li>To manage usage cents.</li>
+        <li>To manage usage credits.</li>
         <li>To process payments and send transactional emails.</li>
         <li>To respond to inquiries and provide customer support.</li>
       </ul>
@@ -80,11 +129,12 @@ export default function PrivacyPolicyPage() {
         4. We Do Not Sell Your Data
       </h2>
       <p>
-        imagify.pro does not sell, rent, lease, or otherwise monetize any of your uploaded
-        images, generated images, or personal data to third parties. Your content and
-        data remain yours, and we only use them to provide the services you have
-        requested. We do not share your images or data with advertisers, data brokers,
-        or any other parties for commercial purposes.
+        imagify.pro does not sell, rent, lease, or otherwise monetize any of
+        your uploaded images, generated images, or personal data to third
+        parties. Your content and data remain yours, and we only use them to
+        provide the services you have requested. We do not share your images or
+        data with advertisers, data brokers, or any other parties for commercial
+        purposes.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">
@@ -101,15 +151,17 @@ export default function PrivacyPolicyPage() {
         6. Data Retention
       </h2>
       <p>
-        Email addresses and usage cents are retained for as long as your account
-        remains active. You may delete your account at any time from the <em>Settings</em> page,
-        which will permanently remove your personal data and stored files.
+        Email addresses and usage credits are retained for as long as your
+        account remains active. You may delete your account at any time from the{" "}
+        <em>Settings</em> page, which will permanently remove your personal data
+        and stored files.
       </p>
       <p>
-        <strong>Image Storage Policy:</strong> Both uploaded images and generated images
-        are automatically deleted from our servers after 24 hours. This ensures your
-        privacy and minimizes data storage. We recommend downloading any images you
-        wish to keep before this time period expires.
+        <strong>Image Storage Policy:</strong> Both uploaded images and
+        generated images are automatically deleted from our servers after 24
+        hours. This ensures your privacy and minimizes data storage. We
+        recommend downloading any images you wish to keep before this time
+        period expires.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">7. Your Rights</h2>

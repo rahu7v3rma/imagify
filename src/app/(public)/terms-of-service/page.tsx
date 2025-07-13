@@ -5,20 +5,25 @@ export default function TermsOfServicePage() {
     <div className="max-w-3xl mx-auto space-y-6 text-gray-800 dark:text-zinc-200">
       <h1 className="text-3xl font-bold dark:text-white">Terms of Service</h1>
       <p>
-        These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of
-        imagify.pro (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;). By creating an account or using the
-        platform in any way, you agree to be bound by these Terms. If you do
-        not agree with any part of the Terms, you may not use imagify.pro.
+        These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and
+        use of imagify.pro (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or
+        &ldquo;us&rdquo;). By creating an account or using the platform in any
+        way, you agree to be bound by these Terms. If you do not agree with any
+        part of the Terms, you may not use imagify.pro.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">1. Services Provided</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        1. Services Provided
+      </h2>
       <p>
-        imagify.pro offers cloud-based tools to manipulate images, including but not
-        limited to background removal, upscaling, text extraction, and other
+        imagify.pro offers cloud-based tools to manipulate images, including but
+        not limited to background removal, upscaling, text extraction, and other
         AI-assisted transformations. The exact feature set may evolve over time.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">2. User Accounts</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        2. User Accounts
+      </h2>
       <p>
         You must create an account to access most features. You are responsible
         for maintaining the confidentiality of your login credentials and for
@@ -26,24 +31,34 @@ export default function TermsOfServicePage() {
         us of any unauthorised use or security breach.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">3. Credits & Payments</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        3. Credits & Payments
+      </h2>
       <p>
-        Certain features require prepaid processing credits (&ldquo;cents&rdquo;). Credits
-        are non-transferable and non-refundable except where required by law.
+        Certain features require prepaid processing credits. Credits are
+        non-transferable and non-refundable except where required by law.
         Payments are processed securely by our third-party provider, Razorpay.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">4. Acceptable Use</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        4. Acceptable Use
+      </h2>
       <ul className="list-disc list-inside space-y-1">
-        <li>Do not upload any content that you do not have the right to use.</li>
-        <li>Do not use imagify.pro for unlawful, harmful, or hateful purposes.</li>
+        <li>
+          Do not upload any content that you do not have the right to use.
+        </li>
+        <li>
+          Do not use imagify.pro for unlawful, harmful, or hateful purposes.
+        </li>
         <li>
           Do not attempt to reverse-engineer, interfere with, or disrupt the
           platform or its infrastructure.
         </li>
       </ul>
 
-      <h2 className="text-2xl font-semibold dark:text-white">5. Intellectual Property</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        5. Intellectual Property
+      </h2>
       <p>
         imagify.pro retains all rights, title, and interest in the platform. You
         retain ownership of images and content you upload. By uploading content
@@ -51,29 +66,36 @@ export default function TermsOfServicePage() {
         for the purpose of providing the requested services.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">6. Rights to Generated Images</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        6. Rights to Generated Images
+      </h2>
       <p>
-        You retain full rights to use, modify, distribute, and commercialize any images
-        generated, processed, or modified through our services. This includes but is not
-        limited to images with backgrounds removed, upscaled images, and any other outputs
-        produced by our AI-powered tools. You may use these generated images for any lawful
-        purpose, including commercial use, without any additional licensing fees or royalties
-        to imagify.pro.
+        You retain full rights to use, modify, distribute, and commercialize any
+        images generated, processed, or modified through our services. This
+        includes but is not limited to images with backgrounds removed, upscaled
+        images, and any other outputs produced by our AI-powered tools. You may
+        use these generated images for any lawful purpose, including commercial
+        use, without any additional licensing fees or royalties to imagify.pro.
       </p>
       <p>
-        However, you acknowledge that similar or identical outputs may be generated for other
-        users processing similar input images. We do not guarantee exclusivity of any
-        particular generated image or output.
-      </p>
-
-      <h2 className="text-2xl font-semibold dark:text-white">7. Disclaimer of Warranties</h2>
-      <p>
-        imagify.pro is provided on an &ldquo;as-is&rdquo; basis without warranties of any kind.
-        We do not guarantee that the platform will be uninterrupted, secure, or
-        error-free, or that the outputs will meet your expectations.
+        However, you acknowledge that similar or identical outputs may be
+        generated for other users processing similar input images. We do not
+        guarantee exclusivity of any particular generated image or output.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">8. Limitation of Liability</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        7. Disclaimer of Warranties
+      </h2>
+      <p>
+        imagify.pro is provided on an &ldquo;as-is&rdquo; basis without
+        warranties of any kind. We do not guarantee that the platform will be
+        uninterrupted, secure, or error-free, or that the outputs will meet your
+        expectations.
+      </p>
+
+      <h2 className="text-2xl font-semibold dark:text-white">
+        8. Limitation of Liability
+      </h2>
       <p>
         To the fullest extent permitted by law, in no event shall imagify.pro be
         liable for any indirect, incidental, special, consequential or punitive
@@ -88,23 +110,27 @@ export default function TermsOfServicePage() {
         any time via the Settings page.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">10. Changes to Terms</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        10. Changes to Terms
+      </h2>
       <p>
-        We may update these Terms from time to time. Significant changes will
-        be notified through the platform or by email. Continued use after the
+        We may update these Terms from time to time. Significant changes will be
+        notified through the platform or by email. Continued use after the
         effective date constitutes acceptance of the revised Terms.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">11. Governing Law</h2>
+      <h2 className="text-2xl font-semibold dark:text-white">
+        11. Governing Law
+      </h2>
       <p>
         These Terms shall be governed by and construed in accordance with the
-        laws of the jurisdiction in which imagify.pro is operated, without regard
-        to conflict of law principles.
+        laws of the jurisdiction in which imagify.pro is operated, without
+        regard to conflict of law principles.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">12. Contact</h2>
       <p>
-        For questions regarding these Terms, please contact us at{' '}
+        For questions regarding these Terms, please contact us at{" "}
         <a
           href="mailto:support@imagify.pro"
           className="text-primary-600 underline"
