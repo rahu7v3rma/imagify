@@ -2,12 +2,13 @@
 
 import {
   Button,
-  Link,
+  Link as HeroUILink,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
 } from "@heroui/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useFirebase } from "@/context/firebase";
 
