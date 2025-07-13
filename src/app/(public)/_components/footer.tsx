@@ -15,20 +15,8 @@ export default function FooterComponent() {
   return (
     <footer className="backdrop-blur-sm border-t border-divider mt-auto">
       <div className="flex justify-between items-center p-4">
-        {/* Left side - Contact and Privacy links */}
+        {/* Left side - Privacy links */}
         <div className="flex items-center gap-4 text-sm">
-          <Link
-            href="/contact"
-            className="hover:text-primary transition-colors"
-          >
-            Contact Us
-          </Link>
-          <Link
-            href="/about-us"
-            className="hover:text-primary transition-colors"
-          >
-            About Us
-          </Link>
           <Link
             href="/privacy-policy"
             className="hover:text-primary transition-colors"

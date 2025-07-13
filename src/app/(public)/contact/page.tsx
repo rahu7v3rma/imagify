@@ -88,6 +88,19 @@ export default function ContactPage() {
           Send Message
         </Button>
       </form>
+      
+      {/* Alternative contact method */}
+      <div className="mt-4 p-3 bg-default-50 border border-default-200 rounded-lg">
+        <p className="text-xs text-default-600">
+          <strong>Note:</strong> If you&apos;re having trouble with the form, you can also reach us directly at{" "}
+          <a 
+            href="mailto:support@imagify.pro" 
+            className="text-primary hover:text-primary-600 transition-colors underline"
+          >
+            support@imagify.pro
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
