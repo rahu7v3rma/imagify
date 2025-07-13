@@ -6,3 +6,4 @@ node_modules
 tasks.md
 firebase-debug.log
 pglite-debug.log
+functions/lib
