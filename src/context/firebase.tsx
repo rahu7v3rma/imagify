@@ -21,9 +21,9 @@ const FirebaseContext = createContext<{
   setUserCredits: (credits: UserCreditsDocument | null) => void;
 }>({
   user: null,
-  setUser: () => {},
+  setUser: () => { },
   userCredits: null,
-  setUserCredits: () => {},
+  setUserCredits: () => { },
 });
 
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
@@ -36,13 +36,14 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = listenAuthState(async (user) => {
       if (user) {
+
         setUser(user);
-        
+
         // Set the imagify.user.id cookie if user is authenticated
         Cookies.set("imagify.user.id", user.uid, {
           expires: 30 // 30 days
         });
-        
+
         try {
           const credits = await getUserCredits(user.uid);
           setUserCredits(credits);
@@ -52,7 +53,7 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
       } else {
         setUser(null);
         setUserCredits(null);
-        
+
         // Clear the imagify.user.id cookie if user is not authenticated
         Cookies.remove("imagify.user.id");
       }

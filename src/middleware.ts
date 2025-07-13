@@ -3,17 +3,17 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
+
   // Check if the path starts with /dashboard
   if (pathname.startsWith("/dashboard")) {
     const userIdCookie = request.cookies.get("imagify.user.id");
-    
+
     // If no user ID cookie, redirect to login
     if (!userIdCookie) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
-  
+
   return NextResponse.next();
 }
 
