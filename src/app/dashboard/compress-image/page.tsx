@@ -47,6 +47,9 @@ const schema = z
 
 type Schema = z.infer<typeof schema>;
 
+// File size limit: 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+
 export default function CompressImagePage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
@@ -82,6 +85,17 @@ export default function CompressImagePage() {
     const file = e.target.files?.[0];
     if (file) {
       if (file.type.startsWith("image/")) {
+        // Check file size
+        if (file.size > MAX_FILE_SIZE) {
+          addToast({
+            title: "File too large",
+            description: "Image file must be smaller than 10MB",
+            color: "danger",
+          });
+          e.target.value = "";
+          return;
+        }
+        
         setOriginalFileSize(file.size);
         const reader = new FileReader();
         reader.onload = async (e) => {
@@ -117,6 +131,11 @@ export default function CompressImagePage() {
       const contentLength = response.headers["content-length"];
       const size = contentLength ? parseInt(contentLength, 10) : undefined;
 
+      // Check file size for URL images too
+      if (size && size > MAX_FILE_SIZE) {
+        return { isValid: false, size };
+      }
+
       return { isValid: true, size };
     } catch {
       return { isValid: false };
@@ -131,9 +150,13 @@ export default function CompressImagePage() {
         const { isValid, size } = await validateImageUrl(imageUrl.trim());
 
         if (!isValid) {
+          const errorMessage = size && size > MAX_FILE_SIZE 
+            ? "Image file must be smaller than 10MB"
+            : "The URL does not point to a valid image file";
+          
           addToast({
             title: "Invalid image URL",
-            description: "The URL does not point to a valid image file",
+            description: errorMessage,
             color: "danger",
           });
           return;
@@ -271,6 +294,7 @@ export default function CompressImagePage() {
               })}
               isInvalid={!!errors.uploadedImage}
               errorMessage={errors.uploadedImage?.message as string}
+              description="Maximum file size: 10MB"
             />
 
             <Controller
