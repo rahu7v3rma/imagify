@@ -27,8 +27,16 @@ export default function PrivacyPolicyPage() {
         </li>
         <li>
           <strong><a href="https://replicate.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Replicate</a></strong> &mdash; machine-learning infrastructure
-          used to process images. Images you submit for processing are transmitted to Replicate’s
+          used to process images. Images you submit for processing are transmitted to Replicate's
           API solely for the purpose of generating the requested output.
+        </li>
+        <li>
+          <strong><a href="https://tinify.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">Tinify</a></strong> &mdash; image compression services
+          used to optimize and compress images efficiently.
+        </li>
+        <li>
+          <strong><a href="https://openai.com/" target="_blank" rel="noopener noreferrer" className="text-primary-600 underline">OpenAI</a></strong> &mdash; AI processing services
+          used for advanced image analysis and generation capabilities.
         </li>
       </ul>
 
