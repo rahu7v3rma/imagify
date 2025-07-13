@@ -10,6 +10,7 @@ import {
   SparklesIcon,
   ArchiveBoxArrowDownIcon,
   MagnifyingGlassIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 
 interface FeatureCardProps {
@@ -90,6 +91,13 @@ export default function DashboardPage() {
       cost: "3 credits",
     },
     {
+      href: "/dashboard/convert-format",
+      icon: ArrowPathIcon,
+      title: "Convert Format",
+      description: "Convert images between different formats",
+      cost: "3 credits",
+    },
+    {
       href: "/dashboard/edit-image",
       icon: PencilIcon,
       title: "Edit Image",
@@ -102,7 +110,7 @@ export default function DashboardPage() {
   const filteredFeatures = features.filter(
     (feature) =>
       feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      feature.description.toLowerCase().includes(searchQuery.toLowerCase())
+      feature.description.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -113,8 +121,8 @@ export default function DashboardPage() {
             Dashboard
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Welcome back! Choose a tool to get started with your image processing
-            needs.
+            Welcome back! Choose a tool to get started with your image
+            processing needs.
           </p>
         </div>
 
@@ -136,7 +144,8 @@ export default function DashboardPage() {
           {/* Search Results Count */}
           {searchQuery && (
             <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              {filteredFeatures.length} tool{filteredFeatures.length !== 1 ? 's' : ''} found
+              {filteredFeatures.length} tool
+              {filteredFeatures.length !== 1 ? "s" : ""} found
             </div>
           )}
         </div>
@@ -162,7 +171,10 @@ export default function DashboardPage() {
           <div className="text-gray-500 dark:text-gray-400">
             <MagnifyingGlassIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
             <p className="text-lg">No tools found for "{searchQuery}"</p>
-            <p className="text-sm mt-2">Try searching for "generate", "remove", "extract", "upscale", "compress", or "edit"</p>
+            <p className="text-sm mt-2">
+              Try searching for "generate", "remove", "extract", "upscale",
+              "compress", or "edit"
+            </p>
           </div>
         </div>
       )}

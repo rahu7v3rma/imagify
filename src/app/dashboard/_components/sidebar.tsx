@@ -11,6 +11,7 @@ import {
   DocumentTextIcon,
   SparklesIcon,
   ArchiveBoxArrowDownIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { usePathname, useRouter } from "next/navigation";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
@@ -54,7 +55,7 @@ const SidebarLink = ({
 const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  
+
   const isDashboardActive = pathname === "/dashboard";
   const isGenerateImageActive = pathname.startsWith(
     "/dashboard/generate-image",
@@ -68,6 +69,9 @@ const Sidebar = () => {
   const isCompressImageActive = pathname.startsWith(
     "/dashboard/compress-image",
   );
+  const isConvertFormatActive = pathname.startsWith(
+    "/dashboard/convert-format",
+  );
   const isBillingActive = pathname.startsWith("/dashboard/billing");
   const isSettingsActive = pathname.startsWith("/dashboard/settings");
 
@@ -76,49 +80,55 @@ const Sidebar = () => {
       key: "dashboard",
       href: "/dashboard",
       icon: HomeIcon,
-      label: "Dashboard"
+      label: "Dashboard",
     },
     {
       key: "generate-image",
       href: "/dashboard/generate-image",
       icon: SparklesIcon,
-      label: "Generate Image"
+      label: "Generate Image",
     },
     {
       key: "remove-background",
       href: "/dashboard/remove-background",
       icon: PhotoIcon,
-      label: "Remove Background"
+      label: "Remove Background",
     },
     {
       key: "extract-text",
       href: "/dashboard/extract-text",
       icon: DocumentTextIcon,
-      label: "Extract Text"
+      label: "Extract Text",
     },
     {
       key: "upscale",
       href: "/dashboard/upscale",
       icon: ArrowUpIcon,
-      label: "Upscale Image"
+      label: "Upscale Image",
     },
     {
       key: "compress-image",
       href: "/dashboard/compress-image",
       icon: ArchiveBoxArrowDownIcon,
-      label: "Compress Image"
+      label: "Compress Image",
+    },
+    {
+      key: "convert-format",
+      href: "/dashboard/convert-format",
+      icon: ArrowPathIcon,
+      label: "Convert Format",
     },
     {
       key: "edit-image",
       href: "/dashboard/edit-image",
       icon: PencilIcon,
-      label: "Edit Image"
-    }
+      label: "Edit Image",
+    },
   ];
 
   // Find the currently selected item based on pathname
   const getCurrentSelectedKey = () => {
-    const currentItem = quickNavItems.find(item => {
+    const currentItem = quickNavItems.find((item) => {
       if (item.href === "/dashboard") {
         return pathname === "/dashboard";
       }
@@ -129,7 +139,7 @@ const Sidebar = () => {
 
   const handleSelectionChange = (key: Key | null) => {
     if (key) {
-      const selectedItem = quickNavItems.find(item => item.key === key);
+      const selectedItem = quickNavItems.find((item) => item.key === key);
       if (selectedItem) {
         router.push(selectedItem.href);
       }
@@ -201,6 +211,12 @@ const Sidebar = () => {
             icon={ArchiveBoxArrowDownIcon}
             label="Compress Image"
             isActive={isCompressImageActive}
+          />
+          <SidebarLink
+            href="/dashboard/convert-format"
+            icon={ArrowPathIcon}
+            label="Convert Format"
+            isActive={isConvertFormatActive}
           />
           <SidebarLink
             href="/dashboard/edit-image"

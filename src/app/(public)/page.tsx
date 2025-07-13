@@ -6,6 +6,7 @@ import {
   DocumentTextIcon,
   SparklesIcon,
   ArchiveBoxArrowDownIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 
 interface ToolCardProps {
@@ -61,6 +62,12 @@ export default function Home() {
       icon: ArchiveBoxArrowDownIcon,
       title: "Compress Image",
       description: "Reduce image file size without losing quality",
+    },
+    {
+      href: "/dashboard/convert-format",
+      icon: ArrowPathIcon,
+      title: "Convert Format",
+      description: "Convert images between different formats",
     },
     {
       href: "/dashboard/edit-image",

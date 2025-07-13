@@ -5,6 +5,7 @@ import {
   DocumentTextIcon,
   SparklesIcon,
   ArchiveBoxArrowDownIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { adminGetExchangeRates } from "@/lib/firebase-admin";
 import PricingCalculator from "./_components/pricing-calculator";
@@ -46,6 +47,12 @@ const tools: ToolPricing[] = [
     icon: ArchiveBoxArrowDownIcon,
     title: "Compress Image",
     description: "Reduce image file size without losing quality",
+    cost: "3 credits",
+  },
+  {
+    icon: ArrowPathIcon,
+    title: "Convert Format",
+    description: "Convert images between different formats",
     cost: "3 credits",
   },
   {

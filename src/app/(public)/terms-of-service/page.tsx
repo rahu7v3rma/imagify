@@ -17,8 +17,23 @@ export default function TermsOfServicePage() {
       </h2>
       <p>
         imagify.pro offers cloud-based tools to manipulate images, including but
-        not limited to background removal, upscaling, text extraction, and other
-        AI-assisted transformations. The exact feature set may evolve over time.
+        not limited to:
+      </p>
+      <ul className="list-disc list-inside space-y-1 ml-4">
+        <li>Generate Image – Create stunning images from text using AI</li>
+        <li>Remove Background – Remove backgrounds from images instantly</li>
+        <li>
+          Extract Text (OCR) – Extract text from screenshots or scanned
+          documents
+        </li>
+        <li>Upscale Image – Enlarge images up to 4× while preserving detail</li>
+        <li>Compress Image – Reduce image file size without losing quality</li>
+        <li>Convert Format – Convert images between different formats</li>
+        <li>Edit Image – Smart adjustments and transformations</li>
+      </ul>
+      <p>
+        The exact feature set may evolve over time as we continue to enhance our
+        AI-assisted transformations.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">

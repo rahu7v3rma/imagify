@@ -34,6 +34,10 @@ export default function AboutUsPage() {
           quality.
         </li>
         <li>
+          🔄 <strong>Convert Format</strong> – transform images between
+          different formats (PNG, JPEG, WebP, etc.).
+        </li>
+        <li>
           🖌️ <strong>Edit</strong> – smart adjustments and transformations.
         </li>
         <li>
