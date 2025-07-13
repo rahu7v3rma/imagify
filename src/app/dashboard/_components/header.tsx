@@ -18,6 +18,7 @@ import { logoutUser } from "@/lib/firebase";
 import { addToast } from "@heroui/react";
 import { useLoader } from "@/context/loader";
 import { BoltIcon } from "@heroicons/react/24/outline";
+import Cookies from "js-cookie";
 
 export default function Header() {
   const router = useRouter();
@@ -29,6 +30,10 @@ export default function Header() {
       setIsLoading(true);
       await logoutUser();
       setUser(null);
+      
+      // Clear the imagify.user.id cookie
+      Cookies.remove("imagify.user.id");
+      
       addToast({
         title: "Logged out successfully!",
         color: "success",

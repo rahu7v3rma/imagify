@@ -13,6 +13,7 @@ import validator from "validator";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
+import Cookies from "js-cookie";
 
 const schema = z
   .object({
@@ -58,6 +59,12 @@ export default function SignupPage() {
       await createUserCredits(userCredential.user.uid, 0);
 
       setUser(userCredential.user);
+      
+      // Set the imagify.user.id cookie
+      Cookies.set("imagify.user.id", userCredential.user.uid, {
+        expires: 30 // 30 days
+      });
+      
       addToast({
         title: "Account created successfully!",
         color: "success",

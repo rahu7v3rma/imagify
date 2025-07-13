@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
+import Cookies from "js-cookie";
 import { useTheme } from "@/context/theme";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 
@@ -55,6 +56,10 @@ export default function SettingsPage() {
       // Delete the user account
       await deleteCurrentUser();
       setUser(null);
+      
+      // Clear the imagify.user.id cookie
+      Cookies.remove("imagify.user.id");
+      
       addToast({
         title: "Account deleted successfully!",
         color: "success",

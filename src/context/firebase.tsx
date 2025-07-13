@@ -12,6 +12,7 @@ import {
   useState,
 } from "react";
 import { useLoader } from "./loader";
+import Cookies from "js-cookie";
 
 const FirebaseContext = createContext<{
   user: User | null;
@@ -36,6 +37,12 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = listenAuthState(async (user) => {
       if (user) {
         setUser(user);
+        
+        // Set the imagify.user.id cookie if user is authenticated
+        Cookies.set("imagify.user.id", user.uid, {
+          expires: 30 // 30 days
+        });
+        
         try {
           const credits = await getUserCredits(user.uid);
           setUserCredits(credits);
@@ -45,6 +52,9 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
       } else {
         setUser(null);
         setUserCredits(null);
+        
+        // Clear the imagify.user.id cookie if user is not authenticated
+        Cookies.remove("imagify.user.id");
       }
       setIsLoading(false);
     });
