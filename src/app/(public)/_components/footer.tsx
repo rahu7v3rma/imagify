@@ -24,6 +24,12 @@ export default function FooterComponent() {
             Contact Us
           </Link>
           <Link
+            href="/about-us"
+            className="hover:text-primary transition-colors"
+          >
+            About Us
+          </Link>
+          <Link
             href="/privacy-policy"
             className="hover:text-primary transition-colors"
           >
