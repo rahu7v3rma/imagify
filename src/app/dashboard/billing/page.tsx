@@ -8,7 +8,7 @@ import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
 export default function BillingPage() {
-  const { userCents, user } = useFirebase();
+  const { userCredits, user } = useFirebase();
   const router = useRouter();
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function BillingPage() {
                     Total Cents
                   </h3>
                   <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 ml-8">
-                    {userCents?.cents ?? 0}
+                    {userCredits?.credits ?? 0}
                   </div>
                 </div>
                 <div className="flex justify-end">

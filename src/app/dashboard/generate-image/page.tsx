@@ -10,7 +10,7 @@ import Image from "next/image";
 import axios from "axios";
 import { addToast } from "@heroui/react";
 import { Controller } from "react-hook-form";
-import { getUserCents } from "@/lib/firebase";
+import { getUserCredits } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
 import { useFirebase } from "@/context/firebase";
 
@@ -27,7 +27,7 @@ type Schema = z.infer<typeof schema>;
 export default function GenerateImagePage() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
-  const { user, setUserCents } = useFirebase();
+  const { user, setUserCredits } = useFirebase();
 
   const {
     control,
@@ -97,8 +97,8 @@ export default function GenerateImagePage() {
         setGeneratedImage(response.data.image_url);
 
         // Refresh user cents
-        const updatedCents = await getUserCents(user.uid);
-        setUserCents(updatedCents);
+        const updatedCredits = await getUserCredits(user.uid);
+        setUserCredits(updatedCredits);
 
         addToast({
           title: "Image generated successfully",

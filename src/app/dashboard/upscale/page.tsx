@@ -14,7 +14,7 @@ import { Controller } from "react-hook-form";
 import {
   uploadFileString,
   getFileDownloadURL,
-  getUserCents,
+  getUserCredits,
 } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
 import { useFirebase } from "@/context/firebase";
@@ -56,7 +56,7 @@ export default function UpscalePage() {
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
-  const { user, setUserCents } = useFirebase();
+  const { user, setUserCredits } = useFirebase();
 
   const getCreditRequirement = (type: string) => {
     switch (type) {
@@ -243,8 +243,8 @@ export default function UpscalePage() {
         setProcessedImage(response.data.image_url);
 
         // Refresh user cents
-        const updatedCents = await getUserCents(user.uid);
-        setUserCents(updatedCents);
+        const updatedCredits = await getUserCredits(user.uid);
+        setUserCredits(updatedCredits);
 
         addToast({
           title: "Image upscaled successfully",
