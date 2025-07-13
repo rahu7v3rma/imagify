@@ -53,10 +53,8 @@ export default function BillingPage() {
     }
   }, [router]);
 
-  // Generate Stripe URL with Firebase user ID
-  const stripeUrl = user?.uid
-    ? `https://buy.stripe.com/test_9B6cMYer65B36QXg4j6Ri00?client_reference_id=${user.uid}`
-    : "#";
+  // TODO: Configure payment processor URL
+  const paymentUrl = "#";
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -64,11 +62,11 @@ export default function BillingPage() {
 
       <Tabs aria-label="Billing tabs" color="primary" variant="underlined">
         <Tab
-          key="cents"
+          key="credits"
           title={
             <div className="flex items-center space-x-2">
               <BoltIcon className="w-4 h-4" />
-              <span>Cents</span>
+              <span>Credits</span>
             </div>
           }
         >
@@ -77,7 +75,7 @@ export default function BillingPage() {
               <CardBody className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Total Cents
+                    Total Credits
                   </h3>
                   <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 ml-8">
                     {userCredits?.credits ?? 0}
@@ -89,12 +87,12 @@ export default function BillingPage() {
                     variant="solid"
                     size="sm"
                     as="a"
-                    href={stripeUrl}
+                    href={paymentUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    isDisabled={!user?.uid}
+                    isDisabled={true}
                   >
-                    Buy Cents
+                    Buy Credits
                   </Button>
                 </div>
               </CardBody>

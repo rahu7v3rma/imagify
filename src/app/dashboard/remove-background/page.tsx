@@ -244,7 +244,7 @@ export default function RemoveBackgroundPage() {
       if (response.data.success) {
         setProcessedImage(response.data.image_url);
 
-        // Refresh user cents
+        // Refresh user credits
         const updatedCredits = await getUserCredits(user.uid);
         setUserCredits(updatedCredits);
 
@@ -281,7 +281,7 @@ export default function RemoveBackgroundPage() {
         automatically.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 {getCreditRequirement(generateType)} {"cents"}
+        💳 {getCreditRequirement(generateType)} {"credits"}
       </div>
 
       <div className="flex gap-8">

@@ -116,38 +116,41 @@ export interface ExchangeRateData {
 }
 
 // Admin Exchange Rate functions
-export const adminGetExchangeRates = async (): Promise<ExchangeRateData | null> => {
-  try {
-    // Get the most recent exchange rate document by ordering by document ID (timestamp) in descending order
-    const snapshot = await adminDb
-      .collection("exchange_rate")
-      .orderBy("__name__", "desc")
-      .limit(1)
-      .get();
+export const adminGetExchangeRates =
+  async (): Promise<ExchangeRateData | null> => {
+    try {
+      // Get the most recent exchange rate document by ordering by document ID (timestamp) in descending order
+      const snapshot = await adminDb
+        .collection("exchange_rate")
+        .orderBy("__name__", "desc")
+        .limit(1)
+        .get();
 
-    if (snapshot.empty) {
+      if (snapshot.empty) {
+        return null;
+      }
+
+      const doc = snapshot.docs[0];
+      const exchangeRates = doc.data();
+      console.log("Raw exchange rates from Firebase:", exchangeRates);
+
+      // Transform the data to include currency codes and their rates
+      const currencies: Currency[] = Object.entries(exchangeRates).map(
+        ([code, rate]) => ({
+          code,
+          rate: rate as number,
+          label: code.toUpperCase(),
+        }),
+      );
+
+      return {
+        currencies,
+        timestamp: doc.id,
+      };
+    } catch (error) {
+      console.error("Error fetching exchange rates:", error);
       return null;
     }
-
-    const doc = snapshot.docs[0];
-    const exchangeRates = doc.data();
-    console.log("Raw exchange rates from Firebase:", exchangeRates);
-
-    // Transform the data to include currency codes and their rates
-    const currencies: Currency[] = Object.entries(exchangeRates).map(([code, rate]) => ({
-      code,
-      rate: rate as number,
-      label: code.toUpperCase(),
-    }));
-
-    return {
-      currencies,
-      timestamp: doc.id,
-    };
-  } catch (error) {
-    console.error("Error fetching exchange rates:", error);
-    return null;
-  }
-};
+  };
 
 export { admin };

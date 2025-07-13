@@ -56,10 +56,10 @@ export default function SettingsPage() {
       // Delete the user account
       await deleteCurrentUser();
       setUser(null);
-      
+
       // Clear the imagify.user.id cookie
       Cookies.remove("imagify.user.id");
-      
+
       addToast({
         title: "Account deleted successfully!",
         color: "success",

@@ -21,9 +21,9 @@ const FirebaseContext = createContext<{
   setUserCredits: (credits: UserCreditsDocument | null) => void;
 }>({
   user: null,
-  setUser: () => { },
+  setUser: () => {},
   userCredits: null,
-  setUserCredits: () => { },
+  setUserCredits: () => {},
 });
 
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
@@ -42,7 +42,7 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
 
         // Set the imagify.user.id cookie if user is authenticated
         Cookies.set("imagify.user.id", user.uid, {
-          expires: 30 // 30 days
+          expires: 30, // 30 days
         });
 
         try {

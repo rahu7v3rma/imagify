@@ -59,12 +59,12 @@ export default function SignupPage() {
       await createUserCredits(userCredential.user.uid, 0);
 
       setUser(userCredential.user);
-      
+
       // Set the imagify.user.id cookie
       Cookies.set("imagify.user.id", userCredential.user.uid, {
-        expires: 30 // 30 days
+        expires: 30, // 30 days
       });
-      
+
       addToast({
         title: "Account created successfully!",
         color: "success",

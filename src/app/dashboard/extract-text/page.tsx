@@ -240,7 +240,7 @@ export default function ExtractTextPage() {
       if (response.data.success) {
         setExtractedText(response.data.extracted_text);
 
-        // Refresh user cents
+        // Refresh user credits
         const updatedCredits = await getUserCredits(user.uid);
         setUserCredits(updatedCredits);
 
@@ -277,7 +277,7 @@ export default function ExtractTextPage() {
         technology.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 2 cents
+        💳 2 credits
       </div>
 
       <div className="flex gap-8">

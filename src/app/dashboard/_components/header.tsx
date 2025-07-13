@@ -30,10 +30,10 @@ export default function Header() {
       setIsLoading(true);
       await logoutUser();
       setUser(null);
-      
+
       // Clear the imagify.user.id cookie
       Cookies.remove("imagify.user.id");
-      
+
       addToast({
         title: "Logged out successfully!",
         color: "success",

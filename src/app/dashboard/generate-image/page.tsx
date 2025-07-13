@@ -96,7 +96,7 @@ export default function GenerateImagePage() {
       if (response.data.success) {
         setGeneratedImage(response.data.image_url);
 
-        // Refresh user cents
+        // Refresh user credits
         const updatedCredits = await getUserCredits(user.uid);
         setUserCredits(updatedCredits);
 
@@ -132,7 +132,7 @@ export default function GenerateImagePage() {
         Enter a prompt to generate an image using AI.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        💳 {getCreditRequirement(generateType)} {"cents"}
+        💳 {getCreditRequirement(generateType)} {"credits"}
       </div>
 
       <div className="flex gap-8">
