@@ -12,13 +12,22 @@ import {
   SparklesIcon,
   ArchiveBoxArrowDownIcon,
 } from "@heroicons/react/24/outline";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
+import { Key } from "react";
 
 interface SidebarLinkProps {
   href: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   label: string;
   isActive: boolean;
+}
+
+interface SidebarItem {
+  key: string;
+  href: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  label: string;
 }
 
 const SidebarLink = ({
@@ -44,6 +53,8 @@ const SidebarLink = ({
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  
   const isDashboardActive = pathname === "/dashboard";
   const isGenerateImageActive = pathname.startsWith(
     "/dashboard/generate-image",
@@ -60,9 +71,100 @@ const Sidebar = () => {
   const isBillingActive = pathname.startsWith("/dashboard/billing");
   const isSettingsActive = pathname.startsWith("/dashboard/settings");
 
+  const quickNavItems: SidebarItem[] = [
+    {
+      key: "dashboard",
+      href: "/dashboard",
+      icon: HomeIcon,
+      label: "Dashboard"
+    },
+    {
+      key: "generate-image",
+      href: "/dashboard/generate-image",
+      icon: SparklesIcon,
+      label: "Generate Image"
+    },
+    {
+      key: "remove-background",
+      href: "/dashboard/remove-background",
+      icon: PhotoIcon,
+      label: "Remove Background"
+    },
+    {
+      key: "extract-text",
+      href: "/dashboard/extract-text",
+      icon: DocumentTextIcon,
+      label: "Extract Text"
+    },
+    {
+      key: "upscale",
+      href: "/dashboard/upscale",
+      icon: ArrowUpIcon,
+      label: "Upscale Image"
+    },
+    {
+      key: "compress-image",
+      href: "/dashboard/compress-image",
+      icon: ArchiveBoxArrowDownIcon,
+      label: "Compress Image"
+    },
+    {
+      key: "edit-image",
+      href: "/dashboard/edit-image",
+      icon: PencilIcon,
+      label: "Edit Image"
+    }
+  ];
+
+  // Find the currently selected item based on pathname
+  const getCurrentSelectedKey = () => {
+    const currentItem = quickNavItems.find(item => {
+      if (item.href === "/dashboard") {
+        return pathname === "/dashboard";
+      }
+      return pathname.startsWith(item.href);
+    });
+    return currentItem?.key || "";
+  };
+
+  const handleSelectionChange = (key: Key | null) => {
+    if (key) {
+      const selectedItem = quickNavItems.find(item => item.key === key);
+      if (selectedItem) {
+        router.push(selectedItem.href);
+      }
+    }
+  };
+
   return (
     <aside className="w-56 min-w-56 h-full border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-zinc-800">
       <nav className="flex flex-col h-full p-4">
+        {/* Autocomplete Navigation */}
+        <div className="mb-6">
+          <Autocomplete
+            label="Quick Navigation"
+            placeholder="Search or select a page..."
+            selectedKey={getCurrentSelectedKey()}
+            onSelectionChange={handleSelectionChange}
+            className="w-full"
+            variant="bordered"
+            size="sm"
+          >
+            {quickNavItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <AutocompleteItem
+                  key={item.key}
+                  startContent={<Icon className="h-4 w-4" />}
+                >
+                  {item.label}
+                </AutocompleteItem>
+              );
+            })}
+          </Autocomplete>
+        </div>
+
+        {/* Traditional Sidebar Links */}
         <div className="space-y-2">
           <SidebarLink
             href="/dashboard"
