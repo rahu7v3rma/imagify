@@ -6,4 +6,5 @@
 - NextJS
 - Replicate
 - Razorpay
+- Tinify
 - OpenAI

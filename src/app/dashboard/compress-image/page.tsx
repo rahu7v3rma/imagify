@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Slider } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { CustomInput, FileInput } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,7 +30,6 @@ const schema = z
         return files[0]?.type.startsWith("image/");
       }, "Only image files are allowed"),
     imageUrl: z.string().optional(),
-    quality: z.number().min(10).max(100),
   })
   .refine(
     (data) => {
@@ -72,13 +71,9 @@ export default function CompressImagePage() {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      quality: 80,
-    },
   });
 
   const imageUrl = watch("imageUrl");
-  const quality = watch("quality");
 
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return "0 Bytes";
@@ -205,7 +200,7 @@ export default function CompressImagePage() {
     }
   };
 
-  const onSubmit = async (data: Schema) => {
+  const onSubmit = async () => {
     if (!selectedImage) return;
     if (!user) {
       addToast({
@@ -238,7 +233,6 @@ export default function CompressImagePage() {
         "/dashboard/compress-image/process",
         {
           imageUrl: finalImageUrl,
-          quality: data.quality,
         },
         {
           headers: {
@@ -264,7 +258,7 @@ export default function CompressImagePage() {
       } else {
         addToast({
           title: "Image compression failed",
-          description: "Failed to compress image. Please try again.",
+          description: response.data.message || "Failed to compress image",
           color: "danger",
         });
       }
@@ -327,51 +321,6 @@ export default function CompressImagePage() {
                       !field.value || !field.value.trim() || isValidatingUrl,
                   }}
                 />
-              )}
-            />
-
-            <Controller
-              control={control}
-              name="quality"
-              render={({ field }) => (
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-zinc-300">
-                    Compression Quality: {field.value}%
-                  </label>
-                  <Slider
-                    size="sm"
-                    step={5}
-                    color="primary"
-                    showSteps={true}
-                    showTooltip={true}
-                    showOutline={true}
-                    disableThumbScale={false}
-                    minValue={10}
-                    maxValue={100}
-                    defaultValue={80}
-                    value={field.value}
-                    onChange={field.onChange}
-                    className="max-w-md"
-                    getValue={(value) => `${value}%`}
-                    classNames={{
-                      base: "max-w-md",
-                      filler: "bg-gradient-to-r from-primary-500 to-primary-400",
-                      labelWrapper: "mb-2",
-                      label: "font-medium text-default-700 text-medium",
-                      value: "font-medium text-default-500 text-small",
-                      thumb: [
-                        "transition-size",
-                        "bg-gradient-to-r from-primary-500 to-primary-400",
-                        "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
-                        "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6"
-                      ],
-                      step: "data-[in-range=true]:bg-black/30 dark:data-[in-range=true]:bg-white/50"
-                    }}
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Higher values = better quality, larger file size. Lower values = smaller file size, reduced quality.
-                  </p>
-                </div>
               )}
             />
 
