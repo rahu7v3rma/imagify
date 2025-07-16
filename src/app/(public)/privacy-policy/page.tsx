@@ -34,12 +34,12 @@ export default function PrivacyPolicyPage() {
         <li>
           <strong>
             <a
-              href="https://razorpay.com/"
+              href="https://paypal.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary-600 underline"
             >
-              Razorpay
+              PayPal
             </a>
           </strong>{" "}
           &mdash; secure payment collection and subscription management.
@@ -110,7 +110,7 @@ export default function PrivacyPolicyPage() {
         </li>
         <li>
           <strong>Payment information</strong> &mdash; handled directly by
-          Razorpay. We do not store your full card details on our servers.
+          PayPal. We do not store your full card details on our servers.
         </li>
       </ul>
 

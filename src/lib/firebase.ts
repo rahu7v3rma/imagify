@@ -111,6 +111,10 @@ export interface UserCreditsDocument {
   credits: number;
 }
 
+export interface UserRoleDocument {
+  role_name: string;
+}
+
 export interface ContactMessage {
   email: string;
   message: string;
@@ -125,6 +129,19 @@ export const getUserCredits = async (
 
   if (docSnap.exists()) {
     return docSnap.data() as UserCreditsDocument;
+  } else {
+    return null;
+  }
+};
+
+export const getUserRole = async (
+  userId: string,
+): Promise<UserRoleDocument | null> => {
+  const docRef = doc(db, "user_role", userId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data() as UserRoleDocument;
   } else {
     return null;
   }

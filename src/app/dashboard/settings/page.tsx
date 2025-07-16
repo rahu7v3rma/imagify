@@ -11,6 +11,8 @@ import {
   ModalFooter,
   useDisclosure,
   Switch,
+  Card,
+  CardBody,
 } from "@heroui/react";
 import { deleteCurrentUser, deleteUserCredits } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
@@ -99,17 +101,27 @@ export default function SettingsPage() {
       <Tabs aria-label="Settings tabs" color="primary" variant="underlined">
         <Tab key="account" title="Account">
           <div className="py-4">
-            <div className="flex flex-row gap-4 items-center">
+            <Card className="max-w-md">
+              <CardBody>
+                <h3 className="text-lg font-medium dark:text-white">
+                  Account Information
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Your current email address: {user?.email}
+                </p>
+              </CardBody>
+            </Card>
+            <div className="flex flex-row gap-4 items-center mt-4">
               <Button color="danger" variant="bordered" onPress={onOpen}>
                 Delete Account
               </Button>
             </div>
           </div>
         </Tab>
-        {/* <Tab key="preferences" title="Preferences">
+        <Tab key="preferences" title="Preferences">
           <div className="py-4">
             <div className="space-y-4">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
                 <div>
                   <h3 className="text-lg font-medium dark:text-white">Theme</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -127,7 +139,7 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
-        </Tab> */}
+        </Tab>
       </Tabs>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

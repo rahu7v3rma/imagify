@@ -14,6 +14,17 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  // Check if the path starts with /admin (but not /admin/login)
+  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
+    const userIdCookie = request.cookies.get("imagify.user.id");
+    const userRoleCookie = request.cookies.get("imagify.user.role.name");
+
+    // If no user ID cookie or user role is not admin, redirect to admin login
+    if (!userIdCookie || userRoleCookie?.value !== "admin") {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 

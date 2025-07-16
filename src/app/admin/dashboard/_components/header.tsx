@@ -10,19 +10,17 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button,
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useFirebase } from "@/context/firebase";
 import { logoutUser } from "@/lib/firebase";
 import { addToast } from "@heroui/react";
 import { useLoader } from "@/context/loader";
-import { BoltIcon } from "@heroicons/react/24/outline";
 import Cookies from "js-cookie";
 
-export default function Header() {
+export default function AdminHeader() {
   const router = useRouter();
-  const { user, setUser, userCredits } = useFirebase();
+  const { user, setUser } = useFirebase();
   const { setIsLoading } = useLoader();
 
   const logout = async () => {
@@ -54,10 +52,6 @@ export default function Header() {
     router.push("/");
   };
 
-  const handleCreditsClick = () => {
-    router.push("/dashboard/billing");
-  };
-
   return (
     <Navbar
       maxWidth="full"
@@ -72,17 +66,6 @@ export default function Header() {
         </p>
       </NavbarBrand>
       <NavbarContent justify="end">
-        <NavbarItem>
-          <Button
-            variant="flat"
-            size="sm"
-            startContent={<BoltIcon className="w-4 h-4" />}
-            onClick={handleCreditsClick}
-            className="text-sm font-medium"
-          >
-            {userCredits?.credits ?? 0} credits
-          </Button>
-        </NavbarItem>
         <NavbarItem>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
@@ -99,16 +82,12 @@ export default function Header() {
               aria-label="Profile Actions"
               variant="flat"
               onAction={(actionKey) => {
-                if (actionKey === "settings") {
-                  router.push("/dashboard/settings");
-                }
                 if (actionKey === "logout") {
                   logout();
-                  router.push("/login");
+                  router.push("/admin/login");
                 }
               }}
             >
-              <DropdownItem key="settings">Settings</DropdownItem>
               <DropdownItem key="logout" color="danger">
                 Log Out
               </DropdownItem>
@@ -118,4 +97,4 @@ export default function Header() {
       </NavbarContent>
     </Navbar>
   );
-}
+} 

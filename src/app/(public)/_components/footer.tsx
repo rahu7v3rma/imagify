@@ -37,7 +37,7 @@ export default function FooterComponent() {
         </div>
 
         {/* Right side - Theme toggle */}
-        {/* <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Switch
             isSelected={mode === "dark"}
             onValueChange={handleToggle}
@@ -46,7 +46,7 @@ export default function FooterComponent() {
             startContent={<SunIcon className="w-4 h-4" />}
             endContent={<MoonIcon className="w-4 h-4" />}
           />
-        </div> */}
+        </div>
       </div>
     </footer>
   );

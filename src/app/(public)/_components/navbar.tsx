@@ -37,6 +37,11 @@ export default function NavbarComponent() {
           </Link>
         </NavbarItem>
         <NavbarItem>
+          <Link href="/blog" className="dark:text-white">
+            Blog
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
           <Link href="/pricing" className="dark:text-white">
             Pricing
           </Link>

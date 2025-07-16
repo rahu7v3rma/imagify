@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useState, useEffect } from "react";
 
 const ThemeContext = createContext<{
   mode: "light" | "dark";
@@ -9,7 +9,20 @@ const ThemeContext = createContext<{
 });
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setMode] = useState<"light" | "dark">("dark");
+  const [mode, setMode] = useState<"light" | "dark">("light");
+
+  // Load theme from localStorage on component mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme.mode") as "light" | "dark" | null;
+    if (savedTheme) {
+      setMode(savedTheme);
+    }
+  }, []);
+
+  // Save theme to localStorage whenever mode changes
+  useEffect(() => {
+    localStorage.setItem("theme.mode", mode);
+  }, [mode]);
 
   return (
     <ThemeContext.Provider
