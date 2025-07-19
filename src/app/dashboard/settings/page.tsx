@@ -51,7 +51,6 @@ export default function SettingsPage() {
       try {
         await deleteUserCredits(user.uid);
       } catch (error) {
-        console.warn("Could not delete user credits:", error);
         // Continue with account deletion even if user credits deletion fails
       }
 

@@ -8,49 +8,44 @@ import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useLoader } from "@/context/loader";
+import { getUserCredits } from "@/lib/firebase";
 
 export default function BillingPage() {
-  const { userCredits, user } = useFirebase();
+  const { userCredits, user, setUserCredits } = useFirebase();
   const router = useRouter();
   const { setIsLoading } = useLoader();
-  
-  // Buy credits states
-  const [creditAmount, setCreditAmount] = useState(100);
+
+  // Buy credits states - Update minimum to 500 credits ($5.00)
+  const [creditAmount, setCreditAmount] = useState(500);
   const [isEditingAmount, setIsEditingAmount] = useState(false);
   const [tempAmount, setTempAmount] = useState("");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const paymentStatus = searchParams.get("payment");
-    const message = searchParams.get("message");
-    const amount = searchParams.get("amount");
+    const status = searchParams.get("status");
 
-    if (paymentStatus) {
-      // Show toast based on payment status
-      if (paymentStatus === "success") {
-        // Success toast
-        const successMessage = amount
-          ? `Payment successful! $${(parseInt(amount) / 100).toFixed(
-              2,
-            )} charged.`
-          : "Payment successful!";
-
+    // Handle new status parameter from capture endpoint
+    if (status) {
+      if (status === "success") {
         addToast({
-          title: successMessage,
+          title: "Payment Successful!",
+          description: "Your credits have been added to your account.",
           color: "success",
         });
-      } else if (paymentStatus === "failed") {
-        // Failed toast
+
+        // Refresh user credits after successful payment
+        if (user) {
+          getUserCredits(user.uid)
+            .then((credits) => {
+              if (credits) {
+                setUserCredits(credits);
+              }
+            })
+        }
+      } else if (status === "failure") {
         addToast({
           title: "Payment Failed",
-          description: "Payment failed. Please try again.",
-          color: "danger",
-        });
-      } else if (paymentStatus === "error") {
-        // Error toast
-        addToast({
-          title: "Error",
-          description: "An error occurred during payment verification.",
+          description: "Payment could not be processed. Please try again.",
           color: "danger",
         });
       }
@@ -58,15 +53,16 @@ export default function BillingPage() {
       // Clean up the URL by removing search parameters
       const newUrl = window.location.pathname;
       router.replace(newUrl);
+
     }
-  }, [router]);
+  }, [router, user, setUserCredits]);
 
   const incrementCredits = () => {
     setCreditAmount((prev) => prev + 1);
   };
 
   const decrementCredits = () => {
-    setCreditAmount((prev) => Math.max(1, prev - 1));
+    setCreditAmount((prev) => Math.max(500, prev - 1)); // Minimum 500 credits
   };
 
   const startEditingAmount = () => {
@@ -83,8 +79,8 @@ export default function BillingPage() {
   };
 
   const finishEditingAmount = () => {
-    const newAmount = parseInt(tempAmount) || 1;
-    setCreditAmount(Math.max(1, newAmount));
+    const newAmount = parseInt(tempAmount) || 500;
+    setCreditAmount(Math.max(500, newAmount)); // Minimum 500 credits
     setIsEditingAmount(false);
     setTempAmount("");
   };
@@ -104,6 +100,16 @@ export default function BillingPage() {
         title: "Authentication required",
         description: "Please log in to buy credits",
         color: "danger",
+      });
+      return;
+    }
+
+    // Validate minimum amount on frontend
+    if (creditAmount < 500) {
+      addToast({
+        title: "Minimum Amount Required",
+        description: "Minimum purchase amount is 500 credits ($5.00)",
+        color: "warning",
       });
       return;
     }
@@ -148,7 +154,6 @@ export default function BillingPage() {
         });
       }
     } catch (error) {
-      console.error("Buy credits error:", error);
       addToast({
         title: "Error",
         description: "An error occurred while processing your request. Please try again.",
@@ -199,7 +204,7 @@ export default function BillingPage() {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       Buy Credits
                     </h3>
-                    
+
                     {/* Credit Amount Input */}
                     <div className="flex items-center justify-center space-x-4">
                       <Button
@@ -208,7 +213,7 @@ export default function BillingPage() {
                         variant="flat"
                         color="primary"
                         onClick={decrementCredits}
-                        isDisabled={creditAmount <= 1}
+                        isDisabled={creditAmount <= 500} // Disable at minimum 500 credits
                       >
                         <MinusIcon className="h-4 w-4" />
                       </Button>
@@ -249,7 +254,7 @@ export default function BillingPage() {
                     </div>
 
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Credits to purchase
+                      Credits to purchase (minimum 500 credits - $5.00)
                     </p>
 
                     {/* Buy Button */}
@@ -259,6 +264,7 @@ export default function BillingPage() {
                       size="md"
                       onClick={handleBuyCredits}
                       className="w-full"
+                      isDisabled={creditAmount < 500} // Disable if below minimum
                     >
                       Buy Credits
                     </Button>
@@ -270,12 +276,12 @@ export default function BillingPage() {
             {/* PayPal Security Note */}
             <div className="text-center pt-8 border-t border-gray-200 dark:border-gray-700 mt-8">
               <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
-                <svg 
-                  className="w-4 h-4 text-blue-600" 
-                  fill="currentColor" 
+                <svg
+                  className="w-4 h-4 text-blue-600"
+                  fill="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                 </svg>
                 All payments are secured by PayPal
               </p>

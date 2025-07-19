@@ -112,7 +112,6 @@ export async function POST(request: NextRequest) {
       compressed_size: compressedSize,
     });
   } catch (error) {
-    console.error("Error compressing image:", error);
     return NextResponse.json(
       {
         success: false,

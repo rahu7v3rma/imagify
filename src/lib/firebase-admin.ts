@@ -132,7 +132,6 @@ export const adminGetExchangeRates =
 
       const doc = snapshot.docs[0];
       const exchangeRates = doc.data();
-      console.log("Raw exchange rates from Firebase:", exchangeRates);
 
       // Transform the data to include currency codes and their rates
       const currencies: Currency[] = Object.entries(exchangeRates).map(
@@ -148,7 +147,6 @@ export const adminGetExchangeRates =
         timestamp: doc.id,
       };
     } catch (error) {
-      console.error("Error fetching exchange rates:", error);
       return null;
     }
   };

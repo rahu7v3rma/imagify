@@ -3,13 +3,15 @@ import {
   Client,
   Environment,
   OrdersController,
+  OrderRequest,
+  OrderApplicationContextShippingPreference,
 } from '@paypal/paypal-server-sdk';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { admin } from '@/lib/firebase-admin';
 
 const createOrderSchema = z.object({
-  amount: z.number().min(1).max(100)
+  amount: z.number().min(5, "Minimum amount is $5.00").max(100, "Maximum amount is $100.00")
 });
 
 const client = new Client({
@@ -56,30 +58,30 @@ export async function POST(request: NextRequest) {
     const validatedData = createOrderSchema.parse(body);
     const { amount } = validatedData;
 
-    const orderPayload = {
-      body: {
-        intent: CheckoutPaymentIntent.Capture,
-        purchaseUnits: [
-          {
-            amount: {
-              currencyCode: 'USD',
-              value: amount.toFixed(2),
-            },
-          }
-        ],
-        application_context: {
-          return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard/billing?status=success`,
-          cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard/billing?status=cancelled`,
+    const orderPayload: OrderRequest = {
+      intent: CheckoutPaymentIntent.Capture,
+      purchaseUnits: [
+        {
+          amount: {
+            currencyCode: 'USD',
+            value: amount.toFixed(2),
+          },
+          customId: userId
         }
+      ],
+      applicationContext: {
+        returnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/credits/capture-order`,
+        cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing`,
+        shippingPreference: OrderApplicationContextShippingPreference.NoShipping,
       }
     };
 
     const { result } = await ordersController.createOrder({
-      body: orderPayload.body
+      body: orderPayload
     });
-    
+
     const approvalLink = result.links?.find(link => link.rel === 'approve' || link.rel === 'payer-action')?.href;
-    
+
     return NextResponse.json({
       success: true,
       message: 'Order placed successfully',
@@ -89,7 +91,6 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error: unknown) {
-    console.error("Error creating order:", error);
     return NextResponse.json({
       success: false,
       message: 'Internal server error',

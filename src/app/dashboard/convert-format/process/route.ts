@@ -170,7 +170,6 @@ export async function POST(request: NextRequest) {
       image_url: firebaseImageUrl,
     });
   } catch (error) {
-    console.error("Error converting image format:", error);
     return NextResponse.json(
       {
         success: false,
