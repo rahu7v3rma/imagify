@@ -131,8 +131,8 @@ env:
       - BUILD
       - RUNTIME
 
-  - variable: NODE_ENV
-    secret: NODE_ENV
+  - variable: PAYPAL_ENVIRONMENT
+    secret: PAYPAL_ENVIRONMENT
     availability:
       - BUILD
       - RUNTIME
