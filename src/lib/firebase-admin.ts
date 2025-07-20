@@ -63,6 +63,13 @@ export interface UserCreditsDocument {
   credits: number;
 }
 
+// User Transaction types
+export interface UserTransactionDocument {
+  status: string;
+  userId: string;
+  createdAt?: string;
+}
+
 // Admin Firestore functions
 export const adminGetUserCredits = async (
   userId: string,
@@ -101,6 +108,34 @@ export const adminCreateUserCredits = async (
   };
 
   await adminDb.collection("user_credits").doc(userId).set(userCreditsData);
+};
+
+// Admin User Transaction functions
+export const adminCreateUserTransaction = async (
+  paymentLinkId: string,
+  userId: string,
+  status: string,
+): Promise<void> => {
+  const transactionData: UserTransactionDocument = {
+    status,
+    userId,
+    createdAt: new Date().toISOString(),
+  };
+
+  await adminDb.collection("user_transactions").doc(paymentLinkId).set(transactionData);
+};
+
+export const adminGetUserTransaction = async (
+  paymentLinkId: string,
+): Promise<UserTransactionDocument | null> => {
+  const docRef = adminDb.collection("user_transactions").doc(paymentLinkId);
+  const docSnap = await docRef.get();
+
+  if (docSnap.exists) {
+    return docSnap.data() as UserTransactionDocument;
+  } else {
+    return null;
+  }
 };
 
 // Admin Exchange Rate types

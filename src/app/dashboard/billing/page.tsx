@@ -137,15 +137,14 @@ export default function BillingPage() {
         },
       );
 
-      if (response.data.success && response.data.data.paypalLink) {
+      if (response.data.success && response.data.data.paymentLink) {
         addToast({
-          title: "Redirecting to PayPal",
-          description: "Please complete your payment securely with PayPal",
+          title: "Redirecting to Payment Gateway",
           color: "primary",
         });
 
-        // Redirect to PayPal
-        window.open(response.data.data.paypalLink, "_blank");
+        // Redirect to Payment Gateway
+        window.open(response.data.data.paymentLink, "_blank");
       } else {
         addToast({
           title: "Error",
