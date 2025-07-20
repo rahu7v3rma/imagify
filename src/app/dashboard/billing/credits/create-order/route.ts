@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import requestIp from 'request-ip';
 import { getUser } from '@/lib/request';
+import Razorpay from 'razorpay';
 
 const createOrderSchema = z.object({
   amount: z.number().min(5, "Minimum amount is 5").max(100, "Maximum amount is 100"),
@@ -33,7 +34,7 @@ const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
 function getClientIP(request: NextRequest): string {
   const ip = requestIp.getClientIp(request as any);
   console.log(ip, 'detected IP');
-  
+
   // Fallback if no IP is detected
   return ip || '8.8.8.8';
 }
@@ -43,12 +44,12 @@ async function getCountryFromIP(ip: string): Promise<string> {
   try {
     console.log(ip, 'ip');
     const response = await fetch(`https://api.ipinfo.io/lite/${ip}?token=${process.env.IPINFO_API_TOKEN}`);
-    
+
     if (!response.ok) {
       console.warn('Failed to get IP info, defaulting to US');
       return 'US';
     }
-    
+
     const data = await response.json();
     console.log(data, 'data');
     return data.country_code || 'US';
@@ -89,32 +90,29 @@ async function createPayPalOrder(amount: number, userId: string) {
 async function createRazorpayPaymentLink(amount: number, userId: string) {
   const amountInSmallestUnit = Math.round(amount * 100);
 
+  const instance = new Razorpay({
+    key_id: RAZORPAY_KEY_ID!,
+    key_secret: RAZORPAY_KEY_SECRET!
+  });
+
   const paymentLinkData = {
     amount: amountInSmallestUnit,
     currency: 'USD',
+    customer: {
+
+    },
     notes: {
       userId: userId
     },
     callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/credits/verify-payment`,
   };
 
-  const response = await fetch('https://api.razorpay.com/v1/payment_links', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Basic ${Buffer.from(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`).toString('base64')}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(paymentLinkData),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(`Razorpay API error: ${errorData.error?.description || 'Unknown error'}`);
+  try {
+    const result = await instance.paymentLink.create(paymentLinkData);
+    return result.short_url;
+  } catch (error: any) {
+    throw new Error(`Razorpay API error: ${error.error?.description || 'Unknown error'}`);
   }
-
-  const result = await response.json();
-
-  return result.short_url;
 }
 
 export async function POST(request: NextRequest) {

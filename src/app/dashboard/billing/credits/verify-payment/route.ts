@@ -6,6 +6,7 @@ import {
     adminCreateUserTransaction,
     adminGetUserTransaction,
 } from '@/lib/firebase-admin';
+import Razorpay from 'razorpay';
 
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID!;
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET!;
@@ -21,22 +22,13 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        const authHeader = 'Basic ' + Buffer.from(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`).toString('base64');
-
-        const paymentResponse = await fetch(`https://api.razorpay.com/v1/payment_links/${paymentLinkId}`, {
-            headers: {
-                'Authorization': authHeader,
-                'Content-Type': 'application/json',
-            },
+        const instance = new Razorpay({
+            key_id: RAZORPAY_KEY_ID,
+            key_secret: RAZORPAY_KEY_SECRET,
+            headers: { 'Content-Type': 'application/json' }
         });
 
-        if (!paymentResponse.ok) {
-            return NextResponse.redirect(
-                new URL('/dashboard/billing?status=failure', request.url)
-            );
-        }
-
-        const paymentLink = await paymentResponse.json();
+        let paymentLink = await instance.paymentLink.fetch(paymentLinkId);
 
         // Check if transaction already exists with status "paid"
         const existingTransaction = await adminGetUserTransaction(paymentLinkId);
@@ -52,7 +44,7 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        const userId = paymentLink.notes?.userId;
+        const userId = String(paymentLink.notes?.userId || '');
         const amount = Number(paymentLink.amount);
 
         if (!userId || !amount) {
