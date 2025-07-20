@@ -49,7 +49,7 @@ export default function AboutUsPage() {
       <p>
         Everything runs in the browser—no plugins to install, no GPUs to
         maintain. Simply pay for the processing you use via <em>credits</em>,
-        our lightweight credit system powered by PayPal. Behind the scenes we
+        our lightweight credit system powered by PayPal and Razorpay. Behind the scenes we
         rely on trusted infrastructure from Firebase (auth & hosting), Replicate
         (state-of-the-art ML models), Tinify (image compression), and OpenAI (AI
         processing) to deliver fast, secure, and reliable results.

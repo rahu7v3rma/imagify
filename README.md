@@ -7,6 +7,7 @@
 - Firebase
 - NextJS
 - Replicate
-- Paypal
+- PayPal
+- Razorpay
 - Tinify
 - OpenAI

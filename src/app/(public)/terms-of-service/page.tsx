@@ -52,7 +52,7 @@ export default function TermsOfServicePage() {
       <p>
         Certain features require prepaid processing credits. Credits are
         non-transferable and non-refundable except where required by law.
-        Payments are processed securely by our third-party provider, PayPal.
+        Payments are processed securely by our third-party providers, PayPal and Razorpay.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">

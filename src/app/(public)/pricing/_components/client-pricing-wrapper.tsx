@@ -7,9 +7,6 @@ import { useFirebase } from "@/context/firebase";
 export default function ClientPricingWrapper() {
   const { user } = useFirebase();
 
-  // TODO: Configure payment processor URL
-  const paymentUrl = "#";
-
   return (
     <div className="text-center space-y-4 pt-4">
       <h2 className="text-2xl font-semibold dark:text-white">
@@ -21,12 +18,9 @@ export default function ClientPricingWrapper() {
       {user ? (
         <Button
           as="a"
-          href={paymentUrl}
+          href="/dashboard/billing"
           variant="solid"
           color="primary"
-          target="_blank"
-          rel="noopener noreferrer"
-          isDisabled={true}
         >
           Buy Credits
         </Button>

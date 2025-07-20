@@ -47,6 +47,19 @@ export default function PrivacyPolicyPage() {
         <li>
           <strong>
             <a
+              href="https://razorpay.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 underline"
+            >
+              Razorpay
+            </a>
+          </strong>{" "}
+          &mdash; secure payment processing and transaction management.
+        </li>
+        <li>
+          <strong>
+            <a
               href="https://replicate.com/"
               target="_blank"
               rel="noopener noreferrer"
@@ -110,7 +123,7 @@ export default function PrivacyPolicyPage() {
         </li>
         <li>
           <strong>Payment information</strong> &mdash; handled directly by
-          PayPal. We do not store your full card details on our servers.
+          PayPal and Razorpay. We do not store your full card details on our servers.
         </li>
       </ul>
 
