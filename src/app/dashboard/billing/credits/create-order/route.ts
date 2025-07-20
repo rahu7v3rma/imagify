@@ -22,7 +22,7 @@ const client = new Client({
     oAuthClientId: process.env.PAYPAL_CLIENT_ID!,
     oAuthClientSecret: process.env.PAYPAL_CLIENT_SECRET!
   },
-  environment: Environment.Sandbox,
+  environment: process.env.NODE_ENV === 'production' ? Environment.Production : Environment.Sandbox,
 });
 
 const ordersController = new OrdersController(client);
