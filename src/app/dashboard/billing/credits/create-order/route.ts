@@ -11,6 +11,7 @@ import { z } from 'zod';
 import requestIp from 'request-ip';
 import { getUser } from '@/lib/request';
 import Razorpay from 'razorpay';
+import IPinfoWrapper from 'node-ipinfo';
 
 const createOrderSchema = z.object({
   amount: z.number().min(5, "Minimum amount is 5").max(100, "Maximum amount is 100"),
@@ -38,17 +39,14 @@ function getClientIP(request: NextRequest): string {
   return ip || '8.8.8.8';
 }
 
-// Function to get country code from IP using IPinfo API
+// Initialize IPinfo client
+const ipinfo = new IPinfoWrapper(process.env.IPINFO_API_TOKEN!);
+
+// Function to get country code from IP using IPinfo library
 async function getCountryFromIP(ip: string): Promise<string> {
   try {
-    const response = await fetch(`https://api.ipinfo.io/lite/${ip}?token=${process.env.IPINFO_API_TOKEN}`);
-
-    if (!response.ok) {
-      return 'US';
-    }
-
-    const data = await response.json();
-    return data.country_code || 'US';
+    const response = await ipinfo.lookupIp(ip);
+    return response.country || 'US';
   } catch (error) {
     return 'US'; // Default to US if API fails
   }
