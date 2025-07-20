@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 import {
   createUserWithEmailAndPassword,
   deleteUser,
@@ -42,6 +43,12 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+// Initialize App Check with reCAPTCHA Enterprise
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider(process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY!),
+  isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
+});
 
 export const auth = getAuth(app);
 export const storage = getStorage(app);

@@ -52,6 +52,12 @@ env:
       - BUILD
       - RUNTIME
 
+  - variable: NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY
+    secret: NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY
+    availability:
+      - BUILD
+      - RUNTIME
+
   # API Keys (Runtime only for security) - Using Cloud Secret Manager
 
   - variable: REPLICATE_API_TOKEN
