@@ -33,7 +33,6 @@ const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
 // Function to get client IP from request using request-ip package
 function getClientIP(request: NextRequest): string {
   const ip = requestIp.getClientIp(request as any);
-  console.log(ip, 'detected IP');
 
   // Fallback if no IP is detected
   return ip || '8.8.8.8';
@@ -42,19 +41,15 @@ function getClientIP(request: NextRequest): string {
 // Function to get country code from IP using IPinfo API
 async function getCountryFromIP(ip: string): Promise<string> {
   try {
-    console.log(ip, 'ip');
     const response = await fetch(`https://api.ipinfo.io/lite/${ip}?token=${process.env.IPINFO_API_TOKEN}`);
 
     if (!response.ok) {
-      console.warn('Failed to get IP info, defaulting to US');
       return 'US';
     }
 
     const data = await response.json();
-    console.log(data, 'data');
     return data.country_code || 'US';
   } catch (error) {
-    console.error('Error fetching IP info:', error);
     return 'US'; // Default to US if API fails
   }
 }
@@ -150,8 +145,6 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error: unknown) {
-    console.error('Error creating order:', error);
-
     return NextResponse.json({
       success: false,
       message: 'Internal server error',
