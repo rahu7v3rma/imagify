@@ -21,54 +21,89 @@ const client = new Client({
 const ordersController = new OrdersController(client);
 
 export async function GET(request: NextRequest) {
+    console.log('🔄 Starting PayPal order capture process');
+    console.log('🔑 API Keys check:');
+    console.log(`   PAYPAL_CLIENT_ID: ${process.env.PAYPAL_CLIENT_ID?.slice(0, 2)}***${process.env.PAYPAL_CLIENT_ID?.slice(-2)}`);
+    console.log(`   PAYPAL_CLIENT_SECRET: ${process.env.PAYPAL_CLIENT_SECRET?.slice(0, 2)}***${process.env.PAYPAL_CLIENT_SECRET?.slice(-2)}`);
+    
     try {
         const { searchParams } = new URL(request.url);
         const token = searchParams.get('token');
+        
+        console.log('📥 Request URL:', request.url);
+        console.log('🎫 PayPal token:', token);
 
         if (!token) {
+            console.log('❌ No token found, redirecting to failure');
             return NextResponse.redirect(
                 new URL('/dashboard/billing?status=failure', request.url)
             );
         }
 
+        console.log('💳 Capturing PayPal order...');
         // Capture the order
         const { result: captureResult } = await ordersController.captureOrder({
             id: token,
             body: {}
         });
 
+        console.log('📄 PayPal capture result:', {
+            id: captureResult.id,
+            status: captureResult.status,
+            purchaseUnitsCount: captureResult.purchaseUnits?.length
+        });
+
+        console.log('🔍 Extracting payment details...');
         const amount = parseFloat(captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.amount?.value || '0');
         const userId = captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.customId;
+        
+        console.log('📋 Extracted data:', { amount, userId });
+        console.log('💰 Raw amount from PayPal:', captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.amount?.value);
+        console.log('👤 Custom ID (User ID):', captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.customId);
+        
         if (!amount || !userId) {
+            console.log('❌ Missing amount or userId:', { amount, userId });
             return NextResponse.redirect(
                 new URL('/dashboard/billing?status=failure', request.url)
             );
         }
 
+        console.log('✅ Payment details validated successfully');
+
         // Check if payment was successfully captured
+        console.log('🔍 Checking capture status...');
         if (captureResult.status === 'COMPLETED') {
+            console.log('✅ Payment capture completed successfully');
 
             // Convert amount to credits (assuming 1 USD = 100 credits, adjust as needed)
             const creditsToAdd = Math.floor(amount * 100);
+            console.log('💰 Credit calculation:', `${amount} USD * 100 = ${creditsToAdd} credits`);
 
             // Get user's current credits
+            console.log('🔍 Fetching current user credits...');
             const currentCreditsData = await adminGetUserCredits(userId);
+            console.log('📊 Current credits data:', currentCreditsData);
 
             if (currentCreditsData) {
                 // User exists, update credits
                 const newCredits = currentCreditsData.credits + creditsToAdd;
+                console.log(`📈 Updating credits: ${currentCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
                 await adminUpdateUserCredits(userId, newCredits);
+                console.log('✅ User credits updated successfully');
             } else {
                 // User doesn't exist, create new credits document
+                console.log('🆕 Creating new credits record for user');
                 await adminCreateUserCredits(userId, creditsToAdd);
+                console.log('✅ New user credits created successfully');
             }
 
-
+            console.log('🎉 Payment processing completed successfully, redirecting to success');
             // Payment successful - redirect to success page
             return NextResponse.redirect(
                 new URL('/dashboard/billing?status=success', request.url)
             );
         } else {
+            console.log(`❌ Payment capture failed. Status: ${captureResult.status}, redirecting to failure`);
             // Payment failed - redirect to failure page
             return NextResponse.redirect(
                 new URL('/dashboard/billing?status=failure', request.url)
@@ -76,7 +111,11 @@ export async function GET(request: NextRequest) {
         }
 
     } catch (error: unknown) {
-        console.error('Error capturing order:', error);
+        console.error('💥 Error capturing order:');
+        console.error('Error type:', typeof error);
+        console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
+        console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+        console.error('Full error object:', error);
         
         return NextResponse.redirect(
             new URL('/dashboard/billing?status=failure', request.url)
