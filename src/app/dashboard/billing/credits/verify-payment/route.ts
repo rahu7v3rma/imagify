@@ -71,6 +71,8 @@ export async function GET(request: NextRequest) {
         );
 
     } catch (error: unknown) {
+        console.error('Error verifying payment:', error);
+        
         return NextResponse.redirect(
             new URL('/dashboard/billing?status=failure', request.url)
         );

@@ -143,6 +143,8 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error: unknown) {
+    console.error('Error creating order:', error);
+    
     return NextResponse.json({
       success: false,
       message: 'Internal server error',
