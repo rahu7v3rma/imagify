@@ -215,7 +215,7 @@ export default function UpscalePage() {
       // If it's a data URL, upload to Firebase storage first
       if (selectedImage.startsWith("data:image")) {
         const timestamp = Date.now();
-        const filename = `public/reference/image-${timestamp}.jpg`;
+        const filename = `reference/image-${timestamp}.jpg`;
 
         await uploadFileString(selectedImage, filename, "data_url");
         finalImageUrl = await getFileDownloadURL(filename);

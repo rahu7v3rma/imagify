@@ -91,6 +91,46 @@ env:
       - BUILD
       - RUNTIME
 
+  # PayPal Configuration - Using Cloud Secret Manager
+  - variable: PAYPAL_CLIENT_ID
+    secret: PAYPAL_CLIENT_ID
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: PAYPAL_CLIENT_SECRET
+    secret: PAYPAL_CLIENT_SECRET
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # App Configuration - Using Cloud Secret Manager
+  - variable: NEXT_PUBLIC_APP_URL
+    secret: NEXT_PUBLIC_APP_URL
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # Razorpay Configuration - Using Cloud Secret Manager
+  - variable: RAZORPAY_KEY_ID
+    secret: RAZORPAY_KEY_ID
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: RAZORPAY_KEY_SECRET
+    secret: RAZORPAY_KEY_SECRET
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # IP Info API Configuration - Using Cloud Secret Manager
+  - variable: IPINFO_API_TOKEN
+    secret: IPINFO_API_TOKEN
+    availability:
+      - BUILD
+      - RUNTIME
+
   # Grant access to secrets in Cloud Secret Manager.
   # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
   # - variable: MY_SECRET
