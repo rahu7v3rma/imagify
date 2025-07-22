@@ -11,94 +11,41 @@ export default function PrivacyPolicyPage() {
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">
-        1. Services We Use
+        1. Infrastructure We Use
       </h2>
       <p>
-        imagify.pro relies on the following third-party service providers to
+        imagify.pro relies on trusted infrastructure providers to
         operate the platform:
       </p>
       <ul className="list-disc list-inside space-y-1">
         <li>
-          <strong>
-            <a
-              href="https://firebase.google.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 underline"
-            >
-              Firebase
-            </a>
-          </strong>{" "}
-          &mdash; authentication, database, file storage, and hosting.
+          <strong>Authentication & Storage</strong>{" "}
+          &mdash; secure user authentication, database, file storage, and hosting services.
         </li>
         <li>
-          <strong>
-            <a
-              href="https://paypal.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 underline"
-            >
-              PayPal
-            </a>
-          </strong>{" "}
-          &mdash; secure payment collection and subscription management.
+          <strong>Payment Processing</strong>{" "}
+          &mdash; secure payment collection, processing and subscription management.
         </li>
         <li>
-          <strong>
-            <a
-              href="https://razorpay.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 underline"
-            >
-              Razorpay
-            </a>
-          </strong>{" "}
-          &mdash; secure payment processing and transaction management.
-        </li>
-        <li>
-          <strong>
-            <a
-              href="https://replicate.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 underline"
-            >
-              Replicate
-            </a>
-          </strong>{" "}
-          &mdash; machine-learning infrastructure used to process images. Images
-          you submit for processing are transmitted to Replicate's API solely
+          <strong>Machine Learning</strong>{" "}
+          &mdash; advanced ML infrastructure used to process images. Images
+          you submit for processing are transmitted to our processing infrastructure solely
           for the purpose of generating the requested output.
         </li>
         <li>
-          <strong>
-            <a
-              href="https://tinify.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 underline"
-            >
-              Tinify
-            </a>
-          </strong>{" "}
-          &mdash; image compression services used to optimize and compress
+          <strong>Image Compression</strong>{" "}
+          &mdash; specialized services used to optimize and compress
           images efficiently.
         </li>
         <li>
-          <strong>
-            <a
-              href="https://openai.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 underline"
-            >
-              OpenAI
-            </a>
-          </strong>{" "}
-          &mdash; AI processing services used for advanced image analysis and
+          <strong>AI Processing</strong>{" "}
+          &mdash; advanced AI processing services used for image analysis and
           generation capabilities.
+        </li>
+        <li>
+          <strong>Security & Protection</strong>{" "}
+          &mdash; rate limiting, abuse detection, and security monitoring services to protect
+          the platform and prevent misuse of our services.
         </li>
       </ul>
 
@@ -114,7 +61,7 @@ export default function PrivacyPolicyPage() {
         <li>
           <strong>User-generated content</strong> (images you upload or link,
           prompts you provide, extracted text, and any output images produced)
-          &mdash; stored in Firebase Storage so you can download and manage your
+          &mdash; stored securely so you can download and manage your
           results.
         </li>
         <li>
@@ -123,7 +70,7 @@ export default function PrivacyPolicyPage() {
         </li>
         <li>
           <strong>Payment information</strong> &mdash; handled directly by
-          PayPal and Razorpay. We do not store your full card details on our servers.
+          our secure payment processors. We do not store your full card details on our servers.
         </li>
       </ul>
 
@@ -154,7 +101,7 @@ export default function PrivacyPolicyPage() {
         5. Cookie Policy
       </h2>
       <p>
-        Firebase sets cookies that are strictly necessary for authentication and
+        We use cookies that are strictly necessary for authentication and
         session persistence (e.g.&nbsp;to keep you signed in as you navigate the
         dashboard). imagify.pro does not set additional advertising or analytics
         cookies.
