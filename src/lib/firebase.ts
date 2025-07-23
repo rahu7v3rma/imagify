@@ -12,6 +12,7 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  verifyBeforeUpdateEmail,
   verifyPasswordResetCode,
 } from "firebase/auth";
 import {
@@ -107,6 +108,13 @@ export const verifyPasswordResetCodeFunc = async (oobCode: string) => {
 
 export const confirmPasswordResetFunc = async (oobCode: string, newPassword: string) => {
   return confirmPasswordReset(auth, oobCode, newPassword);
+};
+
+export const updateUserEmail = async (newEmail: string) => {
+  if (!auth.currentUser) {
+    throw new Error("No user is currently authenticated");
+  }
+  return verifyBeforeUpdateEmail(auth.currentUser, newEmail);
 };
 
 // Storage functions

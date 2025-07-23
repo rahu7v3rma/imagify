@@ -3,6 +3,7 @@
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { Geist } from "next/font/google";
 import clsx from "clsx";
+import { Suspense } from "react";
 import { FirebaseProvider } from "../context/firebase";
 import { LoaderProvider } from "../context/loader";
 import { ThemeProvider, useTheme } from "../context/theme";
@@ -24,7 +25,9 @@ function RootApp({ children }: { children: React.ReactNode }) {
       <body className={clsx(geist.className, "dark:bg-zinc-800 min-h-screen")}>
         <HeroUIProvider>
           <LoaderProvider>
-            <FirebaseProvider>{children}</FirebaseProvider>
+            <FirebaseProvider>
+              <Suspense fallback={null}>{children}</Suspense>
+            </FirebaseProvider>
             <ToastProvider />
           </LoaderProvider>
         </HeroUIProvider>

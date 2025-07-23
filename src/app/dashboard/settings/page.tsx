@@ -14,7 +14,8 @@ import {
   Card,
   CardBody,
 } from "@heroui/react";
-import { deleteCurrentUser, deleteUserCredits } from "@/lib/firebase";
+import { CustomInput } from "@/components/ui/input";
+import { deleteCurrentUser, deleteUserCredits, updateUserEmail } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { useRouter } from "next/navigation";
 import { addToast } from "@heroui/react";
@@ -23,6 +24,15 @@ import { useLoader } from "@/context/loader";
 import Cookies from "js-cookie";
 import { useTheme } from "@/context/theme";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const emailSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+type EmailSchema = z.infer<typeof emailSchema>;
 
 export default function SettingsPage() {
   const { user, setUser } = useFirebase();
@@ -31,8 +41,65 @@ export default function SettingsPage() {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<EmailSchema>({
+    resolver: zodResolver(emailSchema),
+    mode: "onChange",
+    defaultValues: {
+      email: user?.email || "",
+    },
+  });
+
   const handleThemeToggle = (isSelected: boolean) => {
     setMode(isSelected ? "dark" : "light");
+  };
+
+  const onSubmitEmail = async (data: EmailSchema) => {
+    if (!user) {
+      addToast({
+        title: "No user logged in",
+        color: "danger",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await updateUserEmail(data.email);
+      addToast({
+        title: "Verification email sent! Please check your new email address.",
+        color: "success",
+      });
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/requires-recent-login") {
+          addToast({
+            title: "Please log in again to update your email",
+            color: "danger",
+          });
+        } else if (error.code === "auth/email-already-in-use") {
+          addToast({
+            title: "This email is already in use by another account",
+            color: "danger",
+          });
+        } else {
+          addToast({
+            title: "Failed to update email",
+            color: "danger",
+          });
+        }
+      } else {
+        addToast({
+          title: "Failed to update email",
+          color: "danger",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const deleteAccount = async () => {
@@ -102,12 +169,33 @@ export default function SettingsPage() {
           <div className="py-4">
             <Card className="max-w-md">
               <CardBody>
-                <h3 className="text-lg font-medium dark:text-white">
+                <h3 className="text-lg font-medium dark:text-white mb-4">
                   Account Information
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Your current email address: {user?.email}
-                </p>
+                <form onSubmit={handleSubmit(onSubmitEmail)} className="flex flex-col gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Email Address
+                    </label>
+                    <CustomInput
+                      type="email"
+                      placeholder="Email"
+                      {...register("email")}
+                      isInvalid={!!errors.email}
+                      errorMessage={errors.email?.message}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      type="submit"
+                      color="primary"
+                      variant="solid"
+                      isDisabled={!isValid}
+                    >
+                      Update Email
+                    </Button>
+                  </div>
+                </form>
               </CardBody>
             </Card>
             <div className="flex flex-row gap-4 items-center mt-4">
