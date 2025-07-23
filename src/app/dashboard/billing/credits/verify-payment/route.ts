@@ -94,9 +94,17 @@ export async function GET(request: NextRequest) {
             await adminUpdateUserCredits(userId, newCredits);
             console.log('✅ User credits updated successfully');
         } else {
-            console.log('🆕 Creating new credits record for user');
-            await adminCreateUserCredits(userId, creditsToAdd);
-            console.log('✅ New user credits created successfully');
+            // User doesn't exist, create new credits document with 0 initial credits
+            console.log('🆕 Creating new credits record for user with 0 initial credits');
+            await adminCreateUserCredits(userId, 0);
+            // Fetch the created document
+            const newCreditsData = await adminGetUserCredits(userId);
+            if (newCreditsData) {
+                const newCredits = newCreditsData.credits + creditsToAdd;
+                console.log(`📈 Adding credits to new user: ${newCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
+                await adminUpdateUserCredits(userId, newCredits);
+                console.log('✅ New user credits created and updated successfully');
+            }
         }
 
         // Create transaction record in Firebase

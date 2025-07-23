@@ -1,6 +1,7 @@
 import {
   adminGetUserCredits,
   adminUpdateUserCredits,
+  adminCreateUserCredits,
   admin,
 } from "@/lib/firebase-admin";
 import { NextRequest, NextResponse } from "next/server";
@@ -49,7 +50,13 @@ export async function POST(request: NextRequest) {
     const validatedData = requestSchema.parse(body);
 
     // Check user credits using Admin SDK
-    const userCredits = await adminGetUserCredits(userId);
+    let userCredits = await adminGetUserCredits(userId);
+    if (!userCredits) {
+      // Create credits document with 0 initial credits if it doesn't exist
+      await adminCreateUserCredits(userId, 0);
+      userCredits = await adminGetUserCredits(userId);
+    }
+    
     if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
       return NextResponse.json(
         {

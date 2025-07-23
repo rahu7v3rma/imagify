@@ -2,6 +2,7 @@ import {
   adminGetFileDownloadURL,
   adminGetUserCredits,
   adminUpdateUserCredits,
+  adminCreateUserCredits,
   adminUploadFile,
   admin,
 } from "@/lib/firebase-admin";
@@ -70,7 +71,13 @@ export async function POST(request: NextRequest) {
     const creditRequirement = getCreditRequirement(validatedData.generateType);
 
     // Check user credits using Admin SDK
-    const userCredits = await adminGetUserCredits(userId);
+    let userCredits = await adminGetUserCredits(userId);
+    if (!userCredits) {
+      // Create credits document with 0 initial credits if it doesn't exist
+      await adminCreateUserCredits(userId, 0);
+      userCredits = await adminGetUserCredits(userId);
+    }
+    
     if (!userCredits || userCredits.credits < creditRequirement) {
       return NextResponse.json(
         {
