@@ -1,6 +1,6 @@
 "use client";
 
-import { createUser, createUserCredits } from "@/lib/firebase";
+import { createUser, sendVerificationEmail, logoutUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Checkbox } from "@heroui/react";
 import { PasswordInput, CustomInput } from "@/components/ui/input";
@@ -55,18 +55,14 @@ export default function SignupPage() {
       setIsLoading(true);
       const userCredential = await createUser(email, password);
 
-      // Create user credits entry with 0 credits
-      await createUserCredits(userCredential.user.uid, 0);
+      // Send verification email
+      await sendVerificationEmail(userCredential.user);
 
-      setUser(userCredential.user);
-
-      // Set the imagify.user.id cookie
-      Cookies.set("imagify.user.id", userCredential.user.uid, {
-        expires: 30, // 30 days
-      });
+      // Logout immediately after creating account
+      await logoutUser();
 
       addToast({
-        title: "Account created successfully!",
+        title: "Email sent for verification",
         color: "success",
       });
       return true;
@@ -100,7 +96,7 @@ export default function SignupPage() {
   const onSubmit = async (data: Schema) => {
     const success = await signup(data.email, data.password);
     if (success) {
-      router.push("/dashboard");
+      router.push("/login");
     }
   };
 
@@ -115,12 +111,12 @@ export default function SignupPage() {
           isInvalid={!!errors.email}
           errorMessage={errors.email?.message}
         />
-        <PasswordInput
-          placeholder="Password"
-          {...register("password")}
-          isInvalid={!!errors.password}
-          errorMessage={errors.password?.message}
-        />
+          <PasswordInput
+            placeholder="Password"
+            {...register("password")}
+            isInvalid={!!errors.password}
+            errorMessage={errors.password?.message}
+          />
         <PasswordInput
           placeholder="Confirm Password"
           {...register("confirmPassword")}

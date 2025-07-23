@@ -1,16 +1,17 @@
 "use client";
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
-import { loginUser } from "@/lib/firebase";
+import { loginUser, logoutUser, handleActionCode, applyAuthActionCode, sendVerificationEmail } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Link } from "@heroui/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 const schema = z.object({
@@ -24,6 +25,8 @@ export default function LoginPage() {
   const { setUser } = useFirebase();
   const { setIsLoading } = useLoader();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [isEmailVerificationCodeExpired, setIsEmailVerificationCodeExpired] = useState(false);
 
   const {
     register,
@@ -38,6 +41,26 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
       const userCredential = await loginUser(email, password);
+
+      // Check if email is verified
+      if (!userCredential.user.emailVerified) {
+        if (isEmailVerificationCodeExpired) {
+          await sendVerificationEmail(userCredential.user);
+          setIsEmailVerificationCodeExpired(false);
+          addToast({
+            title: "Email verification link sent",
+            color: "success",
+          });
+        } else {
+          addToast({
+            title: "Please verify your email before logging in",
+            color: "danger",
+          });
+        }
+        await logoutUser();
+        return false;
+      }
+
       setUser(userCredential.user);
 
       // Set the imagify.user.id cookie
@@ -76,6 +99,40 @@ export default function LoginPage() {
       router.push("/dashboard");
     }
   };
+
+  useEffect(() => {
+    const oobCode = searchParams.get('oobCode');
+
+    if (oobCode) {
+      const handleOobCode = async () => {
+        try {
+          setIsLoading(true);
+
+          const actionCodeInfo = await handleActionCode(oobCode);
+
+          if (actionCodeInfo.operation === 'VERIFY_EMAIL') {
+            await applyAuthActionCode(oobCode);
+            addToast({
+              title: "Email verified successfully!",
+              color: "success",
+            });
+          }
+
+        } catch (error) {
+          setIsEmailVerificationCodeExpired(true);
+          addToast({
+            title: "Invalid or expired link, Try logging in for verification link",
+            color: "danger",
+          });
+        } finally {
+          setIsLoading(false);
+          router.replace('/login');
+        }
+      };
+
+      handleOobCode();
+    }
+  }, [searchParams, router, setIsLoading]);
 
   return (
     <div className="flex flex-col gap-2 w-60">

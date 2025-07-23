@@ -1,11 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 import {
+  applyActionCode,
+  checkActionCode,
   createUserWithEmailAndPassword,
   deleteUser,
   getAuth,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -77,11 +80,23 @@ export const resetPasswordEmail = (email: string) => {
   return sendPasswordResetEmail(auth, email);
 };
 
+export const sendVerificationEmail = (user: any) => {
+  return sendEmailVerification(user);
+};
+
 export const deleteCurrentUser = () => {
   if (!auth.currentUser) {
-    throw new Error("No user is currently authenticated");
+    throw new Error("No user is currently authenticated");  
   }
   return deleteUser(auth.currentUser);
+};
+
+export const handleActionCode = async (oobCode: string) => {
+  return checkActionCode(auth, oobCode);
+};
+
+export const applyAuthActionCode = async (oobCode: string) => {
+  return applyActionCode(auth, oobCode);
 };
 
 // Storage functions

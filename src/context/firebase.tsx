@@ -2,6 +2,7 @@ import {
   listenAuthState,
   getUserCredits,
   UserCreditsDocument,
+  logoutUser,
 } from "@/lib/firebase";
 import { User } from "firebase/auth";
 import {
@@ -37,6 +38,17 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = listenAuthState(async (user) => {
       if (user) {
         setIsLoading(true);
+
+        // Check if email is verified
+        if (!user.emailVerified) {
+          // Logout unverified users
+          await logoutUser();
+          setUser(null);
+          setUserCredits(null);
+          Cookies.remove("imagify.user.id");
+          setIsLoading(false);
+          return;
+        }
 
         setUser(user);
 
