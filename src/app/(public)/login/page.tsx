@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
-import { loginUser, logoutUser, handleActionCode, applyAuthActionCode } from "@/lib/firebase";
+import { loginUser, logoutUser, handleActionCode, applyAuthActionCode, verifyPasswordResetCodeFunc } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Link } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -92,11 +92,20 @@ export default function LoginPage() {
 
   useEffect(() => {
     const oobCode = searchParams.get('oobCode');
+    const mode = searchParams.get('mode');
 
     if (oobCode) {
       const handleOobCode = async () => {
         try {
           setIsLoading(true);
+
+          if (mode === 'resetPassword') {
+            // Verify the password reset code
+            await verifyPasswordResetCodeFunc(oobCode);
+            // Redirect to change-password page with the oobCode
+            router.replace(`/change-password?oobCode=${oobCode}`);
+            return;
+          }
 
           const actionCodeInfo = await handleActionCode(oobCode);
 
@@ -113,15 +122,19 @@ export default function LoginPage() {
             title: "Invalid or expired link.",
             color: "danger",
           });
-          router.replace('/request-email-verification');
+          if (mode === 'resetPassword') {
+            router.replace('/forgot-password');
+          } else {
+            router.replace('/request-email-verification');
+          }
         } finally {
           setIsLoading(false);
-          router.replace('/login');
         }
       };
 
       handleOobCode();
     }
+
   }, [searchParams, router, setIsLoading]);
 
   return (

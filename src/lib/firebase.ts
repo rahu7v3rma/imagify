@@ -3,6 +3,7 @@ import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-ch
 import {
   applyActionCode,
   checkActionCode,
+  confirmPasswordReset,
   createUserWithEmailAndPassword,
   deleteUser,
   getAuth,
@@ -11,6 +12,7 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  verifyPasswordResetCode,
 } from "firebase/auth";
 import {
   collection,
@@ -97,6 +99,14 @@ export const handleActionCode = async (oobCode: string) => {
 
 export const applyAuthActionCode = async (oobCode: string) => {
   return applyActionCode(auth, oobCode);
+};
+
+export const verifyPasswordResetCodeFunc = async (oobCode: string) => {
+  return verifyPasswordResetCode(auth, oobCode);
+};
+
+export const confirmPasswordResetFunc = async (oobCode: string, newPassword: string) => {
+  return confirmPasswordReset(auth, oobCode, newPassword);
 };
 
 // Storage functions
