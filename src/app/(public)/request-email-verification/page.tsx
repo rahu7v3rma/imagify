@@ -1,18 +1,15 @@
 "use client";
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
-import { loginUser, logoutUser, handleActionCode, applyAuthActionCode } from "@/lib/firebase";
-import { useFirebase } from "@/context/firebase";
+import { loginUser, logoutUser, sendVerificationEmail } from "@/lib/firebase";
 import { Button, Link } from "@heroui/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
-import { useEffect } from "react";
-import Cookies from "js-cookie";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -21,11 +18,9 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export default function LoginPage() {
-  const { setUser } = useFirebase();
+export default function RequestEmailVerificationPage() {
   const { setIsLoading } = useLoader();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const {
     register,
@@ -36,32 +31,30 @@ export default function LoginPage() {
     mode: "onChange",
   });
 
-  const login = async (email: string, password: string) => {
+  const requestVerification = async (email: string, password: string) => {
     try {
       setIsLoading(true);
+
+      // Login first
       const userCredential = await loginUser(email, password);
 
-      // Check if email is verified
       if (!userCredential.user.emailVerified) {
-        await logoutUser();
+        // Send verification email
+        await sendVerificationEmail(userCredential.user);
         addToast({
-          title: "Please verify your email before logging in",
+          title: "Verification email sent! Please check your email and verify your account.",
+          color: "success",
+        });
+      } else {
+        addToast({
+          title: "Email already verified",
           color: "danger",
         });
-        return false;
       }
 
-      setUser(userCredential.user);
+      // Logout after sending verification email
+      await logoutUser();
 
-      // Set the imagify.user.id cookie
-      Cookies.set("imagify.user.id", userCredential.user.uid, {
-        expires: 30, // 30 days
-      });
-
-      addToast({
-        title: "Logged in successfully!",
-        color: "success",
-      });
       return true;
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
@@ -74,7 +67,7 @@ export default function LoginPage() {
         }
       }
       addToast({
-        title: "Failed to login",
+        title: "Failed to send verification email",
         color: "danger",
       });
       return false;
@@ -84,49 +77,15 @@ export default function LoginPage() {
   };
 
   const onSubmit = async (data: Schema) => {
-    const success = await login(data.email, data.password);
+    const success = await requestVerification(data.email, data.password);
     if (success) {
-      router.push("/dashboard");
+      router.push("/login");
     }
   };
 
-  useEffect(() => {
-    const oobCode = searchParams.get('oobCode');
-
-    if (oobCode) {
-      const handleOobCode = async () => {
-        try {
-          setIsLoading(true);
-
-          const actionCodeInfo = await handleActionCode(oobCode);
-
-          if (actionCodeInfo.operation === 'VERIFY_EMAIL') {
-            await applyAuthActionCode(oobCode);
-            addToast({
-              title: "Email verified successfully!",
-              color: "success",
-            });
-          }
-
-        } catch (error) {
-          addToast({
-            title: "Invalid or expired link.",
-            color: "danger",
-          });
-          router.replace('/request-email-verification');
-        } finally {
-          setIsLoading(false);
-          router.replace('/login');
-        }
-      };
-
-      handleOobCode();
-    }
-  }, [searchParams, router, setIsLoading]);
-
   return (
     <div className="flex flex-col gap-2 w-60">
-      <h1 className="text-2xl font-bold">Login</h1>
+      <h1 className="text-2xl font-bold">Request Email Verification</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <CustomInput
           type="email"
@@ -147,17 +106,17 @@ export default function LoginPage() {
           variant="solid"
           color="primary"
         >
-          Submit
+          Send Verification Email
         </Button>
         <div className="text-center mt-2">
           <Link
-            href="/forgot-password"
+            href="/login"
             size="sm"
             color="primary"
             underline="hover"
             className="text-xs"
           >
-            Forgot your password?
+            Back to Login
           </Link>
         </div>
       </form>
