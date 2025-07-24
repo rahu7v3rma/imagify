@@ -108,11 +108,25 @@ export default function LoginPage() {
           }
 
           const actionCodeInfo = await handleActionCode(oobCode);
+          await applyAuthActionCode(oobCode);
 
           if (actionCodeInfo.operation === 'VERIFY_EMAIL') {
-            await applyAuthActionCode(oobCode);
             addToast({
               title: "Email verified successfully!",
+              color: "success",
+            });
+          }
+
+          if(actionCodeInfo.operation === 'VERIFY_AND_CHANGE_EMAIL'){
+            addToast({
+              title: "Email changed successfully!",
+              color: "success",
+            });
+          }
+
+          if(actionCodeInfo.operation === 'RECOVER_EMAIL'){
+            addToast({
+              title: "Email reverted successfully!",
               color: "success",
             });
           }
@@ -124,7 +138,8 @@ export default function LoginPage() {
           });
           if (mode === 'resetPassword') {
             router.replace('/forgot-password');
-          } else {
+          } 
+          if (mode === 'verifyEmail') {
             router.replace('/request-email-verification');
           }
         } finally {
