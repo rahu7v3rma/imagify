@@ -114,13 +114,6 @@ export default function SettingsPage() {
     try {
       setIsLoading(true);
 
-      // Delete user credits document first
-      try {
-        await deleteUserCredits(user.uid);
-      } catch (error) {
-        // Continue with account deletion even if user credits deletion fails
-      }
-
       // Delete the user account
       await deleteCurrentUser();
       setUser(null);
