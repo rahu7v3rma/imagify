@@ -90,7 +90,7 @@ export default function Header() {
                 isBordered
                 as="button"
                 className="transition-transform"
-                src={user?.photoURL ?? undefined}
+                src={undefined}
                 name={user?.email ?? "Guest"}
                 showFallback
               />

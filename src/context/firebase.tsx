@@ -4,7 +4,6 @@
 //   UserCreditsDocument,
 //   logoutUser,
 // } from "@/lib/firebase";
-import { User } from "firebase/auth";
 import {
   createContext,
   ReactNode,
@@ -12,8 +11,14 @@ import {
   useEffect,
   useState,
 } from "react";
+
 import { useLoader } from "./loader";
 import Cookies from "js-cookie";
+
+type User = {
+  email: string;
+  credits: number;
+};
 
 const FirebaseContext = createContext<{
   user: User | null;
