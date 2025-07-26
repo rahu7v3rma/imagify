@@ -1,136 +1,113 @@
 "use client";
 
-// import { createUser, sendVerificationEmail, logoutUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Checkbox } from "@heroui/react";
 import { PasswordInput, CustomInput } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import validator from "validator";
 import { addToast } from "@heroui/react";
-import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
-import Cookies from "js-cookie";
-
-const schema = z
-  .object({
-    email: z.string().email("Invalid email address"),
-    password: z
-      .string()
-      .refine((password) => validator.isStrongPassword(password), {
-        message:
-          "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 symbol",
-      }),
-    confirmPassword: z.string(),
-    agreeToTerms: z.boolean().refine((val) => val === true, {
-      message: "You must agree to the terms and privacy policy",
-    }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-type Schema = z.infer<typeof schema>;
+import axios from "axios";
+import { useState } from "react";
 
 export default function SignupPage() {
   const { setUser } = useFirebase();
   const { setIsLoading } = useLoader();
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<Schema>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    agreeToTerms: false,
   });
 
-  const signup = async (email: string, password: string) => {
+  const handleInputChange = (field: string, value: string | boolean) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const signup = async () => {
     try {
       setIsLoading(true);
-      // const userCredential = await createUser(email, password);
-
-      // Send verification email
-      // await sendVerificationEmail(userCredential.user);
-
-      // Logout immediately after creating account
-      // await logoutUser();
-
-      addToast({
-        title: "Email sent for verification",
-        color: "success",
+      
+      const response = await axios.post('/signup/api', {
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        agreeToTerms: formData.agreeToTerms,
       });
-      return true;
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        if (error.code === "auth/email-already-in-use") {
-          addToast({
-            title: "Email already in use",
-            color: "danger",
-          });
-          return false;
-        }
-        if (error.code === "auth/invalid-email") {
-          addToast({
-            title: "Invalid email",
-            color: "danger",
-          });
-          return false;
-        }
+
+      if (response.data.success) {
+        addToast({
+          title: response.data.message,
+          color: "success",
+        });
+        router.push("/login");
+      } else {
+        addToast({
+          title: response.data.message,
+          color: "danger",
+        });
       }
+    } catch (error: any) {
+      let errorMessage = "Failed to create account";
+      
+      if (error.response?.data?.code === "validation_failed") {
+        const fieldErrors = error.response.data.data;
+        const errorMessages = [];
+        
+        if (fieldErrors.email) errorMessages.push(`Email: ${fieldErrors.email[0]}`);
+        if (fieldErrors.password) errorMessages.push(`Password: ${fieldErrors.password[0]}`);
+        if (fieldErrors.confirmPassword) errorMessages.push(`Confirm Password: ${fieldErrors.confirmPassword[0]}`);
+        if (fieldErrors.agreeToTerms) errorMessages.push(`Terms: ${fieldErrors.agreeToTerms[0]}`);
+        
+        errorMessage = errorMessages.join(", ");
+      } else {
+        errorMessage = error.response?.data?.message || "Failed to create account";
+      }
+      
       addToast({
-        title: "Failed to create account",
+        title: errorMessage,
         color: "danger",
       });
-      return false;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const onSubmit = async (data: Schema) => {
-    const success = await signup(data.email, data.password);
-    if (success) {
-      router.push("/login");
-    }
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await signup();
   };
 
   return (
     <div className="flex flex-col gap-2 w-60">
       <h1 className="text-2xl font-bold">Signup</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+      <form onSubmit={onSubmit} className="flex flex-col gap-2">
         <CustomInput
           type="email"
           placeholder="Email"
-          {...register("email")}
-          isInvalid={!!errors.email}
-          errorMessage={errors.email?.message}
+          value={formData.email}
+          onChange={(e) => handleInputChange("email", e.target.value)}
         />
-          <PasswordInput
-            placeholder="Password"
-            {...register("password")}
-            isInvalid={!!errors.password}
-            errorMessage={errors.password?.message}
-          />
+        <PasswordInput
+          placeholder="Password"
+          value={formData.password}
+          onChange={(e) => handleInputChange("password", e.target.value)}
+        />
         <PasswordInput
           placeholder="Confirm Password"
-          {...register("confirmPassword")}
-          isInvalid={!!errors.confirmPassword}
-          errorMessage={errors.confirmPassword?.message}
+          value={formData.confirmPassword}
+          onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
         />
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2 text-sm">
             <Checkbox
-              {...register("agreeToTerms")}
-              isInvalid={!!errors.agreeToTerms}
+              isSelected={formData.agreeToTerms}
+              onValueChange={(checked) => handleInputChange("agreeToTerms", checked)}
               size="sm"
             />
-            <span className={errors.agreeToTerms ? "text-red-500" : ""}>
+            <span>
               I agree to the{" "}
               <Link
                 href="/terms-of-service"
@@ -149,15 +126,9 @@ export default function SignupPage() {
               </Link>
             </span>
           </div>
-          {errors.agreeToTerms && (
-            <span className="text-red-500 text-xs">
-              {errors.agreeToTerms.message}
-            </span>
-          )}
         </div>
         <Button
           type="submit"
-          isDisabled={!isValid}
           variant="solid"
           color="primary"
         >

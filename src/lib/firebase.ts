@@ -225,6 +225,31 @@ export const getExchangeRates =
     }
   };
 
+// Admin Auth functions
+export const createUser = async (email: string, password: string) => {
+  return await admin.auth().createUser({
+    email,
+    password,
+    emailVerified: false,
+  });
+};
+
+// Admin User Profile functions
+export interface UserProfileDocument {
+  email_verification_code: string;
+}
+
+export const createUserProfile = async (
+  userId: string,
+  email_verification_code: string,
+): Promise<void> => {
+  const userProfileData: UserProfileDocument = {
+    email_verification_code,
+  };
+
+  await db.collection("user_profile").doc(userId).set(userProfileData);
+};
+
 export { admin };
 
 // export const createUser = (email: string, password: string) => {
