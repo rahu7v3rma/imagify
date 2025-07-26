@@ -259,6 +259,22 @@ export const createUserProfile = async (
   await db.collection("user_profile").doc(userId).set(userProfileData);
 };
 
+export const getUserProfile = async (
+  authToken: string,
+): Promise<UserProfileDocument | null> => {
+  const snapshot = await db
+    .collection("user_profile")
+    .where("auth_token", "==", authToken)
+    .limit(1)
+    .get();
+
+  if (snapshot.empty) {
+    return null;
+  }
+
+  return snapshot.docs[0].data() as UserProfileDocument;
+};
+
 export const updateUserProfile = async (
   userId: string,
   data: Partial<UserProfileDocument>,
