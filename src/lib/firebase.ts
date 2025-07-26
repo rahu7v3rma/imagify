@@ -239,15 +239,20 @@ export const createUser = async (email: string, password: string) => {
 
 // Admin User Profile functions
 export interface UserProfileDocument {
+  email: string;
+  credits: number;
   email_verification_code?: string;
   auth_token?: string;
 }
 
 export const createUserProfile = async (
   userId: string,
+  email: string,
   email_verification_code: string,
 ): Promise<void> => {
   const userProfileData: UserProfileDocument = {
+    email,
+    credits: 0,
     email_verification_code,
   };
 

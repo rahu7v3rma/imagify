@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     
     // Create user profile with verification code
-    await createUserProfile(userRecord.uid, verificationCode);
+    await createUserProfile(userRecord.uid, email, verificationCode);
 
     // Send verification email
     await sendVerificationEmail(email, verificationCode);
