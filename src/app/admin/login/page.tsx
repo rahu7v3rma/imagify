@@ -2,7 +2,7 @@
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
 // import { loginUser, logoutUser, getUserRole } from "@/lib/firebase";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 import { Button, Link } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 export default function AdminLoginPage() {
-  const { setUser } = useFirebase();
+  const { setUser } = useUser();
   const { setIsLoading } = useLoader();
   const router = useRouter();
 

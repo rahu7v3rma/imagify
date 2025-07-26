@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 import { Button, Link } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { addToast } from "@heroui/react";
@@ -11,7 +11,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export default function LoginPage() {
-  const { setUser } = useFirebase();
+  const { setUser } = useUser();
   const { setIsLoading } = useLoader();
   const router = useRouter();
   const searchParams = useSearchParams();

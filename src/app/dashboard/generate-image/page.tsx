@@ -12,7 +12,7 @@ import { addToast } from "@heroui/react";
 import { Controller } from "react-hook-form";
 // import { getUserCredits } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 
 const schema = z.object({
   prompt: z
@@ -27,7 +27,7 @@ type Schema = z.infer<typeof schema>;
 export default function GenerateImagePage() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
-  const { user } = useFirebase();
+  const { user } = useUser();
 
   const {
     control,
@@ -76,7 +76,7 @@ export default function GenerateImagePage() {
 
     try {
       // Get Firebase ID token
-      const idToken = await user.getIdToken();
+      // const idToken = await user.getIdToken();
 
       // Make API call to generate image
       const response = await axios.post(
@@ -87,7 +87,7 @@ export default function GenerateImagePage() {
         },
         {
           headers: {
-            Authorization: `Bearer ${idToken}`,
+            // Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
         },

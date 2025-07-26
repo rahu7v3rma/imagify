@@ -16,7 +16,7 @@ import {
 } from "@heroui/react";
 import { CustomInput } from "@/components/ui/input";
 // import { deleteCurrentUser, deleteUserCredits, updateUserEmail } from "@/lib/firebase";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 import { useRouter } from "next/navigation";
 import { addToast } from "@heroui/react";
 import { FirebaseError } from "firebase/app";
@@ -35,7 +35,7 @@ const emailSchema = z.object({
 type EmailSchema = z.infer<typeof emailSchema>;
 
 export default function SettingsPage() {
-  const { user, setUser } = useFirebase();
+  const { user, setUser } = useUser();
   const { setIsLoading } = useLoader();
   const { mode, setMode } = useTheme();
   const router = useRouter();

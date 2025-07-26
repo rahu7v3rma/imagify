@@ -2,7 +2,7 @@
 
 import { Tabs, Tab, Card, CardBody, Button } from "@heroui/react";
 import { BoltIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 import { useEffect, useState } from "react";
 import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ import { useLoader } from "@/context/loader";
 // import { getUserCredits } from "@/lib/firebase";
 
 export default function BillingPage() {
-  const { user } = useFirebase();
+  const { user } = useUser();
   const router = useRouter();
   const { setIsLoading } = useLoader();
 
@@ -118,7 +118,7 @@ export default function BillingPage() {
 
     try {
       // Get Firebase ID token
-      const idToken = await user.getIdToken();
+      // const idToken = await user.getIdToken();
 
       // Calculate amount in dollars (1 credit = $0.01)
       const amountInDollars = creditAmount * 0.01;
@@ -131,7 +131,7 @@ export default function BillingPage() {
         },
         {
           headers: {
-            Authorization: `Bearer ${idToken}`,
+            // Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
         },

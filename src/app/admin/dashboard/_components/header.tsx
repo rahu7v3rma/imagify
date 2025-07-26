@@ -12,7 +12,7 @@ import {
   DropdownItem,
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 // import { logoutUser } from "@/lib/firebase";
 import { addToast } from "@heroui/react";
 import { useLoader } from "@/context/loader";
@@ -20,7 +20,7 @@ import Cookies from "js-cookie";
 
 export default function AdminHeader() {
   const router = useRouter();
-  const { user, setUser } = useFirebase();
+  const { user, setUser } = useUser();
   const { setIsLoading } = useLoader();
 
   const logout = async () => {
@@ -73,7 +73,7 @@ export default function AdminHeader() {
                 isBordered
                 as="button"
                 className="transition-transform"
-                src={user?.photoURL ?? undefined}
+                src={undefined}
                 name={user?.email ?? "Guest"}
                 showFallback
               />

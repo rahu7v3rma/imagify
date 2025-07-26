@@ -20,7 +20,7 @@ type User = {
   credits: number;
 };
 
-const FirebaseContext = createContext<{
+const UserContext = createContext<{
   user: User | null;
   setUser: (user: User | null) => void;
   // userCredits: UserCreditsDocument | null;
@@ -32,7 +32,7 @@ const FirebaseContext = createContext<{
   // setUserCredits: () => {},
 });
 
-export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
+export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   // const [userCredits, setUserCredits] = useState<UserCreditsDocument | null>(
   //   null,
@@ -82,7 +82,7 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   }, [setIsLoading]);
 
   return (
-    <FirebaseContext.Provider
+    <UserContext.Provider
       value={{
         user,
         setUser,
@@ -91,8 +91,8 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </FirebaseContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-export const useFirebase = () => useContext(FirebaseContext);
+export const useUser = () => useContext(UserContext);

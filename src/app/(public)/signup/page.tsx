@@ -1,6 +1,6 @@
 "use client";
 
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 import { Button, Checkbox } from "@heroui/react";
 import { PasswordInput, CustomInput } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function SignupPage() {
-  const { setUser } = useFirebase();
+  const { setUser } = useUser();
   const { setIsLoading } = useLoader();
   const router = useRouter();
 

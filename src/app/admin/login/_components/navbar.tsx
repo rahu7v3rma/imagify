@@ -10,11 +10,11 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 
 export default function NavbarComponent() {
   const router = useRouter();
-  const { user } = useFirebase();
+  const { user } = useUser();
 
   const handleBrandClick = () => {
     router.push("/admin");

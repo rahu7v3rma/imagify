@@ -17,7 +17,7 @@ import { Controller } from "react-hook-form";
 //   getUserCredits,
 // } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 
 const schema = z
   .object({
@@ -55,7 +55,7 @@ export default function ExtractTextPage() {
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [extractedText, setExtractedText] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
-  const { user } = useFirebase();
+  const { user } = useUser();
 
   const {
     register,
@@ -221,7 +221,7 @@ export default function ExtractTextPage() {
       }
 
       // Get Firebase ID token
-      const idToken = await user.getIdToken();
+      // const idToken = await user.getIdToken();
 
       // Make API call to extract text
       const response = await axios.post(
@@ -231,7 +231,7 @@ export default function ExtractTextPage() {
         },
         {
           headers: {
-            Authorization: `Bearer ${idToken}`,
+            // Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
         },

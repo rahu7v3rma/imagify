@@ -2,7 +2,7 @@
 
 import Header from "./_components/header";
 import Sidebar from "./_components/sidebar";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 import { useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -12,7 +12,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { setUser } = useFirebase();
+  const { setUser } = useUser();
 
   useEffect(() => {
     const fetchUserProfile = async () => {

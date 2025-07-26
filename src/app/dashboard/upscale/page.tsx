@@ -17,7 +17,7 @@ import { Controller } from "react-hook-form";
 //   getUserCredits,
 // } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 
 const schema = z
   .object({
@@ -56,7 +56,7 @@ export default function UpscalePage() {
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
-  const { user /* setUserCredits */ } = useFirebase();
+  const { user /* setUserCredits */ } = useUser();
 
   const getCreditRequirement = (type: string) => {
     switch (type) {
@@ -222,7 +222,7 @@ export default function UpscalePage() {
       }
 
       // Get Firebase ID token
-      const idToken = await user.getIdToken();
+      // const idToken = await user.getIdToken();
 
       // Make API call to upscale image
       const response = await axios.post(
@@ -233,7 +233,7 @@ export default function UpscalePage() {
         },
         {
           headers: {
-            Authorization: `Bearer ${idToken}`,
+            // Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
         },

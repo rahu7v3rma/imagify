@@ -2,10 +2,10 @@
 
 import { Button } from "@heroui/react";
 import Link from "next/link";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 
 export default function ClientPricingWrapper() {
-  const { user } = useFirebase();
+  const { user } = useUser();
 
   return (
     <div className="text-center space-y-4 pt-4">

@@ -17,7 +17,7 @@ import { Controller } from "react-hook-form";
 //   getUserCredits,
 // } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
-import { useFirebase } from "@/context/firebase";
+import { useUser } from "@/context/user";
 
 const schema = z
   .object({
@@ -59,7 +59,7 @@ export default function CompressImagePage() {
     null,
   );
   const { setIsLoading } = useLoader();
-  const { user } = useFirebase();
+  const { user } = useUser();
 
   const {
     register,
@@ -226,7 +226,7 @@ export default function CompressImagePage() {
       }
 
       // Get Firebase ID token
-      const idToken = await user.getIdToken();
+      // const idToken = await user.getIdToken();
 
       // Make API call to compress image
       const response = await axios.post(
@@ -236,7 +236,7 @@ export default function CompressImagePage() {
         },
         {
           headers: {
-            Authorization: `Bearer ${idToken}`,
+            // Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
         },
