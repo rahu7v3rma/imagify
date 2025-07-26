@@ -1,9 +1,9 @@
-import {
-  listenAuthState,
-  getUserCredits,
-  UserCreditsDocument,
-  logoutUser,
-} from "@/lib/firebase";
+// import {
+//   listenAuthState,
+//   getUserCredits,
+//   UserCreditsDocument,
+//   logoutUser,
+// } from "@/lib/firebase";
 import { User } from "firebase/auth";
 import {
   createContext,
@@ -18,62 +18,62 @@ import Cookies from "js-cookie";
 const FirebaseContext = createContext<{
   user: User | null;
   setUser: (user: User | null) => void;
-  userCredits: UserCreditsDocument | null;
-  setUserCredits: (credits: UserCreditsDocument | null) => void;
+  // userCredits: UserCreditsDocument | null;
+  // setUserCredits: (credits: UserCreditsDocument | null) => void;
 }>({
   user: null,
   setUser: () => {},
-  userCredits: null,
-  setUserCredits: () => {},
+  // userCredits: null,
+  // setUserCredits: () => {},
 });
 
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [userCredits, setUserCredits] = useState<UserCreditsDocument | null>(
-    null,
-  );
+  // const [userCredits, setUserCredits] = useState<UserCreditsDocument | null>(
+  //   null,
+  // );
   const { setIsLoading } = useLoader();
 
   useEffect(() => {
-    const unsubscribe = listenAuthState(async (user) => {
-      if (user) {
-        setIsLoading(true);
+    // const unsubscribe = listenAuthState(async (user) => {
+    //   if (user) {
+    //     setIsLoading(true);
 
-        // Check if email is verified
-        if (!user.emailVerified) {
-          // Logout unverified users
-          await logoutUser();
-          setUser(null);
-          setUserCredits(null);
-          Cookies.remove("imagify.user.id");
-          setIsLoading(false);
-          return;
-        }
+    //     // Check if email is verified
+    //     if (!user.emailVerified) {
+    //       // Logout unverified users
+    //       await logoutUser();
+    //       setUser(null);
+    //       setUserCredits(null);
+    //       Cookies.remove("imagify.user.id");
+    //       setIsLoading(false);
+    //       return;
+    //     }
 
-        setUser(user);
+    //     setUser(user);
 
-        // Set the imagify.user.id cookie if user is authenticated
-        Cookies.set("imagify.user.id", user.uid, {
-          expires: 30, // 30 days
-        });
+    //     // Set the imagify.user.id cookie if user is authenticated
+    //     Cookies.set("imagify.user.id", user.uid, {
+    //       expires: 30, // 30 days
+    //     });
 
-        try {
-          const credits = await getUserCredits(user.uid);
-          setUserCredits(credits);
-        } catch {
-          setUserCredits(null);
-        }
-      } else {
-        setUser(null);
-        setUserCredits(null);
+    //     try {
+    //       const credits = await getUserCredits(user.uid);
+    //       setUserCredits(credits);
+    //     } catch {
+    //       setUserCredits(null);
+    //     }
+    //   } else {
+    //     setUser(null);
+    //     setUserCredits(null);
 
-        // Clear the imagify.user.id cookie if user is not authenticated
-        Cookies.remove("imagify.user.id");
-      }
-      setIsLoading(false);
-    });
+    //     // Clear the imagify.user.id cookie if user is not authenticated
+    //     Cookies.remove("imagify.user.id");
+    //   }
+    //   setIsLoading(false);
+    // });
 
-    return () => unsubscribe();
+    // return () => unsubscribe();
   }, [setIsLoading]);
 
   return (
@@ -81,8 +81,8 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         setUser,
-        userCredits,
-        setUserCredits,
+        // userCredits,
+        // setUserCredits,
       }}
     >
       {children}

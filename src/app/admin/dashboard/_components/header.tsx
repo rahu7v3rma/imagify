@@ -13,7 +13,7 @@ import {
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useFirebase } from "@/context/firebase";
-import { logoutUser } from "@/lib/firebase";
+// import { logoutUser } from "@/lib/firebase";
 import { addToast } from "@heroui/react";
 import { useLoader } from "@/context/loader";
 import Cookies from "js-cookie";
@@ -26,7 +26,7 @@ export default function AdminHeader() {
   const logout = async () => {
     try {
       setIsLoading(true);
-      await logoutUser();
+      // await logoutUser();
       setUser(null);
 
       // Clear the imagify.user.id cookie

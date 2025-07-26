@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { addToast } from "@heroui/react";
 import { useLoader } from "@/context/loader";
-import { contactUs } from "@/lib/firebase";
+// import { contactUs } from "@/lib/firebase";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -32,7 +32,7 @@ export default function ContactPage() {
   const sendContactMessage = async (email: string, message: string) => {
     try {
       setIsLoading(true);
-      await contactUs(email, message);
+      // await contactUs(email, message);
 
       return true;
     } catch (error) {

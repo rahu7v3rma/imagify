@@ -11,11 +11,11 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { addToast } from "@heroui/react";
 import { Controller } from "react-hook-form";
-import {
-  uploadFileString,
-  getFileDownloadURL,
-  getUserCredits,
-} from "@/lib/firebase";
+// import {
+//   uploadFileString,
+//   getFileDownloadURL,
+//   getUserCredits,
+// } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
 import { useFirebase } from "@/context/firebase";
 
@@ -59,7 +59,7 @@ export default function CompressImagePage() {
     null,
   );
   const { setIsLoading } = useLoader();
-  const { user, setUserCredits } = useFirebase();
+  const { user } = useFirebase();
 
   const {
     register,
@@ -221,8 +221,8 @@ export default function CompressImagePage() {
         const timestamp = Date.now();
         const filename = `reference/image-${timestamp}.jpg`;
 
-        await uploadFileString(selectedImage, filename, "data_url");
-        finalImageUrl = await getFileDownloadURL(filename);
+        // await uploadFileString(selectedImage, filename, "data_url");
+        // finalImageUrl = await getFileDownloadURL(filename);
       }
 
       // Get Firebase ID token
@@ -247,8 +247,8 @@ export default function CompressImagePage() {
         setCompressedFileSize(response.data.compressed_size);
 
         // Refresh user credits
-        const updatedCredits = await getUserCredits(user.uid);
-        setUserCredits(updatedCredits);
+        // const updatedCredits = await getUserCredits(user.uid);
+        // setUserCredits(updatedCredits);
 
         addToast({
           title: "Image compressed successfully",

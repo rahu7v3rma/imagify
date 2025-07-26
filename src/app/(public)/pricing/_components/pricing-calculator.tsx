@@ -10,7 +10,7 @@ import {
   Chip,
 } from "@heroui/react";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
-import { Currency, ExchangeRateData } from "@/lib/firebase-admin";
+import { Currency, ExchangeRateData } from "@/lib/firebase";
 
 interface PricingCalculatorProps {
   exchangeRateData: ExchangeRateData | null;

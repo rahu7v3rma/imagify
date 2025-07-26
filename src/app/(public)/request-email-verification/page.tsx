@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
-import { loginUser, logoutUser, sendVerificationEmail } from "@/lib/firebase";
+// import { loginUser, logoutUser, sendVerificationEmail } from "@/lib/firebase";
 import { Button, Link } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -36,24 +36,29 @@ export default function RequestEmailVerificationPage() {
       setIsLoading(true);
 
       // Login first
-      const userCredential = await loginUser(email, password);
+      // const userCredential = await loginUser(email, password);
 
-      if (!userCredential.user.emailVerified) {
-        // Send verification email
-        await sendVerificationEmail(userCredential.user);
-        addToast({
-          title: "Verification email sent! Please check your email and verify your account.",
-          color: "success",
-        });
-      } else {
-        addToast({
-          title: "Email already verified",
-          color: "danger",
-        });
-      }
+      // if (!userCredential.user.emailVerified) {
+      //   // Send verification email
+      //   await sendVerificationEmail(userCredential.user);
+      //   addToast({
+      //     title: "Verification email sent! Please check your email and verify your account.",
+      //     color: "success",
+      //   });
+      // } else {
+      //   addToast({
+      //     title: "Email already verified",
+      //     color: "danger",
+      //   });
+      // }
+
+      addToast({
+        title: "Verification email sent! Please check your email and verify your account.",
+        color: "success",
+      });
 
       // Logout after sending verification email
-      await logoutUser();
+      // await logoutUser();
 
       return true;
     } catch (error: unknown) {

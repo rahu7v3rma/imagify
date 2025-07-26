@@ -1,9 +1,9 @@
 import {
-  adminGetUserCredits,
-  adminUpdateUserCredits,
-  adminCreateUserCredits,
+  getUserCredits,
+  updateUserCredits,
+  createUserCredits,
   admin,
-} from "@/lib/firebase-admin";
+} from "@/lib/firebase";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 import * as z from "zod";
@@ -50,11 +50,11 @@ export async function POST(request: NextRequest) {
     const validatedData = requestSchema.parse(body);
 
     // Check user credits using Admin SDK
-    let userCredits = await adminGetUserCredits(userId);
+    let userCredits = await getUserCredits(userId);
     if (!userCredits) {
       // Create credits document with 0 initial credits if it doesn't exist
-      await adminCreateUserCredits(userId, 0);
-      userCredits = await adminGetUserCredits(userId);
+      await createUserCredits(userId, 0);
+      userCredits = await getUserCredits(userId);
     }
     
     if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     const extractedText = output as string;
 
     // Deduct credits using Admin SDK
-    await adminUpdateUserCredits(
+    await updateUserCredits(
       userId,
       userCredits.credits - CREDIT_REQUIREMENT,
     );

@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
-import { loginUser, logoutUser, getUserRole } from "@/lib/firebase";
+// import { loginUser, logoutUser, getUserRole } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Link } from "@heroui/react";
 import { useRouter } from "next/navigation";
@@ -37,32 +37,32 @@ export default function AdminLoginPage() {
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const userCredential = await loginUser(email, password);
+      // const userCredential = await loginUser(email, password);
       
       // Check if user has admin role
-      const userRole = await getUserRole(userCredential.user.uid);
+      // const userRole = await getUserRole(userCredential.user.uid);
       
-      if (!userRole || userRole.role_name !== "admin") {
-        // Log out the user and show error
-        await logoutUser();
-        addToast({
-          title: "Access denied. User is not an admin.",
-          color: "danger",
-        });
-        return false;
-      }
+      // if (!userRole || userRole.role_name !== "admin") {
+      //   // Log out the user and show error
+      //   // await logoutUser();
+      //   addToast({
+      //     title: "Access denied. User is not an admin.",
+      //     color: "danger",
+      //   });
+      //   return false;
+      // }
 
-      setUser(userCredential.user);
+      // setUser(userCredential.user);
 
       // Set the imagify.user.id cookie
-      Cookies.set("imagify.user.id", userCredential.user.uid, {
-        expires: 30, // 30 days
-      });
+      // Cookies.set("imagify.user.id", userCredential.user.uid, {
+      //   expires: 30, // 30 days
+      // });
 
       // Set the imagify.user.role.name cookie
-      Cookies.set("imagify.user.role.name", userRole.role_name, {
-        expires: 30, // 30 days
-      });
+      // Cookies.set("imagify.user.role.name", userRole.role_name, {
+      //   expires: 30, // 30 days
+      // });
 
       addToast({
         title: "Admin logged in successfully!",
@@ -71,7 +71,7 @@ export default function AdminLoginPage() {
       return true;
     } catch (error: unknown) {
       // Log out user on any error for security
-      await logoutUser();
+      // await logoutUser();
       // Clear cookies on error
       Cookies.remove("imagify.user.id");
       Cookies.remove("imagify.user.role.name");

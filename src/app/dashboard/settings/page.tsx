@@ -15,7 +15,7 @@ import {
   CardBody,
 } from "@heroui/react";
 import { CustomInput } from "@/components/ui/input";
-import { deleteCurrentUser, deleteUserCredits, updateUserEmail } from "@/lib/firebase";
+// import { deleteCurrentUser, deleteUserCredits, updateUserEmail } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { useRouter } from "next/navigation";
 import { addToast } from "@heroui/react";
@@ -68,7 +68,7 @@ export default function SettingsPage() {
 
     try {
       setIsLoading(true);
-      await updateUserEmail(data.email);
+      // await updateUserEmail(data.email);
       addToast({
         title: "Verification email sent! Please check your new email address.",
         color: "success",
@@ -115,7 +115,7 @@ export default function SettingsPage() {
       setIsLoading(true);
 
       // Delete the user account
-      await deleteCurrentUser();
+      // await deleteCurrentUser();
       setUser(null);
 
       // Clear the imagify.user.id cookie

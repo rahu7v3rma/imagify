@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput } from "@/components/ui/input";
-import { confirmPasswordResetFunc } from "@/lib/firebase";
+// import { confirmPasswordResetFunc } from "@/lib/firebase";
 import { Button } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -57,7 +57,7 @@ export default function ChangePasswordPage() {
 
     try {
       setIsLoading(true);
-      await confirmPasswordResetFunc(oobCode, newPassword);
+      // await confirmPasswordResetFunc(oobCode, newPassword);
       
       addToast({
         title: "Password changed successfully!",

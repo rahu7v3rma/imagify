@@ -1,6 +1,6 @@
 "use client";
 
-import { createUser, sendVerificationEmail, logoutUser } from "@/lib/firebase";
+// import { createUser, sendVerificationEmail, logoutUser } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Checkbox } from "@heroui/react";
 import { PasswordInput, CustomInput } from "@/components/ui/input";
@@ -53,13 +53,13 @@ export default function SignupPage() {
   const signup = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const userCredential = await createUser(email, password);
+      // const userCredential = await createUser(email, password);
 
       // Send verification email
-      await sendVerificationEmail(userCredential.user);
+      // await sendVerificationEmail(userCredential.user);
 
       // Logout immediately after creating account
-      await logoutUser();
+      // await logoutUser();
 
       addToast({
         title: "Email sent for verification",

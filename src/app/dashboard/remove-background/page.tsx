@@ -11,11 +11,11 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { addToast } from "@heroui/react";
 import { Controller } from "react-hook-form";
-import {
-  uploadFileString,
-  getFileDownloadURL,
-  getUserCredits,
-} from "@/lib/firebase";
+// import {
+//   uploadFileString,
+//   getFileDownloadURL,
+//   getUserCredits,
+// } from "@/lib/firebase";
 import { useLoader } from "@/context/loader";
 import { useFirebase } from "@/context/firebase";
 
@@ -56,7 +56,7 @@ export default function RemoveBackgroundPage() {
   const [isValidatingUrl, setIsValidatingUrl] = useState(false);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const { setIsLoading } = useLoader();
-  const { user, setUserCredits } = useFirebase();
+  const { user } = useFirebase();
 
   const {
     register,
@@ -219,8 +219,8 @@ export default function RemoveBackgroundPage() {
         const timestamp = Date.now();
         const filename = `reference/image-${timestamp}.jpg`;
 
-        await uploadFileString(selectedImage, filename, "data_url");
-        finalImageUrl = await getFileDownloadURL(filename);
+        // await uploadFileString(selectedImage, filename, "data_url");
+        // finalImageUrl = await getFileDownloadURL(filename);
       }
 
       // Get Firebase ID token
@@ -245,8 +245,8 @@ export default function RemoveBackgroundPage() {
         setProcessedImage(response.data.image_url);
 
         // Refresh user credits
-        const updatedCredits = await getUserCredits(user.uid);
-        setUserCredits(updatedCredits);
+        // const updatedCredits = await getUserCredits(user.uid);
+        // setUserCredits(updatedCredits);
 
         addToast({
           title: "Background removed successfully",

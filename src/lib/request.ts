@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { admin } from '@/lib/firebase-admin';
+import { admin } from '@/lib/firebase';
 
 export async function getUser(request: NextRequest): Promise<string> {
   // Get and verify Firebase ID token from authorization header

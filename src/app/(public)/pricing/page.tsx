@@ -7,7 +7,7 @@ import {
   ArchiveBoxArrowDownIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
-import { adminGetExchangeRates } from "@/lib/firebase-admin";
+import { getExchangeRates } from "@/lib/firebase";
 import PricingCalculator from "./_components/pricing-calculator";
 import ClientPricingWrapper from "./_components/client-pricing-wrapper";
 
@@ -65,7 +65,7 @@ const tools: ToolPricing[] = [
 
 export default async function PricingPage() {
   // Fetch exchange rates data
-  const exchangeRateData = await adminGetExchangeRates();
+  const exchangeRateData = await getExchangeRates();
 
   return (
     <div className="container mx-auto px-4 py-10 space-y-12 text-gray-800 dark:text-zinc-200">

@@ -5,10 +5,10 @@ import {
 } from '@paypal/paypal-server-sdk';
 import { NextRequest, NextResponse } from 'next/server';
 import {
-    adminGetUserCredits,
-    adminUpdateUserCredits,
-    adminCreateUserCredits
-} from '@/lib/firebase-admin';
+    getUserCredits,
+    updateUserCredits,
+    createUserCredits
+} from '@/lib/firebase';
 
 const client = new Client({
     clientCredentialsAuthCredentials: {
@@ -81,25 +81,25 @@ export async function GET(request: NextRequest) {
 
             // Get user's current credits
             console.log('🔍 Fetching current user credits...');
-            const currentCreditsData = await adminGetUserCredits(userId);
+            const currentCreditsData = await getUserCredits(userId);
             console.log('📊 Current credits data:', currentCreditsData);
 
             if (currentCreditsData) {
                 // User exists, update credits
                 const newCredits = currentCreditsData.credits + creditsToAdd;
                 console.log(`📈 Updating credits: ${currentCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
-                await adminUpdateUserCredits(userId, newCredits);
+                await updateUserCredits(userId, newCredits);
                 console.log('✅ User credits updated successfully');
             } else {
                 // User doesn't exist, create new credits document with 0 initial credits
                 console.log('🆕 Creating new credits record for user with 0 initial credits');
-                await adminCreateUserCredits(userId, 0);
+                await createUserCredits(userId, 0);
                 // Fetch the created document
-                const newCreditsData = await adminGetUserCredits(userId);
+                const newCreditsData = await getUserCredits(userId);
                 if (newCreditsData) {
                     const newCredits = newCreditsData.credits + creditsToAdd;
                     console.log(`📈 Adding credits to new user: ${newCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
-                    await adminUpdateUserCredits(userId, newCredits);
+                    await updateUserCredits(userId, newCredits);
                     console.log('✅ New user credits created and updated successfully');
                 }
             }

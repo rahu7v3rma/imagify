@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
-    adminGetUserCredits,
-    adminCreateUserCredits,
-    adminUpdateUserCredits,
-    adminCreateUserTransaction,
-    adminGetUserTransaction,
-} from '@/lib/firebase-admin';
+    getUserCredits,
+    createUserCredits,
+    updateUserCredits,
+    createUserTransaction,
+    getUserTransaction,
+} from '@/lib/firebase';
 import Razorpay from 'razorpay';
 
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID!;
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
 
         // Check if transaction already exists with status "paid"
         console.log('🔍 Checking for existing transaction...');
-        const existingTransaction = await adminGetUserTransaction(paymentLinkId);
+        const existingTransaction = await getUserTransaction(paymentLinkId);
         console.log('📊 Existing transaction:', existingTransaction);
         
         if (existingTransaction && existingTransaction.status === 'paid') {
@@ -85,31 +85,31 @@ export async function GET(request: NextRequest) {
         console.log('💰 Credits to add:', creditsToAdd);
         
         console.log('🔍 Fetching current user credits...');
-        const currentCreditsData = await adminGetUserCredits(userId);
+        const currentCreditsData = await getUserCredits(userId);
         console.log('📊 Current credits data:', currentCreditsData);
 
         if (currentCreditsData) {
             const newCredits = currentCreditsData.credits + creditsToAdd;
             console.log(`📈 Updating credits: ${currentCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
-            await adminUpdateUserCredits(userId, newCredits);
+            await updateUserCredits(userId, newCredits);
             console.log('✅ User credits updated successfully');
         } else {
             // User doesn't exist, create new credits document with 0 initial credits
             console.log('🆕 Creating new credits record for user with 0 initial credits');
-            await adminCreateUserCredits(userId, 0);
+            await createUserCredits(userId, 0);
             // Fetch the created document
-            const newCreditsData = await adminGetUserCredits(userId);
+            const newCreditsData = await getUserCredits(userId);
             if (newCreditsData) {
                 const newCredits = newCreditsData.credits + creditsToAdd;
                 console.log(`📈 Adding credits to new user: ${newCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
-                await adminUpdateUserCredits(userId, newCredits);
+                await updateUserCredits(userId, newCredits);
                 console.log('✅ New user credits created and updated successfully');
             }
         }
 
         // Create transaction record in Firebase
         console.log('📝 Creating transaction record...');
-        await adminCreateUserTransaction(paymentLinkId, userId, 'paid');
+        await createUserTransaction(paymentLinkId, userId, 'paid');
         console.log('✅ Transaction record created successfully');
 
         console.log('🎉 Payment verification completed successfully, redirecting to success');

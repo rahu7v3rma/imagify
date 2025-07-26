@@ -8,10 +8,10 @@ import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useLoader } from "@/context/loader";
-import { getUserCredits } from "@/lib/firebase";
+// import { getUserCredits } from "@/lib/firebase";
 
 export default function BillingPage() {
-  const { userCredits, user, setUserCredits } = useFirebase();
+  const { user } = useFirebase();
   const router = useRouter();
   const { setIsLoading } = useLoader();
 
@@ -34,14 +34,14 @@ export default function BillingPage() {
         });
 
         // Refresh user credits after successful payment
-        if (user) {
-          getUserCredits(user.uid)
-            .then((credits) => {
-              if (credits) {
-                setUserCredits(credits);
-              }
-            })
-        }
+        // if (user) {
+        //   getUserCredits(user.uid)
+        //     .then((credits) => {
+        //       if (credits) {
+        //         setUserCredits(credits);
+        //       }
+        //     })
+        // }
       } else if (status === "failure") {
         addToast({
           title: "Payment Failed",
@@ -55,7 +55,7 @@ export default function BillingPage() {
       router.replace(newUrl);
 
     }
-  }, [router, user, setUserCredits]);
+  }, [router, user]);
 
   const incrementCredits = () => {
     setCreditAmount((prev) => prev + 1);
@@ -187,7 +187,7 @@ export default function BillingPage() {
                       Total Credits
                     </h3>
                     <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">
-                      {userCredits?.credits ?? 0}
+                      {0}
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Available processing credits

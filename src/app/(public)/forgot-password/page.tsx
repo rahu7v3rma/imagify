@@ -1,6 +1,6 @@
 "use client";
 
-import { resetPasswordEmail } from "@/lib/firebase";
+// import { resetPasswordEmail } from "@/lib/firebase";
 import { Button, Link } from "@heroui/react";
 import { CustomInput } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +32,7 @@ export default function ForgotPasswordPage() {
   const forgotPassword = async (email: string) => {
     try {
       setIsLoading(true);
-      await resetPasswordEmail(email);
+      // await resetPasswordEmail(email);
       addToast({
         title: "Password reset email sent!",
         color: "success",

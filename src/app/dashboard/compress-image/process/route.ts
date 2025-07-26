@@ -1,11 +1,11 @@
 import {
-  adminGetFileDownloadURL,
-  adminGetUserCredits,
-  adminUpdateUserCredits,
-  adminCreateUserCredits,
-  adminUploadFile,
+  getFileDownloadURL,
+  getUserCredits,
+  updateUserCredits,
+  createUserCredits,
+  uploadFile,
   admin,
-} from "@/lib/firebase-admin";
+} from "@/lib/firebase";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 import tinify from "tinify";
@@ -53,11 +53,11 @@ export async function POST(request: NextRequest) {
     const validatedData = requestSchema.parse(body);
 
     // Check user credits using Admin SDK
-    let userCredits = await adminGetUserCredits(userId);
+    let userCredits = await getUserCredits(userId);
     if (!userCredits) {
       // Create credits document with 0 initial credits if it doesn't exist
-      await adminCreateUserCredits(userId, 0);
-      userCredits = await adminGetUserCredits(userId);
+      await createUserCredits(userId, 0);
+      userCredits = await getUserCredits(userId);
     }
     
     if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
@@ -98,11 +98,11 @@ export async function POST(request: NextRequest) {
     const fileName = `image-${timestamp}.png`;
     const filePath = `user_images/${userId}/compress-image/${fileName}`;
 
-    await adminUploadFile(compressedBuffer, filePath);
-    const firebaseImageUrl = await adminGetFileDownloadURL(filePath);
+    await uploadFile(compressedBuffer, filePath);
+    const firebaseImageUrl = await getFileDownloadURL(filePath);
 
     // Deduct credits using Admin SDK
-    await adminUpdateUserCredits(
+    await updateUserCredits(
       userId,
       userCredits.credits - CREDIT_REQUIREMENT,
     );

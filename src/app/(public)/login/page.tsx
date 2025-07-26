@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
-import { loginUser, logoutUser, handleActionCode, applyAuthActionCode, verifyPasswordResetCodeFunc } from "@/lib/firebase";
+// import { loginUser, logoutUser, handleActionCode, applyAuthActionCode, verifyPasswordResetCodeFunc } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Link } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -39,24 +39,24 @@ export default function LoginPage() {
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const userCredential = await loginUser(email, password);
+      // const userCredential = await loginUser(email, password);
 
       // Check if email is verified
-      if (!userCredential.user.emailVerified) {
-        await logoutUser();
-        addToast({
-          title: "Please verify your email before logging in",
-          color: "danger",
-        });
-        return false;
-      }
+      // if (!userCredential.user.emailVerified) {
+      //   // await logoutUser();
+      //   addToast({
+      //     title: "Please verify your email before logging in",
+      //     color: "danger",
+      //   });
+      //   return false;
+      // }
 
-      setUser(userCredential.user);
+      // setUser(userCredential.user);
 
       // Set the imagify.user.id cookie
-      Cookies.set("imagify.user.id", userCredential.user.uid, {
-        expires: 30, // 30 days
-      });
+      // Cookies.set("imagify.user.id", userCredential.user.uid, {
+      //   expires: 30, // 30 days
+      // });
 
       addToast({
         title: "Logged in successfully!",
@@ -101,35 +101,35 @@ export default function LoginPage() {
 
           if (mode === 'resetPassword') {
             // Verify the password reset code
-            await verifyPasswordResetCodeFunc(oobCode);
+            // await verifyPasswordResetCodeFunc(oobCode);
             // Redirect to change-password page with the oobCode
             router.replace(`/change-password?oobCode=${oobCode}`);
             return;
           }
 
-          const actionCodeInfo = await handleActionCode(oobCode);
-          await applyAuthActionCode(oobCode);
+          // const actionCodeInfo = await handleActionCode(oobCode);
+          // await applyAuthActionCode(oobCode);
 
-          if (actionCodeInfo.operation === 'VERIFY_EMAIL') {
-            addToast({
-              title: "Email verified successfully!",
-              color: "success",
-            });
-          }
+          // if (actionCodeInfo.operation === 'VERIFY_EMAIL') {
+          //   addToast({
+          //     title: "Email verified successfully!",
+          //     color: "success",
+          //   });
+          // }
 
-          if(actionCodeInfo.operation === 'VERIFY_AND_CHANGE_EMAIL'){
-            addToast({
-              title: "Email changed successfully!",
-              color: "success",
-            });
-          }
+          // if(actionCodeInfo.operation === 'VERIFY_AND_CHANGE_EMAIL'){
+          //   addToast({
+          //     title: "Email changed successfully!",
+          //     color: "success",
+          //   });
+          // }
 
-          if(actionCodeInfo.operation === 'RECOVER_EMAIL'){
-            addToast({
-              title: "Email reverted successfully!",
-              color: "success",
-            });
-          }
+          // if(actionCodeInfo.operation === 'RECOVER_EMAIL'){
+          //   addToast({
+          //     title: "Email reverted successfully!",
+          //     color: "success",
+          //   });
+          // }
 
         } catch (error) {
           addToast({

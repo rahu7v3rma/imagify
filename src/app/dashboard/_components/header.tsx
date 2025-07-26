@@ -14,7 +14,7 @@ import {
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useFirebase } from "@/context/firebase";
-import { logoutUser } from "@/lib/firebase";
+// import { logoutUser } from "@/lib/firebase";
 import { addToast } from "@heroui/react";
 import { useLoader } from "@/context/loader";
 import { BoltIcon } from "@heroicons/react/24/outline";
@@ -22,13 +22,13 @@ import Cookies from "js-cookie";
 
 export default function Header() {
   const router = useRouter();
-  const { user, setUser, userCredits } = useFirebase();
+  const { user, setUser } = useFirebase();
   const { setIsLoading } = useLoader();
 
   const logout = async () => {
     try {
       setIsLoading(true);
-      await logoutUser();
+      // await logoutUser();
       setUser(null);
 
       // Clear the imagify.user.id cookie
@@ -80,7 +80,7 @@ export default function Header() {
             onClick={handleCreditsClick}
             className="text-sm font-medium"
           >
-            {userCredits?.credits ?? 0} credits
+            {0} credits
           </Button>
         </NavbarItem>
         <NavbarItem>
