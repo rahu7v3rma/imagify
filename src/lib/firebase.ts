@@ -1,21 +1,10 @@
 import admin from "firebase-admin";
-// import { initializeApp } from "firebase/app";
-// import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
-// import {
-//   applyActionCode,
-//   checkActionCode,
-//   confirmPasswordReset,
-//   createUserWithEmailAndPassword,
-//   deleteUser,
-//   getAuth,
-//   onAuthStateChanged,
-//   sendPasswordResetEmail,
-//   sendEmailVerification,
-//   signInWithEmailAndPassword,
-//   signOut,
-//   verifyBeforeUpdateEmail,
-//   verifyPasswordResetCode,
-// } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  getAuth,
+} from "firebase/auth";
 // import {
 //   collection,
 //   getDocs,
@@ -38,6 +27,20 @@ import admin from "firebase-admin";
 //   UploadMetadata,
 //   uploadString,
 // } from "firebase/storage";
+
+// Firebase Client SDK config
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+};
+
+// Initialize Firebase Client SDK
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 const serviceAccount = {
   type: "service_account",
@@ -236,7 +239,8 @@ export const createUser = async (email: string, password: string) => {
 
 // Admin User Profile functions
 export interface UserProfileDocument {
-  email_verification_code: string;
+  email_verification_code?: string;
+  auth_token?: string;
 }
 
 export const createUserProfile = async (
@@ -248,6 +252,29 @@ export const createUserProfile = async (
   };
 
   await db.collection("user_profile").doc(userId).set(userProfileData);
+};
+
+export const updateUserProfile = async (
+  userId: string,
+  data: Partial<UserProfileDocument>,
+): Promise<void> => {
+  await db.collection("user_profile").doc(userId).update(data);
+};
+
+// Client SDK authentication function
+export const verifyEmailPassword = async (email: string, password: string): Promise<string> => {
+  try {
+    // Sign in with email and password
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userId = userCredential.user.uid;
+    
+    // Immediately sign out
+    await signOut(auth);
+    
+    return userId;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export { admin };

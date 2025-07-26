@@ -1,25 +1,14 @@
 "use client";
 
 import { PasswordInput, CustomInput } from "@/components/ui/input";
-// import { loginUser, logoutUser, handleActionCode, applyAuthActionCode, verifyPasswordResetCodeFunc } from "@/lib/firebase";
 import { useFirebase } from "@/context/firebase";
 import { Button, Link } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { addToast } from "@heroui/react";
-import { FirebaseError } from "firebase/app";
 import { useLoader } from "@/context/loader";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Cookies from "js-cookie";
-
-const schema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type Schema = z.infer<typeof schema>;
 
 export default function LoginPage() {
   const { setUser } = useFirebase();
@@ -27,151 +16,86 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<Schema>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
   });
 
-  const login = async (email: string, password: string) => {
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const login = async () => {
     try {
       setIsLoading(true);
-      // const userCredential = await loginUser(email, password);
-
-      // Check if email is verified
-      // if (!userCredential.user.emailVerified) {
-      //   // await logoutUser();
-      //   addToast({
-      //     title: "Please verify your email before logging in",
-      //     color: "danger",
-      //   });
-      //   return false;
-      // }
-
-      // setUser(userCredential.user);
-
-      // Set the imagify.user.id cookie
-      // Cookies.set("imagify.user.id", userCredential.user.uid, {
-      //   expires: 30, // 30 days
-      // });
-
-      addToast({
-        title: "Logged in successfully!",
-        color: "success",
+      
+      const response = await axios.post('/login/api', {
+        email: formData.email,
+        password: formData.password,
       });
-      return true;
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        if (error.code === "auth/invalid-credential") {
-          addToast({
-            title: "User not found",
-            color: "danger",
-          });
-          return false;
-        }
+
+      if (response.data.success) {
+        addToast({
+          title: response.data.message,
+          color: "success",
+        });
+        
+        // Set user context if needed
+        // setUser(response.data.data.user);
+        
+        router.push("/dashboard");
+      } else {
+        addToast({
+          title: response.data.message,
+          color: "danger",
+        });
       }
+    } catch (error: any) {
+      let errorMessage = "Failed to login";
+      
+      if (error.response?.data?.code === "validation_failed") {
+        const fieldErrors = error.response.data.data;
+        const errorMessages = [];
+        
+        if (fieldErrors.email) errorMessages.push(`Email: ${fieldErrors.email[0]}`);
+        if (fieldErrors.password) errorMessages.push(`Password: ${fieldErrors.password[0]}`);
+        
+        errorMessage = errorMessages.join(", ");
+      } else {
+        errorMessage = error.response?.data?.message || "Failed to login";
+      }
+      
       addToast({
-        title: "Failed to login",
+        title: errorMessage,
         color: "danger",
       });
-      return false;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const onSubmit = async (data: Schema) => {
-    const success = await login(data.email, data.password);
-    if (success) {
-      router.push("/dashboard");
-    }
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await login();
   };
-
-  useEffect(() => {
-    const oobCode = searchParams.get('oobCode');
-    const mode = searchParams.get('mode');
-
-    if (oobCode) {
-      const handleOobCode = async () => {
-        try {
-          setIsLoading(true);
-
-          if (mode === 'resetPassword') {
-            // Verify the password reset code
-            // await verifyPasswordResetCodeFunc(oobCode);
-            // Redirect to change-password page with the oobCode
-            router.replace(`/change-password?oobCode=${oobCode}`);
-            return;
-          }
-
-          // const actionCodeInfo = await handleActionCode(oobCode);
-          // await applyAuthActionCode(oobCode);
-
-          // if (actionCodeInfo.operation === 'VERIFY_EMAIL') {
-          //   addToast({
-          //     title: "Email verified successfully!",
-          //     color: "success",
-          //   });
-          // }
-
-          // if(actionCodeInfo.operation === 'VERIFY_AND_CHANGE_EMAIL'){
-          //   addToast({
-          //     title: "Email changed successfully!",
-          //     color: "success",
-          //   });
-          // }
-
-          // if(actionCodeInfo.operation === 'RECOVER_EMAIL'){
-          //   addToast({
-          //     title: "Email reverted successfully!",
-          //     color: "success",
-          //   });
-          // }
-
-        } catch (error) {
-          addToast({
-            title: "Invalid or expired link.",
-            color: "danger",
-          });
-          if (mode === 'resetPassword') {
-            router.replace('/forgot-password');
-          } 
-          if (mode === 'verifyEmail') {
-            router.replace('/request-email-verification');
-          }
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      handleOobCode();
-    }
-
-  }, [searchParams, router, setIsLoading]);
 
   return (
     <div className="flex flex-col gap-2 w-60">
       <h1 className="text-2xl font-bold">Login</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+      <form onSubmit={onSubmit} className="flex flex-col gap-2">
         <CustomInput
           type="email"
           placeholder="Email"
-          {...register("email")}
-          isInvalid={!!errors.email}
-          errorMessage={errors.email?.message}
+          value={formData.email}
+          onChange={(e) => handleInputChange("email", e.target.value)}
         />
         <PasswordInput
           placeholder="Password"
-          {...register("password")}
-          isInvalid={!!errors.password}
-          errorMessage={errors.password?.message}
+          value={formData.password}
+          onChange={(e) => handleInputChange("password", e.target.value)}
         />
         <Button
           type="submit"
-          isDisabled={!isValid}
           variant="solid"
           color="primary"
         >
