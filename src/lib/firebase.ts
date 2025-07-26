@@ -262,16 +262,16 @@ export const updateUserProfile = async (
 };
 
 // Client SDK authentication function
-export const verifyEmailPassword = async (email: string, password: string): Promise<string> => {
+export const getUserWithEmailPassword = async (email: string, password: string) => {
   try {
     // Sign in with email and password
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const userId = userCredential.user.uid;
+    const user = userCredential.user;
     
     // Immediately sign out
     await signOut(auth);
     
-    return userId;
+    return user;
   } catch (error) {
     throw error;
   }

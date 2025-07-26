@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { verifyEmailPassword, updateUserProfile } from "@/lib/firebase";
+import { getUserWithEmailPassword, updateUserProfile } from "@/lib/firebase";
 import { generateJWT } from "@/lib/jwt";
 
 const loginSchema = z.object({
@@ -28,14 +28,19 @@ export async function POST(request: NextRequest) {
 
     const { email, password } = validationResult.data;
 
-    // Verify email and password using Firebase Client SDK
-    const userId = await verifyEmailPassword(email, password);
+    // Get user with email and password using Firebase Client SDK
+    const user = await getUserWithEmailPassword(email, password);
+
+    // Check if email is verified
+    if (!user.emailVerified) {
+      throw new Error("Email not verified");
+    }
 
     // Generate JWT token
-    const authToken = generateJWT(userId);
+    const authToken = generateJWT(user.uid);
 
     // Save auth token to user profile
-    await updateUserProfile(userId, {
+    await updateUserProfile(user.uid, {
       auth_token: authToken,
     });
 
@@ -56,6 +61,19 @@ export async function POST(request: NextRequest) {
     return response;
   } catch (error: any) {
     console.error("Login error:", error);
+
+    // Handle email not verified error
+    if (error.message === "Email not verified") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Please verify your email before logging in",
+          code: "email_not_verified",
+          data: null,
+        },
+        { status: 400 }
+      );
+    }
 
     // Handle Firebase Auth errors - any authentication error is treated as invalid credentials
     if (
