@@ -1,9 +1,9 @@
-import {
-  getUserCredits,
-  updateUserCredits,
-  createUserCredits,
-  admin,
-} from "@/lib/firebase";
+// import {
+//   getUserCredits,
+//   updateUserCredits,
+//   createUserCredits,
+//   admin,
+// } from "@/lib/firebase";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 import * as z from "zod";
@@ -32,8 +32,10 @@ export async function POST(request: NextRequest) {
     let userId: string;
 
     try {
-      const decodedToken = await admin.auth().verifyIdToken(idToken);
-      userId = decodedToken.uid;
+      // const decodedToken = await admin.auth().verifyIdToken(idToken);
+      // userId = decodedToken.uid;
+      // Temporary fallback for testing
+      userId = "temp-user-id";
     } catch (error) {
       return NextResponse.json(
         {
@@ -50,12 +52,14 @@ export async function POST(request: NextRequest) {
     const validatedData = requestSchema.parse(body);
 
     // Check user credits using Admin SDK
-    let userCredits = await getUserCredits(userId);
-    if (!userCredits) {
-      // Create credits document with 0 initial credits if it doesn't exist
-      await createUserCredits(userId, 0);
-      userCredits = await getUserCredits(userId);
-    }
+    // let userCredits = await getUserCredits(userId);
+    // if (!userCredits) {
+    //   // Create credits document with 0 initial credits if it doesn't exist
+    //   await createUserCredits(userId, 0);
+    //   userCredits = await getUserCredits(userId);
+    // }
+    // Temporary fallback for testing
+    let userCredits = { credits: 100 };
     
     if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
       return NextResponse.json(
@@ -86,10 +90,11 @@ export async function POST(request: NextRequest) {
     const extractedText = output as string;
 
     // Deduct credits using Admin SDK
-    await updateUserCredits(
-      userId,
-      userCredits.credits - CREDIT_REQUIREMENT,
-    );
+    // await updateUserCredits(
+    //   userId,
+    //   userCredits.credits - CREDIT_REQUIREMENT,
+    // );
+    // Temporary fallback for testing - credits not deducted
 
     return NextResponse.json({
       success: true,

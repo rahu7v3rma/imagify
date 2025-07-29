@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { admin } from '@/lib/firebase';
+// import { admin } from '@/lib/firebase';
 
 export async function getUser(request: NextRequest): Promise<string> {
   // Get and verify Firebase ID token from authorization header
@@ -11,8 +11,9 @@ export async function getUser(request: NextRequest): Promise<string> {
   const idToken = authHeader.split("Bearer ")[1];
 
   try {
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    return decodedToken.uid;
+    // const decodedToken = await admin.auth().verifyIdToken(idToken);
+    // return decodedToken.uid;
+    throw new Error("Firebase admin disabled");
   } catch (error) {
     throw new Error("Invalid or expired token");
   }

@@ -4,11 +4,11 @@ import {
     OrdersController,
 } from '@paypal/paypal-server-sdk';
 import { NextRequest, NextResponse } from 'next/server';
-import {
-    getUserCredits,
-    updateUserCredits,
-    createUserCredits
-} from '@/lib/firebase';
+// import {
+//     getUserCredits,
+//     updateUserCredits,
+//     createUserCredits
+// } from '@/lib/firebase';
 
 const client = new Client({
     clientCredentialsAuthCredentials: {
@@ -81,27 +81,30 @@ export async function GET(request: NextRequest) {
 
             // Get user's current credits
             console.log('🔍 Fetching current user credits...');
-            const currentCreditsData = await getUserCredits(userId);
-            console.log('📊 Current credits data:', currentCreditsData);
+            // const currentCreditsData = await getUserCredits(userId);
+            // console.log('📊 Current credits data:', currentCreditsData);
+            // Temporary fallback for testing
+            const currentCreditsData = { credits: 50 };
 
             if (currentCreditsData) {
                 // User exists, update credits
                 const newCredits = currentCreditsData.credits + creditsToAdd;
                 console.log(`📈 Updating credits: ${currentCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
-                await updateUserCredits(userId, newCredits);
-                console.log('✅ User credits updated successfully');
+                // await updateUserCredits(userId, newCredits);
+                console.log('✅ User credits updated successfully (commented out)');
             } else {
                 // User doesn't exist, create new credits document with 0 initial credits
                 console.log('🆕 Creating new credits record for user with 0 initial credits');
-                await createUserCredits(userId, 0);
+                // await createUserCredits(userId, 0);
                 // Fetch the created document
-                const newCreditsData = await getUserCredits(userId);
-                if (newCreditsData) {
-                    const newCredits = newCreditsData.credits + creditsToAdd;
-                    console.log(`📈 Adding credits to new user: ${newCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
-                    await updateUserCredits(userId, newCredits);
-                    console.log('✅ New user credits created and updated successfully');
-                }
+                // const newCreditsData = await getUserCredits(userId);
+                // if (newCreditsData) {
+                //     const newCredits = newCreditsData.credits + creditsToAdd;
+                //     console.log(`📈 Adding credits to new user: ${newCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
+                //     await updateUserCredits(userId, newCredits);
+                //     console.log('✅ New user credits created and updated successfully');
+                // }
+                console.log('✅ New user credits creation (commented out)');
             }
 
             console.log('🎉 Payment processing completed successfully, redirecting to success');

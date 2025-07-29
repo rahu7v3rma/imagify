@@ -22,13 +22,31 @@ export default function SignupPage() {
     agreeToTerms: false,
   });
 
+  const [fieldErrors, setFieldErrors] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    agreeToTerms: "",
+  });
+
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear field error when user starts typing
+    if (fieldErrors[field as keyof typeof fieldErrors]) {
+      setFieldErrors(prev => ({ ...prev, [field]: "" }));
+    }
   };
 
   const signup = async () => {
     try {
       setIsLoading(true);
+      // Clear field errors when submitting
+      setFieldErrors({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        agreeToTerms: "",
+      });
       
       const response = await axios.post('/signup/api', {
         email: formData.email,
@@ -50,26 +68,23 @@ export default function SignupPage() {
         });
       }
     } catch (error: any) {
-      let errorMessage = "Failed to create account";
-      
       if (error.response?.data?.code === "validation_failed") {
-        const fieldErrors = error.response.data.data;
-        const errorMessages = [];
+        const apiFieldErrors = error.response.data.data;
         
-        if (fieldErrors.email) errorMessages.push(`Email: ${fieldErrors.email[0]}`);
-        if (fieldErrors.password) errorMessages.push(`Password: ${fieldErrors.password[0]}`);
-        if (fieldErrors.confirmPassword) errorMessages.push(`Confirm Password: ${fieldErrors.confirmPassword[0]}`);
-        if (fieldErrors.agreeToTerms) errorMessages.push(`Terms: ${fieldErrors.agreeToTerms[0]}`);
-        
-        errorMessage = errorMessages.join(", ");
+        setFieldErrors({
+          email: apiFieldErrors.email ? apiFieldErrors.email[0] : "",
+          password: apiFieldErrors.password ? apiFieldErrors.password[0] : "",
+          confirmPassword: apiFieldErrors.confirmPassword ? apiFieldErrors.confirmPassword[0] : "",
+          agreeToTerms: apiFieldErrors.agreeToTerms ? apiFieldErrors.agreeToTerms[0] : "",
+        });
       } else {
-        errorMessage = error.response?.data?.message || "Failed to create account";
+        // For non-validation errors, show in toast
+        const errorMessage = error.response?.data?.message || "Failed to create account";
+        addToast({
+          title: errorMessage,
+          color: "danger",
+        });
       }
-      
-      addToast({
-        title: errorMessage,
-        color: "danger",
-      });
     } finally {
       setIsLoading(false);
     }
@@ -89,16 +104,22 @@ export default function SignupPage() {
           placeholder="Email"
           value={formData.email}
           onChange={(e) => handleInputChange("email", e.target.value)}
+          isInvalid={!!fieldErrors.email}
+          errorMessage={fieldErrors.email}
         />
         <PasswordInput
           placeholder="Password"
           value={formData.password}
           onChange={(e) => handleInputChange("password", e.target.value)}
+          isInvalid={!!fieldErrors.password}
+          errorMessage={fieldErrors.password}
         />
         <PasswordInput
           placeholder="Confirm Password"
           value={formData.confirmPassword}
           onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+          isInvalid={!!fieldErrors.confirmPassword}
+          errorMessage={fieldErrors.confirmPassword}
         />
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2 text-sm">
@@ -106,6 +127,7 @@ export default function SignupPage() {
               isSelected={formData.agreeToTerms}
               onValueChange={(checked) => handleInputChange("agreeToTerms", checked)}
               size="sm"
+              isInvalid={!!fieldErrors.agreeToTerms}
             />
             <span>
               I agree to the{" "}
@@ -126,6 +148,11 @@ export default function SignupPage() {
               </Link>
             </span>
           </div>
+          {fieldErrors.agreeToTerms && (
+            <p className="text-sm text-danger-500 dark:text-danger-400">
+              {fieldErrors.agreeToTerms}
+            </p>
+          )}
         </div>
         <Button
           type="submit"

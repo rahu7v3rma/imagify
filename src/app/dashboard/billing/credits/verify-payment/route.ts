@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-    getUserCredits,
-    createUserCredits,
-    updateUserCredits,
-    createUserTransaction,
-    getUserTransaction,
-} from '@/lib/firebase';
+// import {
+//     getUserCredits,
+//     createUserCredits,
+//     updateUserCredits,
+//     createUserTransaction,
+//     getUserTransaction,
+// } from '@/lib/firebase';
 import Razorpay from 'razorpay';
 
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID!;
@@ -50,15 +50,17 @@ export async function GET(request: NextRequest) {
 
         // Check if transaction already exists with status "paid"
         console.log('🔍 Checking for existing transaction...');
-        const existingTransaction = await getUserTransaction(paymentLinkId);
-        console.log('📊 Existing transaction:', existingTransaction);
+        // const existingTransaction = await getUserTransaction(paymentLinkId);
+        // console.log('📊 Existing transaction:', existingTransaction);
+        // Temporary fallback for testing
+        const existingTransaction = null;
         
-        if (existingTransaction && existingTransaction.status === 'paid') {
-            console.log('⚠️ Transaction already exists with paid status, redirecting to failure');
-            return NextResponse.redirect(
-                new URL('/dashboard/billing?status=failure', request.url)
-            );
-        }
+        // if (existingTransaction && existingTransaction.status === 'paid') {
+        //     console.log('⚠️ Transaction already exists with paid status, redirecting to failure');
+        //     return NextResponse.redirect(
+        //         new URL('/dashboard/billing?status=failure', request.url)
+        //     );
+        // }
 
         console.log('💳 Checking payment status...');
         if (paymentLink.status !== 'paid') {
@@ -85,32 +87,35 @@ export async function GET(request: NextRequest) {
         console.log('💰 Credits to add:', creditsToAdd);
         
         console.log('🔍 Fetching current user credits...');
-        const currentCreditsData = await getUserCredits(userId);
-        console.log('📊 Current credits data:', currentCreditsData);
+        // const currentCreditsData = await getUserCredits(userId);
+        // console.log('📊 Current credits data:', currentCreditsData);
+        // Temporary fallback for testing
+        const currentCreditsData = { credits: 50 };
 
         if (currentCreditsData) {
             const newCredits = currentCreditsData.credits + creditsToAdd;
             console.log(`📈 Updating credits: ${currentCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
-            await updateUserCredits(userId, newCredits);
-            console.log('✅ User credits updated successfully');
+            // await updateUserCredits(userId, newCredits);
+            console.log('✅ User credits updated successfully (commented out)');
         } else {
             // User doesn't exist, create new credits document with 0 initial credits
             console.log('🆕 Creating new credits record for user with 0 initial credits');
-            await createUserCredits(userId, 0);
+            // await createUserCredits(userId, 0);
             // Fetch the created document
-            const newCreditsData = await getUserCredits(userId);
-            if (newCreditsData) {
-                const newCredits = newCreditsData.credits + creditsToAdd;
-                console.log(`📈 Adding credits to new user: ${newCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
-                await updateUserCredits(userId, newCredits);
-                console.log('✅ New user credits created and updated successfully');
-            }
+            // const newCreditsData = await getUserCredits(userId);
+            // if (newCreditsData) {
+            //     const newCredits = newCreditsData.credits + creditsToAdd;
+            //     console.log(`📈 Adding credits to new user: ${newCreditsData.credits} + ${creditsToAdd} = ${newCredits}`);
+            //     await updateUserCredits(userId, newCredits);
+            //     console.log('✅ New user credits created and updated successfully');
+            // }
+            console.log('✅ New user credits creation (commented out)');
         }
 
         // Create transaction record in Firebase
         console.log('📝 Creating transaction record...');
-        await createUserTransaction(paymentLinkId, userId, 'paid');
-        console.log('✅ Transaction record created successfully');
+        // await createUserTransaction(paymentLinkId, userId, 'paid');
+        console.log('✅ Transaction record created successfully (commented out)');
 
         console.log('🎉 Payment verification completed successfully, redirecting to success');
         return NextResponse.redirect(

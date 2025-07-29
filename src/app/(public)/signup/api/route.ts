@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import validator from 'validator';
-import { createUser, createUserProfile } from '@/lib/firebase';
+// import { createUser, createUserProfile } from '@/lib/firebase';
 import { sendVerificationEmail } from '@/lib/email';
 
 const signupSchema = z
@@ -44,13 +44,13 @@ export async function POST(request: NextRequest) {
     const { email, password } = validationResult.data;
 
     // Create user with Firebase Admin
-    const userRecord = await createUser(email, password);
+    // const userRecord = await createUser(email, password);
 
     // Generate 6-digit verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     
     // Create user profile with verification code
-    await createUserProfile(userRecord.uid, email, verificationCode);
+    // await createUserProfile(userRecord.uid, email, verificationCode);
 
     // Send verification email
     await sendVerificationEmail(email, verificationCode);

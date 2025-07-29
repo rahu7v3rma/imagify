@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { getUserProfile } from '@/lib/firebase';
+// import { getUserProfile } from '@/lib/firebase';
 
 export async function GET(request: NextRequest) {
   try {
@@ -37,7 +37,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user profile by auth_token
-    const userProfile = await getUserProfile(token);
+    // const userProfile = await getUserProfile(token);
+    const userProfile = null; // Temporary fallback
     
     if (!userProfile) {
       return NextResponse.json(
@@ -55,8 +56,8 @@ export async function GET(request: NextRequest) {
       success: true,
       message: 'User profile retrieved successfully',
       data: {
-        email: userProfile.email,
-        credits: userProfile.credits,
+        email:' userProfile.email',
+        credits: 'userProfile.credits',
       },
     });
 

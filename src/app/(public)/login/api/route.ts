@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { getUserWithEmailPassword, updateUserProfile } from "@/lib/firebase";
+// import { getUserWithEmailPassword, updateUserProfile } from "@/lib/firebase";
 import { generateJWT } from "@/lib/jwt";
 
 const loginSchema = z.object({
@@ -29,20 +29,20 @@ export async function POST(request: NextRequest) {
     const { email, password } = validationResult.data;
 
     // Get user with email and password using Firebase Client SDK
-    const user = await getUserWithEmailPassword(email, password);
+    // const user = await getUserWithEmailPassword(email, password);
 
     // Check if email is verified
-    if (!user.emailVerified) {
-      throw new Error("Email not verified");
-    }
+    // if (!user.emailVerified) {
+    //   throw new Error("Email not verified");
+    // }
 
     // Generate JWT token
-    const authToken = generateJWT(user.uid);
+    // const authToken = generateJWT(user.uid);
 
     // Save auth token to user profile
-    await updateUserProfile(user.uid, {
-      auth_token: authToken,
-    });
+    // await updateUserProfile(user.uid, {
+    //   auth_token: authToken,
+    // });
 
     const response = NextResponse.json({
       success: true,
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Set cookie
-    response.cookies.set("imagify.auth.token", authToken, {
+    response.cookies.set("imagify.auth.token", 'authToken', {
       httpOnly: true,
       secure: process.env.APP_ENV === "production",
       sameSite: "strict",

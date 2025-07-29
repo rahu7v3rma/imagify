@@ -1,11 +1,11 @@
-import {
-  getFileDownloadURL,
-  getUserCredits,
-  updateUserCredits,
-  createUserCredits,
-  uploadFile,
-  admin,
-} from "@/lib/firebase";
+// import {
+//   getFileDownloadURL,
+//   getUserCredits,
+//   updateUserCredits,
+//   createUserCredits,
+//   uploadFile,
+//   admin,
+// } from "@/lib/firebase";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 import tinify from "tinify";
@@ -35,8 +35,10 @@ export async function POST(request: NextRequest) {
     let userId: string;
 
     try {
-      const decodedToken = await admin.auth().verifyIdToken(idToken);
-      userId = decodedToken.uid;
+      // const decodedToken = await admin.auth().verifyIdToken(idToken);
+      // userId = decodedToken.uid;
+      // Temporary fallback for testing
+      userId = "temp-user-id";
     } catch (error) {
       return NextResponse.json(
         {
@@ -53,12 +55,14 @@ export async function POST(request: NextRequest) {
     const validatedData = requestSchema.parse(body);
 
     // Check user credits using Admin SDK
-    let userCredits = await getUserCredits(userId);
-    if (!userCredits) {
-      // Create credits document with 0 initial credits if it doesn't exist
-      await createUserCredits(userId, 0);
-      userCredits = await getUserCredits(userId);
-    }
+    // let userCredits = await getUserCredits(userId);
+    // if (!userCredits) {
+    //   // Create credits document with 0 initial credits if it doesn't exist
+    //   await createUserCredits(userId, 0);
+    //   userCredits = await getUserCredits(userId);
+    // }
+    // Temporary fallback for testing
+    let userCredits = { credits: 100 };
     
     if (!userCredits || userCredits.credits < CREDIT_REQUIREMENT) {
       return NextResponse.json(
@@ -98,14 +102,17 @@ export async function POST(request: NextRequest) {
     const fileName = `image-${timestamp}.png`;
     const filePath = `user_images/${userId}/compress-image/${fileName}`;
 
-    await uploadFile(compressedBuffer, filePath);
-    const firebaseImageUrl = await getFileDownloadURL(filePath);
+    // await uploadFile(compressedBuffer, filePath);
+    // const firebaseImageUrl = await getFileDownloadURL(filePath);
+    // Temporary fallback for testing
+    const firebaseImageUrl = "testing"
 
     // Deduct credits using Admin SDK
-    await updateUserCredits(
-      userId,
-      userCredits.credits - CREDIT_REQUIREMENT,
-    );
+    // await updateUserCredits(
+    //   userId,
+    //   userCredits.credits - CREDIT_REQUIREMENT,
+    // );
+    // Temporary fallback for testing - credits not deducted
 
     // Calculate file sizes
     const originalSize = imageBuffer.length;
