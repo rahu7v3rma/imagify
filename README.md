@@ -4,11 +4,13 @@
 
 # Tech Stack
 
-- Firebase - backend framework
-- NextJS - app framework
+- Postgres - database
+- NextJS - full stack framework
+- Redis - rate limiting
+
+# Services
+
 - Replicate - image processing
 - PayPal - payment processor
 - Razorpay - payment processor
 - Tinify - image compression
-- OpenAI - image processing
-- Upstash - rate limiting

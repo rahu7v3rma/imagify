@@ -1,76 +1,10 @@
-import {
-  PhotoIcon,
-  PencilIcon,
-  ArrowUpIcon,
-  DocumentTextIcon,
-  SparklesIcon,
-  ArchiveBoxArrowDownIcon,
-  ArrowPathIcon,
-} from "@heroicons/react/24/outline";
-// import { getExchangeRates } from "@/lib/firebase";
-import PricingCalculator from "./_components/pricing-calculator";
-import ClientPricingWrapper from "./_components/client-pricing-wrapper";
-
-interface ToolPricing {
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  title: string;
-  description: string;
-  cost: string;
-}
-
-const tools: ToolPricing[] = [
-  {
-    icon: SparklesIcon,
-    title: "Generate Image",
-    description: "Create stunning images from text using AI",
-    cost: "2–10 credits",
-  },
-  {
-    icon: PhotoIcon,
-    title: "Remove Background",
-    description: "Remove backgrounds from images instantly",
-    cost: "2–4 credits",
-  },
-  {
-    icon: DocumentTextIcon,
-    title: "Extract Text (OCR)",
-    description: "Extract text from screenshots or scanned documents",
-    cost: "2 credits",
-  },
-  {
-    icon: ArrowUpIcon,
-    title: "Upscale Image",
-    description: "Enlarge images up to 4× while preserving detail",
-    cost: "2–3 credits",
-  },
-  {
-    icon: ArchiveBoxArrowDownIcon,
-    title: "Compress Image",
-    description: "Reduce image file size without losing quality",
-    cost: "3 credits",
-  },
-  {
-    icon: ArrowPathIcon,
-    title: "Convert Format",
-    description: "Convert images between different formats",
-    cost: "3 credits",
-  },
-  {
-    icon: PencilIcon,
-    title: "Edit Image",
-    description: "Smart adjustments and transformations",
-    cost: "2–10 credits",
-  },
-];
+import { Button } from "@heroui/react";
+import Link from "next/link";
+import { tools } from "@/constants/dashboard/pricing";
 
 export default async function PricingPage() {
-  // Fetch exchange rates data
-  // const exchangeRateData = await getExchangeRates();
-  const exchangeRateData = null; // Temporary fallback
-
   return (
     <div className="container mx-auto px-4 py-10 space-y-12 text-gray-800 dark:text-zinc-200">
-      {/* Heading */}
       <div className="text-center space-y-2 max-w-4xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold dark:text-white">
           Simple, pay-as-you-go pricing
@@ -82,7 +16,6 @@ export default async function PricingPage() {
         </p>
       </div>
 
-      {/* Tool pricing grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {tools.map(({ icon: Icon, title, description, cost }) => (
           <div
@@ -105,23 +38,26 @@ export default async function PricingPage() {
         ))}
       </div>
 
-      {/* Call-to-action */}
-      <ClientPricingWrapper />
-
-      {/* Pricing Calculator */}
-      <div className="border-t border-gray-200 dark:border-gray-700 pt-12">
-        <PricingCalculator exchangeRateData={exchangeRateData} />
+      <div className="text-center space-y-4 pt-4">
+        <h2 className="text-2xl font-semibold dark:text-white">
+          Ready to get started?
+        </h2>
+        <p className="text-gray-600 dark:text-zinc-400 max-w-xl mx-auto">
+          Create a free account and top-up credits whenever you need them.
+        </p>
+        <Button as={Link} href="/signup" variant="solid" color="primary">
+          Sign Up – It's Free
+        </Button>
       </div>
 
-      {/* Payment Security Note */}
       <div className="text-center pt-8 border-t border-gray-200 dark:border-gray-700">
         <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
-          <svg 
-            className="w-4 h-4 text-blue-600" 
-            fill="currentColor" 
+          <svg
+            className="w-4 h-4 text-blue-600"
+            fill="currentColor"
             viewBox="0 0 24 24"
           >
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
           </svg>
           All payments are secured through our trusted payment processors
         </p>

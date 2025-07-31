@@ -1,48 +1,8 @@
-"use client";
+import Header from "@/components/dashboard/header";
+import Sidebar from "@/components/dashboard/sidebar";
+import { ReactNode } from "react";
 
-import Header from "./_components/header";
-import Sidebar from "./_components/sidebar";
-import { useUser } from "@/context/user";
-import { useEffect } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
-
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { setUser } = useUser();
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const authToken = Cookies.get("imagify.auth.token");
-        
-        if (!authToken) {
-          return;
-        }
-
-        const response = await axios.get("/dashboard/api", {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-
-        if (response.data.success) {
-          setUser({
-            email: response.data.data.email,
-            credits: response.data.data.credits,
-          });
-        }
-      } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-      }
-    };
-
-    fetchUserProfile();
-  }, [setUser]);
-
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="h-screen flex flex-col">
       <div className="h-[8%]">

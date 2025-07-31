@@ -3,8 +3,7 @@
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { Geist } from "next/font/google";
 import clsx from "clsx";
-import { Suspense } from "react";
-import { UserProvider } from "../context/user";
+import { ReactNode, Suspense } from "react";
 import { LoaderProvider } from "../context/loader";
 import { ThemeProvider, useTheme } from "../context/theme";
 import "./globals.css";
@@ -14,7 +13,7 @@ const geist = Geist({
   display: "swap",
 });
 
-function RootApp({ children }: { children: React.ReactNode }) {
+function RootApp({ children }: { children: ReactNode }) {
   const { mode } = useTheme();
 
   return (
@@ -25,9 +24,7 @@ function RootApp({ children }: { children: React.ReactNode }) {
       <body className={clsx(geist.className, "dark:bg-zinc-800 min-h-screen")}>
         <HeroUIProvider>
           <LoaderProvider>
-            <UserProvider>
-              <Suspense fallback={null}>{children}</Suspense>
-            </UserProvider>
+            <Suspense fallback={null}>{children}</Suspense>
             <ToastProvider />
           </LoaderProvider>
         </HeroUIProvider>
@@ -36,11 +33,7 @@ function RootApp({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
       <RootApp>{children}</RootApp>

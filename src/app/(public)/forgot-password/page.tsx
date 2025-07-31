@@ -1,59 +1,14 @@
 "use client";
 
-// import { resetPasswordEmail } from "@/lib/firebase";
 import { Button, Link } from "@heroui/react";
-import { CustomInput } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { addToast } from "@heroui/react";
-import { useLoader } from "@/context/loader";
-
-const schema = z.object({
-  email: z.string().email("Invalid email address"),
-});
-
-type Schema = z.infer<typeof schema>;
+import { EmailInput } from "@/components/input";
+import { FormEvent, useState } from "react";
 
 export default function ForgotPasswordPage() {
-  const { setIsLoading } = useLoader();
-  const router = useRouter();
+  const [email, setEmail] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<Schema>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
-  });
-
-  const forgotPassword = async (email: string) => {
-    try {
-      setIsLoading(true);
-      // await resetPasswordEmail(email);
-      addToast({
-        title: "Password reset email sent!",
-        color: "success",
-      });
-      return true;
-    } catch {
-      addToast({
-        title: "Failed to send password reset email",
-        color: "danger",
-      });
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const onSubmit = async (data: Schema) => {
-    const success = await forgotPassword(data.email);
-    if (success) {
-      router.push("/login");
-    }
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
   };
 
   return (
@@ -63,21 +18,9 @@ export default function ForgotPasswordPage() {
         Enter your email address and we&apos;ll send you a link to reset your
         password.
       </p>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-        <CustomInput
-          type="email"
-          placeholder="Email"
-          {...register("email")}
-          isInvalid={!!errors.email}
-          errorMessage={errors.email?.message}
-          onKeyDown={(e) => e.key === "Enter" && handleSubmit(onSubmit)()}
-        />
-        <Button
-          type="submit"
-          isDisabled={!isValid}
-          variant="solid"
-          color="primary"
-        >
+      <form onSubmit={onSubmit} className="flex flex-col gap-2">
+        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Button type="submit" variant="solid" color="primary">
           Send Reset Email
         </Button>
         <div className="text-center mt-2">

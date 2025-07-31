@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, ModalContent, ModalBody, Spinner } from "@heroui/react";
-import { useLoader } from "../context/loader";
+import { useLoader } from "@/context/loader";
 
 export default function Loader() {
   const { isLoading } = useLoader();

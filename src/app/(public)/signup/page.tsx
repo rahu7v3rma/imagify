@@ -1,133 +1,41 @@
 "use client";
 
-import { useUser } from "@/context/user";
 import { Button, Checkbox } from "@heroui/react";
-import { PasswordInput, CustomInput } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { PasswordInput, EmailInput } from "@/components/input";
 import Link from "next/link";
-import { addToast } from "@heroui/react";
-import { useLoader } from "@/context/loader";
-import axios from "axios";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 export default function SignupPage() {
-  const { setUser } = useUser();
-  const { setIsLoading } = useLoader();
-  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    agreeToTerms: false,
-  });
-
-  const [fieldErrors, setFieldErrors] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    agreeToTerms: "",
-  });
-
-  const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    // Clear field error when user starts typing
-    if (fieldErrors[field as keyof typeof fieldErrors]) {
-      setFieldErrors(prev => ({ ...prev, [field]: "" }));
-    }
-  };
-
-  const signup = async () => {
-    try {
-      setIsLoading(true);
-      // Clear field errors when submitting
-      setFieldErrors({
-        email: "",
-        password: "",
-        confirmPassword: "",
-        agreeToTerms: "",
-      });
-      
-      const response = await axios.post('/signup/api', {
-        email: formData.email,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
-        agreeToTerms: formData.agreeToTerms,
-      });
-
-      if (response.data.success) {
-        addToast({
-          title: response.data.message,
-          color: "success",
-        });
-        router.push("/login");
-      } else {
-        addToast({
-          title: response.data.message,
-          color: "danger",
-        });
-      }
-    } catch (error: any) {
-      if (error.response?.data?.code === "validation_failed") {
-        const apiFieldErrors = error.response.data.data;
-        
-        setFieldErrors({
-          email: apiFieldErrors.email ? apiFieldErrors.email[0] : "",
-          password: apiFieldErrors.password ? apiFieldErrors.password[0] : "",
-          confirmPassword: apiFieldErrors.confirmPassword ? apiFieldErrors.confirmPassword[0] : "",
-          agreeToTerms: apiFieldErrors.agreeToTerms ? apiFieldErrors.agreeToTerms[0] : "",
-        });
-      } else {
-        // For non-validation errors, show in toast
-        const errorMessage = error.response?.data?.message || "Failed to create account";
-        addToast({
-          title: errorMessage,
-          color: "danger",
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await signup();
   };
 
   return (
     <div className="flex flex-col gap-2 w-60">
       <h1 className="text-2xl font-bold">Signup</h1>
       <form onSubmit={onSubmit} className="flex flex-col gap-2">
-        <CustomInput
-          type="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={(e) => handleInputChange("email", e.target.value)}
-          isInvalid={!!fieldErrors.email}
-          errorMessage={fieldErrors.email}
+        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
+        <PasswordInput
+          label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <PasswordInput
-          placeholder="Password"
-          value={formData.password}
-          onChange={(e) => handleInputChange("password", e.target.value)}
-          isInvalid={!!fieldErrors.password}
-          errorMessage={fieldErrors.password}
-        />
-        <PasswordInput
-          placeholder="Confirm Password"
-          value={formData.confirmPassword}
-          onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-          isInvalid={!!fieldErrors.confirmPassword}
-          errorMessage={fieldErrors.confirmPassword}
+          label="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2 text-sm">
             <Checkbox
-              isSelected={formData.agreeToTerms}
-              onValueChange={(checked) => handleInputChange("agreeToTerms", checked)}
+              isSelected={agreeToTerms}
+              onValueChange={(checked) => setAgreeToTerms(checked)}
               size="sm"
-              isInvalid={!!fieldErrors.agreeToTerms}
             />
             <span>
               I agree to the{" "}
@@ -148,17 +56,8 @@ export default function SignupPage() {
               </Link>
             </span>
           </div>
-          {fieldErrors.agreeToTerms && (
-            <p className="text-sm text-danger-500 dark:text-danger-400">
-              {fieldErrors.agreeToTerms}
-            </p>
-          )}
         </div>
-        <Button
-          type="submit"
-          variant="solid"
-          color="primary"
-        >
+        <Button type="submit" variant="solid" color="primary">
           Submit
         </Button>
       </form>

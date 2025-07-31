@@ -1,5 +1,3 @@
-"use client";
-
 export default function PrivacyPolicyPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 text-gray-800 dark:text-zinc-200">
@@ -11,45 +9,6 @@ export default function PrivacyPolicyPage() {
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">
-        1. Infrastructure We Use
-      </h2>
-      <p>
-        imagify.pro relies on trusted infrastructure providers to
-        operate the platform:
-      </p>
-      <ul className="list-disc list-inside space-y-1">
-        <li>
-          <strong>Authentication & Storage</strong>{" "}
-          &mdash; secure user authentication, database, file storage, and hosting services.
-        </li>
-        <li>
-          <strong>Payment Processing</strong>{" "}
-          &mdash; secure payment collection, processing and subscription management.
-        </li>
-        <li>
-          <strong>Machine Learning</strong>{" "}
-          &mdash; advanced ML infrastructure used to process images. Images
-          you submit for processing are transmitted to our processing infrastructure solely
-          for the purpose of generating the requested output.
-        </li>
-        <li>
-          <strong>Image Compression</strong>{" "}
-          &mdash; specialized services used to optimize and compress
-          images efficiently.
-        </li>
-        <li>
-          <strong>AI Processing</strong>{" "}
-          &mdash; advanced AI processing services used for image analysis and
-          generation capabilities.
-        </li>
-        <li>
-          <strong>Security & Protection</strong>{" "}
-          &mdash; rate limiting, abuse detection, and security monitoring services to protect
-          the platform and prevent misuse of our services.
-        </li>
-      </ul>
-
-      <h2 className="text-2xl font-semibold dark:text-white">
         2. Data We Collect
       </h2>
       <p className="mb-2">We collect and process the following data:</p>
@@ -59,18 +18,19 @@ export default function PrivacyPolicyPage() {
           login for authentication and service-related communications.
         </li>
         <li>
-          <strong>User-generated content</strong> (images you upload or link,
-          prompts you provide, extracted text, and any output images produced)
-          &mdash; stored securely so you can download and manage your
-          results.
+          <strong>User-generated content</strong> &mdash; Only images (uploaded 
+          or generated) are temporarily stored so you can download your results.
+          Links, prompts, and text are never stored on our servers. All images 
+          are automatically deleted daily at midnight UTC.
         </li>
         <li>
           <strong>Usage information</strong> such as remaining processing&nbsp;
           <em>credits</em> &mdash; stored in database to enable billing logic.
         </li>
         <li>
-          <strong>Payment information</strong> &mdash; handled directly by
-          our secure payment processors. We do not store your full card details on our servers.
+          <strong>Payment information</strong> &mdash; handled directly by our
+          secure payment processors. We do not store your payment details on
+          our servers.
         </li>
       </ul>
 
@@ -103,8 +63,7 @@ export default function PrivacyPolicyPage() {
       <p>
         We use cookies that are strictly necessary for authentication and
         session persistence (e.g.&nbsp;to keep you signed in as you navigate the
-        dashboard). imagify.pro does not set additional advertising or analytics
-        cookies.
+        dashboard).
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">
@@ -113,22 +72,7 @@ export default function PrivacyPolicyPage() {
       <p>
         Email addresses and usage credits are retained for as long as your
         account remains active. You may delete your account at any time from the{" "}
-        <em>Settings</em> page, which will permanently remove your personal data
-        and stored files.
-      </p>
-      <p>
-        <strong>Image Storage Policy:</strong> Both uploaded images and
-        generated images are automatically deleted from our servers after 24
-        hours. This ensures your privacy and minimizes data storage. We
-        recommend downloading any images you wish to keep before this time
-        period expires.
-      </p>
-
-      <h2 className="text-2xl font-semibold dark:text-white">7. Your Rights</h2>
-      <p>
-        Depending on your jurisdiction, you may have the right to access,
-        correct, download, or delete the personal data we hold about you. To
-        exercise these rights, please contact us using the details below.
+        <em>Dashboard {'>'} Settings</em> page, which will permanently remove your personal data.
       </p>
 
       <h2 className="text-2xl font-semibold dark:text-white">8. Contact</h2>

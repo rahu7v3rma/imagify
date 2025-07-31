@@ -1,60 +1,15 @@
 "use client";
 
-import { CustomInput, CustomTextarea } from "@/components/ui/input";
+import { EmailInput, Textarea } from "@/components/input";
 import { Button } from "@heroui/react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { addToast } from "@heroui/react";
-import { useLoader } from "@/context/loader";
-// import { contactUs } from "@/lib/firebase";
-
-const schema = z.object({
-  email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters long"),
-});
-
-type Schema = z.infer<typeof schema>;
+import { FormEvent, useState } from "react";
 
 export default function ContactPage() {
-  const { setIsLoading } = useLoader();
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    reset,
-  } = useForm<Schema>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
-  });
-
-  const sendContactMessage = async (email: string, message: string) => {
-    try {
-      setIsLoading(true);
-      // await contactUs(email, message);
-
-      return true;
-    } catch (error) {
-      addToast({
-        title: "Failed to send message",
-        color: "danger",
-      });
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const onSubmit = async (data: Schema) => {
-    const success = await sendContactMessage(data.email, data.message);
-    if (success) {
-      reset();
-      addToast({
-        title: "Thank you for your message! We'll get back to you soon.",
-        color: "success",
-      });
-    }
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
   };
 
   return (
@@ -64,32 +19,18 @@ export default function ContactPage() {
         Have a question or need help? Send us a message and we&apos;ll get back
         to you as soon as possible.
       </p>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-        <CustomInput
-          type="email"
-          placeholder="Your email address"
-          {...register("email")}
-          isInvalid={!!errors.email}
-          errorMessage={errors.email?.message}
+      <form onSubmit={onSubmit} className="flex flex-col gap-2">
+        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Textarea
+          label="Your message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
-        <CustomTextarea
-          placeholder="Your message..."
-          {...register("message")}
-          isInvalid={!!errors.message}
-          errorMessage={errors.message?.message}
-          rows={4}
-        />
-        <Button
-          type="submit"
-          isDisabled={!isValid}
-          variant="solid"
-          color="primary"
-        >
+        <Button type="submit" variant="solid" color="primary">
           Send Message
         </Button>
       </form>
 
-      {/* Alternative contact method */}
       <div className="mt-4 p-3 bg-default-50 border border-default-200 rounded-lg">
         <p className="text-xs text-default-600">
           <strong>Note:</strong> If you&apos;re having trouble with the form,
