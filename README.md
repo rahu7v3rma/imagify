@@ -4,9 +4,9 @@
 
 # Tech Stack
 
-- Postgres - database
-- NextJS - full stack framework
-- Redis - rate limiting
+- MongoDB - database
+- NextJS - frontend framework
+- ExpressJS - backend framework
 
 # Services
 
@@ -14,3 +14,4 @@
 - PayPal - payment processor
 - Razorpay - payment processor
 - Tinify - image compression
+- IPInfo - IP checking
