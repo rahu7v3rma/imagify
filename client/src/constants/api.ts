@@ -1,3 +1,3 @@
-export const endpoints = {
+export const ENDPOINTS = {
   signup: "/api/signup",
 };

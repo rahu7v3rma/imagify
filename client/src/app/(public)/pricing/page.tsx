@@ -1,6 +1,6 @@
 import { Button } from "@/components/button";
 import Link from "next/link";
-import { tools } from "@/constants/dashboard/pricing";
+import { TOOLS } from "@/constants/dashboard/pricing";
 import { ROUTES } from "@/constants/routes";
 
 export default async function PricingPage() {
@@ -18,7 +18,7 @@ export default async function PricingPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {tools.map(({ icon: Icon, title, description, cost }) => (
+        {TOOLS.map(({ icon: Icon, title, description, cost }) => (
           <div
             key={title}
             className="flex flex-col items-center space-y-3 rounded-lg border border-gray-200 bg-white p-6 shadow-sm"

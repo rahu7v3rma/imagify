@@ -8,7 +8,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-export const features = [
+export const FEATURES = [
   {
     href: "/dashboard/generate-image",
     icon: Sparkles,

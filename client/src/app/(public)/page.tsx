@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { tools } from "@/constants/public/home";
+import { TOOLS } from "@/constants/public/home";
 
 export default function Home() {
   return (
@@ -12,7 +12,7 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {tools.map(({ icon: Icon, href, title, description }) => (
+        {TOOLS.map(({ icon: Icon, href, title, description }) => (
           <Link
             key={href}
             href={href}

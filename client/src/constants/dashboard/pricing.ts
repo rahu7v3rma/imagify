@@ -8,7 +8,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-export const tools = [
+export const TOOLS = [
   {
     icon: Sparkles,
     title: "Generate Image",

@@ -8,7 +8,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-export const tools = [
+export const TOOLS = [
   {
     href: "/dashboard/remove-background",
     icon: Image,

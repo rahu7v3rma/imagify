@@ -1,11 +1,10 @@
 import axios from "axios";
-import { getAccessToken } from "@/utils/cookies";
-import { endpoints } from "@/constants/api";
+import { ENDPOINTS } from "@/constants/api";
 
 export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${getAccessToken()}`,
+    Authorization: `Bearer <token>`,
   },
 });
 
@@ -15,6 +14,6 @@ export const signup = async (data: {
   confirmPassword: string;
   agreeToTerms: boolean;
 }) => {
-  const response = await api.post(endpoints.signup, data);
+  const response = await api.post(ENDPOINTS.signup, data);
   return response.data;
 };

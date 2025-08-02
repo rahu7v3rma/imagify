@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { features } from "@/constants/dashboard/home";
+import { FEATURES } from "@/constants/dashboard/home";
 
 export default function DashboardPage() {
   return (
@@ -15,7 +15,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {features.map(({ icon: Icon, href, title, description, cost }) => (
+        {FEATURES.map(({ icon: Icon, href, title, description, cost }) => (
           <Link
             key={href}
             href={href}
