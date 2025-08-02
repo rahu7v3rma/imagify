@@ -4,8 +4,8 @@ import ConfirmationModal from "@/components/confirmation-modal";
 import { EmailInput, PasswordInput } from "@/components/input";
 import ThemeToggle from "@/components/theme-toggle";
 import { Button } from "@/components/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/tabs";
 import { ChangeEvent, useState } from "react";
 
 export default function SettingsPage() {

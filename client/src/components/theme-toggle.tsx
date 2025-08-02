@@ -1,6 +1,6 @@
 "use client";
 
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "@/components/switch";
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 import { THEME_MODES } from "@/constants/theme";

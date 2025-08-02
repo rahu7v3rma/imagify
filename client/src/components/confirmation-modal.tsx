@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog";
+} from "@/components/dialog";
 import { Button } from "@/components/button";
 
 export default function ConfirmationModal({

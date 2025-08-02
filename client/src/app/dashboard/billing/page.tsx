@@ -1,7 +1,7 @@
 "use client";
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/tabs";
+import { Card, CardContent } from "@/components/card";
 import { Button } from "@/components/button";
 import { Zap, Plus, Minus } from "lucide-react";
 import { useState } from "react";

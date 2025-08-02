@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/dialog";
 import { useLoader } from "@/context/loader";
 import { Loader2 } from "lucide-react";
 

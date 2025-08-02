@@ -2,11 +2,11 @@
 
 import { useState, ChangeEvent } from "react";
 import { Image, Eye, EyeOff } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Textarea as ShadcnTextarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui-input";
+import { Textarea as ShadcnTextarea } from "@/components/textarea";
+import { Label } from "@/components/label";
 import { Button } from "@/components/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
 
 export const PasswordInput = ({
   label,
