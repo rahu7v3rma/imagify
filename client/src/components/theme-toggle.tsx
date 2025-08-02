@@ -1,9 +1,30 @@
 "use client";
 
-import { Switch } from "@/components/switch";
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 import { THEME_MODES } from "@/constants/theme";
+import type { SwitchProps } from "@/types/components";
+import { Root as SwitchRoot, Thumb as SwitchThumb } from "@radix-ui/react-switch";
+import { cn } from "@/utils/common";
+
+function Switch({ className, checked, onCheckedChange }: SwitchProps) {
+  return (
+    <SwitchRoot
+      className={cn(
+        "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
+        className
+      )}
+      checked={checked}
+      onCheckedChange={onCheckedChange}
+    >
+      <SwitchThumb
+        className={cn(
+          "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+        )}
+      />
+    </SwitchRoot>
+  );
+}
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();

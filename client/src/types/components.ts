@@ -109,3 +109,9 @@ export interface SelectItemProps {
   children: ReactNode;
   value: string;
 }
+
+export interface SwitchProps {
+  className?: string;
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+}
