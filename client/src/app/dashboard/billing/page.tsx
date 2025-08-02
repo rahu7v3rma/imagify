@@ -1,7 +1,9 @@
 "use client";
 
-import { Tabs, Tab, Card, CardBody, Button } from "@heroui/react";
-import { BoltIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/button";
+import { Zap, Plus, Minus } from "lucide-react";
 import { useState } from "react";
 
 export default function BillingPage() {
@@ -11,97 +13,88 @@ export default function BillingPage() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6 dark:text-white">Billing</h1>
+      <h1 className="text-2xl font-bold mb-6">Billing</h1>
 
-      <Tabs aria-label="Billing tabs" color="primary" variant="underlined">
-        <Tab
-          key="credits"
-          title={
-            <div className="flex items-center space-x-2">
-              <BoltIcon className="w-4 h-4" />
-              <span>Credits</span>
-            </div>
-          }
-        >
+      <Tabs defaultValue="credits" className="w-full">
+        <TabsList className="grid w-full grid-cols-1">
+          <TabsTrigger value="credits" className="flex items-center space-x-2">
+            <Zap className="w-4 h-4" />
+            <span>Credits</span>
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="credits">
           <div className="py-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="w-full">
-                <CardBody className="p-6 flex items-center justify-center min-h-[200px]">
+                <CardContent className="p-6 flex items-center justify-center min-h-[200px]">
                   <div className="text-center space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-semibold text-gray-900">
                       Total Credits
                     </h3>
-                    <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">
+                    <div className="text-4xl font-bold text-primary">
                       {0}
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-gray-600">
                       Available processing credits
                     </p>
                   </div>
-                </CardBody>
+                </CardContent>
               </Card>
 
               <Card className="w-full">
-                <CardBody className="p-6">
+                <CardContent className="p-6">
                   <div className="text-center space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-semibold text-gray-900">
                       Buy Credits
                     </h3>
 
                     <div className="flex items-center justify-center space-x-4">
                       <Button
-                        isIconOnly
-                        size="sm"
-                        variant="flat"
-                        color="primary"
-                        onPress={() =>
+                        size="icon"
+                        variant="outline"
+                        onClick={() =>
                           setCreditAmount((prev) => Math.max(500, prev - 100))
                         }
-                        isDisabled={creditAmount <= 500}
+                        disabled={creditAmount <= 500}
                       >
-                        <MinusIcon className="h-4 w-4" />
+                        <Minus className="h-4 w-4" />
                       </Button>
 
-                      <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 w-[100px] text-center bg-transparent border-b-2 border-blue-500 px-2 py-1">
+                      <div className="text-2xl font-bold text-blue-600 w-[100px] text-center bg-transparent border-b-2 border-blue-500 px-2 py-1">
                         {creditAmount}
                       </div>
 
                       <Button
-                        isIconOnly
-                        size="sm"
-                        variant="flat"
-                        color="primary"
-                        onPress={() => setCreditAmount((prev) => prev + 100)}
+                        size="icon"
+                        variant="outline"
+                        onClick={() => setCreditAmount((prev) => prev + 100)}
                       >
-                        <PlusIcon className="h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                       </Button>
                     </div>
 
-                    <div className="text-lg font-semibold text-green-600 dark:text-green-400">
+                    <div className="text-lg font-semibold text-green-600">
                       ${(creditAmount * 0.01).toFixed(2)} USD
                     </div>
 
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-gray-600">
                       Credits to purchase (minimum 500 credits - $5.00)
                     </p>
 
                     <Button
-                      color="primary"
-                      variant="solid"
-                      size="md"
-                      onPress={handleBuyCredits}
+                      onClick={handleBuyCredits}
                       className="w-full"
-                      isDisabled={creditAmount < 500}
+                      disabled={creditAmount < 500}
                     >
                       Buy Credits
                     </Button>
                   </div>
-                </CardBody>
+                </CardContent>
               </Card>
             </div>
 
-            <div className="text-center pt-8 border-t border-gray-200 dark:border-gray-700 mt-8">
-              <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
+            <div className="text-center pt-8 border-t border-gray-200 mt-8">
+              <p className="text-sm text-gray-500 flex items-center justify-center gap-2">
                 <svg
                   className="w-4 h-4 text-blue-600"
                   fill="currentColor"
@@ -113,7 +106,7 @@ export default function BillingPage() {
               </p>
             </div>
           </div>
-        </Tab>
+        </TabsContent>
       </Tabs>
     </div>
   );

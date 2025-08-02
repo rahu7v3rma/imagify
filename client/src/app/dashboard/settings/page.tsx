@@ -3,18 +3,13 @@
 import ConfirmationModal from "@/components/confirmation-modal";
 import { EmailInput, PasswordInput } from "@/components/input";
 import ThemeToggle from "@/components/theme-toggle";
-import {
-  Button,
-  Card,
-  CardBody,
-  Tab,
-  Tabs,
-  useDisclosure,
-} from "@heroui/react";
+import { Button } from "@/components/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChangeEvent, useState } from "react";
 
 export default function SettingsPage() {
-  const { isOpen, onOpen } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -24,19 +19,23 @@ export default function SettingsPage() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6 dark:text-white">Settings</h1>
+      <h1 className="text-2xl font-bold mb-6">Settings</h1>
 
-      <Tabs aria-label="Settings tabs" color="primary" variant="underlined">
-        <Tab key="account" title="Account">
+      <Tabs defaultValue="account" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="security">Security</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
           <div className="py-4">
             <Card className="max-w-md">
-              <CardBody>
-                <h3 className="text-lg font-medium dark:text-white mb-4">
+              <CardContent>
+                <h3 className="text-lg font-medium mb-4">
                   Account Information
                 </h3>
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email Address
                     </label>
                     <EmailInput
@@ -47,23 +46,15 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="flex gap-2">
-                    <Button
-                      color="primary"
-                      variant="solid"
-                      onPress={onSubmitEmail}
-                    >
-                      Update Email
-                    </Button>
+                    <Button onClick={onSubmitEmail}>Update Email</Button>
                   </div>
                 </div>
-              </CardBody>
+              </CardContent>
             </Card>
-            
+
             <Card className="max-w-md mt-6">
-              <CardBody>
-                <h3 className="text-lg font-medium dark:text-white mb-4">
-                  Change Password
-                </h3>
+              <CardContent>
+                <h3 className="text-lg font-medium mb-4">Change Password</h3>
                 <div className="flex flex-col gap-4">
                   <div>
                     <PasswordInput
@@ -93,32 +84,26 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="flex gap-2">
-                    <Button
-                      color="primary"
-                      variant="solid"
-                      onPress={() => {}}
-                    >
-                      Change Password
-                    </Button>
+                    <Button onClick={() => {}}>Change Password</Button>
                   </div>
                 </div>
-              </CardBody>
+              </CardContent>
             </Card>
-            
+
             <div className="flex flex-row gap-4 items-center mt-4">
-              <Button color="danger" variant="bordered" onPress={onOpen}>
+              <Button color="destructive" onClick={() => setIsOpen(true)}>
                 Delete Account
               </Button>
             </div>
           </div>
-        </Tab>
-        <Tab key="preferences" title="Preferences">
+        </TabsContent>
+        <TabsContent value="security">
           <div className="py-4">
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <div>
-                  <h3 className="text-lg font-medium dark:text-white">Theme</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <h3 className="text-lg font-medium">Theme</h3>
+                  <p className="text-sm text-gray-600">
                     Switch between light and dark mode
                   </p>
                 </div>
@@ -126,11 +111,13 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
-        </Tab>
+        </TabsContent>
       </Tabs>
 
       <ConfirmationModal
         isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onConfirm={() => {}}
         title="Confirm Account Deletion"
         message="Are you sure you want to delete your account? This action cannot be undone. All your data will be permanently removed."
       />

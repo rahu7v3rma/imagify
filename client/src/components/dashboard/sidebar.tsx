@@ -9,7 +9,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-56 min-w-56 h-full border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-zinc-800">
+    <aside className="w-56 min-w-56 h-full border-r border-gray-200 bg-white">
       <nav className="flex flex-col h-full p-4">
         <div className="space-y-2">
           {SIDEBAR_LINKS.filter(
@@ -21,8 +21,8 @@ const Sidebar = () => {
               className={clsx(
                 "flex items-center space-x-3 rounded-md px-2 py-2 text-sm font-medium transition-colors",
                 pathname.startsWith(href)
-                  ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
-                  : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                  ? "bg-gray-200 text-gray-900"
+                  : "text-gray-700 hover:bg-gray-100"
               )}
             >
               <Icon className="h-5 w-5" />
@@ -40,8 +40,8 @@ const Sidebar = () => {
               className={clsx(
                 "flex items-center space-x-3 rounded-md px-2 py-2 text-sm font-medium transition-colors",
                 pathname.startsWith(href)
-                  ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
-                  : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                  ? "bg-gray-200 text-gray-900"
+                  : "text-gray-700 hover:bg-gray-100"
               )}
             >
               <Icon className="h-5 w-5" />

@@ -1,10 +1,8 @@
 "use client";
 
-import { Button, Checkbox, addToast } from "@heroui/react";
+import { Button } from "@/components/button";
 import { PasswordInput, EmailInput } from "@/components/input";
 import { FormEvent, useState } from "react";
-import { signup } from "@/lib/api";
-import { requestCodes } from "@/constants/request";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -12,29 +10,6 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSubmit = async (e: FormEvent) => {
-    try {
-      const response = await signup({
-        email,
-        password,
-        confirmPassword,
-      });
-    } catch (error: any) {
-      if (error.response.data.code === requestCodes.INVALID_REQUEST_BODY) {
-        const { formErrors, fieldErrors } = error.response.data.data;
-        if (formErrors.length > 0) {
-          addToast({
-            title: "Error",
-            description: formErrors[0],
-            color: "danger",
-          });
-        }
-        addToast({
-          title: "Error",
-          description: "Something went wrong",
-          color: "danger",
-        });
-      }
-    }
     e.preventDefault();
   };
 
@@ -53,7 +28,7 @@ export default function SignupPage() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <Button type="submit" variant="solid" color="primary">
+        <Button type="submit" color="primary">
           Submit
         </Button>
       </form>

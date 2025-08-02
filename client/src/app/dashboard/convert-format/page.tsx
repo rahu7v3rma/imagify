@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button } from "@/components/button";
 import { FormEvent, useState } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
@@ -18,14 +18,14 @@ export default function ConvertFormatPage() {
 
   return (
     <div className="p-6 w-full">
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+      <h1 className="text-2xl font-bold text-gray-900 mb-4">
         Convert Image Format
       </h1>
-      <p className="text-gray-600 dark:text-zinc-300 mb-2">
+      <p className="text-gray-600 mb-2">
         Upload an image or provide an image URL to convert it to a different
         format.
       </p>
-      <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+      <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
         💳 {CREDIT_REQUIREMENT} credits
       </div>
 
@@ -41,12 +41,7 @@ export default function ConvertFormatPage() {
               options={["PNG", "JPEG", "JPG", "WebP"]}
             />
 
-            <Button
-              type="submit"
-              isDisabled={!selectedImageUrl}
-              variant="solid"
-              color="primary"
-            >
+            <Button type="submit" disabled={!selectedImageUrl} color="primary">
               Convert Format
             </Button>
           </form>

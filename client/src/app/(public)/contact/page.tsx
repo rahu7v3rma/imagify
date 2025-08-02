@@ -1,7 +1,7 @@
 "use client";
 
 import { EmailInput, Textarea } from "@/components/input";
-import { Button } from "@heroui/react";
+import { Button } from "@/components/button";
 import { FormEvent, useState } from "react";
 
 export default function ContactPage() {
@@ -14,8 +14,8 @@ export default function ContactPage() {
 
   return (
     <div className="flex flex-col gap-2 w-60">
-      <h1 className="text-2xl font-bold dark:text-white">Contact Us</h1>
-      <p className="text-sm text-gray-600 dark:text-zinc-300 mb-2">
+      <h1 className="text-2xl font-bold">Contact Us</h1>
+      <p className="text-sm text-gray-600 mb-2">
         Have a question or need help? Send us a message and we&apos;ll get back
         to you as soon as possible.
       </p>
@@ -26,7 +26,7 @@ export default function ContactPage() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <Button type="submit" variant="solid" color="primary">
+        <Button type="submit" color="primary">
           Send Message
         </Button>
       </form>

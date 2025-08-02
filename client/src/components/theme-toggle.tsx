@@ -1,21 +1,23 @@
 "use client";
 
-import { Switch } from "@heroui/react";
-import { useTheme } from "@/context/theme";
-import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
 import { THEME_MODES } from "@/constants/theme";
 
 export default function ThemeToggle() {
-  const { mode, setMode } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
-    <Switch
-      isSelected={mode === THEME_MODES.DARK}
-      onValueChange={(value: boolean) => setMode(value ? THEME_MODES.DARK : THEME_MODES.LIGHT)}
-      size="md"
-      color="primary"
-      startContent={<SunIcon className="w-4 h-4" />}
-      endContent={<MoonIcon className="w-4 h-4" />}
-    />
+    <div className="flex items-center space-x-2">
+      <Sun className="w-4 h-4" />
+      <Switch
+        checked={theme === THEME_MODES.DARK}
+        onCheckedChange={(checked: boolean) =>
+          setTheme(checked ? THEME_MODES.DARK : THEME_MODES.LIGHT)
+        }
+      />
+      <Moon className="w-4 h-4" />
+    </div>
   );
 }

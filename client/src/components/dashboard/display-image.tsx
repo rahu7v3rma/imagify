@@ -10,13 +10,13 @@ export default function DisplayImage({
 }) {
   return (
     <div className={clsx("flex-1 max-w-md", className)}>
-      <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
         Processed image
       </label>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+      <p className="text-xs text-gray-500 mb-3">
         ℹ️ Download link will be available until midnight UTC
       </p>
-      <div className="w-full h-80 border-2 border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-800 flex items-center justify-center relative">
+      <div className="w-full h-80 border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center relative">
         <Image
           src={imageSrc}
           alt="Processed image"

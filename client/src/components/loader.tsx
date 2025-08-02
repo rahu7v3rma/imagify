@@ -1,17 +1,18 @@
 import React from "react";
-import { Modal, ModalContent, ModalBody, Spinner } from "@heroui/react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useLoader } from "@/context/loader";
+import { Loader2 } from "lucide-react";
 
 export default function Loader() {
   const { isLoading } = useLoader();
 
   return (
-    <Modal isOpen={isLoading} hideCloseButton={true}>
-      <ModalContent className="bg-transparent border-none shadow-none">
-        <ModalBody className="flex flex-col items-center justify-center py-8">
-          <Spinner size="lg" color="primary" labelColor="primary" />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+    <Dialog open={isLoading}>
+      <DialogContent className="bg-transparent border-none shadow-none max-w-none w-auto">
+        <div className="flex flex-col items-center justify-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

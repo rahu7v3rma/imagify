@@ -2,7 +2,8 @@
 
 import { PasswordInput, EmailInput } from "@/components/input";
 import { ROUTES } from "@/constants/routes";
-import { Button, Link } from "@heroui/react";
+import { Button } from "@/components/button";
+import Link from "next/link";
 import { useState, FormEvent } from "react";
 
 export default function LoginPage() {
@@ -23,16 +24,13 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="submit" variant="solid" color="primary">
+        <Button type="submit" color="primary">
           Submit
         </Button>
         <div className="text-center mt-2">
           <Link
             href={ROUTES.FORGOT_PASSWORD}
-            size="sm"
-            color="primary"
-            underline="hover"
-            className="text-xs"
+            className="text-xs text-primary hover:text-primary-600 transition-colors underline"
           >
             Forgot your password?
           </Link>

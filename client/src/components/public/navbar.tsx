@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-} from "@heroui/react";
+import { Button } from "@/components/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
@@ -15,44 +9,54 @@ export default function NavbarComponent() {
   const router = useRouter();
 
   return (
-    <Navbar className="backdrop-blur-sm border-b border-divider bg-inherit">
-      <NavbarBrand>
-        <p
-          className="font-bold text-inherit cursor-pointer"
-          onClick={() => router.push(ROUTES.HOME)}
-        >
-          imagify.pro
-        </p>
-      </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link href={ROUTES.BLOG} className="dark:text-white">
-            Blog
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link href={ROUTES.PRICING} className="dark:text-white">
-            Pricing
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link href={ROUTES.CONTACT} className="dark:text-white">
-            Contact
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem className="lg:flex">
-          <Link href={ROUTES.LOGIN} className="dark:text-white">
-            Login
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} href={ROUTES.SIGNUP} variant="solid" color="primary">
-            Sign Up
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
+    <nav className="backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto flex h-14 items-center px-4">
+        <div className="mr-4 hidden md:flex">
+          <p
+            className="font-bold text-lg cursor-pointer"
+            onClick={() => router.push(ROUTES.HOME)}
+          >
+            imagify.pro
+          </p>
+        </div>
+        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+          <div className="w-full flex-1 md:w-auto md:flex-none">
+            <div className="hidden md:flex md:space-x-6">
+              <Link 
+                href={ROUTES.BLOG}
+                className="text-sm font-medium transition-colors hover:text-primary"
+              >
+                Blog
+              </Link>
+              <Link 
+                href={ROUTES.PRICING}
+                className="text-sm font-medium transition-colors hover:text-primary"
+              >
+                Pricing
+              </Link>
+              <Link 
+                href={ROUTES.CONTACT}
+                className="text-sm font-medium transition-colors hover:text-primary"
+              >
+                Contact
+              </Link>
+            </div>
+          </div>
+          <nav className="flex items-center space-x-2">
+            <Link 
+              href={ROUTES.LOGIN}
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              Login
+            </Link>
+            <Button asChild>
+              <Link href={ROUTES.SIGNUP}>
+                Sign Up
+              </Link>
+            </Button>
+          </nav>
+        </div>
+      </div>
+    </nav>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput } from "@/components/input";
-import { Button } from "@heroui/react";
+import { Button } from "@/components/button";
 import { useState, FormEvent } from "react";
 
 export default function ChangePasswordPage() {
@@ -26,7 +26,7 @@ export default function ChangePasswordPage() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <Button type="submit" variant="solid" color="primary">
+        <Button type="submit" color="primary">
           Change Password
         </Button>
       </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button } from "@/components/button";
 import { FormEvent, useState, ChangeEvent } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
@@ -19,14 +19,12 @@ export default function EditImagePage() {
 
   return (
     <div className="p-6 w-full">
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-        Edit Image
-      </h1>
-      <p className="text-gray-600 dark:text-zinc-300 mb-2">
+      <h1 className="text-2xl font-bold text-gray-900 mb-4">Edit Image</h1>
+      <p className="text-gray-600 mb-2">
         Upload an image or provide an image URL, then describe the changes you
         want to make.
       </p>
-      <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+      <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
         💳 {CREDIT_REQUIREMENT} credits
       </div>
 
@@ -37,7 +35,7 @@ export default function EditImagePage() {
 
             <Textarea
               value={prompt}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 setPrompt(e.target.value)
               }
               label="Edit Prompt"
@@ -45,8 +43,7 @@ export default function EditImagePage() {
 
             <Button
               type="submit"
-              isDisabled={!selectedImageUrl || !prompt.trim()}
-              variant="solid"
+              disabled={!selectedImageUrl || !prompt.trim()}
               color="primary"
             >
               Edit Image

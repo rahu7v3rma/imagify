@@ -1,16 +1,16 @@
-import { Button } from "@heroui/react";
+import { Button } from "@/components/button";
 import Link from "next/link";
 import { tools } from "@/constants/dashboard/pricing";
 import { ROUTES } from "@/constants/routes";
 
 export default async function PricingPage() {
   return (
-    <div className="container mx-auto px-4 py-10 space-y-12 text-gray-800 dark:text-zinc-200">
+    <div className="container mx-auto px-4 py-10 space-y-12 text-gray-800">
       <div className="text-center space-y-2 max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold dark:text-white">
+        <h1 className="text-3xl md:text-4xl font-bold">
           Simple, pay-as-you-go pricing
         </h1>
-        <p className="text-gray-600 dark:text-zinc-400">
+        <p className="text-gray-600">
           Purchase prepaid processing credits and use them across any tool. No
           subscriptions, surprise bills, or hidden fees—just straight-forward
           pricing that scales with your creativity.
@@ -21,18 +21,18 @@ export default async function PricingPage() {
         {tools.map(({ icon: Icon, title, description, cost }) => (
           <div
             key={title}
-            className="flex flex-col items-center space-y-3 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-zinc-800"
+            className="flex flex-col items-center space-y-3 rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700">
-              <Icon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100">
+              <Icon className="h-6 w-6 text-gray-700" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">
+            <h3 className="text-lg font-semibold text-gray-900 text-center">
               {title}
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+            <p className="text-sm text-gray-500 text-center">
               {description}
             </p>
-            <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+            <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
               💳 {cost}
             </div>
           </div>
@@ -40,19 +40,19 @@ export default async function PricingPage() {
       </div>
 
       <div className="text-center space-y-4 pt-4">
-        <h2 className="text-2xl font-semibold dark:text-white">
+        <h2 className="text-2xl font-semibold">
           Ready to get started?
         </h2>
-        <p className="text-gray-600 dark:text-zinc-400 max-w-xl mx-auto">
+        <p className="text-gray-600 max-w-xl mx-auto">
           Create a free account and top-up credits whenever you need them.
         </p>
-        <Button as={Link} href={ROUTES.SIGNUP} variant="solid" color="primary">
-          Sign Up – It's Free
+        <Button asChild color="primary" className="text-xs">
+          <Link href={ROUTES.SIGNUP}>Sign Up – It's Free</Link>
         </Button>
       </div>
 
-      <div className="text-center pt-8 border-t border-gray-200 dark:border-gray-700">
-        <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
+      <div className="text-center pt-8 border-t border-gray-200">
+        <p className="text-sm text-gray-500 flex items-center justify-center gap-2">
           <svg
             className="w-4 h-4 text-blue-600"
             fill="currentColor"

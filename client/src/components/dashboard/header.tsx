@@ -1,19 +1,15 @@
 "use client";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/button";
 import {
-  Avatar,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  Dropdown,
-  DropdownTrigger,
   DropdownMenu,
-  DropdownItem,
-  Button,
-} from "@heroui/react";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { BoltIcon } from "@heroicons/react/24/outline";
+import { Zap } from "lucide-react";
 import { ROUTES } from "@/constants/routes";
 import { ACTION_KEYS } from "@/constants/dashboard/header";
 
@@ -22,7 +18,7 @@ export default function Header() {
 
   const logout = async () => {};
 
-  const handleProfileAction = (actionKey: string | number) => {
+  const handleProfileAction = (actionKey: string) => {
     if (actionKey === ACTION_KEYS.SETTINGS) {
       router.push(ROUTES.DASHBOARD_SETTINGS);
     }
@@ -33,44 +29,49 @@ export default function Header() {
   };
 
   return (
-    <Navbar
-      maxWidth="full"
-      className="w-full backdrop-blur-sm border-b border-divider bg-inherit"
-    >
-      <NavbarBrand>
-        <p
-          className="font-bold text-inherit cursor-pointer"
-          onClick={() => router.push(ROUTES.HOME)}
-        >
-          imagify.pro
-        </p>
-      </NavbarBrand>
-      <NavbarContent justify="end">
-        <NavbarItem>
+    <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto flex h-14 items-center justify-between px-4">
+        <div>
+          <p
+            className="font-bold text-lg cursor-pointer"
+            onClick={() => router.push(ROUTES.HOME)}
+          >
+            imagify.pro
+          </p>
+        </div>
+        <div className="flex items-center space-x-4">
           <Button
-            variant="flat"
+            variant="outline"
             size="sm"
-            startContent={<BoltIcon className="w-4 h-4" />}
-            onPress={() => router.push(ROUTES.DASHBOARD_BILLING)}
+            onClick={() => router.push(ROUTES.DASHBOARD_BILLING)}
             className="text-sm font-medium"
           >
+            <Zap className="w-4 h-4 mr-2" />
             {0} credits
           </Button>
-        </NavbarItem>
-        <NavbarItem>
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar isBordered as="button" className="transition-transform" />
-            </DropdownTrigger>
-            <DropdownMenu variant="flat" onAction={handleProfileAction}>
-              <DropdownItem key={ACTION_KEYS.SETTINGS}>Settings</DropdownItem>
-              <DropdownItem key={ACTION_KEYS.LOGOUT} color="danger">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src="" alt="User" />
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuItem onClick={() => handleProfileAction(ACTION_KEYS.SETTINGS)}>
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                onClick={() => handleProfileAction(ACTION_KEYS.LOGOUT)}
+                className="text-red-600 focus:text-red-600"
+              >
                 Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+    </header>
   );
 }

@@ -1,14 +1,14 @@
 export default function PrivacyPolicyPage() {
   return (
-    <div className="max-w-3xl mx-auto space-y-6 text-gray-800 dark:text-zinc-200">
-      <h1 className="text-3xl font-bold dark:text-white">Privacy Policy</h1>
+    <div className="max-w-3xl mx-auto space-y-6 text-gray-800">
+      <h1 className="text-3xl font-bold">Privacy Policy</h1>
       <p>
         This Privacy Policy explains how imagify.pro (&quot;we&quot;,
         &quot;our&quot;, or &quot;us&quot;) collects, uses, and safeguards your
         information when you use our application.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-2xl font-semibold">
         2. Data We Collect
       </h2>
       <p className="mb-2">We collect and process the following data:</p>
@@ -34,7 +34,7 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-2xl font-semibold">
         3. How We Use Your Data
       </h2>
       <ul className="list-disc list-inside space-y-1">
@@ -45,7 +45,7 @@ export default function PrivacyPolicyPage() {
         <li>To respond to inquiries and provide customer support.</li>
       </ul>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-2xl font-semibold">
         4. We Do Not Sell Your Data
       </h2>
       <p>
@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
         purposes.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-2xl font-semibold">
         5. Cookie Policy
       </h2>
       <p>
@@ -66,7 +66,7 @@ export default function PrivacyPolicyPage() {
         dashboard).
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-2xl font-semibold">
         6. Data Retention
       </h2>
       <p>
@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
         <em>Dashboard {'>'} Settings</em> page, which will permanently remove your personal data.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">8. Contact</h2>
+      <h2 className="text-2xl font-semibold">8. Contact</h2>
       <p>
         If you have any questions or concerns about this Privacy Policy, email
         us at{" "}
