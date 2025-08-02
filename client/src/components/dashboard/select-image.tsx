@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionInput, ImageInput } from "@/components/input";
+import { ActionInput, ImageInput } from "@/components/inputs";
 import { ChangeEvent, useEffect, useState } from "react";
 import DisplayImage from "./display-image";
 

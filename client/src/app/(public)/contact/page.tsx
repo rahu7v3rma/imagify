@@ -1,6 +1,6 @@
 "use client";
 
-import { EmailInput, Textarea } from "@/components/input";
+import { EmailInput, Textarea } from "@/components/inputs";
 import { Button } from "@/components/button";
 import { FormEvent, useState } from "react";
 

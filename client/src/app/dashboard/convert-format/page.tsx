@@ -4,7 +4,7 @@ import { Button } from "@/components/button";
 import { FormEvent, useState } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
-import { SelectSingle } from "@/components/input";
+import { SelectSingle } from "@/components/inputs";
 import { CREDIT_REQUIREMENT } from "@/constants/dashboard/convert-format";
 
 export default function ConvertFormatPage() {

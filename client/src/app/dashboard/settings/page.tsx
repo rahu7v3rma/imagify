@@ -1,7 +1,7 @@
 "use client";
 
-import ConfirmationModal from "@/components/confirmation-modal";
-import { EmailInput, PasswordInput } from "@/components/input";
+import ConfirmationModal from "@/components/modals";
+import { EmailInput, PasswordInput } from "@/components/inputs";
 import ThemeToggle from "@/components/theme-toggle";
 import { Button } from "@/components/button";
 import { Card, CardContent } from "@/components/card";

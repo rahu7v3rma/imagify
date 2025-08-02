@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button";
-import { Textarea } from "@/components/input";
+import { Textarea } from "@/components/inputs";
 import { FormEvent, useState } from "react";
 import { CREDIT_REQUIREMENT } from "@/constants/dashboard/generate-image";
 import DisplayImage from "@/components/dashboard/display-image";

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button";
-import { PasswordInput, EmailInput } from "@/components/input";
+import { PasswordInput, EmailInput } from "@/components/inputs";
 import { FormEvent, useState } from "react";
 
 export default function SignupPage() {

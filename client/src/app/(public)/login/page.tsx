@@ -1,6 +1,6 @@
 "use client";
 
-import { PasswordInput, EmailInput } from "@/components/input";
+import { PasswordInput, EmailInput } from "@/components/inputs";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/button";
 import Link from "next/link";
