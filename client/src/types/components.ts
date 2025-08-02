@@ -46,3 +46,32 @@ export interface CardContentProps {
   className?: string;
   children: ReactNode;
 }
+
+export interface DialogOverlayProps {
+  className?: string;
+}
+
+export interface DialogContentProps {
+  className?: string;
+  children: ReactNode;
+}
+
+export interface DialogHeaderProps {
+  className?: string;
+  children: ReactNode;
+}
+
+export interface DialogFooterProps {
+  className?: string;
+  children: ReactNode;
+}
+
+export interface DialogTitleProps {
+  className?: string;
+  children: ReactNode;
+}
+
+export interface DialogDescriptionProps {
+  className?: string;
+  children: ReactNode;
+}

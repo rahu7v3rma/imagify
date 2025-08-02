@@ -22,7 +22,7 @@ export default function ConfirmationModal({
   message: string;
 }) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -32,7 +32,12 @@ export default function ConfirmationModal({
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={() => { onConfirm(); onClose(); }}>
+          <Button
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
+          >
             Confirm
           </Button>
         </DialogFooter>
