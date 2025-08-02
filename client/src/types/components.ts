@@ -87,3 +87,25 @@ export interface DropdownMenuItemProps {
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
   children: ReactNode;
 }
+
+export interface LabelProps {
+  className?: string;
+  htmlFor?: string;
+  children: ReactNode;
+}
+
+export interface SelectTriggerProps {
+  className?: string;
+  children: ReactNode;
+}
+
+export interface SelectContentProps {
+  className?: string;
+  children: ReactNode;
+}
+
+export interface SelectItemProps {
+  className?: string;
+  children: ReactNode;
+  value: string;
+}

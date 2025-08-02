@@ -1,12 +1,89 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
-import { Image, Eye, EyeOff } from "lucide-react";
+import { Image, Eye, EyeOff, Check, ChevronDown } from "lucide-react";
+import { Root as LabelRoot } from "@radix-ui/react-label";
+import { 
+  Root as Select,
+  Value as SelectValue,
+  Trigger,
+  Icon,
+  Portal,
+  Content,
+  Viewport,
+  Item,
+  ItemIndicator,
+  ItemText
+} from "@radix-ui/react-select";
 import { Input } from "@/components/ui-input";
 import { Textarea as ShadcnTextarea } from "@/components/textarea";
-import { Label } from "@/components/label";
 import { Button } from "@/components/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
+import { cn } from "@/utils/common";
+import { LabelProps, SelectTriggerProps, SelectContentProps, SelectItemProps } from "@/types/components";
+
+const Label = ({ className, htmlFor, children }: LabelProps) => (
+  <LabelRoot
+    className={cn(
+      "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+      className
+    )}
+    htmlFor={htmlFor}
+  >
+    {children}
+  </LabelRoot>
+);
+
+const SelectTrigger = ({ className, children }: SelectTriggerProps) => (
+  <Trigger
+    className={cn(
+      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      className
+    )}
+  >
+    {children}
+    <Icon asChild>
+      <ChevronDown className="h-4 w-4 opacity-50" />
+    </Icon>
+  </Trigger>
+);
+
+const SelectContent = ({ className, children }: SelectContentProps) => (
+  <Portal>
+    <Content
+      className={cn(
+        "relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin] data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+        className
+      )}
+      position="popper"
+    >
+      <Viewport
+        className={cn(
+          "p-1 h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+        )}
+      >
+        {children}
+      </Viewport>
+    </Content>
+  </Portal>
+);
+
+const SelectItem = ({ className, children, value }: SelectItemProps) => (
+  <Item
+    className={cn(
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      className
+    )}
+    value={value}
+  >
+    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+      <ItemIndicator>
+        <Check className="h-4 w-4" />
+      </ItemIndicator>
+    </span>
+
+    <ItemText>{children}</ItemText>
+  </Item>
+);
 
 export const PasswordInput = ({
   label,
