@@ -55,7 +55,7 @@ export default function Header() {
                 <Avatar className="h-8 w-8" src="" alt="User" fallback="U" />
               </ButtonWrapper>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuItem onClick={() => handleProfileAction(ACTION_KEYS.SETTINGS)}>
                 Settings
               </DropdownMenuItem>
