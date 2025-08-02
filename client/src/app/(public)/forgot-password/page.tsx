@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
       </p>
       <form onSubmit={onSubmit} className="flex flex-col gap-2">
         <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
-        <Button type="submit" color="primary">
+        <Button type="submit" variant="default">
           Send Reset Email
         </Button>
         <div className="text-center mt-2">

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/button";
+import { ButtonWrapper } from "@/components/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
@@ -49,11 +49,11 @@ export default function NavbarComponent() {
             >
               Login
             </Link>
-            <Button asChild>
+            <ButtonWrapper>
               <Link href={ROUTES.SIGNUP}>
                 Sign Up
               </Link>
-            </Button>
+            </ButtonWrapper>
           </nav>
         </div>
       </div>

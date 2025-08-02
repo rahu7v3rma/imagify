@@ -32,7 +32,7 @@ export default function RemoveBackgroundPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <SelectImage onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
 
-            <Button type="submit" disabled={!selectedImageUrl} color="primary">
+            <Button type="submit" disabled={!selectedImageUrl}>
               Remove Background
             </Button>
           </form>

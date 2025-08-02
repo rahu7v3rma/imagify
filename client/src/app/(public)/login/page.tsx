@@ -24,7 +24,7 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="submit" color="primary">
+        <Button type="submit" variant="default">
           Submit
         </Button>
         <div className="text-center mt-2">

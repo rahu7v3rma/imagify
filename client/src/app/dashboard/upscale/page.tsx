@@ -29,7 +29,7 @@ export default function UpscalePage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <SelectImage onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
 
-            <Button type="submit" disabled={!selectedImageUrl} color="primary">
+            <Button type="submit" disabled={!selectedImageUrl}>
               Upscale Image
             </Button>
           </form>

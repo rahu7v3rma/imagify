@@ -91,7 +91,7 @@ export default function SettingsPage() {
             </Card>
 
             <div className="flex flex-row gap-4 items-center mt-4">
-              <Button color="destructive" onClick={() => setIsOpen(true)}>
+              <Button variant="destructive" onClick={() => setIsOpen(true)}>
                 Delete Account
               </Button>
             </div>

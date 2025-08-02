@@ -44,7 +44,6 @@ export default function EditImagePage() {
             <Button
               type="submit"
               disabled={!selectedImageUrl || !prompt.trim()}
-              color="primary"
             >
               Edit Image
             </Button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar } from "@/components/avatar";
-import { Button } from "@/components/button";
+import { Button, ButtonWrapper } from "@/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,9 +51,9 @@ export default function Header() {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <ButtonWrapper variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8" src="" alt="User" fallback="U" />
-              </Button>
+              </ButtonWrapper>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuItem onClick={() => handleProfileAction(ACTION_KEYS.SETTINGS)}>

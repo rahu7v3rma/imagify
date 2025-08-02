@@ -26,7 +26,7 @@ export default function ContactPage() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <Button type="submit" color="primary">
+        <Button type="submit" variant="default">
           Send Message
         </Button>
       </form>

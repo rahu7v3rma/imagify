@@ -33,7 +33,7 @@ export default function GenerateImagePage() {
               label="Image Prompt"
             />
 
-            <Button type="submit" disabled={!prompt.trim()} color="primary">
+            <Button type="submit" disabled={!prompt.trim()}>
               Generate Image
             </Button>
           </form>

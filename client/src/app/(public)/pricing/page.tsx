@@ -1,4 +1,4 @@
-import { Button } from "@/components/button";
+import { ButtonWrapper } from "@/components/button";
 import Link from "next/link";
 import { TOOLS } from "@/constants/dashboard/pricing";
 import { ROUTES } from "@/constants/routes";
@@ -46,9 +46,9 @@ export default async function PricingPage() {
         <p className="text-gray-600 max-w-xl mx-auto">
           Create a free account and top-up credits whenever you need them.
         </p>
-        <Button asChild color="primary" className="text-xs">
+        <ButtonWrapper variant="default" className="text-xs">
           <Link href={ROUTES.SIGNUP}>Sign Up – It's Free</Link>
-        </Button>
+        </ButtonWrapper>
       </div>
 
       <div className="text-center pt-8 border-t border-gray-200">

@@ -26,7 +26,7 @@ export default function ChangePasswordPage() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <Button type="submit" color="primary">
+        <Button type="submit" variant="default">
           Change Password
         </Button>
       </form>
