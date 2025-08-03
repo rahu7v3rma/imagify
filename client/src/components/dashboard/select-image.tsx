@@ -3,12 +3,9 @@
 import { ActionInput, ImageInput } from "@/components/inputs";
 import { ChangeEvent, useEffect, useState } from "react";
 import DisplayImage from "./display-image";
+import { SelectImageProps } from "@/types/components/dashboard/select-image";
 
-export default function SelectImage({
-  onChangeImageUrl,
-}: {
-  onChangeImageUrl: (imageUrl: string) => void;
-}) {
+export default function SelectImage({ onChangeImageUrl }: SelectImageProps) {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
   const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {

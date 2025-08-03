@@ -51,15 +51,20 @@ export default function Header() {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <ButtonWrapper variant="ghost" className="relative h-8 w-8 rounded-full">
+              <ButtonWrapper
+                variant="ghost"
+                className="relative h-8 w-8 rounded-full"
+              >
                 <Avatar className="h-8 w-8" src="" alt="User" fallback="U" />
               </ButtonWrapper>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
-              <DropdownMenuItem onClick={() => handleProfileAction(ACTION_KEYS.SETTINGS)}>
+              <DropdownMenuItem
+                onClick={() => handleProfileAction(ACTION_KEYS.SETTINGS)}
+              >
                 Settings
               </DropdownMenuItem>
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={() => handleProfileAction(ACTION_KEYS.LOGOUT)}
                 className="text-red-600 focus:text-red-600"
               >

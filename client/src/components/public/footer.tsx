@@ -13,7 +13,6 @@ export default function FooterComponent() {
           >
             Privacy Policy
           </Link>
-
         </div>
 
         <div className="text-sm text-default-500">

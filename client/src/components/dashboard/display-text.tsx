@@ -2,23 +2,16 @@
 
 import { Copy } from "lucide-react";
 import clsx from "clsx";
+import { DisplayTextProps } from "@/types/components/dashboard/display-text";
 
-export default function DisplayText({
-  text,
-  className,
-}: {
-  text: string;
-  className?: string;
-}) {
+export default function DisplayText({ text, className }: DisplayTextProps) {
   return (
     <div className={clsx("flex-1 max-w-md", className)}>
       <label className="block text-sm font-medium text-gray-700 mb-2">
         Extracted Text
       </label>
       <div className="w-full h-80 border-2 border-gray-300 rounded-lg bg-gray-50 p-4 relative overflow-y-auto">
-        <div className="text-gray-900 whitespace-pre-wrap text-sm">
-          {text}
-        </div>
+        <div className="text-gray-900 whitespace-pre-wrap text-sm">{text}</div>
         <button
           type="button"
           onClick={() => {

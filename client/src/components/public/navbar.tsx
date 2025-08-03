@@ -22,19 +22,19 @@ export default function NavbarComponent() {
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
             <div className="hidden md:flex md:space-x-6">
-              <Link 
+              <Link
                 href={ROUTES.BLOG}
                 className="text-sm font-medium transition-colors hover:text-primary"
               >
                 Blog
               </Link>
-              <Link 
+              <Link
                 href={ROUTES.PRICING}
                 className="text-sm font-medium transition-colors hover:text-primary"
               >
                 Pricing
               </Link>
-              <Link 
+              <Link
                 href={ROUTES.CONTACT}
                 className="text-sm font-medium transition-colors hover:text-primary"
               >
@@ -43,16 +43,14 @@ export default function NavbarComponent() {
             </div>
           </div>
           <nav className="flex items-center space-x-2">
-            <Link 
+            <Link
               href={ROUTES.LOGIN}
               className="text-sm font-medium transition-colors hover:text-primary"
             >
               Login
             </Link>
             <ButtonWrapper>
-              <Link href={ROUTES.SIGNUP}>
-                Sign Up
-              </Link>
+              <Link href={ROUTES.SIGNUP}>Sign Up</Link>
             </ButtonWrapper>
           </nav>
         </div>

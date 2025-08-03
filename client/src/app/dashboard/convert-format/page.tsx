@@ -41,7 +41,11 @@ export default function ConvertFormatPage() {
               options={["PNG", "JPEG", "JPG", "WebP"]}
             />
 
-            <Button type="submit" disabled={!selectedImageUrl} variant="default">
+            <Button
+              type="submit"
+              disabled={!selectedImageUrl}
+              variant="default"
+            >
               Convert Format
             </Button>
           </form>

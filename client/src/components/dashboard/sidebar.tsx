@@ -13,7 +13,7 @@ const Sidebar = () => {
       <nav className="flex flex-col h-full p-4">
         <div className="space-y-2">
           {SIDEBAR_LINKS.filter(
-            (link) => link.section === SIDEBAR_SECTIONS.MAIN
+            (link) => link.section === SIDEBAR_SECTIONS.MAIN,
           ).map(({ icon: Icon, href, label }) => (
             <Link
               key={href}
@@ -22,7 +22,7 @@ const Sidebar = () => {
                 "flex items-center space-x-3 rounded-md px-2 py-2 text-sm font-medium transition-colors",
                 pathname.startsWith(href)
                   ? "bg-gray-200 text-gray-900"
-                  : "text-gray-700 hover:bg-gray-100"
+                  : "text-gray-700 hover:bg-gray-100",
               )}
             >
               <Icon className="h-5 w-5" />
@@ -32,7 +32,7 @@ const Sidebar = () => {
         </div>
         <div className="mt-auto space-y-2">
           {SIDEBAR_LINKS.filter(
-            (link) => link.section === SIDEBAR_SECTIONS.BOTTOM
+            (link) => link.section === SIDEBAR_SECTIONS.BOTTOM,
           ).map(({ icon: Icon, href, label }) => (
             <Link
               key={href}
@@ -41,7 +41,7 @@ const Sidebar = () => {
                 "flex items-center space-x-3 rounded-md px-2 py-2 text-sm font-medium transition-colors",
                 pathname.startsWith(href)
                   ? "bg-gray-200 text-gray-900"
-                  : "text-gray-700 hover:bg-gray-100"
+                  : "text-gray-700 hover:bg-gray-100",
               )}
             >
               <Icon className="h-5 w-5" />

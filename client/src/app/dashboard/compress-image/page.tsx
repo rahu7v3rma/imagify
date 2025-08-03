@@ -30,7 +30,11 @@ export default function CompressImagePage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <ImageInput onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
 
-            <Button type="submit" disabled={!selectedImageUrl} variant="default">
+            <Button
+              type="submit"
+              disabled={!selectedImageUrl}
+              variant="default"
+            >
               Compress Image
             </Button>
           </form>

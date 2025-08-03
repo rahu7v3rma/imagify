@@ -29,9 +29,7 @@ export default async function PricingPage() {
             <h3 className="text-lg font-semibold text-gray-900 text-center">
               {title}
             </h3>
-            <p className="text-sm text-gray-500 text-center">
-              {description}
-            </p>
+            <p className="text-sm text-gray-500 text-center">{description}</p>
             <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
               💳 {cost}
             </div>
@@ -40,9 +38,7 @@ export default async function PricingPage() {
       </div>
 
       <div className="text-center space-y-4 pt-4">
-        <h2 className="text-2xl font-semibold">
-          Ready to get started?
-        </h2>
+        <h2 className="text-2xl font-semibold">Ready to get started?</h2>
         <p className="text-gray-600 max-w-xl mx-auto">
           Create a free account and top-up credits whenever you need them.
         </p>

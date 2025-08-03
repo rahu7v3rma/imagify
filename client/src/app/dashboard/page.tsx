@@ -5,9 +5,7 @@ export default function DashboardPage() {
   return (
     <div className="p-6 w-full">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Dashboard
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
         <p className="text-gray-600">
           Welcome back! Choose a tool to get started with your image processing
           needs.
@@ -25,12 +23,8 @@ export default function DashboardPage() {
               <Icon className="h-6 w-6 text-gray-700" />
             </div>
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900">
-                {title}
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                {description}
-              </p>
+              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+              <p className="mt-1 text-sm text-gray-500">{description}</p>
               <div className="mt-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                 💳 {cost}
               </div>
