@@ -2,8 +2,8 @@
 
 export default function TermsOfServicePage() {
   return (
-    <div className="max-w-3xl mx-auto space-y-6 text-gray-800 dark:text-zinc-200">
-      <h1 className="text-3xl font-bold dark:text-white">Terms of Service</h1>
+    <div className="max-w-3xl mx-auto space-y-6 text-gray-800 dark:text-zinc-200 text-[15px] py-10">
+      <h1 className="text-[29px] font-bold dark:text-white">Terms of Service</h1>
       <p>
         These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and
         use of imagify.pro (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or
@@ -12,7 +12,7 @@ export default function TermsOfServicePage() {
         part of the Terms, you may not use imagify.pro.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         1. Services Provided
       </h2>
       <p>
@@ -36,7 +36,7 @@ export default function TermsOfServicePage() {
         AI-assisted transformations.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         2. User Accounts
       </h2>
       <p>
@@ -46,7 +46,7 @@ export default function TermsOfServicePage() {
         us of any unauthorised use or security breach.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         3. Credits & Payments
       </h2>
       <p>
@@ -55,7 +55,7 @@ export default function TermsOfServicePage() {
         Payments are processed securely by us through trusted payment providers.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         4. Acceptable Use
       </h2>
       <ul className="list-disc list-inside space-y-1">
@@ -71,7 +71,7 @@ export default function TermsOfServicePage() {
         </li>
       </ul>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         5. Intellectual Property
       </h2>
       <p>
@@ -81,7 +81,7 @@ export default function TermsOfServicePage() {
         for the purpose of providing the requested services.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         6. Content Usage and Data Storage Policy
       </h2>
       <p>
@@ -97,7 +97,7 @@ export default function TermsOfServicePage() {
         use your content to train our AI models or for any other purposes.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         7. Rights to Generated Images
       </h2>
       <p>
@@ -114,7 +114,7 @@ export default function TermsOfServicePage() {
         guarantee exclusivity of any particular generated image or output.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         8. Disclaimer of Warranties
       </h2>
       <p>
@@ -124,7 +124,7 @@ export default function TermsOfServicePage() {
         expectations.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         9. Limitation of Liability
       </h2>
       <p>
@@ -134,14 +134,14 @@ export default function TermsOfServicePage() {
         the platform.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">10. Termination</h2>
+      <h2 className="text-[23px] font-semibold dark:text-white">10. Termination</h2>
       <p>
         We may suspend or terminate your access at any time if we reasonably
         believe you have violated these Terms. You may delete your account at
         any time via the Settings page.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         11. Changes to Terms
       </h2>
       <p>
@@ -150,7 +150,7 @@ export default function TermsOfServicePage() {
         effective date constitutes acceptance of the revised Terms.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">
+      <h2 className="text-[23px] font-semibold dark:text-white">
         12. Governing Law
       </h2>
       <p>
@@ -159,7 +159,7 @@ export default function TermsOfServicePage() {
         regard to conflict of law principles.
       </p>
 
-      <h2 className="text-2xl font-semibold dark:text-white">13. Contact</h2>
+      <h2 className="text-[23px] font-semibold dark:text-white">13. Contact</h2>
       <p>
         For questions regarding these Terms, please contact us at{" "}
         <a

@@ -1,14 +1,14 @@
 export default function PrivacyPolicyPage() {
   return (
-    <div className="max-w-3xl mx-auto space-y-6 text-gray-800">
-      <h1 className="text-3xl font-bold">Privacy Policy</h1>
+    <div className="max-w-3xl mx-auto space-y-6 text-[15px] py-10">
+      <h1 className="text-[29px] font-bold">Privacy Policy</h1>
       <p>
         This Privacy Policy explains how imagify.pro (&quot;we&quot;,
         &quot;our&quot;, or &quot;us&quot;) collects, uses, and safeguards your
         information when you use our application.
       </p>
 
-      <h2 className="text-2xl font-semibold">2. Data We Collect</h2>
+      <h2 className="text-[23px] font-semibold">2. Data We Collect</h2>
       <p className="mb-2">We collect and process the following data:</p>
       <ul className="list-disc list-inside space-y-1">
         <li>
@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <h2 className="text-2xl font-semibold">3. How We Use Your Data</h2>
+      <h2 className="text-[23px] font-semibold">3. How We Use Your Data</h2>
       <ul className="list-disc list-inside space-y-1">
         <li>To authenticate and secure your account.</li>
         <li>To process images and return the requested output.</li>
@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage() {
         <li>To respond to inquiries and provide customer support.</li>
       </ul>
 
-      <h2 className="text-2xl font-semibold">4. We Do Not Sell Your Data</h2>
+      <h2 className="text-[23px] font-semibold">4. We Do Not Sell Your Data</h2>
       <p>
         imagify.pro does not sell, rent, lease, or otherwise monetize any of
         your uploaded images, generated images, or personal data to third
@@ -51,14 +51,14 @@ export default function PrivacyPolicyPage() {
         purposes.
       </p>
 
-      <h2 className="text-2xl font-semibold">5. Cookie Policy</h2>
+      <h2 className="text-[23px] font-semibold">5. Cookie Policy</h2>
       <p>
         We use cookies that are strictly necessary for authentication and
         session persistence (e.g.&nbsp;to keep you signed in as you navigate the
         dashboard).
       </p>
 
-      <h2 className="text-2xl font-semibold">6. Data Retention</h2>
+      <h2 className="text-[23px] font-semibold">6. Data Retention</h2>
       <p>
         Email addresses and usage credits are retained for as long as your
         account remains active. You may delete your account at any time from the{" "}
@@ -66,7 +66,7 @@ export default function PrivacyPolicyPage() {
         your personal data.
       </p>
 
-      <h2 className="text-2xl font-semibold">8. Contact</h2>
+      <h2 className="text-[23px] font-semibold">8. Contact</h2>
       <p>
         If you have any questions or concerns about this Privacy Policy, email
         us at{" "}
