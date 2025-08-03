@@ -13,6 +13,12 @@ export default function FooterComponent() {
           >
             Privacy Policy
           </Link>
+          <Link
+            href={ROUTES.TERMS_OF_SERVICE}
+            className="hover:text-primary transition-colors"
+          >
+            Terms of Service
+          </Link>
         </div>
 
         <div className="text-sm text-default-500">
