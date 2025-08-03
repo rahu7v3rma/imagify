@@ -16,14 +16,14 @@ export default function Home() {
           <Link
             key={href}
             href={href}
-            className="group flex flex-col items-center space-y-3 rounded-md border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:scale-105"
+            className="group flex flex-col items-center space-y-3 rounded-md border border-accent p-6 shadow-sm transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-gray-100 group-hover:bg-gray-200 transition-colors">
-              <Icon className="h-6 w-6 text-gray-700" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-muted group-hover:bg-accent transition-colors">
+              <Icon className="h-6 w-6 text-muted-foreground" />
             </div>
             <div className="text-center">
-              <h3 className="text-sm font-medium text-gray-900">{title}</h3>
-              <p className="mt-1 text-xs text-gray-500">{description}</p>
+              <h3 className="text-sm font-medium text-foreground">{title}</h3>
+              <p className="mt-1 text-xs text-muted-foreground">{description}</p>
             </div>
           </Link>
         ))}
