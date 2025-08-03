@@ -1,8 +1,8 @@
 import Header from "@/components/dashboard/header";
 import Sidebar from "@/components/dashboard/sidebar";
-import { ReactNode } from "react";
+import { DashboardLayoutProps } from "@/types/app/dashboard/layout";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="h-screen flex flex-col">
       <div className="h-[8%]">

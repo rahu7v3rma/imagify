@@ -1,17 +1,15 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import Loader from "@/components/loader";
+import { LoaderContextType, LoaderProviderProps } from "@/types/context/loader";
 
-const LoaderContext = createContext<{
-  isLoading: boolean;
-  setIsLoading: (loading: boolean) => void;
-}>({
+const LoaderContext = createContext<LoaderContextType>({
   isLoading: false,
   setIsLoading: () => {},
 });
 
-export const LoaderProvider = ({ children }: { children: ReactNode }) => {
+export const LoaderProvider = ({ children }: LoaderProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
