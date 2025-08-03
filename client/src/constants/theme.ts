@@ -1,6 +1,6 @@
+import { ThemeMode } from "@/types/theme";
+
 export const THEME_KEY = "theme.mode";
 
-export const THEME_MODES = {
-  LIGHT: "light",
-  DARK: "dark",
-};
+export const DARK_THEME_MODE: ThemeMode = "dark";
+export const LIGHT_THEME_MODE: ThemeMode = "light";
