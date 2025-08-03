@@ -35,6 +35,14 @@ export default function LoginPage() {
             Forgot your password?
           </Link>
         </div>
+        <div className="text-center mt-2">
+          <Link
+            href={ROUTES.SIGNUP}
+            className="text-xs text-primary hover:text-primary-600 transition-colors underline"
+          >
+            Don't have an account? Sign up
+          </Link>
+        </div>
       </form>
     </div>
   );

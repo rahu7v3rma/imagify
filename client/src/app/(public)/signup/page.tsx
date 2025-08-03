@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/buttons";
 import { PasswordInput, EmailInput } from "@/components/inputs";
+import { ROUTES } from "@/constants/routes";
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 
 export default function SignupPage() {
@@ -31,6 +33,14 @@ export default function SignupPage() {
         <Button type="submit" variant="default">
           Submit
         </Button>
+        <div className="text-center mt-2">
+          <Link
+            href={ROUTES.LOGIN}
+            className="text-xs text-primary hover:text-primary-600 transition-colors underline"
+          >
+            Already have an account? Login
+          </Link>
+        </div>
       </form>
     </div>
   );
