@@ -8,7 +8,7 @@ import {
   TabsListProps,
   TabsTriggerProps,
   TabsContentProps,
-} from "@/types/components";
+} from "@/types/components/tabs";
 
 export const Tabs = Root;
 

@@ -2,7 +2,7 @@
 
 import { Root, Image, Fallback } from "@radix-ui/react-avatar";
 import { cn } from "@/utils/common";
-import { AvatarProps } from "@/types/components";
+import { AvatarProps } from "@/types/components/avatar";
 
 export const Avatar = ({ className, src, alt, fallback }: AvatarProps) => (
   <Root

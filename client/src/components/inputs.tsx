@@ -25,7 +25,7 @@ import {
   ActionInputProps,
   TextareaProps,
   SelectSingleProps,
-} from "@/types/components";
+} from "@/types/components/inputs";
 
 export const PasswordInput = ({
   label,

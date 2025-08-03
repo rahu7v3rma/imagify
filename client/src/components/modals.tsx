@@ -20,9 +20,9 @@ import {
   DialogHeaderProps,
   DialogOverlayProps,
   DialogTitleProps,
-} from "@/types/components"
+  ConfirmationModalProps,
+} from "@/types/components/modals"
 import { Button } from "@/components/button";
-import { ConfirmationModalProps } from "@/types/components";
 
 export const Modal = Root
 

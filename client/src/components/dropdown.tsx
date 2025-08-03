@@ -11,7 +11,7 @@ import { cn } from "@/utils/common";
 import {
   DropdownMenuContentProps,
   DropdownMenuItemProps,
-} from "@/types/components";
+} from "@/types/components/dropdown";
 
 export const DropdownMenu = Root;
 

@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { BUTTON_VARIANTS } from "@/constants/components/button";
-import { type ButtonProps, type ButtonWrapperProps } from "@/types/components";
+import { type ButtonProps, type ButtonWrapperProps } from "@/types/components/button";
 import { cn } from "@/utils/common";
 
 export const Button = (props: ButtonProps) => {

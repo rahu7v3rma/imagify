@@ -1,5 +1,5 @@
 import { cn } from "@/utils/common";
-import { CardContentProps, CardProps } from "@/types/components";
+import { CardContentProps, CardProps } from "@/types/components/card";
 
 export const Card = ({ className, children }: CardProps) => (
   <div
