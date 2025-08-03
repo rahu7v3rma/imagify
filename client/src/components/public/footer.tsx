@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ThemeToggle from "@/components/theme-toggle";
 import { ROUTES } from "@/constants/routes";
+import { Muted, Small } from "../ui/typography";
 
 export default function FooterComponent() {
   return (
@@ -11,19 +12,19 @@ export default function FooterComponent() {
             href={ROUTES.PRIVACY_POLICY}
             className="hover:text-primary transition-colors"
           >
-            Privacy Policy
+            <Small>Privacy Policy</Small>
           </Link>
           <Link
             href={ROUTES.TERMS_OF_SERVICE}
             className="hover:text-primary transition-colors"
           >
-            Terms of Service
+            <Small>Terms of Service</Small>
           </Link>
         </div>
 
-        <div className="text-xs text-muted-foreground">
+        <Muted>
           © {new Date().getFullYear()} imagify.pro. All rights reserved.
-        </div>
+        </Muted>
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
