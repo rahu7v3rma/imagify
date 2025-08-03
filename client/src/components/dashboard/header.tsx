@@ -30,7 +30,7 @@ export default function Header() {
 
   return (
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-14 items-center justify-between px-4">
+      <div className="flex h-14 items-center justify-between px-4">
         <div>
           <p
             className="font-bold text-lg cursor-pointer"
