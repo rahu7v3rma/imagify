@@ -1,4 +1,4 @@
-import { ReactNode, MouseEvent, FormEvent } from "react";
+import { ReactNode, MouseEvent, FormEvent, ChangeEvent } from "react";
 
 export interface ButtonProps {
   children: ReactNode;
@@ -116,10 +116,73 @@ export interface SwitchProps {
   onCheckedChange?: (checked: boolean) => void;
 }
 
+export interface PasswordInputProps {
+  label: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface ImageInputProps {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}
+
+export interface TextInputProps {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}
+
+export interface EmailInputProps {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface ActionInputProps {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+  actionButton: {
+    text: string;
+    onPress: () => void;
+    disabled?: boolean;
+  };
+}
+
+export interface TextareaProps {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  label: string;
+}
+
+export interface SelectSingleProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: string[];
+}
+
 export interface ConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   title: string;
   message: string;
+}
+
+export interface TabsListProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+export interface TabsTriggerProps {
+  className?: string;
+  children: React.ReactNode;
+  value: string;
+}
+
+export interface TabsContentProps {
+  className?: string;
+  children: React.ReactNode;
+  value: string;
 }

@@ -24,11 +24,11 @@ import {
 import { Button } from "@/components/button";
 import { ConfirmationModalProps } from "@/types/components";
 
-const Modal = Root
+export const Modal = Root
 
-const ModalPortal = Portal
+export const ModalPortal = Portal
 
-const ModalOverlay = ({ className }: DialogOverlayProps) => (
+export const ModalOverlay = ({ className }: DialogOverlayProps) => (
   <Overlay
     className={cn(
       "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -37,7 +37,7 @@ const ModalOverlay = ({ className }: DialogOverlayProps) => (
   />
 )
 
-const ModalContent = ({ className, children }: DialogContentProps) => (
+export const ModalContent = ({ className, children }: DialogContentProps) => (
   <ModalPortal>
     <ModalOverlay />
     <Content
@@ -55,7 +55,7 @@ const ModalContent = ({ className, children }: DialogContentProps) => (
   </ModalPortal>
 )
 
-const ModalHeader = ({ className, children }: DialogHeaderProps) => (
+export const ModalHeader = ({ className, children }: DialogHeaderProps) => (
   <div
     className={cn(
       "flex flex-col space-y-1.5 text-center sm:text-left",
@@ -66,7 +66,7 @@ const ModalHeader = ({ className, children }: DialogHeaderProps) => (
   </div>
 )
 
-const ModalFooter = ({ className, children }: DialogFooterProps) => (
+export const ModalFooter = ({ className, children }: DialogFooterProps) => (
   <div
     className={cn(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
@@ -77,7 +77,7 @@ const ModalFooter = ({ className, children }: DialogFooterProps) => (
   </div>
 )
 
-const ModalTitle = ({ className, children }: DialogTitleProps) => (
+export const ModalTitle = ({ className, children }: DialogTitleProps) => (
   <Title
     className={cn(
       "text-lg font-semibold leading-none tracking-tight",
@@ -88,7 +88,7 @@ const ModalTitle = ({ className, children }: DialogTitleProps) => (
   </Title>
 )
 
-const ModalDescription = ({ className, children }: DialogDescriptionProps) => (
+export const ModalDescription = ({ className, children }: DialogDescriptionProps) => (
   <Description
     className={cn("text-sm text-muted-foreground", className)}
   >

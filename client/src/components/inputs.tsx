@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import { Image, Eye, EyeOff, Check, ChevronDown } from "lucide-react";
 import { Root as LabelRoot } from "@radix-ui/react-label";
 import {
@@ -17,16 +17,21 @@ import {
 } from "@radix-ui/react-select";
 import { Button } from "@/components/button";
 import { cn } from "@/utils/common";
+import {
+  PasswordInputProps,
+  ImageInputProps,
+  TextInputProps,
+  EmailInputProps,
+  ActionInputProps,
+  TextareaProps,
+  SelectSingleProps,
+} from "@/types/components";
 
 export const PasswordInput = ({
   label,
   value,
   onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}) => {
+}: PasswordInputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
@@ -67,13 +72,7 @@ export const PasswordInput = ({
   );
 };
 
-export const ImageInput = ({
-  onChange,
-  label,
-}: {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-}) => {
+export const ImageInput = ({ onChange, label }: ImageInputProps) => {
   return (
     <div className="w-full space-y-2">
       <LabelRoot
@@ -103,15 +102,7 @@ export const ImageInput = ({
   );
 };
 
-export const TextInput = ({
-  value,
-  onChange,
-  label,
-}: {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-}) => {
+export const TextInput = ({ value, onChange, label }: TextInputProps) => {
   return (
     <div className="w-full space-y-2">
       <LabelRoot
@@ -135,13 +126,7 @@ export const TextInput = ({
   );
 };
 
-export const EmailInput = ({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}) => {
+export const EmailInput = ({ value, onChange }: EmailInputProps) => {
   return (
     <div className="w-full space-y-2">
       <LabelRoot
@@ -170,16 +155,7 @@ export const ActionInput = ({
   onChange,
   label,
   actionButton,
-}: {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-  actionButton: {
-    text: string;
-    onPress: () => void;
-    disabled?: boolean;
-  };
-}) => {
+}: ActionInputProps) => {
   return (
     <div className="w-full space-y-2">
       <LabelRoot
@@ -213,15 +189,7 @@ export const ActionInput = ({
   );
 };
 
-export const Textarea = ({
-  value,
-  onChange,
-  label,
-}: {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  label: string;
-}) => {
+export const Textarea = ({ value, onChange, label }: TextareaProps) => {
   return (
     <div className="w-full space-y-2">
       <LabelRoot
@@ -249,12 +217,7 @@ export const SelectSingle = ({
   value,
   onChange,
   options,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: string[];
-}) => {
+}: SelectSingleProps) => {
   return (
     <div className="w-full space-y-2">
       <LabelRoot
