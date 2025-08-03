@@ -1,8 +1,8 @@
 import NavbarComponent from "@/components/public/navbar";
 import FooterComponent from "@/components/public/footer";
-import { ReactNode } from "react";
+import { PublicLayoutProps } from "@/types/app/public/layout";
 
-export default function PublicLayout({ children }: { children: ReactNode }) {
+export default function PublicLayout({ children }: PublicLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="p-2">
