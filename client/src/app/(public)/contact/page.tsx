@@ -13,9 +13,9 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-60">
-      <h1 className="text-2xl font-bold">Contact Us</h1>
-      <p className="text-sm text-gray-600 mb-2">
+    <div className="flex flex-col gap-2 w-full max-w-md">
+      <h1 className="text-2xl font-bold text-foreground">Contact Us</h1>
+      <p className="text-sm text-muted-foreground mb-2">
         Have a question or need help? Send us a message and we&apos;ll get back
         to you as soon as possible.
       </p>
@@ -32,7 +32,7 @@ export default function ContactPage() {
       </form>
 
       <div className="mt-4 p-3 bg-default-50 border border-default-200 rounded-lg">
-        <p className="text-xs text-default-600">
+        <p className="text-xs text-muted-foreground">
           <strong>Note:</strong> If you&apos;re having trouble with the form,
           you can also reach us directly at{" "}
           <a
