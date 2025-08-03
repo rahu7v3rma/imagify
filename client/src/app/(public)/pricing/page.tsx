@@ -1,52 +1,53 @@
-import { ButtonWrapper } from "@/components/buttons";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { TOOLS } from "@/constants/dashboard/pricing";
 import { ROUTES } from "@/constants/routes";
+import { H1, H2, Muted, P } from "@/components/ui/typography";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default async function PricingPage() {
   return (
-    <div className="container mx-auto px-4 py-10 space-y-12">
+    <div className="container mx-auto px-4 py-20 space-y-12">
       <div className="text-center space-y-2 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">
-          Simple, pay-as-you-go pricing
-        </h1>
-        <p className="text-base">
+        <H1>Simple, pay-as-you-go pricing</H1>
+        <P>
           Purchase prepaid processing credits and use them across any tool. No
           subscriptions, surprise bills, or hidden fees—just straight-forward
           pricing that scales with your creativity.
-        </p>
+        </P>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="flex flex-row gap-4 flex-wrap justify-center">
         {TOOLS.map(({ icon: Icon, title, description, cost }) => (
-          <div
-            key={title}
-            className="flex flex-col items-center space-y-3 rounded-lg border border-accent p-6 shadow-sm"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
-              <Icon className="h-6 w-6 text-muted-foreground" />
-            </div>
-            <h3 className="text-sm font-medium text-foreground text-center">
-              {title}
-            </h3>
-            <p className="text-xs text-muted-foreground text-center">
-              {description}
-            </p>
-            <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
-              💳 {cost}
-            </div>
-          </div>
+          <Card key={title} className="h-full w-[300px]">
+            <CardContent className="p-6 h-full">
+              <div className="h-full flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center">
+                  <Icon />
+                </div>
+                <div className="text-center mt-4">
+                  <P>{title}</P>
+                  <Muted>{description}</Muted>
+                </div>
+                <div className="text-center mt-4">
+                  <P>💳 {cost}</P>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       <div className="text-center space-y-4 pt-4">
-        <h2 className="text-2xl font-semibold">Ready to get started?</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Create a free account and top-up credits whenever you need them.
-        </p>
-        <ButtonWrapper variant="default" className="text-xs">
-          <Link href={ROUTES.SIGNUP}>Sign Up – It's Free</Link>
-        </ButtonWrapper>
+        <div className="flex flex-col items-center justify-center">
+          <H2>Ready to get started?</H2>
+          <Muted>
+            Create a free account and top-up credits whenever you need them.
+          </Muted>
+        </div>
+        <Button variant="default" asChild>
+          <Link href={ROUTES.SIGNUP}>Sign Up</Link>
+        </Button>
       </div>
     </div>
   );

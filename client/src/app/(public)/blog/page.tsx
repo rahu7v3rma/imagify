@@ -1,11 +1,11 @@
+import { H1, P } from "@/components/ui/typography";
+
 export default function BlogPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Blog</h1>
-        <p className="text-lg">
-          Insights, tips, and updates on image processing.
-        </p>
+        <H1>Blog</H1>
+        <P>Insights, tips, and updates on image processing.</P>
       </div>
     </div>
   );

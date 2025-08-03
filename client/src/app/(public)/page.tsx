@@ -13,21 +13,19 @@ export default function Home() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {TOOLS.map(({ icon: Icon, href, title, description }) => (
-          <Link href={href} key={href} className="h-[200px]">
-            <Card key={href} className="h-full">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <Icon />
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>{title}</P>
-                    <Muted>{description}</Muted>
-                  </div>
+          <Card key={href} className="h-full">
+            <CardContent className="p-6 h-full">
+              <div className="h-full flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center">
+                  <Icon />
                 </div>
-              </CardContent>
-            </Card>
-          </Link>
+                <div className="text-center mt-4">
+                  <P>{title}</P>
+                  <Muted>{description}</Muted>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
