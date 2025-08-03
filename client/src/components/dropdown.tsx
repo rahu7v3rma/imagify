@@ -13,11 +13,11 @@ import {
   DropdownMenuItemProps,
 } from "@/types/components";
 
-const DropdownMenu = Root;
+export const DropdownMenu = Root;
 
-const DropdownMenuTrigger = Trigger;
+export const DropdownMenuTrigger = Trigger;
 
-const DropdownMenuContent = ({
+export const DropdownMenuContent = ({
   className,
   align,
   children,
@@ -37,7 +37,7 @@ const DropdownMenuContent = ({
   );
 };
 
-const DropdownMenuItem = ({
+export const DropdownMenuItem = ({
   className,
   onClick,
   children,
@@ -55,9 +55,3 @@ const DropdownMenuItem = ({
   );
 };
 
-export {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-};
