@@ -115,3 +115,11 @@ export interface SwitchProps {
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
 }
+
+export interface ConfirmationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: string;
+}
