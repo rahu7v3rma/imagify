@@ -1,17 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Root, List, Trigger, Content } from "@radix-ui/react-tabs"
+import * as React from "react";
+import { Root, List, Trigger, Content } from "@radix-ui/react-tabs";
 
-import { cn } from "@/utils/common"
-import { TabsListProps, TabsTriggerProps, TabsContentProps } from "@/types/components";
+import { cn } from "@/utils/common";
+import {
+  TabsListProps,
+  TabsTriggerProps,
+  TabsContentProps,
+} from "@/types/components";
 
-const Tabs = Root
+export const Tabs = Root;
 
-const TabsList = ({
-  className,
-  children,
-}: TabsListProps) => (
+export const TabsList = ({ className, children }: TabsListProps) => (
   <List
     className={cn(
       "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
@@ -22,7 +23,7 @@ const TabsList = ({
   </List>
 );
 
-const TabsTrigger = ({
+export const TabsTrigger = ({
   className,
   children,
   value,
@@ -38,7 +39,7 @@ const TabsTrigger = ({
   </Trigger>
 );
 
-const TabsContent = ({
+export const TabsContent = ({
   className,
   children,
   value,
@@ -53,5 +54,3 @@ const TabsContent = ({
     {children}
   </Content>
 );
-
-export { Tabs, TabsList, TabsTrigger, TabsContent }
