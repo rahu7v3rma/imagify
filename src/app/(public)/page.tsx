@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { TOOLS } from "@/constants/public/home";
 import { H1, Muted, P } from "@/components/ui/typography";
-import Link from "next/link";
 
 export default function Home() {
   return (

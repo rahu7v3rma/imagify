@@ -8,7 +8,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
       <div className="">
         <NavbarComponent />
       </div>
-      <div className="flex-1 p-2 flex flex-col items-center justify-center">
+      <div className="flex-1 flex flex-col w-full h-full px-10 py-4">
         {children}
       </div>
       <FooterComponent />

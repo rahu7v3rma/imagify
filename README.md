@@ -4,9 +4,9 @@
 
 # Tech Stack
 
-- MongoDB - database
-- NextJS - frontend framework
-- ExpressJS - backend framework
+- PostgreSQL/Prisma - database
+- NextJS - backend framework
+- ReactJS - frontend framework
 
 # Services
 
