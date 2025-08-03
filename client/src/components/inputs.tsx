@@ -15,7 +15,7 @@ import {
   ItemIndicator,
   ItemText,
 } from "@radix-ui/react-select";
-import { Button } from "@/components/button";
+import { Button } from "@/components/buttons";
 import { cn } from "@/utils/common";
 import {
   PasswordInputProps,

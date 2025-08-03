@@ -2,7 +2,7 @@
 
 import { PasswordInput, EmailInput } from "@/components/inputs";
 import { ROUTES } from "@/constants/routes";
-import { Button } from "@/components/button";
+import { Button } from "@/components/buttons";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
 

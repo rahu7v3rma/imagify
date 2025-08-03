@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput } from "@/components/inputs";
-import { Button } from "@/components/button";
+import { Button } from "@/components/buttons";
 import { useState, FormEvent } from "react";
 
 export default function ChangePasswordPage() {

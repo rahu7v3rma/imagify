@@ -1,9 +1,9 @@
 "use client";
 
-import { ButtonWrapper } from "@/components/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import { Button } from "@/components/buttons";
 
 export default function NavbarComponent() {
   const router = useRouter();
@@ -40,15 +40,9 @@ export default function NavbarComponent() {
           </Link>
         </div>
         <nav className="flex items-center space-x-2">
-          <Link
-            href={ROUTES.LOGIN}
-            className="text-sm font-medium transition-colors hover:text-primary"
-          >
+          <Button variant="default" onClick={() => router.push(ROUTES.LOGIN)}>
             Login
-          </Link>
-          <ButtonWrapper>
-            <Link href={ROUTES.SIGNUP}>Sign Up</Link>
-          </ButtonWrapper>
+          </Button>
         </nav>
       </div>
     </nav>

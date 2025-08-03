@@ -2,7 +2,7 @@
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/tabs";
 import { Card, CardContent } from "@/components/card";
-import { Button } from "@/components/button";
+import { Button } from "@/components/buttons";
 import { Zap, Plus, Minus } from "lucide-react";
 import { useState } from "react";
 

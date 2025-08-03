@@ -22,7 +22,7 @@ import {
   DialogTitleProps,
   ConfirmationModalProps,
 } from "@/types/components/modals";
-import { Button } from "@/components/button";
+import { Button } from "@/components/buttons";
 
 export const Modal = Root;
 

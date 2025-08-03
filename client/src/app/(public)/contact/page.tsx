@@ -1,7 +1,7 @@
 "use client";
 
 import { EmailInput, Textarea } from "@/components/inputs";
-import { Button } from "@/components/button";
+import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 
 export default function ContactPage() {

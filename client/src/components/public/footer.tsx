@@ -21,7 +21,7 @@ export default function FooterComponent() {
           </Link>
         </div>
 
-        <div className="text-sm text-default-500">
+        <div className="text-xs text-muted-foreground">
           © {new Date().getFullYear()} imagify.pro. All rights reserved.
         </div>
 

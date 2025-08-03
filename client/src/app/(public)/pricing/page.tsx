@@ -1,4 +1,4 @@
-import { ButtonWrapper } from "@/components/button";
+import { ButtonWrapper } from "@/components/buttons";
 import Link from "next/link";
 import { TOOLS } from "@/constants/dashboard/pricing";
 import { ROUTES } from "@/constants/routes";

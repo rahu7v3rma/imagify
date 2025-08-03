@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/button";
+import { Button } from "@/components/buttons";
 import { PasswordInput, EmailInput } from "@/components/inputs";
 import { FormEvent, useState } from "react";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar } from "@/components/avatar";
-import { Button, ButtonWrapper } from "@/components/button";
+import { Button, ButtonWrapper } from "@/components/buttons";
 import {
   DropdownMenu,
   DropdownMenuContent,

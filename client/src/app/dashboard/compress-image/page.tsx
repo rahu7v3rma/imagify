@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/button";
+import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import ImageInput from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
