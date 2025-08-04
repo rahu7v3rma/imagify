@@ -1,3 +1,3 @@
-export const ENDPOINTS = {
-  signup: "/api/signup",
+export const ERROR_CODES = {
+  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR" as 'INTERNAL_SERVER_ERROR',
 };
