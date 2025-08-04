@@ -25,49 +25,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import { CONTACT_EMAIL } from "@/constants/app";
 import { ROUTES } from "@/constants/routes";
-import { trpc } from "@/lib/trpc/client";
 import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ContactFormData } from "@/types/app/public/contact";
-import { ContactSchema } from "@/schemas/public/contact";
+import { useContact } from "@/hooks/public/contact";
 
 export default function ContactPage() {
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    reset,
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(ContactSchema),
-    mode: "onChange",
-  });
-
-  const { mutate, isPending } = trpc.contact.post.useMutation({
-    onSuccess: (data) => {
-      setSuccessMessage(
-        "Your message has been sent successfully! We'll get back to you soon."
-      );
-      setErrorMessage(null);
-      reset();
-    },
-    onError: (error) => {
-      setErrorMessage(
-        error.message || "Failed to send message. Please try again."
-      );
-      setSuccessMessage(null);
-    },
-  });
-
-  const onSubmit = async (data: ContactFormData) => {
-    setSuccessMessage(null);
-    setErrorMessage(null);
-    mutate({ email: data.email, message: data.message });
-  };
+  const { form, successMessage, errorMessage, isPending, onSubmit } =
+    useContact();
 
   return (
     <div className="h-full w-full">
@@ -111,29 +74,31 @@ export default function ContactPage() {
             )}
 
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(onSubmit)}
               className="flex flex-col gap-4 w-full"
             >
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" {...register("email")} />
-                {errors.email && (
-                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                <Input id="email" type="email" {...form.register("email")} />
+                {form.formState.errors.email && (
+                  <p className="text-sm text-red-500">
+                    {form.formState.errors.email.message}
+                  </p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="message">Your message</Label>
-                <Textarea id="message" {...register("message")} />
-                {errors.message && (
+                <Textarea id="message" {...form.register("message")} />
+                {form.formState.errors.message && (
                   <p className="text-sm text-red-500">
-                    {errors.message.message}
+                    {form.formState.errors.message.message}
                   </p>
                 )}
               </div>
               <Button
                 variant="default"
                 className="mt-2"
-                disabled={!isValid || isPending}
+                disabled={!form.formState.isValid || isPending}
                 type="submit"
               >
                 {isPending ? (
