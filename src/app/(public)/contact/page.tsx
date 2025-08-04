@@ -9,12 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { EmailInput, Textarea } from "@/components/inputs";
 import { Muted } from "@/components/ui/typography";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2 } from "lucide-react";
+import { SuccessAlert, ErrorAlert } from "@/components/alerts";
+import { withLoader } from "@/utils/ui";
 import { CONTACT_EMAIL } from "@/constants/app";
 import Link from "next/link";
 import { useContact } from "@/hooks/public/contact";
@@ -40,56 +38,32 @@ export default function ContactPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="w-full">
-            {successMessage && (
-              <Alert className="mb-4">
-                <AlertTitle>Success!</AlertTitle>
-                <AlertDescription>{successMessage}</AlertDescription>
-              </Alert>
-            )}
+            {successMessage && <SuccessAlert message={successMessage} />}
 
-            {errorMessage && (
-              <Alert variant="destructive" className="mb-4">
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{errorMessage}</AlertDescription>
-              </Alert>
-            )}
+            {errorMessage && <ErrorAlert message={errorMessage} />}
 
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex flex-col gap-4 w-full"
             >
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" {...form.register("email")} />
-                {form.formState.errors.email && (
-                  <p className="text-sm text-red-500">
-                    {form.formState.errors.email.message}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="message">Your message</Label>
-                <Textarea id="message" {...form.register("message")} />
-                {form.formState.errors.message && (
-                  <p className="text-sm text-red-500">
-                    {form.formState.errors.message.message}
-                  </p>
-                )}
-              </div>
+              <EmailInput
+                value={form.watch("email") || ""}
+                onChange={form.register("email").onChange}
+                error={form.formState.errors.email?.message}
+              />
+              <Textarea
+                label="Your message"
+                value={form.watch("message") || ""}
+                onChange={form.register("message").onChange}
+                error={form.formState.errors.message?.message}
+              />
               <Button
                 variant="default"
                 className="mt-2"
                 disabled={!form.formState.isValid || isPending}
                 type="submit"
               >
-                {isPending ? (
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Sending...
-                  </div>
-                ) : (
-                  "Send Message"
-                )}
+                {withLoader({ text: "Send Message", isLoading: isPending })}
               </Button>
             </form>
 

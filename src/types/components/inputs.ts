@@ -48,6 +48,7 @@ export interface TextInputProps {
 export interface EmailInputProps {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 }
 
 export interface ActionInputProps {
@@ -65,6 +66,7 @@ export interface TextareaProps {
   value: string;
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   label: string;
+  error?: string;
 }
 
 export interface SelectSingleProps {
