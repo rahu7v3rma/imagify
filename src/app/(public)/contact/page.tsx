@@ -15,21 +15,24 @@ import { SuccessAlert, ErrorAlert } from "@/components/alerts";
 import { withLoader } from "@/utils/ui";
 import { CONTACT_EMAIL } from "@/constants/app";
 import Link from "next/link";
-import { useContact } from "@/hooks/public/contact";
+import { useContactForm } from "@/hooks/public/contact";
 import Breadcrumbs from "@/components/breadcrumbs";
 import { BREADCRUMB_ITEMS } from "@/constants/public/contact";
 
 export default function ContactPage() {
   const {
-    form,
     successMessage,
     errorMessage,
     isPending,
-    onSubmit,
-    values,
     setEmail,
     setMessage,
-  } = useContact();
+    emailError,
+    messageError,
+    email,
+    message,
+    isFormValid,
+    handleSubmit,
+  } = useContactForm();
 
   return (
     <div className="h-full w-full">
@@ -51,24 +54,24 @@ export default function ContactPage() {
             {errorMessage && <ErrorAlert message={errorMessage} />}
 
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={handleSubmit}
               className="flex flex-col gap-4 w-full"
             >
               <EmailInput
-                value={values.email || ""}
+                value={email || ""}
                 onChange={(e) => setEmail(e.target.value)}
-                error={form.formState.errors.email?.message}
+                error={emailError}
               />
               <Textarea
                 label="Your message"
-                value={values.message || ""}
+                value={message || ""}
                 onChange={(e) => setMessage(e.target.value)}
-                error={form.formState.errors.message?.message}
+                error={messageError}
               />
               <Button
                 variant="default"
                 className="mt-2"
-                disabled={!form.formState.isValid || isPending}
+                disabled={!isFormValid || isPending}
                 type="submit"
               >
                 {withLoader({ text: "Send Message", isLoading: isPending })}

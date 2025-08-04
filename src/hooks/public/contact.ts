@@ -5,7 +5,7 @@ import { ContactFormData } from "@/types/app/public/contact";
 import { ContactSchema } from "@/schemas/public/contact";
 import { trpc } from "@/lib/trpc/client";
 
-export const useContact = () => {
+export const useContactForm = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -37,6 +37,8 @@ export const useContact = () => {
   };
 
   const values = form.watch();
+  const email = values.email;
+  const message = values.message;
 
   const setEmail = (email: string) => {
     form.setValue("email", email, {
@@ -54,14 +56,24 @@ export const useContact = () => {
     });
   };
 
+  const errors = form.formState.errors;
+  const emailError = errors.email?.message;
+  const messageError = errors.message?.message;
+
+  const isFormValid = form.formState.isValid;
+  const handleSubmit = form.handleSubmit(onSubmit);
+
   return {
-    form,
     successMessage,
     errorMessage,
     isPending,
-    onSubmit,
-    values,
+    email,
+    message,
     setEmail,
     setMessage,
+    emailError,
+    messageError,
+    isFormValid,
+    handleSubmit,
   };
 };
