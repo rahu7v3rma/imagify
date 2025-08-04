@@ -3,14 +3,6 @@
 import { Button } from "@/components/buttons";
 import { Badge } from "@/components/ui/badge";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -24,9 +16,10 @@ import { Muted } from "@/components/ui/typography";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import { CONTACT_EMAIL } from "@/constants/app";
-import { ROUTES } from "@/constants/routes";
 import Link from "next/link";
 import { useContact } from "@/hooks/public/contact";
+import Breadcrumbs from "@/components/breadcrumbs";
+import { BREADCRUMB_ITEMS } from "@/constants/public/contact";
 
 export default function ContactPage() {
   const { form, successMessage, errorMessage, isPending, onSubmit } =
@@ -35,19 +28,7 @@ export default function ContactPage() {
   return (
     <div className="h-full w-full">
       <div className="w-full">
-        <Breadcrumb className="mb-8">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href={ROUTES.HOME}>Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Contact</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <Breadcrumbs className="mb-8" items={BREADCRUMB_ITEMS} />
       </div>
       <div className="space-y-12 flex flex-col items-center justify-center w-full">
         <Card className="flex flex-col items-center justify-center w-1/4">

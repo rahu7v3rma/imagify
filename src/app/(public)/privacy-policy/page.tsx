@@ -1,31 +1,11 @@
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import Breadcrumbs from "@/components/breadcrumbs";
+import { BREADCRUMB_ITEMS } from "@/constants/public/privacy-policy";
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="h-full w-full">
       <div className="w-full">
-        <Breadcrumb className="mb-8">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href={ROUTES.HOME}>Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Privacy Policy</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <Breadcrumbs className="mb-8" items={BREADCRUMB_ITEMS} />
       </div>
       <div className="max-w-3xl mx-auto space-y-6 text-[15px] py-10">
         <h1 className="text-[29px] font-bold">Privacy Policy</h1>

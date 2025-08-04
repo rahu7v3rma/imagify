@@ -1,35 +1,17 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { TOOLS } from "@/constants/dashboard/pricing";
-import { ROUTES } from "@/constants/routes";
 import { H1, H2, Muted, P } from "@/components/ui/typography";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import Breadcrumbs from "@/components/breadcrumbs";
+import { BREADCRUMB_ITEMS } from "@/constants/public/pricing";
+import { ROUTES } from "@/constants/routes";
 
 export default async function PricingPage() {
   return (
     <div className="h-full w-full">
       <div className="w-full">
-        <Breadcrumb className="mb-8">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href={ROUTES.HOME}>Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Pricing</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <Breadcrumbs className="mb-8" items={BREADCRUMB_ITEMS} />
       </div>
       <div className="space-y-12 flex flex-col items-center justify-center">
         <div className="text-center space-y-2 max-w-4xl mx-auto">
