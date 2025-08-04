@@ -6,22 +6,23 @@ import type {
   AlertDescriptionProps,
 } from "@/types/components/ui/alert";
 
-const Alert = ({ className, variant, children }: AlertProps) => (
+export const Alert = ({ className, variant, children }: AlertProps) => (
   <div role="alert" className={cn(alertVariants({ variant }), className)}>
     {children}
   </div>
 );
 
-const AlertTitle = ({ className, children }: AlertTitleProps) => (
+export const AlertTitle = ({ className, children }: AlertTitleProps) => (
   <h5 className={cn("mb-1 font-medium leading-none tracking-tight", className)}>
     {children}
   </h5>
 );
 
-const AlertDescription = ({ className, children }: AlertDescriptionProps) => (
+export const AlertDescription = ({
+  className,
+  children,
+}: AlertDescriptionProps) => (
   <div className={cn("text-sm [&_p]:leading-relaxed", className)}>
     {children}
   </div>
 );
-
-export { Alert, AlertTitle, AlertDescription };
