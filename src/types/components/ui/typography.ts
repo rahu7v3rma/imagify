@@ -51,7 +51,7 @@ export interface InlineCodeProps {
 }
 
 export interface ListProps {
-  options: string[];
+  options: ReactNode[];
   className?: string;
 }
 
@@ -63,5 +63,11 @@ export interface TableProps {
 
 export interface BlockquoteProps {
   children: ReactNode;
+  className?: string;
+}
+
+export interface LinkProps {
+  children: ReactNode;
+  href: string;
   className?: string;
 }

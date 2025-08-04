@@ -2,10 +2,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { TOOLS } from "@/constants/dashboard/pricing";
 import { H1, H2, Muted, P } from "@/components/ui/typography";
-import { Card, CardContent } from "@/components/ui/card";
 import Breadcrumbs from "@/components/breadcrumbs";
 import { BREADCRUMB_ITEMS } from "@/constants/public/pricing";
 import { ROUTES } from "@/constants/routes";
+import PricingTools from "@/components/public/pricing";
 
 export default async function PricingPage() {
   return (
@@ -23,26 +23,7 @@ export default async function PricingPage() {
           </P>
         </div>
 
-        <div className="flex flex-row gap-4 flex-wrap justify-center w-3/4">
-          {TOOLS.map(({ icon: Icon, title, description, cost }) => (
-            <Card key={title} className="h-full w-[300px]">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <Icon />
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>{title}</P>
-                    <Muted>{description}</Muted>
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>💳 {cost}</P>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <PricingTools tools={TOOLS} />
 
         <div className="text-center space-y-4 pt-4">
           <div className="flex flex-col items-center justify-center">

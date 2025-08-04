@@ -13,6 +13,7 @@ import {
   ListProps,
   TableProps,
   BlockquoteProps,
+  LinkProps,
 } from "@/types/components/ui/typography";
 
 export function H1({ children, className }: H1Props) {
@@ -120,8 +121,8 @@ export function InlineCode({ children, className }: InlineCodeProps) {
 export function List({ options, className }: ListProps) {
   return (
     <ul className={clsx("my-6 ml-6 list-disc [&>li]:mt-2", className)}>
-      {options.map((option) => (
-        <li key={option}>{option}</li>
+      {options.map((option, index) => (
+        <li key={index}>{option}</li>
       ))}
     </ul>
   );
@@ -164,5 +165,19 @@ export function Blockquote({ children, className }: BlockquoteProps) {
     <blockquote className={clsx("mt-6 border-l-2 pl-6 italic", className)}>
       {children}
     </blockquote>
+  );
+}
+
+export function Link({ children, href, className }: LinkProps) {
+  return (
+    <a
+      href={href}
+      className={clsx(
+        "text-primary-600 underline hover:text-primary-700",
+        className
+      )}
+    >
+      {children}
+    </a>
   );
 }
