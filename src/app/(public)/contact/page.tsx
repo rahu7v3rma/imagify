@@ -1,18 +1,15 @@
 "use client";
 
-import { EmailInput, Textarea } from "@/components/inputs";
 import { Button } from "@/components/buttons";
-import { FormEvent, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
-  BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
+  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import Link from "next/link";
-import { H1, Muted, P } from "@/components/ui/typography";
 import {
   Card,
   CardContent,
@@ -20,13 +17,40 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Muted } from "@/components/ui/typography";
+import { CONTACT_EMAIL } from "@/constants/app";
+import { ROUTES } from "@/constants/routes";
+import { trpc } from "@/lib/trpc/client";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ContactFormData } from "@/types/app/public/contact";
+import { ContactSchema } from "@/schemas/public/contact";
 
 export default function ContactPage() {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(ContactSchema),
+    mode: "onChange",
+  });
 
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const { mutate, isPending } = trpc.contact.post.useMutation({
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const onSubmit = async (data: ContactFormData) => {
+    mutate({ email: data.email, message: data.message });
   };
 
   return (
@@ -36,7 +60,7 @@ export default function ContactPage() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/">Home</Link>
+                <Link href={ROUTES.HOME}>Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -55,31 +79,46 @@ export default function ContactPage() {
               back to you as soon as possible.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={onSubmit} className="flex flex-col gap-2">
-              <EmailInput
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Textarea
-                label="Your message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-              <Button variant="default" className="mt-2">Send Message</Button>
+          <CardContent className="w-full">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-4 w-full"
+            >
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" {...register("email")} />
+                {errors.email && (
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="message">Your message</Label>
+                <Textarea id="message" {...register("message")} />
+                {errors.message && (
+                  <p className="text-sm text-red-500">
+                    {errors.message.message}
+                  </p>
+                )}
+              </div>
+              <Button
+                variant="default"
+                className="mt-2"
+                disabled={!isValid || isPending}
+                type="submit"
+              >
+                {isPending ? "Sending..." : "Send Message"}
+              </Button>
             </form>
 
-            <div className="mt-4 p-3 bg-default-50 border border-default-200 rounded-lg">
-              <p className="text-xs text-muted-foreground">
-                <strong>Note:</strong> If you&apos;re having trouble with the
-                form, you can also reach us directly at{" "}
-                <a
-                  href="mailto:support@imagify.pro"
-                  className="text-primary hover:text-primary-600 transition-colors underline"
-                >
-                  support@imagify.pro
-                </a>
-              </p>
+            <div className="mt-4 flex justify-center w-full">
+              <Badge variant="outline" className="text-center w-full text-xs">
+                <Link href={`mailto:${CONTACT_EMAIL}`}>
+                  <Muted className="text-xs">
+                    If you&apos;re having trouble with the form, you can also
+                    reach us directly at {CONTACT_EMAIL}
+                  </Muted>
+                </Link>
+              </Badge>
             </div>
           </CardContent>
         </Card>

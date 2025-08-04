@@ -5,8 +5,10 @@
 # Tech Stack
 
 - PostgreSQL/Prisma - database
+- trpc - api framework
 - NextJS - backend framework
 - ReactJS - frontend framework
+- Shadcn - frontend components
 
 # Services
 

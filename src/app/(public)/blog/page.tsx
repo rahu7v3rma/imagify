@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ROUTES } from "@/constants/routes";
 import { H1, P } from "@/components/ui/typography";
 import {
   Breadcrumb,
@@ -16,7 +17,7 @@ export default function BlogPage() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/">Home</Link>
+              <Link href={ROUTES.HOME}>Home</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

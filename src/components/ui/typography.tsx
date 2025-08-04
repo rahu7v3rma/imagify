@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import {
   H1Props,
   H2Props,
@@ -14,68 +15,111 @@ import {
   BlockquoteProps,
 } from "@/types/components/ui/typography";
 
-export function H1({ children }: H1Props) {
+export function H1({ children, className }: H1Props) {
   return (
-    <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+    <h1
+      className={clsx(
+        "scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance",
+        className
+      )}
+    >
       {children}
     </h1>
   );
 }
 
-export function H2({ children }: H2Props) {
+export function H2({ children, className }: H2Props) {
   return (
-    <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+    <h2
+      className={clsx(
+        "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+        className
+      )}
+    >
       {children}
     </h2>
   );
 }
 
-export function H3({ children }: H3Props) {
+export function H3({ children, className }: H3Props) {
   return (
-    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+    <h3
+      className={clsx(
+        "scroll-m-20 text-2xl font-semibold tracking-tight",
+        className
+      )}
+    >
       {children}
     </h3>
   );
 }
 
-export function H4({ children }: H4Props) {
+export function H4({ children, className }: H4Props) {
   return (
-    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+    <h4
+      className={clsx(
+        "scroll-m-20 text-xl font-semibold tracking-tight",
+        className
+      )}
+    >
       {children}
     </h4>
   );
 }
 
-export function P({ children }: PProps) {
-  return <p className="leading-7 [&:not(:first-child)]:mt-6">{children}</p>;
-}
-
-export function Muted({ children }: MutedProps) {
-  return <p className="text-muted-foreground text-sm">{children}</p>;
-}
-
-export function Small({ children }: SmallProps) {
-  return <small className="text-sm leading-none font-medium">{children}</small>;
-}
-
-export function Large({ children }: LargeProps) {
-  return <div className="text-lg font-semibold">{children}</div>;
-}
-
-export function Lead({ children }: LeadProps) {
-  return <p className="text-muted-foreground text-xl">{children}</p>;
-}
-
-export function InlineCode({ children }: InlineCodeProps) {
+export function P({ children, className }: PProps) {
   return (
-    <code className="bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+    <p className={clsx("leading-7 [&:not(:first-child)]:mt-6", className)}>
+      {children}
+    </p>
+  );
+}
+
+export function Muted({ children, className }: MutedProps) {
+  return (
+    <p className={clsx("text-muted-foreground text-sm", className)}>
+      {children}
+    </p>
+  );
+}
+
+export function Small({ children, className }: SmallProps) {
+  return (
+    <small className={clsx("text-sm leading-none font-medium", className)}>
+      {children}
+    </small>
+  );
+}
+
+export function Large({ children, className }: LargeProps) {
+  return (
+    <div className={clsx("text-lg font-semibold", className)}>{children}</div>
+  );
+}
+
+export function Lead({ children, className }: LeadProps) {
+  return (
+    <p className={clsx("text-muted-foreground text-xl", className)}>
+      {children}
+    </p>
+  );
+}
+
+export function InlineCode({ children, className }: InlineCodeProps) {
+  return (
+    <code
+      className={clsx(
+        "bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
+        className
+      )}
+    >
       {children}
     </code>
   );
 }
-export function List({ options }: ListProps) {
+export function List({ options, className }: ListProps) {
   return (
-    <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+    <ul className={clsx("my-6 ml-6 list-disc [&>li]:mt-2", className)}>
       {options.map((option) => (
         <li key={option}>{option}</li>
       ))}
@@ -83,9 +127,9 @@ export function List({ options }: ListProps) {
   );
 }
 
-export function Table({ headers, rows }: TableProps) {
+export function Table({ headers, rows, className }: TableProps) {
   return (
-    <div className="my-6 w-full overflow-y-auto">
+    <div className={clsx("my-6 w-full overflow-y-auto", className)}>
       <table className="w-full">
         <thead>
           <tr className="even:bg-muted m-0 border-t p-0">
@@ -115,8 +159,10 @@ export function Table({ headers, rows }: TableProps) {
   );
 }
 
-export function Blockquote({ children }: BlockquoteProps) {
+export function Blockquote({ children, className }: BlockquoteProps) {
   return (
-    <blockquote className="mt-6 border-l-2 pl-6 italic">{children}</blockquote>
+    <blockquote className={clsx("mt-6 border-l-2 pl-6 italic", className)}>
+      {children}
+    </blockquote>
   );
 }

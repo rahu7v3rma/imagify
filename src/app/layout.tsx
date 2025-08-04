@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { geist } from "@/configs/app";
 import { LayoutProps } from "@/types/app/layout";
+import { TRPCProvider } from "@/context/trpc";
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: LayoutProps) {
           disableTransitionOnChange
         >
           <LoaderProvider>
-            <Suspense fallback={null}>{children}</Suspense>
+            <TRPCProvider>
+              <Suspense fallback={null}>{children}</Suspense>
+            </TRPCProvider>
           </LoaderProvider>
         </ThemeProvider>
       </body>

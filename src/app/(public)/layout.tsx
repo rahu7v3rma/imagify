@@ -4,14 +4,16 @@ import { PublicLayoutProps } from "@/types/app/public/layout";
 
 export default function PublicLayout({ children }: PublicLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="">
+    <div className="min-h-screen">
+      <div className="fixed top-0 left-0 right-0 z-50">
         <NavbarComponent />
       </div>
-      <div className="flex-1 flex flex-col w-full h-full px-10 py-4">
+      <div className="pt-16 pb-20 px-10 py-4 min-h-screen overflow-y-auto">
         {children}
       </div>
-      <FooterComponent />
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <FooterComponent />
+      </div>
     </div>
   );
 }

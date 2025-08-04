@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ROUTES } from "@/constants/routes";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -18,7 +19,7 @@ export default function TermsOfServicePage() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/">Home</Link>
+                <Link href={ROUTES.HOME}>Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
