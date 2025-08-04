@@ -8,4 +8,5 @@ export type InputProps = {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
+  accept?: string;
 };

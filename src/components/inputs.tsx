@@ -69,29 +69,8 @@ export const PasswordInput = ({
 export const ImageInput = ({ onChange, label }: ImageInputProps) => {
   return (
     <div className="w-full space-y-2">
-      <LabelRoot
-        className={cn(
-          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        )}
-        htmlFor="image"
-      >
-        {label}
-      </LabelRoot>
-      <div className="relative">
-        <input
-          id="image"
-          type="file"
-          accept="image/*"
-          onChange={onChange}
-          className={cn(
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-            "file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:transition-colors file:cursor-pointer file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-          )}
-        />
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <Image className="w-5 h-5 text-muted-foreground" />
-        </div>
-      </div>
+      <Label htmlFor="image">{label}</Label>
+      <Input id="image" type="file" onChange={onChange} accept="image/*" />
     </div>
   );
 };

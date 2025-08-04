@@ -1,7 +1,7 @@
 import { cn } from "@/utils/common";
 import type { InputProps } from "@/types/components/ui/input";
 
-export const Input = ({ className, type, id, value, onChange }: InputProps) => (
+export const Input = ({ className, type, id, value, onChange, accept, placeholder, disabled }: InputProps) => (
   <input
     type={type}
     className={cn(
@@ -11,5 +11,8 @@ export const Input = ({ className, type, id, value, onChange }: InputProps) => (
     id={id}
     value={value}
     onChange={onChange}
+    accept={accept}
+    placeholder={placeholder}
+    disabled={disabled}
   />
 );
