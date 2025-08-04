@@ -36,11 +36,32 @@ export const useContact = () => {
     mutate({ email: data.email, message: data.message });
   };
 
+  const values = form.watch();
+
+  const setEmail = (email: string) => {
+    form.setValue("email", email, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  const setMessage = (message: string) => {
+    form.setValue("message", message, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
   return {
     form,
     successMessage,
     errorMessage,
     isPending,
     onSubmit,
+    values,
+    setEmail,
+    setMessage,
   };
 };

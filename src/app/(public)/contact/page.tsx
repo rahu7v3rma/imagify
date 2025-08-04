@@ -20,8 +20,16 @@ import Breadcrumbs from "@/components/breadcrumbs";
 import { BREADCRUMB_ITEMS } from "@/constants/public/contact";
 
 export default function ContactPage() {
-  const { form, successMessage, errorMessage, isPending, onSubmit } =
-    useContact();
+  const {
+    form,
+    successMessage,
+    errorMessage,
+    isPending,
+    onSubmit,
+    values,
+    setEmail,
+    setMessage,
+  } = useContact();
 
   return (
     <div className="h-full w-full">
@@ -47,14 +55,14 @@ export default function ContactPage() {
               className="flex flex-col gap-4 w-full"
             >
               <EmailInput
-                value={form.watch("email") || ""}
-                onChange={form.register("email").onChange}
+                value={values.email || ""}
+                onChange={(e) => setEmail(e.target.value)}
                 error={form.formState.errors.email?.message}
               />
               <Textarea
                 label="Your message"
-                value={form.watch("message") || ""}
-                onChange={form.register("message").onChange}
+                value={values.message || ""}
+                onChange={(e) => setMessage(e.target.value)}
                 error={form.formState.errors.message?.message}
               />
               <Button
