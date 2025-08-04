@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@/components/buttons";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -9,31 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { EmailInput, Textarea } from "@/components/inputs";
-import { Muted } from "@/components/ui/typography";
-import { SuccessAlert, ErrorAlert } from "@/components/alerts";
-import { withLoader } from "@/utils/ui";
-import { CONTACT_EMAIL } from "@/constants/app";
-import Link from "next/link";
-import { useContactForm } from "@/hooks/public/contact";
 import Breadcrumbs from "@/components/breadcrumbs";
 import { BREADCRUMB_ITEMS } from "@/constants/public/contact";
+import ContactForm from "@/components/public/contact";
+import { CONTACT_EMAIL } from "@/constants/app";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { Muted } from "@/components/ui/typography";
 
 export default function ContactPage() {
-  const {
-    successMessage,
-    errorMessage,
-    isPending,
-    setEmail,
-    setMessage,
-    emailError,
-    messageError,
-    email,
-    message,
-    isFormValid,
-    handleSubmit,
-  } = useContactForm();
-
   return (
     <div className="h-full w-full">
       <div className="w-full">
@@ -49,35 +31,7 @@ export default function ContactPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="w-full">
-            {successMessage && <SuccessAlert message={successMessage} />}
-
-            {errorMessage && <ErrorAlert message={errorMessage} />}
-
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-4 w-full"
-            >
-              <EmailInput
-                value={email || ""}
-                onChange={(e) => setEmail(e.target.value)}
-                error={emailError}
-              />
-              <Textarea
-                label="Your message"
-                value={message || ""}
-                onChange={(e) => setMessage(e.target.value)}
-                error={messageError}
-              />
-              <Button
-                variant="default"
-                className="mt-2"
-                disabled={!isFormValid || isPending}
-                type="submit"
-              >
-                {withLoader({ text: "Send Message", isLoading: isPending })}
-              </Button>
-            </form>
-
+            <ContactForm />
             <div className="mt-4 flex justify-center w-full">
               <Badge variant="outline" className="text-center w-full text-xs">
                 <Link href={`mailto:${CONTACT_EMAIL}`}>
