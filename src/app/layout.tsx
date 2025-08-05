@@ -12,7 +12,7 @@ const geist = Geist({
   display: "swap",
 });
 
-import { TRPCProvider } from "@/context/trpc";
+import { TRPCProvider } from "@/lib/trpc/provider";
 import PageTransition from "@/components/page-transition";
 
 export interface LayoutProps {
