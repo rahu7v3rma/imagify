@@ -5,7 +5,7 @@ import { FormEvent, useState, ChangeEvent } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
 import { Textarea } from "@/components/inputs";
-import { CREDIT_REQUIREMENT } from "@/constants/dashboard/edit-image";
+import { CREDIT_REQUIREMENTS } from "@/utils/credits";
 
 export default function EditImagePage() {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function EditImagePage() {
         want to make.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-        💳 {CREDIT_REQUIREMENT} credits
+                    💳 {CREDIT_REQUIREMENTS.EDIT_IMAGE} credits
       </div>
 
       <div className="flex gap-8">

@@ -2,7 +2,10 @@
 
 import { Copy } from "lucide-react";
 import clsx from "clsx";
-import { DisplayTextProps } from "@/types/components/dashboard/display-text";
+export interface DisplayTextProps {
+  text: string;
+  className?: string;
+}
 
 export default function DisplayText({ text, className }: DisplayTextProps) {
   return (

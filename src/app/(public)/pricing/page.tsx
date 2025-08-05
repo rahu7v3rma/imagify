@@ -1,19 +1,41 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { TOOLS } from "@/constants/dashboard/pricing";
 import { H1, H2, Muted, P } from "@/components/ui/typography";
-import Breadcrumbs from "@/components/breadcrumbs";
-import { BREADCRUMB_ITEMS } from "@/constants/public/pricing";
-import { ROUTES } from "@/constants/routes";
 import PricingTools from "@/components/public/pricing";
 import PageTransition from "@/components/page-transition";
+import { PRICING_TOOLS } from "@/utils/features";
+import { ROUTES } from "@/configs/app";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export default async function PricingPage() {
   return (
     <PageTransition>
       <div className="h-full w-full">
         <div className="w-full">
-          <Breadcrumbs className="mb-8" items={BREADCRUMB_ITEMS} />
+          <Breadcrumb className="mb-8">
+            <BreadcrumbList>
+              <div className="flex items-center">
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={ROUTES.HOME}>Home</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+              </div>
+              <div className="flex items-center">
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Pricing</BreadcrumbPage>
+                </BreadcrumbItem>
+              </div>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
         <div className="space-y-12 flex flex-col items-center justify-center">
           <div className="text-center space-y-2 max-w-4xl mx-auto">
@@ -25,7 +47,7 @@ export default async function PricingPage() {
             </P>
           </div>
 
-          <PricingTools tools={TOOLS} />
+          <PricingTools tools={PRICING_TOOLS} />
 
           <div className="text-center space-y-4 pt-4">
             <div className="flex flex-col items-center justify-center">

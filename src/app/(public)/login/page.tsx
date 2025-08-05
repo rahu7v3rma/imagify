@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput, EmailInput } from "@/components/inputs";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/configs/app";
 import { Button } from "@/components/buttons";
 import Link from "next/link";
 import { useState, FormEvent } from "react";

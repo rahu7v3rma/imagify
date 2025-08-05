@@ -6,9 +6,14 @@ import { LoaderProvider } from "../context/loader";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { geist } from "@/configs/app";
-import { LayoutProps } from "@/types/app/layout";
+import { ReactNode } from "react";
+
 import { TRPCProvider } from "@/context/trpc";
 import PageTransition from "@/components/page-transition";
+
+export interface LayoutProps {
+  children: ReactNode;
+}
 
 export default function RootLayout({ children }: LayoutProps) {
   return (

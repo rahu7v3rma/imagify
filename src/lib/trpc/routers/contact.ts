@@ -1,9 +1,12 @@
-import { ERROR_CODES } from "@/constants/api";
 import { prisma } from "@/lib/prisma";
 import { ContactFormDataSchema } from "@/schemas/trpc/contact";
 import { TRPCError } from "@trpc/server";
 import { publicProcedure, router } from "../init";
 import { uploadContactFile } from "@/lib/upload";
+
+export const ERROR_CODES = {
+  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR" as 'INTERNAL_SERVER_ERROR',
+};
 
 export const contactRouter = router({
   postFormData: publicProcedure
@@ -30,6 +33,7 @@ export const contactRouter = router({
 
         return true;
       } catch (error) {
+        console.error(error);
         throw new TRPCError({
           code: ERROR_CODES.INTERNAL_SERVER_ERROR,
         });

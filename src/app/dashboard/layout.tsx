@@ -1,6 +1,8 @@
 import Header from "@/components/dashboard/header";
 import Sidebar from "@/components/dashboard/sidebar";
-import { DashboardLayoutProps } from "@/types/app/dashboard/layout";
+export interface DashboardLayoutProps {
+  children: React.ReactNode;
+}
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (

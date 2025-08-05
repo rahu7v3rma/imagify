@@ -1,6 +1,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Muted, P } from "@/components/ui/typography";
-import { PricingToolsProps } from "@/types/components/public/pricing";
+import { LucideIcon } from "lucide-react";
+
+export interface PricingToolsProps {
+  tools: {
+    icon: LucideIcon;
+    title: string;
+    description: string;
+    cost: string;
+  }[];
+}
 
 export default function PricingTools({ tools }: PricingToolsProps) {
   return (

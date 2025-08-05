@@ -1,4 +1,4 @@
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/configs/app";
 import { Link } from "./links";
 import { Large } from "./ui/typography";
 

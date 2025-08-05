@@ -4,7 +4,7 @@ import { Button } from "@/components/buttons";
 import Link from "next/link";
 import { EmailInput } from "@/components/inputs";
 import { FormEvent, useState } from "react";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/configs/app";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");

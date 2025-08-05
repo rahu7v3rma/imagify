@@ -1,13 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { TOOLS } from "@/constants/public/home";
 import { H4, Small } from "@/components/ui/typography";
 import { MotionCardWrapper } from "@/components/links";
 import NextLink from "next/link";
+import { HOME_TOOLS } from "@/utils/features";
 
 export function HomeToolsGrid() {
   return (
     <div className="flex flex-wrap gap-4 justify-center items-center">
-      {TOOLS.map(({ icon: Icon, href, title, description }) => (
+      {HOME_TOOLS.map(({ icon: Icon, href, title, description }) => (
         <NextLink key={href} href={href}>
           <MotionCardWrapper key={href}>
             <Card key={href} className="h-[220px] w-[250px]">

@@ -2,13 +2,18 @@
 
 import { Root, Image, Fallback } from "@radix-ui/react-avatar";
 import { cn } from "@/utils/common";
-import { AvatarProps } from "@/types/components/avatar";
+export type AvatarProps = {
+  className?: string;
+  src?: string;
+  alt?: string;
+  fallback?: string;
+};
 
 export const Avatar = ({ className, src, alt, fallback }: AvatarProps) => (
   <Root
     className={cn(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
-      className,
+      className
     )}
   >
     <Image src={src} alt={alt} className="aspect-square h-full w-full" />

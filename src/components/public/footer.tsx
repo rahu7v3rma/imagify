@@ -1,5 +1,5 @@
 // import ThemeToggle from "@/components/theme-toggle";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/configs/app";
 import { Muted, Small } from "../ui/typography";
 import { Link } from "@/components/links";
 

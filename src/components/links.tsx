@@ -2,7 +2,16 @@
 
 import NextLink from "next/link";
 import { motion } from "framer-motion";
-import { LinkProps, MotionWrapperProps } from "@/types/components/links";
+import { ReactNode } from "react";
+
+export interface LinkProps {
+  href: string;
+  children: ReactNode;
+}
+
+export interface MotionWrapperProps {
+  children: ReactNode;
+}
 
 export function Link({ href, children }: LinkProps) {
   return (

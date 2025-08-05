@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ContactFormData } from "@/types/app/public/contact";
 import { ContactSchema } from "@/schemas/public/contact";
+import { z } from "zod";
+
 import { trpc } from "@/lib/trpc/client";
+
+export type ContactFormData = z.infer<typeof ContactSchema>;
 
 export const useContactForm = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -31,7 +34,15 @@ export const useContactForm = () => {
   const onSubmit = async (data: ContactFormData) => {
     setSuccessMessage(null);
     setErrorMessage(null);
-    mutate({ email: data.email, message: data.message, image: data.image });
+
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("message", data.message);
+    if (data.image) {
+      formData.append("image", data.image);
+    }
+
+    mutate(formData);
   };
 
   const values = form.watch();

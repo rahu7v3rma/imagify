@@ -1,6 +1,9 @@
 import clsx from "clsx";
 import Image from "next/image";
-import { DisplayImageProps } from "@/types/components/dashboard/display-image";
+export interface DisplayImageProps {
+  imageSrc: string;
+  className?: string;
+}
 
 export default function DisplayImage({
   imageSrc,

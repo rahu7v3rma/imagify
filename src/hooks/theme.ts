@@ -2,12 +2,28 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { ThemeMode, isThemeMode, UseThemeHookReturn } from "@/types/theme";
-import { DARK_THEME_MODE } from "@/constants/theme";
 import {
   getTheme as getLocalStorageTheme,
   setTheme as setLocalStorageTheme,
 } from "@/utils/local-storage";
+
+export type ThemeMode = "light" | "dark";
+
+export const THEME_KEY = "theme.mode";
+export const DARK_THEME_MODE: ThemeMode = "dark";
+export const LIGHT_THEME_MODE: ThemeMode = "light";
+
+export const isThemeMode = (value: unknown): value is ThemeMode => {
+  return (
+    typeof value === "string" &&
+    (value === LIGHT_THEME_MODE || value === DARK_THEME_MODE)
+  );
+};
+
+export interface UseThemeHookReturn {
+  theme: ThemeMode;
+  setTheme: (theme: ThemeMode) => void;
+}
 
 export const useThemeHook = (): UseThemeHookReturn => {
   const { setTheme: setNextTheme } = useTheme();

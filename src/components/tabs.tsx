@@ -4,11 +4,23 @@ import * as React from "react";
 import { Root, List, Trigger, Content } from "@radix-ui/react-tabs";
 
 import { cn } from "@/utils/common";
-import {
-  TabsListProps,
-  TabsTriggerProps,
-  TabsContentProps,
-} from "@/types/components/tabs";
+
+export interface TabsListProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+export interface TabsTriggerProps {
+  className?: string;
+  children: React.ReactNode;
+  value: string;
+}
+
+export interface TabsContentProps {
+  className?: string;
+  children: React.ReactNode;
+  value: string;
+}
 
 export const Tabs = Root;
 

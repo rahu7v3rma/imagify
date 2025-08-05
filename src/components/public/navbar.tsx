@@ -1,12 +1,26 @@
 "use client";
 
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/configs/app";
 import { Small } from "@/components/ui/typography";
-import { LINKS } from "@/constants/public/navbar";
 import { Link } from "@/components/links";
 import { Logo } from "@/components/logo";
 import NextLink from "next/link";
 import { MotionButton } from "@/components/buttons";
+
+export const LINKS = [
+  {
+    label: "Blog",
+    href: ROUTES.BLOG,
+  },
+  {
+    label: "Pricing",
+    href: ROUTES.PRICING,
+  },
+  {
+    label: "Contact",
+    href: ROUTES.CONTACT,
+  },
+];
 
 export default function NavbarComponent() {
   return (

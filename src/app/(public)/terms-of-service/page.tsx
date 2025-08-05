@@ -1,17 +1,40 @@
 "use client";
 
-import Breadcrumbs from "@/components/breadcrumbs";
-import { BREADCRUMB_ITEMS } from "@/constants/public/terms-of-service";
 import { H1, H2, P, List, Link } from "@/components/ui/typography";
-import { CONTACT_EMAIL } from "@/constants/app";
+import { CONTACT_EMAIL, ROUTES } from "@/configs/app";
 import PageTransition from "@/components/page-transition";
+import NextLink from "next/link";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export default function TermsOfServicePage() {
   return (
     <PageTransition>
       <div className="h-full w-full">
         <div className="w-full">
-          <Breadcrumbs className="mb-8" items={BREADCRUMB_ITEMS} />
+          <Breadcrumb className="mb-8">
+            <BreadcrumbList>
+              <div className="flex items-center">
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <NextLink href={ROUTES.HOME}>Home</NextLink>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+              </div>
+              <div className="flex items-center">
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Terms of Service</BreadcrumbPage>
+                </BreadcrumbItem>
+              </div>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
         <div className="max-w-3xl mx-auto space-y-6 text-gray-800 dark:text-zinc-200 text-[15px] py-10">
           <H1>Terms of Service</H1>

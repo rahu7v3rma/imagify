@@ -1,8 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { DARK_THEME_MODE, LIGHT_THEME_MODE } from "@/constants/theme";
-import { useThemeHook } from "@/hooks/theme";
+import { useThemeHook, DARK_THEME_MODE, LIGHT_THEME_MODE } from "@/hooks/theme";
 import { Switch } from "./ui/switch";
 
 export default function ThemeToggle() {

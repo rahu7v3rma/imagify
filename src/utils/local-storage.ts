@@ -1,5 +1,4 @@
-import { THEME_KEY } from "@/constants/theme";
-import { ThemeMode } from "@/types/theme";
+import { ThemeMode, THEME_KEY } from "@/hooks/theme";
 
 export const getTheme = (): ThemeMode | null => {
   return localStorage.getItem(THEME_KEY) as ThemeMode | null;

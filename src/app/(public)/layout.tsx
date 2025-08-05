@@ -1,6 +1,8 @@
 import NavbarComponent from "@/components/public/navbar";
 import FooterComponent from "@/components/public/footer";
-import { PublicLayoutProps } from "@/types/app/public/layout";
+export interface PublicLayoutProps {
+  children: React.ReactNode;
+}
 
 export default function PublicLayout({ children }: PublicLayoutProps) {
   return (

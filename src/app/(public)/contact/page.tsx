@@ -7,21 +7,43 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Breadcrumbs from "@/components/breadcrumbs";
-import { BREADCRUMB_ITEMS } from "@/constants/public/contact";
 import ContactForm from "@/components/public/contact";
-import { CONTACT_EMAIL } from "@/constants/app";
+import { CONTACT_EMAIL, ROUTES } from "@/configs/app";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Muted } from "@/components/ui/typography";
 import PageTransition from "@/components/page-transition";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export default function ContactPage() {
   return (
     <PageTransition>
       <div className="h-full w-full">
         <div className="w-full">
-          <Breadcrumbs className="mb-8" items={BREADCRUMB_ITEMS} />
+          <Breadcrumb className="mb-8">
+            <BreadcrumbList>
+              <div className="flex items-center">
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={ROUTES.HOME}>Home</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+              </div>
+              <div className="flex items-center">
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Contact</BreadcrumbPage>
+                </BreadcrumbItem>
+              </div>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
         <div className="space-y-12 flex flex-col items-center justify-center w-full">
           <Card className="flex flex-col items-center justify-center w-1/4">

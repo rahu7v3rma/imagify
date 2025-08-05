@@ -10,8 +10,12 @@ import {
 } from "@/components/dropdown";
 import { useRouter } from "next/navigation";
 import { Zap } from "lucide-react";
-import { ROUTES } from "@/constants/routes";
-import { ACTION_KEYS } from "@/constants/dashboard/header";
+import { ROUTES } from "@/configs/app";
+
+export const ACTION_KEYS = {
+  SETTINGS: "settings",
+  LOGOUT: "logout",
+};
 
 export default function Header() {
   const router = useRouter();

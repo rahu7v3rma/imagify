@@ -1,10 +1,18 @@
 import fs from "fs/promises";
 import path from "path";
-import { UPLOAD_BASE_DIR, CONTACT_DIR } from "@/constants/lib/upload";
-import type {
-  UploadFileParams,
-  UploadContactFileParams,
-} from "@/types/lib/upload";
+
+export const UPLOAD_BASE_DIR = path.join(process.cwd(), 'uploads');
+export const CONTACT_DIR = 'contact';
+
+export interface UploadFileParams {
+  file: File;
+  directory: string;
+}
+
+export interface UploadContactFileParams {
+  file: File;
+  fileName: string;
+}
 
 export const uploadFile = async ({ directory, file }: UploadFileParams) => {
   try {

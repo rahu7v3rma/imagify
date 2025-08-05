@@ -4,7 +4,7 @@ import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import ImageInput from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
-import { CREDIT_REQUIREMENT } from "@/constants/dashboard/compress-image";
+import { CREDIT_REQUIREMENTS } from "@/utils/credits";
 
 export default function CompressImagePage() {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
@@ -22,7 +22,7 @@ export default function CompressImagePage() {
         size.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-        💳 {CREDIT_REQUIREMENT} credits
+                    💳 {CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits
       </div>
 
       <div className="flex gap-8">

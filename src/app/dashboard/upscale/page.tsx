@@ -3,8 +3,8 @@
 import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import SelectImage from "@/components/dashboard/select-image";
-import { CREDIT_REQUIREMENT } from "@/constants/dashboard/upscale";
 import DisplayImage from "@/components/dashboard/display-image";
+import { CREDIT_REQUIREMENTS } from "@/utils/credits";
 
 export default function UpscalePage() {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
@@ -21,7 +21,7 @@ export default function UpscalePage() {
         Upload an image or provide an image URL to upscale it automatically.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-        💳 {CREDIT_REQUIREMENT} credits
+                    💳 {CREDIT_REQUIREMENTS.UPSCALE} credits
       </div>
 
       <div className="flex gap-8">

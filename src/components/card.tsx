@@ -1,5 +1,13 @@
 import { cn } from "@/utils/common";
-import { CardContentProps, CardProps } from "@/types/components/card";
+export interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export interface CardContentProps {
+  children: React.ReactNode;
+  className?: string;
+}
 
 export const Card = ({ className, children }: CardProps) => (
   <div

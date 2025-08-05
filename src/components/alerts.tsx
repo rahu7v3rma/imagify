@@ -1,5 +1,8 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertProps } from "@/types/components/alerts";
+
+export interface AlertProps {
+  message: string;
+}
 
 export function SuccessAlert({ message }: AlertProps) {
   return (
