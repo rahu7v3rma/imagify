@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/buttons";
 import { PasswordInput, EmailInput } from "@/components/inputs";
-import { ROUTES } from "@/configs/app";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 
@@ -35,7 +34,7 @@ export default function SignupPage() {
         </Button>
         <div className="text-center mt-2">
           <Link
-            href={ROUTES.LOGIN}
+            href="/login"
             className="text-xs text-primary hover:text-primary-600 transition-colors underline"
           >
             Already have an account? Login

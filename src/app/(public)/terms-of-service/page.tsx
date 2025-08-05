@@ -1,7 +1,7 @@
 "use client";
 
 import { H1, H2, P, List, Link } from "@/components/ui/typography";
-import { CONTACT_EMAIL, ROUTES } from "@/configs/app";
+import { CONTACT_EMAIL } from "@/configs/app";
 import PageTransition from "@/components/page-transition";
 import NextLink from "next/link";
 import {
@@ -23,7 +23,7 @@ export default function TermsOfServicePage() {
               <div className="flex items-center">
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <NextLink href={ROUTES.HOME}>Home</NextLink>
+                    <NextLink href="/">Home</NextLink>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />

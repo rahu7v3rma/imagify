@@ -1,5 +1,4 @@
 // import ThemeToggle from "@/components/theme-toggle";
-import { ROUTES } from "@/configs/app";
 import { Muted, Small } from "../ui/typography";
 import { Link } from "@/components/links";
 
@@ -8,10 +7,10 @@ export default function FooterComponent() {
     <footer className="backdrop-blur-sm border-t border-divider mt-auto">
       <div className="flex justify-between items-center p-4">
         <div className="flex items-center gap-4 text-sm">
-          <Link href={ROUTES.PRIVACY_POLICY}>
+          <Link href="/privacy-policy">
             <Small>Privacy Policy</Small>
           </Link>
-          <Link href={ROUTES.TERMS_OF_SERVICE}>
+          <Link href="/terms-of-service">
             <Small>Terms of Service</Small>
           </Link>
         </div>

@@ -4,7 +4,6 @@ import { H1, H2, Muted, P } from "@/components/ui/typography";
 import PricingTools from "@/components/public/pricing";
 import PageTransition from "@/components/page-transition";
 import { PRICING_TOOLS } from "@/utils/features";
-import { ROUTES } from "@/configs/app";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -24,7 +23,7 @@ export default async function PricingPage() {
               <div className="flex items-center">
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href={ROUTES.HOME}>Home</Link>
+                    <Link href="/">Home</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
@@ -57,7 +56,7 @@ export default async function PricingPage() {
               </Muted>
             </div>
             <Button variant="default" asChild>
-              <Link href={ROUTES.SIGNUP}>Sign Up</Link>
+              <Link href="/signup">Sign Up</Link>
             </Button>
           </div>
         </div>

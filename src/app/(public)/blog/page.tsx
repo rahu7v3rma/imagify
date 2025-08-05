@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { H1, P } from "@/components/ui/typography";
 import PageTransition from "@/components/page-transition";
-import { ROUTES } from "@/configs/app";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -20,7 +19,7 @@ export default function BlogPage() {
             <div className="flex items-center">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href={ROUTES.HOME}>Home</Link>
+                  <Link href="/">Home</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />

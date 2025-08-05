@@ -1,7 +1,6 @@
 "use client";
 
 import { PasswordInput, EmailInput } from "@/components/inputs";
-import { ROUTES } from "@/configs/app";
 import { Button } from "@/components/buttons";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
@@ -36,7 +35,7 @@ export default function LoginPage() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href={ROUTES.HOME}>Home</Link>
+                <Link href="/">Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -67,7 +66,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <Link
-                  href={ROUTES.FORGOT_PASSWORD}
+                  href="/forgot-password"
                   className="absolute top-2 right-0 text-[10px] text-primary hover:text-primary-600 transition-colors underline"
                 >
                   Forgot your password?
@@ -80,7 +79,7 @@ export default function LoginPage() {
 
             <div className="mt-4 text-center">
               <Link
-                href={ROUTES.SIGNUP}
+                href="/signup"
                 className="text-xs text-primary hover:text-primary-600 transition-colors underline"
               >
                 Don't have an account? Sign up

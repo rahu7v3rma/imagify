@@ -1,6 +1,5 @@
 "use client";
 
-import { ROUTES } from "@/configs/app";
 import { Small } from "@/components/ui/typography";
 import { Link } from "@/components/links";
 import { Logo } from "@/components/logo";
@@ -10,15 +9,15 @@ import { MotionButton } from "@/components/buttons";
 export const LINKS = [
   {
     label: "Blog",
-    href: ROUTES.BLOG,
+    href: "/blog",
   },
   {
     label: "Pricing",
-    href: ROUTES.PRICING,
+    href: "/pricing",
   },
   {
     label: "Contact",
-    href: ROUTES.CONTACT,
+    href: "/contact",
   },
 ];
 
@@ -38,7 +37,7 @@ export default function NavbarComponent() {
         </div>
         <nav className="flex items-center space-x-2">
           <MotionButton variant="default" asChild>
-            <NextLink href={ROUTES.LOGIN}>Login</NextLink>
+            <NextLink href="/login">Login</NextLink>
           </MotionButton>
         </nav>
       </div>

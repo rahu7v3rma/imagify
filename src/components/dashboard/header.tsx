@@ -10,7 +10,6 @@ import {
 } from "@/components/dropdown";
 import { useRouter } from "next/navigation";
 import { Zap } from "lucide-react";
-import { ROUTES } from "@/configs/app";
 
 export const ACTION_KEYS = {
   SETTINGS: "settings",
@@ -24,11 +23,11 @@ export default function Header() {
 
   const handleProfileAction = (actionKey: string) => {
     if (actionKey === ACTION_KEYS.SETTINGS) {
-      router.push(ROUTES.DASHBOARD_SETTINGS);
+      router.push("/dashboard/settings");
     }
     if (actionKey === ACTION_KEYS.LOGOUT) {
       logout();
-      router.push(ROUTES.LOGIN);
+      router.push("/login");
     }
   };
 
@@ -38,7 +37,7 @@ export default function Header() {
         <div>
           <p
             className="font-bold text-lg cursor-pointer"
-            onClick={() => router.push(ROUTES.HOME)}
+            onClick={() => router.push("/")}
           >
             imagify.pro
           </p>
@@ -47,7 +46,7 @@ export default function Header() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => router.push(ROUTES.DASHBOARD_BILLING)}
+            onClick={() => router.push("/dashboard/billing")}
             className="text-sm font-medium"
           >
             <Zap className="w-4 h-4 mr-2" />

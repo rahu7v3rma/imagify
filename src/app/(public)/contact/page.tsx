@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ContactForm from "@/components/public/contact";
-import { CONTACT_EMAIL, ROUTES } from "@/configs/app";
+import { CONTACT_EMAIL } from "@/configs/app";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Muted } from "@/components/ui/typography";
@@ -32,7 +32,7 @@ export default function ContactPage() {
               <div className="flex items-center">
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href={ROUTES.HOME}>Home</Link>
+                    <Link href="/">Home</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
