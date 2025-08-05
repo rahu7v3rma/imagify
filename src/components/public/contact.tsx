@@ -3,8 +3,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ContactSchema } from "@/schemas/public/contact";
 import { z } from "zod";
+
+const ContactSchema = z.object({
+  email: z.string().email(),
+  message: z.string().min(10).max(1000),
+  image: z.instanceof(File).optional(),
+});
 import { trpc } from "@/lib/trpc/client";
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
