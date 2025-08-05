@@ -13,7 +13,7 @@ export const Avatar = ({ className, src, alt, fallback }: AvatarProps) => (
   <Root
     className={cn(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
-      className
+      className,
     )}
   >
     <Image src={src} alt={alt} className="aspect-square h-full w-full" />

@@ -24,7 +24,7 @@ export default function RemoveBackgroundPage() {
         automatically.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                    💳 {CREDIT_REQUIREMENTS.REMOVE_BACKGROUND} credits
+        💳 {CREDIT_REQUIREMENTS.REMOVE_BACKGROUND} credits
       </div>
 
       <div className="flex gap-8">

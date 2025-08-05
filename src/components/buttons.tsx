@@ -36,7 +36,7 @@ export const BUTTON_VARIANTS = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps {
@@ -77,7 +77,7 @@ export const Button = (props: ButtonProps) => {
           variant: props.variant,
           size: props.size,
           className: props.className,
-        })
+        }),
       )}
       type={props.type}
       disabled={props.disabled}
@@ -97,7 +97,7 @@ export const ButtonWrapper = (props: ButtonWrapperProps) => {
           variant: props.variant,
           size: props.size,
           className: props.className,
-        })
+        }),
       )}
     >
       {props.children}

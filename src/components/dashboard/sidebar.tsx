@@ -92,7 +92,7 @@ const Sidebar = () => {
       <nav className="flex flex-col h-full px-4 pb-4">
         <div className="space-y-2">
           {SIDEBAR_LINKS.filter(
-            (link) => link.section === SIDEBAR_SECTIONS.MAIN
+            (link) => link.section === SIDEBAR_SECTIONS.MAIN,
           ).map(({ icon: Icon, href, label }) => (
             <Button
               key={href}
@@ -109,7 +109,7 @@ const Sidebar = () => {
         </div>
         <div className="mt-auto space-y-2">
           {SIDEBAR_LINKS.filter(
-            (link) => link.section === SIDEBAR_SECTIONS.BOTTOM
+            (link) => link.section === SIDEBAR_SECTIONS.BOTTOM,
           ).map(({ icon: Icon, href, label }) => (
             <Button
               key={href}

@@ -14,7 +14,7 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
           url: TRPC_ENDPOINT,
         }),
       ],
-    })
+    }),
   );
 
   return (

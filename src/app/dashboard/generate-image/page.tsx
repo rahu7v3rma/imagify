@@ -21,7 +21,7 @@ export default function GenerateImagePage() {
         Enter a prompt to generate an image using AI.
       </p>
       <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                    💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits
+        💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits
       </div>
 
       <div className="flex gap-8">

@@ -78,7 +78,7 @@ export function H1({ children, className }: H1Props) {
     <h1
       className={clsx(
         "scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance",
-        className
+        className,
       )}
     >
       {children}
@@ -91,7 +91,7 @@ export function H2({ children, className }: H2Props) {
     <h2
       className={clsx(
         "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
-        className
+        className,
       )}
     >
       {children}
@@ -104,7 +104,7 @@ export function H3({ children, className }: H3Props) {
     <h3
       className={clsx(
         "scroll-m-20 text-2xl font-semibold tracking-tight",
-        className
+        className,
       )}
     >
       {children}
@@ -117,7 +117,7 @@ export function H4({ children, className }: H4Props) {
     <h4
       className={clsx(
         "scroll-m-20 text-xl font-semibold tracking-tight",
-        className
+        className,
       )}
     >
       {children}
@@ -168,7 +168,7 @@ export function InlineCode({ children, className }: InlineCodeProps) {
     <code
       className={clsx(
         "bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
-        className
+        className,
       )}
     >
       {children}
@@ -231,7 +231,7 @@ export function Link({ children, href, className }: LinkProps) {
       href={href}
       className={clsx(
         "text-primary-600 underline hover:text-primary-700",
-        className
+        className,
       )}
     >
       {children}

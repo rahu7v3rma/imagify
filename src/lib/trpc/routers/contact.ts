@@ -13,15 +13,15 @@ const ContactFormDataSchema = zfd.formData({
       .instanceof(File)
       .refine(
         (file) => file.size <= 10 * 1024 * 1024,
-        "File size must be less than 10MB"
+        "File size must be less than 10MB",
       )
       .refine((file) => file.type.startsWith("image/"), "File must be an image")
-      .optional()
+      .optional(),
   ),
 });
 
 export const ERROR_CODES = {
-  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR" as 'INTERNAL_SERVER_ERROR',
+  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR" as "INTERNAL_SERVER_ERROR",
 };
 
 export const contactRouter = router({

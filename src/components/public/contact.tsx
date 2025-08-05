@@ -48,7 +48,7 @@ export const useContactForm = () => {
   const { mutate, isPending } = trpc.contact.postFormData.useMutation({
     onSuccess: (data) => {
       setSuccessMessage(
-        "Your message has been sent successfully! We'll get back to you soon."
+        "Your message has been sent successfully! We'll get back to you soon.",
       );
       setErrorMessage(null);
       form.reset();
