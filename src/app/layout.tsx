@@ -5,8 +5,13 @@ import { Suspense } from "react";
 import { LoaderProvider } from "../context/loader";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { geist } from "@/configs/app";
+import { Geist } from "next/font/google";
 import { ReactNode } from "react";
+
+const geist = Geist({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 import { TRPCProvider } from "@/context/trpc";
 import PageTransition from "@/components/page-transition";

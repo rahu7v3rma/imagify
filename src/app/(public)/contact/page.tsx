@@ -8,8 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ContactForm from "@/components/public/contact";
-import { CONTACT_EMAIL } from "@/configs/app";
 import { Badge } from "@/components/ui/badge";
+
+const CONTACT_EMAIL = "support@imagify.pro";
 import Link from "next/link";
 import { Muted } from "@/components/ui/typography";
 import PageTransition from "@/components/page-transition";

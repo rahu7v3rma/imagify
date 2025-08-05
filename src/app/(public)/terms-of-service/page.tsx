@@ -1,8 +1,9 @@
 "use client";
 
 import { H1, H2, P, List, Link } from "@/components/ui/typography";
-import { CONTACT_EMAIL } from "@/configs/app";
 import PageTransition from "@/components/page-transition";
+
+const CONTACT_EMAIL = "support@imagify.pro";
 import NextLink from "next/link";
 import {
   Breadcrumb,
