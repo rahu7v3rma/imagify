@@ -9,7 +9,25 @@ import { trpc } from "@/lib/trpc/client";
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
 import { EmailInput, Textarea, ImageInput } from "@/components/inputs";
-import { withLoader } from "@/utils/ui";
+import { Loader2 } from "lucide-react";
+import { P } from "@/components/ui/typography";
+
+const withLoader = ({
+  text,
+  isLoading,
+}: {
+  text: string;
+  isLoading: boolean;
+}) => {
+  return isLoading ? (
+    <div className="flex items-center gap-2">
+      <Loader2 className="h-4 w-4 animate-spin" />
+      <P>Loading...</P>
+    </div>
+  ) : (
+    <P>{text}</P>
+  );
+};
 
 export type ContactFormData = z.infer<typeof ContactSchema>;
 
