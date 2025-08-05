@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/buttons";
+import { MotionButton } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
@@ -59,9 +59,9 @@ export default function ExtractTextPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <SelectImage onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
 
-            <Button type="submit" disabled={!selectedImageUrl}>
+            <MotionButton type="submit" disabled={!selectedImageUrl}>
               Extract Text
-            </Button>
+            </MotionButton>
           </form>
         </div>
 

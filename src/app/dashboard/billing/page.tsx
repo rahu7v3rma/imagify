@@ -2,7 +2,7 @@
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/tabs";
 import { Card, CardContent } from "@/components/card";
-import { Button } from "@/components/buttons";
+import { MotionButton } from "@/components/buttons";
 import { Zap, Plus, Minus } from "lucide-react";
 import { useState } from "react";
 
@@ -47,7 +47,7 @@ export default function BillingPage() {
                     </h3>
 
                     <div className="flex items-center justify-center space-x-4">
-                      <Button
+                      <MotionButton
                         size="icon"
                         variant="outline"
                         onClick={() =>
@@ -56,19 +56,19 @@ export default function BillingPage() {
                         disabled={creditAmount <= 500}
                       >
                         <Minus className="h-4 w-4" />
-                      </Button>
+                      </MotionButton>
 
                       <div className="text-2xl font-bold text-blue-600 w-[100px] text-center bg-transparent border-b-2 border-blue-500 px-2 py-1">
                         {creditAmount}
                       </div>
 
-                      <Button
+                      <MotionButton
                         size="icon"
                         variant="outline"
                         onClick={() => setCreditAmount((prev) => prev + 100)}
                       >
                         <Plus className="h-4 w-4" />
-                      </Button>
+                      </MotionButton>
                     </div>
 
                     <div className="text-lg font-semibold text-green-600">
@@ -79,13 +79,13 @@ export default function BillingPage() {
                       Credits to purchase (minimum 500 credits - $5.00)
                     </p>
 
-                    <Button
+                    <MotionButton
                       onClick={handleBuyCredits}
                       className="w-full"
                       disabled={creditAmount < 500}
                     >
                       Buy Credits
-                    </Button>
+                    </MotionButton>
                   </div>
                 </CardContent>
               </Card>

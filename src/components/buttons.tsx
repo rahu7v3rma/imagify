@@ -1,14 +1,11 @@
 "use client";
 
-import { Slot } from "@radix-ui/react-slot";
 import { motion } from "framer-motion";
-import { ReactNode, MouseEvent, FormEvent } from "react";
 import { cva } from "class-variance-authority";
 import {
   Button as UIButton,
   ButtonProps as UIButtonProps,
 } from "@/components/ui/button";
-import { cn } from "@/utils/common";
 
 export const BUTTON_VARIANTS = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -38,72 +35,6 @@ export const BUTTON_VARIANTS = cva(
     },
   },
 );
-
-export interface ButtonProps {
-  children: ReactNode;
-  className?: string;
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link";
-  size?: "default" | "sm" | "lg" | "icon";
-  type?: "button" | "submit" | "reset";
-  disabled?: boolean;
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
-  onSubmit?: (event: FormEvent<HTMLButtonElement>) => void;
-}
-
-export interface ButtonWrapperProps {
-  children: ReactNode;
-  className?: string;
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link";
-  size?: "default" | "sm" | "lg" | "icon";
-}
-
-export const Button = (props: ButtonProps) => {
-  return (
-    <button
-      className={cn(
-        BUTTON_VARIANTS({
-          variant: props.variant,
-          size: props.size,
-          className: props.className,
-        }),
-      )}
-      type={props.type}
-      disabled={props.disabled}
-      onClick={props.onClick}
-      onSubmit={props.onSubmit}
-    >
-      {props.children}
-    </button>
-  );
-};
-
-export const ButtonWrapper = (props: ButtonWrapperProps) => {
-  return (
-    <Slot
-      className={cn(
-        BUTTON_VARIANTS({
-          variant: props.variant,
-          size: props.size,
-          className: props.className,
-        }),
-      )}
-    >
-      {props.children}
-    </Slot>
-  );
-};
 
 export function MotionButton({ children, ...props }: UIButtonProps) {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/buttons";
+import { MotionButton } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
@@ -41,13 +41,13 @@ export default function ConvertFormatPage() {
               options={["PNG", "JPEG", "JPG", "WebP"]}
             />
 
-            <Button
+            <MotionButton
               type="submit"
               disabled={!selectedImageUrl}
               variant="default"
             >
               Convert Format
-            </Button>
+            </MotionButton>
           </form>
         </div>
 

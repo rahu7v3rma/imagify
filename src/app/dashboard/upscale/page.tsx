@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/buttons";
+import { MotionButton } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
@@ -29,9 +29,9 @@ export default function UpscalePage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <SelectImage onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
 
-            <Button type="submit" disabled={!selectedImageUrl}>
+            <MotionButton type="submit" disabled={!selectedImageUrl}>
               Upscale Image
-            </Button>
+            </MotionButton>
           </form>
         </div>
 

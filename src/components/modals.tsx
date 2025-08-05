@@ -14,7 +14,7 @@ import { X } from "lucide-react";
 
 import { cn } from "@/utils/common";
 import { ReactNode } from "react";
-import { Button } from "@/components/buttons";
+import { MotionButton } from "@/components/buttons";
 
 export interface DialogOverlayProps {
   className?: string;
@@ -141,17 +141,17 @@ export default function ConfirmationModal({
           <ModalDescription>{message}</ModalDescription>
         </ModalHeader>
         <ModalFooter>
-          <Button variant="outline" onClick={onClose}>
+          <MotionButton variant="outline" onClick={onClose}>
             Cancel
-          </Button>
-          <Button
+          </MotionButton>
+          <MotionButton
             onClick={() => {
               onConfirm();
               onClose();
             }}
           >
             Confirm
-          </Button>
+          </MotionButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

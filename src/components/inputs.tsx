@@ -19,7 +19,7 @@ import {
   ItemIndicator,
   ItemText,
 } from "@radix-ui/react-select";
-import { Button } from "@/components/buttons";
+import { MotionButton } from "@/components/buttons";
 import { cn } from "@/utils/common";
 import { ReactNode, ChangeEvent } from "react";
 
@@ -122,7 +122,7 @@ export const PasswordInput = ({
           type={isPasswordVisible ? "text" : "password"}
           className="pr-10"
         />
-        <Button
+        <MotionButton
           variant="ghost"
           size="icon"
           className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
@@ -133,7 +133,7 @@ export const PasswordInput = ({
           ) : (
             <Eye className="w-4 h-4 text-muted-foreground" />
           )}
-        </Button>
+        </MotionButton>
       </div>
     </div>
   );
@@ -218,13 +218,13 @@ export const ActionInput = ({
             "pr-20",
           )}
         />
-        <Button
+        <MotionButton
           className="absolute right-1 top-1/2 -translate-y-1/2 h-8"
           onClick={actionButton.onPress}
           disabled={actionButton.disabled}
         >
           {actionButton.text}
-        </Button>
+        </MotionButton>
       </div>
     </div>
   );

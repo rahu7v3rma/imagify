@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/buttons";
+import { MotionButton } from "@/components/buttons";
 import { PasswordInput, EmailInput } from "@/components/inputs";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
@@ -29,9 +29,9 @@ export default function SignupPage() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <Button type="submit" variant="default">
+        <MotionButton type="submit" variant="default">
           Submit
-        </Button>
+        </MotionButton>
         <div className="text-center mt-2">
           <Link
             href="/login"
