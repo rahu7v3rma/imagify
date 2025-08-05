@@ -11,6 +11,7 @@ model Contact {
   id        Int      @id @default(autoincrement()) @map("id")
   email     String   @map("email")
   message   String   @map("message")
+  imagePath String?  @map("image_path")
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
 
