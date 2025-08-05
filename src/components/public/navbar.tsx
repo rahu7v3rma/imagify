@@ -1,19 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { ROUTES } from "@/constants/routes";
-import { Button } from "@/components/ui/button";
-import { Large, Small } from "@/components/ui/typography";
+import { Small } from "@/components/ui/typography";
 import { LINKS } from "@/constants/public/navbar";
+import { Link } from "@/components/links";
+import { Logo } from "@/components/logo";
+import NextLink from "next/link";
+import { MotionButton } from "@/components/buttons";
 
 export default function NavbarComponent() {
   return (
-    <nav className="backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60 py-2">
+    <nav className="backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60 py-2 h-16">
       <div className="container mx-auto flex h-full items-center justify-between px-4">
         <div className="hidden md:flex">
-          <Link href={ROUTES.HOME}>
-            <Large>imagify.pro</Large>
-          </Link>
+          <Logo />
         </div>
         <div className="hidden md:flex md:space-x-6">
           {LINKS.map(({ label, href }) => (
@@ -23,9 +23,9 @@ export default function NavbarComponent() {
           ))}
         </div>
         <nav className="flex items-center space-x-2">
-          <Button variant="default" asChild>
-            <Link href={ROUTES.LOGIN}>Login</Link>
-          </Button>
+          <MotionButton variant="default" asChild>
+            <NextLink href={ROUTES.LOGIN}>Login</NextLink>
+          </MotionButton>
         </nav>
       </div>
     </nav>

@@ -8,6 +8,7 @@ import "./globals.css";
 import { geist } from "@/configs/app";
 import { LayoutProps } from "@/types/app/layout";
 import { TRPCProvider } from "@/context/trpc";
+import PageTransition from "@/components/page-transition";
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
@@ -15,13 +16,15 @@ export default function RootLayout({ children }: LayoutProps) {
       <body className={clsx(geist.className, "min-h-screen")}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
           <LoaderProvider>
             <TRPCProvider>
-              <Suspense fallback={null}>{children}</Suspense>
+              <Suspense fallback={null}>
+                <PageTransition>{children}</PageTransition>
+              </Suspense>
             </TRPCProvider>
           </LoaderProvider>
         </ThemeProvider>

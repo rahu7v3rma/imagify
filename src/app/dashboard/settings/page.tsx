@@ -2,7 +2,7 @@
 
 import ConfirmationModal from "@/components/modals";
 import { EmailInput, PasswordInput } from "@/components/inputs";
-import ThemeToggle from "@/components/theme-toggle";
+// import ThemeToggle from "@/components/theme-toggle";
 import { Button } from "@/components/buttons";
 import { Card, CardContent } from "@/components/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/tabs";
@@ -107,7 +107,7 @@ export default function SettingsPage() {
                     Switch between light and dark mode
                   </p>
                 </div>
-                <ThemeToggle />
+                {/* <ThemeToggle /> */}
               </div>
             </div>
           </div>

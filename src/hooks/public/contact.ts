@@ -33,12 +33,13 @@ export const useContactForm = () => {
   const onSubmit = async (data: ContactFormData) => {
     setSuccessMessage(null);
     setErrorMessage(null);
-    mutate({ email: data.email, message: data.message });
+    mutate({ email: data.email, message: data.message, image: data.image });
   };
 
   const values = form.watch();
   const email = values.email;
   const message = values.message;
+  const image = values.image;
 
   const setEmail = (email: string) => {
     form.setValue("email", email, {
@@ -50,6 +51,14 @@ export const useContactForm = () => {
 
   const setMessage = (message: string) => {
     form.setValue("message", message, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  const setImage = (image: File | undefined) => {
+    form.setValue("image", image, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -69,8 +78,10 @@ export const useContactForm = () => {
     isPending,
     email,
     message,
+    image,
     setEmail,
     setMessage,
+    setImage,
     emailError,
     messageError,
     isFormValid,

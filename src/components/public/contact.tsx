@@ -2,7 +2,7 @@
 
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
-import { EmailInput, Textarea } from "@/components/inputs";
+import { EmailInput, Textarea, ImageInput } from "@/components/inputs";
 import { useContactForm } from "@/hooks/public/contact";
 import { withLoader } from "@/utils/ui";
 
@@ -13,6 +13,7 @@ export default function ContactForm() {
     isPending,
     setEmail,
     setMessage,
+    setImage,
     emailError,
     messageError,
     email,
@@ -34,6 +35,10 @@ export default function ContactForm() {
           value={message || ""}
           onChange={(e) => setMessage(e.target.value)}
           error={messageError}
+        />
+        <ImageInput
+          label="Attach image (optional)"
+          onChange={(e) => setImage(e.target.files?.[0])}
         />
         <Button
           variant="default"

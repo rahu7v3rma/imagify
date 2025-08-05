@@ -39,6 +39,11 @@ export interface ImageInputProps {
   label: string;
 }
 
+export interface FileInputProps {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}
+
 export interface TextInputProps {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;

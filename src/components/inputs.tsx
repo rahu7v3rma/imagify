@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Image, Eye, EyeOff, Check, ChevronDown } from "lucide-react";
+import { Eye, EyeOff, Check, ChevronDown } from "lucide-react";
 import { Root as LabelRoot } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +24,7 @@ import { cn } from "@/utils/common";
 import {
   PasswordInputProps,
   ImageInputProps,
+  FileInputProps,
   TextInputProps,
   EmailInputProps,
   ActionInputProps,
@@ -71,6 +72,15 @@ export const ImageInput = ({ onChange, label }: ImageInputProps) => {
     <div className="w-full space-y-2">
       <Label htmlFor="image">{label}</Label>
       <Input id="image" type="file" onChange={onChange} accept="image/*" />
+    </div>
+  );
+};
+
+export const FileInput = ({ onChange, label }: FileInputProps) => {
+  return (
+    <div className="w-full space-y-2">
+      <Label htmlFor="file">{label}</Label>
+      <Input id="file" type="file" onChange={onChange} />
     </div>
   );
 };

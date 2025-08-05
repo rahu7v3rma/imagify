@@ -1,23 +1,21 @@
-"use client";
+"use client"
 
-import * as SwitchPrimitives from "@radix-ui/react-switch";
-import { cn } from "@/utils/common";
-import type { SwitchProps } from "@/types/components/ui/switch";
+import * as React from "react"
+import * as SwitchPrimitives from "@radix-ui/react-switch"
 
-export const Switch = ({
-  className,
-  checked,
-  onCheckedChange,
-  disabled,
-}: SwitchProps) => (
+import { cn } from "@/utils/common"
+
+const Switch = React.forwardRef<
+  React.ElementRef<typeof SwitchPrimitives.Root>,
+  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
+>(({ className, ...props }, ref) => (
   <SwitchPrimitives.Root
     className={cn(
       "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
       className
     )}
-    checked={checked}
-    onCheckedChange={onCheckedChange}
-    disabled={disabled}
+    {...props}
+    ref={ref}
   >
     <SwitchPrimitives.Thumb
       className={cn(
@@ -25,4 +23,7 @@ export const Switch = ({
       )}
     />
   </SwitchPrimitives.Root>
-);
+))
+Switch.displayName = SwitchPrimitives.Root.displayName
+
+export { Switch }
