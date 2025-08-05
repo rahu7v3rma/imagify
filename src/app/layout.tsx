@@ -2,7 +2,6 @@
 
 import clsx from "clsx";
 import { Suspense } from "react";
-import { LoaderProvider } from "../context/loader";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Geist } from "next/font/google";
@@ -30,13 +29,11 @@ export default function RootLayout({ children }: LayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <LoaderProvider>
-            <TRPCProvider>
-              <Suspense fallback={null}>
-                <PageTransition>{children}</PageTransition>
-              </Suspense>
-            </TRPCProvider>
-          </LoaderProvider>
+          <TRPCProvider>
+            <Suspense fallback={null}>
+              <PageTransition>{children}</PageTransition>
+            </Suspense>
+          </TRPCProvider>
         </ThemeProvider>
       </body>
     </html>
