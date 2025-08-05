@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/dropdown";
+} from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { Zap } from "lucide-react";
 import Link from "next/link";
