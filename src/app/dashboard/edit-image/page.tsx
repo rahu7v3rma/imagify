@@ -5,7 +5,7 @@ import { FormEvent, useState, ChangeEvent } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
 import { Textarea } from "@/components/inputs";
-import { CREDIT_REQUIREMENTS } from "@/utils/credits";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 
 export default function EditImagePage() {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);

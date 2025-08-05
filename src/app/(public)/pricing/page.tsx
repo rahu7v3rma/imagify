@@ -3,7 +3,6 @@ import Link from "next/link";
 import { H1, H2, Muted, P } from "@/components/ui/typography";
 import PricingTools from "@/components/public/pricing";
 import PageTransition from "@/components/page-transition";
-import { PRICING_TOOLS } from "@/utils/features";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -12,6 +11,61 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import {
+  Image,
+  Edit,
+  ArrowUp,
+  FileText,
+  Sparkles,
+  Archive,
+  RotateCcw,
+} from "lucide-react";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+
+const PRICING_TOOLS = [
+  {
+    icon: Sparkles,
+    title: "Generate Image",
+    description: "Create stunning images from text using AI",
+    cost: `${CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits`,
+  },
+  {
+    icon: Image,
+    title: "Remove Background",
+    description: "Remove backgrounds from images instantly",
+    cost: `${CREDIT_REQUIREMENTS.REMOVE_BACKGROUND} credits`,
+  },
+  {
+    icon: FileText,
+    title: "Extract Text (OCR)",
+    description: "Extract text from screenshots or scanned documents",
+    cost: `${CREDIT_REQUIREMENTS.EXTRACT_TEXT} credits`,
+  },
+  {
+    icon: ArrowUp,
+    title: "Upscale Image",
+    description: "Enlarge images up to 4× while preserving detail",
+    cost: `${CREDIT_REQUIREMENTS.UPSCALE} credits`,
+  },
+  {
+    icon: Archive,
+    title: "Compress Image",
+    description: "Reduce image file size without losing quality",
+    cost: `${CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits`,
+  },
+  {
+    icon: RotateCcw,
+    title: "Convert Format",
+    description: "Convert images between different formats",
+    cost: `${CREDIT_REQUIREMENTS.CONVERT_FORMAT} credits`,
+  },
+  {
+    icon: Edit,
+    title: "Edit Image",
+    description: "Smart adjustments and transformations",
+    cost: `${CREDIT_REQUIREMENTS.EDIT_IMAGE} credits`,
+  },
+];
 
 export default async function PricingPage() {
   return (

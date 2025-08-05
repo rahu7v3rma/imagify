@@ -4,7 +4,7 @@ import { Button } from "@/components/buttons";
 import { Textarea } from "@/components/inputs";
 import { FormEvent, useState } from "react";
 import DisplayImage from "@/components/dashboard/display-image";
-import { CREDIT_REQUIREMENTS } from "@/utils/credits";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 
 export default function GenerateImagePage() {
   const [prompt, setPrompt] = useState<string>("");

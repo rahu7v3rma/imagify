@@ -4,7 +4,7 @@ import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayText from "@/components/dashboard/display-text";
-import { CREDIT_REQUIREMENTS } from "@/utils/credits";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 
 export default function ExtractTextPage() {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
