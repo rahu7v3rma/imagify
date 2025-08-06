@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput } from "@/components/inputs";
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import { useState, FormEvent } from "react";
 
 export default function ChangePasswordPage() {
@@ -26,9 +26,9 @@ export default function ChangePasswordPage() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <MotionButton type="submit" variant="default">
+        <Button type="submit" variant="default">
           Change Password
-        </MotionButton>
+        </Button>
       </form>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
@@ -32,9 +32,9 @@ export default function RemoveBackgroundPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <SelectImage onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
 
-            <MotionButton type="submit" disabled={!selectedImageUrl}>
+            <Button type="submit" disabled={!selectedImageUrl}>
               Remove Background
-            </MotionButton>
+            </Button>
           </form>
         </div>
 

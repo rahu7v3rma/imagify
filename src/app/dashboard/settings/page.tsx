@@ -2,7 +2,7 @@
 
 import ConfirmationModal from "@/components/modals";
 import { EmailInput, PasswordInput } from "@/components/inputs";
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChangeEvent, useState } from "react";
@@ -45,7 +45,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="flex gap-2">
-                    <MotionButton onClick={onSubmitEmail}>Update Email</MotionButton>
+                    <Button onClick={onSubmitEmail}>Update Email</Button>
                   </div>
                 </div>
               </CardContent>
@@ -83,16 +83,16 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="flex gap-2">
-                    <MotionButton onClick={() => {}}>Change Password</MotionButton>
+                    <Button onClick={() => {}}>Change Password</Button>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <div className="flex flex-row gap-4 items-center mt-4">
-              <MotionButton variant="destructive" onClick={() => setIsOpen(true)}>
+              <Button variant="destructive" onClick={() => setIsOpen(true)}>
                 Delete Account
-              </MotionButton>
+              </Button>
             </div>
           </div>
         </TabsContent>

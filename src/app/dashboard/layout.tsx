@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,7 +57,7 @@ function Header() {
           </p>
         </div>
         <div className="flex items-center space-x-4">
-          <MotionButton
+          <Button
             variant="outline"
             size="sm"
             onClick={() => router.push("/dashboard/billing")}
@@ -65,10 +65,10 @@ function Header() {
           >
             <Zap className="w-4 h-4 mr-2" />
             {0} credits
-          </MotionButton>
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <MotionButton
+              <Button
                 variant="ghost"
                 className="relative h-8 w-8 rounded-full"
               >
@@ -76,7 +76,7 @@ function Header() {
                   <AvatarImage src="" alt="User" />
                   <AvatarFallback>U</AvatarFallback>
                 </Avatar>
-              </MotionButton>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuItem
@@ -176,7 +176,7 @@ function Sidebar() {
           {SIDEBAR_LINKS.filter(
             (link) => link.section === SIDEBAR_SECTIONS.MAIN,
           ).map(({ icon: Icon, href, label }) => (
-            <MotionButton
+            <Button
               key={href}
               size="sm"
               variant={pathname === href ? "default" : "ghost"}
@@ -186,14 +186,14 @@ function Sidebar() {
                 <Icon className="h-5 w-5" />
                 <span>{label}</span>
               </Link>
-            </MotionButton>
+            </Button>
           ))}
         </div>
         <div className="mt-auto space-y-2">
           {SIDEBAR_LINKS.filter(
             (link) => link.section === SIDEBAR_SECTIONS.BOTTOM,
           ).map(({ icon: Icon, href, label }) => (
-            <MotionButton
+            <Button
               key={href}
               size="sm"
               variant={pathname === href ? "default" : "ghost"}
@@ -203,7 +203,7 @@ function Sidebar() {
                 <Icon className="h-5 w-5" />
                 <span>{label}</span>
               </Link>
-            </MotionButton>
+            </Button>
           ))}
         </div>
       </nav>

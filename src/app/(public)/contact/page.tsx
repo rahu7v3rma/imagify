@@ -14,7 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc/client";
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import { EmailInput, Textarea, ImageInput } from "@/components/inputs";
 import { Loader2 } from "lucide-react";
 import { P } from "@/components/ui/typography";
@@ -179,14 +179,14 @@ function ContactForm() {
           label="Attach image (optional)"
           onChange={(e) => setImage(e.target.files?.[0])}
         />
-        <MotionButton
+        <Button
           variant="default"
           className="mt-2"
           disabled={!isFormValid || isPending}
           type="submit"
         >
           {withLoader({ text: "Send Message", isLoading: isPending })}
-        </MotionButton>
+        </Button>
         {successMessage && <SuccessAlert message={successMessage} />}
         {errorMessage && <ErrorAlert message={errorMessage} />}
       </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
 import ImageInput from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
@@ -30,13 +30,13 @@ export default function CompressImagePage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <ImageInput onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
 
-            <MotionButton
+            <Button
               type="submit"
               disabled={!selectedImageUrl}
               variant="default"
             >
               Compress Image
-            </MotionButton>
+            </Button>
           </form>
         </div>
 

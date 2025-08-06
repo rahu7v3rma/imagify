@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea as UITextarea } from "@/components/ui/textarea";
 import { Muted } from "@/components/ui/typography";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import { cn } from "@/utils/common";
 import { ReactNode, ChangeEvent } from "react";
 
@@ -34,7 +34,7 @@ export const PasswordInput = ({
           type={isPasswordVisible ? "text" : "password"}
           className="pr-10"
         />
-        <MotionButton
+        <Button
           variant="ghost"
           size="icon"
           className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
@@ -45,7 +45,7 @@ export const PasswordInput = ({
           ) : (
             <Eye className="w-4 h-4 text-muted-foreground" />
           )}
-        </MotionButton>
+        </Button>
       </div>
     </div>
   );
@@ -153,13 +153,13 @@ export const TextActionInput = ({
             "pr-20",
           )}
         />
-        <MotionButton
+        <Button
           className="absolute right-1 top-1/2 -translate-y-1/2 h-8"
           onClick={actionButton.onPress}
           disabled={actionButton.disabled}
         >
           {actionButton.text}
-        </MotionButton>
+        </Button>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import Link from "next/link";
 import { EmailInput } from "@/components/inputs";
 import { FormEvent, useState } from "react";
@@ -21,9 +21,9 @@ export default function ForgotPasswordPage() {
       </p>
       <form onSubmit={onSubmit} className="flex flex-col gap-2">
         <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
-        <MotionButton type="submit" variant="default">
+        <Button type="submit" variant="default">
           Send Reset Email
-        </MotionButton>
+        </Button>
         <div className="text-center mt-2">
           <Link
             href="/login"

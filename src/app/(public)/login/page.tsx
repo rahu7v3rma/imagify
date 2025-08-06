@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput, EmailInput } from "@/components/inputs";
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
 import {
@@ -72,9 +72,9 @@ export default function LoginPage() {
                   Forgot your password?
                 </Link>
               </div>
-              <MotionButton type="submit" variant="default" className="mt-2">
+              <Button type="submit" variant="default" className="mt-2">
                 Submit
-              </MotionButton>
+              </Button>
             </form>
 
             <div className="mt-4 text-center">

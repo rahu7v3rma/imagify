@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import { FormEvent, useState, ChangeEvent } from "react";
 import SelectImage from "@/components/dashboard/select-image";
 import DisplayImage from "@/components/dashboard/display-image";
@@ -41,12 +41,12 @@ export default function EditImagePage() {
               label="Edit Prompt"
             />
 
-            <MotionButton
+            <Button
               type="submit"
               disabled={!selectedImageUrl || !prompt.trim()}
             >
               Edit Image
-            </MotionButton>
+            </Button>
           </form>
         </div>
 

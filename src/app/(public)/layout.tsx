@@ -4,7 +4,7 @@ import { Small, Muted } from "@/components/ui/typography";
 import { Link } from "@/components/links";
 import { Logo } from "@/components/logo";
 import NextLink from "next/link";
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 
 const LINKS = [
   {
@@ -36,9 +36,9 @@ function NavbarComponent() {
           ))}
         </div>
         <nav className="flex items-center space-x-2">
-          <MotionButton variant="default" asChild>
+          <Button variant="default" asChild>
             <NextLink href="/login">Login</NextLink>
-          </MotionButton>
+          </Button>
         </nav>
       </div>
     </nav>

@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
-export function MotionButton({ children, ...props }: UIButtonProps) {
+export function Button({ children, ...props }: UIButtonProps) {
   return (
     <motion.div
       whileHover={{

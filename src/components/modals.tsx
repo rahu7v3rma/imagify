@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import {
   Dialog,
   DialogContent,
@@ -32,17 +32,17 @@ export default function ConfirmationModal({
           <DialogDescription>{message}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <MotionButton variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose}>
             Cancel
-          </MotionButton>
-          <MotionButton
+          </Button>
+          <Button
             onClick={() => {
               onConfirm();
               onClose();
             }}
           >
             Confirm
-          </MotionButton>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

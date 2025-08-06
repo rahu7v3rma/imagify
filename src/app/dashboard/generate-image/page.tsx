@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionButton } from "@/components/buttons";
+import { Button } from "@/components/buttons";
 import { Textarea } from "@/components/inputs";
 import { FormEvent, useState } from "react";
 import DisplayImage from "@/components/dashboard/display-image";
@@ -33,9 +33,9 @@ export default function GenerateImagePage() {
               label="Image Prompt"
             />
 
-            <MotionButton type="submit" disabled={!prompt.trim()}>
+            <Button type="submit" disabled={!prompt.trim()}>
               Generate Image
-            </MotionButton>
+            </Button>
           </form>
         </div>
 
