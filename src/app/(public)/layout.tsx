@@ -38,8 +38,8 @@ function NavbarComponent() {
 function FooterComponent() {
   return (
     <footer className="backdrop-blur-sm border-t border-divider mt-auto">
-      <div className="flex justify-between items-center p-4">
-        <div className="flex items-center gap-4 text-sm">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center items-center p-4 gap-4 md:gap-0">
+        <div className="flex flex-col md:flex-row items-center gap-4 text-sm order-1 md:order-1">
           <Link href={ROUTES.PRIVACY_POLICY}>
             <Small>Privacy Policy</Small>
           </Link>
@@ -48,7 +48,7 @@ function FooterComponent() {
           </Link>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 order-2 md:order-2">
           <Muted>
             © {new Date().getFullYear()} imagify.pro. All rights reserved.
           </Muted>
@@ -64,16 +64,14 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <div className="fixed top-0 left-0 right-0 z-50">
         <NavbarComponent />
       </div>
-      <div className="pt-16 pb-20 px-10 py-4 min-h-screen overflow-y-auto">
+      <div className="pt-16 px-10 py-4 flex-1">
         {children}
       </div>
-      <div className="fixed bottom-0 left-0 right-0 z-50">
-        <FooterComponent />
-      </div>
+      <FooterComponent />
     </div>
   );
 }
