@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/buttons";
 import Link from "next/link";
 import { H1, H2, Muted, P } from "@/components/ui/typography";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,41 +19,8 @@ import {
   Sparkles,
   Archive,
   RotateCcw,
-  LucideIcon,
 } from "lucide-react";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-
-function PricingTools({ tools }: {
-  tools: {
-    icon: LucideIcon;
-    title: string;
-    description: string;
-    cost: string;
-  }[];
-}) {
-  return (
-    <div className="flex flex-row gap-4 flex-wrap justify-center w-3/4">
-      {tools.map(({ icon: Icon, title, description, cost }) => (
-        <Card key={title} className="h-full w-[300px]">
-          <CardContent className="p-6 h-full">
-            <div className="h-full flex flex-col items-center justify-center">
-              <div className="flex items-center justify-center">
-                <Icon />
-              </div>
-              <div className="text-center mt-4">
-                <P>{title}</P>
-                <Muted>{description}</Muted>
-              </div>
-              <div className="text-center mt-4">
-                <P>💳 {cost}</P>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
-}
 
 const PRICING_TOOLS = [
   {
@@ -133,7 +100,26 @@ export default async function PricingPage() {
             </P>
           </div>
 
-          <PricingTools tools={PRICING_TOOLS} />
+          <div className="flex flex-row gap-4 flex-wrap justify-center w-3/4">
+            {PRICING_TOOLS.map(({ icon: Icon, title, description, cost }) => (
+              <Card key={title} className="h-full w-[300px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center">
+                    <div className="flex items-center justify-center">
+                      <Icon />
+                    </div>
+                    <div className="text-center mt-4">
+                      <P>{title}</P>
+                      <Muted>{description}</Muted>
+                    </div>
+                    <div className="text-center mt-4">
+                      <P>💳 {cost}</P>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
           <div className="text-center space-y-4 pt-4">
             <div className="flex flex-col items-center justify-center">
