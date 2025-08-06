@@ -13,7 +13,7 @@ const geist = Geist({
 });
 
 import { TRPCProvider } from "@/lib/trpc/provider";
-import PageTransition from "@/components/page-transition";
+import PageTransition from "@/components/transitions";
 
 export interface LayoutProps {
   children: ReactNode;

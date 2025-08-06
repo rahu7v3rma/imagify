@@ -1,24 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, Check, ChevronDown } from "lucide-react";
-import { Root as LabelRoot } from "@radix-ui/react-label";
+import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea as UITextarea } from "@/components/ui/textarea";
 import { Muted } from "@/components/ui/typography";
-import {
-  Root as Select,
-  Value as SelectValue,
-  Trigger,
-  Icon,
-  Portal,
-  Content,
-  Viewport,
-  Item,
-  ItemIndicator,
-  ItemText,
-} from "@radix-ui/react-select";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { MotionButton } from "@/components/buttons";
 import { cn } from "@/utils/common";
 import { ReactNode, ChangeEvent } from "react";
@@ -79,7 +67,7 @@ export interface EmailInputProps {
   error?: string;
 }
 
-export interface ActionInputProps {
+export interface TextActionInputProps {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
@@ -160,15 +148,15 @@ export const FileInput = ({ onChange, label }: FileInputProps) => {
 export const TextInput = ({ value, onChange, label }: TextInputProps) => {
   return (
     <div className="w-full space-y-2">
-      <LabelRoot
+      <Label
         className={cn(
           "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
         )}
         htmlFor="text"
       >
         {label}
-      </LabelRoot>
-      <input
+      </Label>
+      <Input
         id="text"
         type="text"
         value={value}
@@ -191,24 +179,24 @@ export const EmailInput = ({ value, onChange, error }: EmailInputProps) => {
   );
 };
 
-export const ActionInput = ({
+export const TextActionInput = ({
   value,
   onChange,
   label,
   actionButton,
-}: ActionInputProps) => {
+}: TextActionInputProps) => {
   return (
     <div className="w-full space-y-2">
-      <LabelRoot
+      <Label
         className={cn(
           "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
         )}
         htmlFor="action"
       >
         {label}
-      </LabelRoot>
+      </Label>
       <div className="relative">
-        <input
+        <Input
           id="action"
           type="text"
           value={value}
@@ -248,56 +236,25 @@ export const SelectSingle = ({
 }: SelectSingleProps) => {
   return (
     <div className="w-full space-y-2">
-      <LabelRoot
+      <Label
         className={cn(
           "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
         )}
         htmlFor="select"
       >
         {label}
-      </LabelRoot>
+      </Label>
       <Select value={value} onValueChange={onChange}>
-        <Trigger
-          className={cn(
-            "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-          )}
-        >
+        <SelectTrigger>
           <SelectValue placeholder="Select an option" />
-          <Icon asChild>
-            <ChevronDown className="h-4 w-4 opacity-50" />
-          </Icon>
-        </Trigger>
-        <Portal>
-          <Content
-            className={cn(
-              "relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin] data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-            )}
-            position="popper"
-          >
-            <Viewport
-              className={cn(
-                "p-1 h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
-              )}
-            >
-              {options.map((option) => (
-                <Item
-                  key={option}
-                  className={cn(
-                    "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                  )}
-                  value={option}
-                >
-                  <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-                    <ItemIndicator>
-                      <Check className="h-4 w-4" />
-                    </ItemIndicator>
-                  </span>
-                  <ItemText>{option}</ItemText>
-                </Item>
-              ))}
-            </Viewport>
-          </Content>
-        </Portal>
+        </SelectTrigger>
+        <SelectContent position="popper">
+          {options.map((option) => (
+            <SelectItem key={option} value={option}>
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
       </Select>
     </div>
   );

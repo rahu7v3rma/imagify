@@ -22,7 +22,7 @@ import { P } from "@/components/ui/typography";
 const CONTACT_EMAIL = "support@imagify.pro";
 import Link from "next/link";
 import { Muted } from "@/components/ui/typography";
-import PageTransition from "@/components/page-transition";
+import PageTransition from "@/components/transitions";
 import {
   Breadcrumb,
   BreadcrumbList,

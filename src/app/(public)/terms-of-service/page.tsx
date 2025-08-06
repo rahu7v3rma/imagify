@@ -1,7 +1,7 @@
 "use client";
 
 import { H1, H2, P, List, Link } from "@/components/ui/typography";
-import PageTransition from "@/components/page-transition";
+import PageTransition from "@/components/transitions";
 
 const CONTACT_EMAIL = "support@imagify.pro";
 import NextLink from "next/link";

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { TRPCError } from "@trpc/server";
-import { publicProcedure, router } from "../init";
+import { publicProcedure, router } from "../../../lib/trpc/init";
 import { uploadContactFile } from "@/lib/upload";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -13,16 +13,12 @@ const ContactFormDataSchema = zfd.formData({
       .instanceof(File)
       .refine(
         (file) => file.size <= 10 * 1024 * 1024,
-        "File size must be less than 10MB",
+        "File size must be less than 10MB"
       )
       .refine((file) => file.type.startsWith("image/"), "File must be an image")
-      .optional(),
+      .optional()
   ),
 });
-
-export const ERROR_CODES = {
-  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR" as "INTERNAL_SERVER_ERROR",
-};
 
 export const contactRouter = router({
   postFormData: publicProcedure
@@ -49,9 +45,8 @@ export const contactRouter = router({
 
         return true;
       } catch (error) {
-        console.error(error);
         throw new TRPCError({
-          code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+          code: "INTERNAL_SERVER_ERROR",
         });
       }
     }),

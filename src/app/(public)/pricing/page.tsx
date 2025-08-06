@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { H1, H2, Muted, P } from "@/components/ui/typography";
 import { Card, CardContent } from "@/components/ui/card";
-import PageTransition from "@/components/page-transition";
+import PageTransition from "@/components/transitions";
 import {
   Breadcrumb,
   BreadcrumbList,

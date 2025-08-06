@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionInput, ImageInput } from "@/components/inputs";
+import { TextActionInput, ImageInput } from "@/components/inputs";
 import { ChangeEvent, useEffect, useState } from "react";
 import DisplayImage from "./display-image";
 export interface SelectImageProps {
@@ -29,7 +29,7 @@ export default function SelectImage({ onChangeImageUrl }: SelectImageProps) {
     <div className="flex flex-col gap-4">
       <ImageInput onChange={handleUploadImage} label="Upload Image" />
 
-      <ActionInput
+      <TextActionInput
         value={selectedImageUrl || ""}
         onChange={(e) => setSelectedImageUrl(e.target.value)}
         label="Image URL"

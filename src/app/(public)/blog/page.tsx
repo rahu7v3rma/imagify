@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { H1, P } from "@/components/ui/typography";
-import PageTransition from "@/components/page-transition";
+import PageTransition from "@/components/transitions";
 import {
   Breadcrumb,
   BreadcrumbList,
