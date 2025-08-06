@@ -36,7 +36,7 @@ const ContactSchema = z.object({
   image: z.instanceof(File).optional(),
 });
 
-const useContactForm = () => {
+export default function ContactPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -109,73 +109,6 @@ const useContactForm = () => {
   const isFormValid = form.formState.isValid;
   const handleSubmit = form.handleSubmit(onSubmit);
 
-  return {
-    successMessage,
-    errorMessage,
-    isPending,
-    email,
-    message,
-    image,
-    setEmail,
-    setMessage,
-    setImage,
-    emailError,
-    messageError,
-    isFormValid,
-    handleSubmit,
-  };
-};
-
-function ContactForm() {
-  const {
-    successMessage,
-    errorMessage,
-    isPending,
-    setEmail,
-    setMessage,
-    setImage,
-    emailError,
-    messageError,
-    email,
-    message,
-    isFormValid,
-    handleSubmit,
-  } = useContactForm();
-
-  return (
-    <>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-        <EmailInput
-          value={email || ""}
-          onChange={(e) => setEmail(e.target.value)}
-          error={emailError}
-        />
-        <Textarea
-          label="Your message"
-          value={message || ""}
-          onChange={(e) => setMessage(e.target.value)}
-          error={messageError}
-        />
-        <ImageInput
-          label="Attach image (optional)"
-          onChange={(e) => setImage(e.target.files?.[0])}
-        />
-        <Button
-          variant="default"
-          className="mt-2"
-          disabled={!isFormValid || isPending}
-          type="submit"
-        >
-          {WithLoader({ text: "Send Message", isLoading: isPending })}
-        </Button>
-        {successMessage && <SuccessAlert message={successMessage} />}
-        {errorMessage && <ErrorAlert message={errorMessage} />}
-      </form>
-    </>
-  );
-}
-
-export default function ContactPage() {
   return (
     <PageTransition>
       <div className="h-full w-full">
@@ -208,7 +141,36 @@ export default function ContactPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="w-full">
-              <ContactForm />
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-4 w-full"
+              >
+                <EmailInput
+                  value={email || ""}
+                  onChange={(e) => setEmail(e.target.value)}
+                  error={emailError}
+                />
+                <Textarea
+                  label="Your message"
+                  value={message || ""}
+                  onChange={(e) => setMessage(e.target.value)}
+                  error={messageError}
+                />
+                <ImageInput
+                  label="Attach image (optional)"
+                  onChange={(e) => setImage(e.target.files?.[0])}
+                />
+                <Button
+                  variant="default"
+                  className="mt-2"
+                  disabled={!isFormValid || isPending}
+                  type="submit"
+                >
+                  {WithLoader({ text: "Send Message", isLoading: isPending })}
+                </Button>
+                {successMessage && <SuccessAlert message={successMessage} />}
+                {errorMessage && <ErrorAlert message={errorMessage} />}
+              </form>
               <div className="mt-4 flex justify-center w-full">
                 <Badge variant="outline" className="text-center w-full text-xs">
                   <Link href={`mailto:${CONTACT_EMAIL}`}>
