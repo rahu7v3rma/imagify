@@ -1,9 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { ErrorAlert, SuccessAlert } from "@/components/alerts";
+import { Button } from "@/components/buttons";
+import { EmailInput, ImageInput, Textarea } from "@/components/inputs";
+import { WithLoader } from "@/components/loaders";
+import PageTransition from "@/components/transitions";
+import { Badge } from "@/components/ui/badge";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import {
   Card,
   CardContent,
@@ -11,48 +21,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { trpc } from "@/lib/trpc/client";
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { Button } from "@/components/buttons";
-import { EmailInput, Textarea, ImageInput } from "@/components/inputs";
-import { Loader2 } from "lucide-react";
-import { P } from "@/components/ui/typography";
-import Link from "next/link";
-import { CONTACT_EMAIL } from "@/constants/common";
 import { Muted } from "@/components/ui/typography";
-import PageTransition from "@/components/transitions";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { CONTACT_EMAIL } from "@/constants/common";
+import { trpc } from "@/lib/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const ContactSchema = z.object({
   email: z.string().email(),
   message: z.string().min(10).max(1000),
   image: z.instanceof(File).optional(),
 });
-
-const withLoader = ({
-  text,
-  isLoading,
-}: {
-  text: string;
-  isLoading: boolean;
-}) => {
-  return isLoading ? (
-    <div className="flex items-center gap-2">
-      <Loader2 className="h-4 w-4 animate-spin" />
-      <P>Loading...</P>
-    </div>
-  ) : (
-    <P>{text}</P>
-  );
-};
 
 const useContactForm = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -66,7 +48,7 @@ const useContactForm = () => {
   const { mutate, isPending } = trpc.contact.postFormData.useMutation({
     onSuccess: (data) => {
       setSuccessMessage(
-        "Your message has been sent successfully! We'll get back to you soon.",
+        "Your message has been sent successfully! We'll get back to you soon."
       );
       setErrorMessage(null);
       form.reset();
@@ -184,7 +166,7 @@ function ContactForm() {
           disabled={!isFormValid || isPending}
           type="submit"
         >
-          {withLoader({ text: "Send Message", isLoading: isPending })}
+          {WithLoader({ text: "Send Message", isLoading: isPending })}
         </Button>
         {successMessage && <SuccessAlert message={successMessage} />}
         {errorMessage && <ErrorAlert message={errorMessage} />}
