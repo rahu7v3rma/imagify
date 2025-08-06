@@ -46,7 +46,7 @@ export default function ContactPage() {
     mode: "onChange",
   });
 
-  const { mutate, isPending } = trpc.contact.postFormData.useMutation({
+  const { mutate, isPending } = trpc.contact.sendMessage.useMutation({
     onSuccess: (data) => {
       setSuccessMessage(
         "Your message has been sent successfully! We'll get back to you soon."
@@ -163,7 +163,7 @@ export default function ContactPage() {
                 />
                 <Button
                   variant="default"
-                  className="mt-2"
+                  className="mt-2 w-full"
                   disabled={!isFormValid || isPending}
                   type="submit"
                 >

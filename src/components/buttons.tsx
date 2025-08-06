@@ -6,17 +6,21 @@ import {
 } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
-export function Button({ children, ...props }: UIButtonProps) {
+export function Button({ children, disabled, ...props }: UIButtonProps) {
   return (
     <motion.div
-      whileHover={{
-        filter: "brightness(0.5)",
-      }}
-      transition={{
-        duration: 0.2,
-      }}
+      whileHover={
+        disabled
+          ? undefined
+          : {
+              filter: "brightness(0.5)",
+            }
+      }
+      transition={disabled ? undefined : { duration: 0.2 }}
     >
-      <UIButton {...props}>{children}</UIButton>
+      <UIButton disabled={disabled} {...props}>
+        {children}
+      </UIButton>
     </motion.div>
   );
 }

@@ -127,7 +127,7 @@ export function H4({ children, className }: H4Props) {
 
 export function P({ children, className }: PProps) {
   return (
-    <p className={clsx("leading-7 [&:not(:first-child)]:mt-6", className)}>
+    <p className={clsx("leading-7", className)}>
       {children}
     </p>
   );
