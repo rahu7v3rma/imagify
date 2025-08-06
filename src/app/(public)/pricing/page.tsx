@@ -22,51 +22,6 @@ import {
 } from "lucide-react";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 
-const PRICING_TOOLS = [
-  {
-    icon: Sparkles,
-    title: "Generate Image",
-    description: "Create stunning images from text using AI",
-    cost: `${CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits`,
-  },
-  {
-    icon: Image,
-    title: "Remove Background",
-    description: "Remove backgrounds from images instantly",
-    cost: `${CREDIT_REQUIREMENTS.REMOVE_BACKGROUND} credits`,
-  },
-  {
-    icon: FileText,
-    title: "Extract Text (OCR)",
-    description: "Extract text from screenshots or scanned documents",
-    cost: `${CREDIT_REQUIREMENTS.EXTRACT_TEXT} credits`,
-  },
-  {
-    icon: ArrowUp,
-    title: "Upscale Image",
-    description: "Enlarge images up to 4× while preserving detail",
-    cost: `${CREDIT_REQUIREMENTS.UPSCALE} credits`,
-  },
-  {
-    icon: Archive,
-    title: "Compress Image",
-    description: "Reduce image file size without losing quality",
-    cost: `${CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits`,
-  },
-  {
-    icon: RotateCcw,
-    title: "Convert Format",
-    description: "Convert images between different formats",
-    cost: `${CREDIT_REQUIREMENTS.CONVERT_FORMAT} credits`,
-  },
-  {
-    icon: Edit,
-    title: "Edit Image",
-    description: "Smart adjustments and transformations",
-    cost: `${CREDIT_REQUIREMENTS.EDIT_IMAGE} credits`,
-  },
-];
-
 export default async function PricingPage() {
   return (
     <PageTransition>
@@ -101,24 +56,128 @@ export default async function PricingPage() {
           </div>
 
           <div className="flex flex-row gap-4 flex-wrap justify-center w-3/4">
-            {PRICING_TOOLS.map(({ icon: Icon, title, description, cost }) => (
-              <Card key={title} className="h-full w-[300px]">
-                <CardContent className="p-6 h-full">
-                  <div className="h-full flex flex-col items-center justify-center">
-                    <div className="flex items-center justify-center">
-                      <Icon />
-                    </div>
-                    <div className="text-center mt-4">
-                      <P>{title}</P>
-                      <Muted>{description}</Muted>
-                    </div>
-                    <div className="text-center mt-4">
-                      <P>💳 {cost}</P>
-                    </div>
+            <Card className="h-full w-[300px]">
+              <CardContent className="p-6 h-full">
+                <div className="h-full flex flex-col items-center justify-center">
+                  <div className="flex items-center justify-center">
+                    <Sparkles />
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                  <div className="text-center mt-4">
+                    <P>Generate Image</P>
+                    <Muted>Create stunning images from text using AI</Muted>
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits</P>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="h-full w-[300px]">
+              <CardContent className="p-6 h-full">
+                <div className="h-full flex flex-col items-center justify-center">
+                  <div className="flex items-center justify-center">
+                    <Image />
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>Remove Background</P>
+                    <Muted>Remove backgrounds from images instantly</Muted>
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>💳 {CREDIT_REQUIREMENTS.REMOVE_BACKGROUND} credits</P>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="h-full w-[300px]">
+              <CardContent className="p-6 h-full">
+                <div className="h-full flex flex-col items-center justify-center">
+                  <div className="flex items-center justify-center">
+                    <FileText />
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>Extract Text (OCR)</P>
+                    <Muted>
+                      Extract text from screenshots or scanned documents
+                    </Muted>
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>💳 {CREDIT_REQUIREMENTS.EXTRACT_TEXT} credits</P>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="h-full w-[300px]">
+              <CardContent className="p-6 h-full">
+                <div className="h-full flex flex-col items-center justify-center">
+                  <div className="flex items-center justify-center">
+                    <ArrowUp />
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>Upscale Image</P>
+                    <Muted>
+                      Enlarge images up to 4× while preserving detail
+                    </Muted>
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>💳 {CREDIT_REQUIREMENTS.UPSCALE} credits</P>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="h-full w-[300px]">
+              <CardContent className="p-6 h-full">
+                <div className="h-full flex flex-col items-center justify-center">
+                  <div className="flex items-center justify-center">
+                    <Archive />
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>Compress Image</P>
+                    <Muted>Reduce image file size without losing quality</Muted>
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>💳 {CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits</P>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="h-full w-[300px]">
+              <CardContent className="p-6 h-full">
+                <div className="h-full flex flex-col items-center justify-center">
+                  <div className="flex items-center justify-center">
+                    <RotateCcw />
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>Convert Format</P>
+                    <Muted>Convert images between different formats</Muted>
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>💳 {CREDIT_REQUIREMENTS.CONVERT_FORMAT} credits</P>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="h-full w-[300px]">
+              <CardContent className="p-6 h-full">
+                <div className="h-full flex flex-col items-center justify-center">
+                  <div className="flex items-center justify-center">
+                    <Edit />
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>Edit Image</P>
+                    <Muted>Smart adjustments and transformations</Muted>
+                  </div>
+                  <div className="text-center mt-4">
+                    <P>💳 {CREDIT_REQUIREMENTS.EDIT_IMAGE} credits</P>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="text-center space-y-4 pt-4">
