@@ -24,26 +24,12 @@ import {
   Archive,
   RotateCcw,
 } from "lucide-react";
-
-const ACTION_KEYS = {
-  SETTINGS: "settings",
-  LOGOUT: "logout",
-};
+import { ROUTES } from "@/constants/routes";
 
 function Header() {
   const router = useRouter();
 
   const logout = async () => {};
-
-  const handleProfileAction = (actionKey: string) => {
-    if (actionKey === ACTION_KEYS.SETTINGS) {
-      router.push("/dashboard/settings");
-    }
-    if (actionKey === ACTION_KEYS.LOGOUT) {
-      logout();
-      router.push("/login");
-    }
-  };
 
   return (
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
@@ -51,7 +37,7 @@ function Header() {
         <div>
           <p
             className="font-bold text-lg cursor-pointer"
-            onClick={() => router.push("/")}
+            onClick={() => router.push(ROUTES.HOME)}
           >
             imagify.pro
           </p>
@@ -60,7 +46,7 @@ function Header() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => router.push("/dashboard/billing")}
+            onClick={() => router.push(ROUTES.DASHBOARD.BILLING)}
             className="text-sm font-medium"
           >
             <Zap className="w-4 h-4 mr-2" />
@@ -68,10 +54,7 @@ function Header() {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative h-8 w-8 rounded-full"
-              >
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt="User" />
                   <AvatarFallback>U</AvatarFallback>
@@ -80,12 +63,15 @@ function Header() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuItem
-                onClick={() => handleProfileAction(ACTION_KEYS.SETTINGS)}
+                onClick={() => router.push(ROUTES.DASHBOARD.SETTINGS)}
               >
                 Settings
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => handleProfileAction(ACTION_KEYS.LOGOUT)}
+                onClick={() => {
+                  logout();
+                  router.push(ROUTES.LOGIN);
+                }}
                 className="text-red-600 focus:text-red-600"
               >
                 Log Out
@@ -98,74 +84,6 @@ function Header() {
   );
 }
 
-const SIDEBAR_SECTIONS = {
-  MAIN: "main",
-  BOTTOM: "bottom",
-};
-
-const SIDEBAR_LINKS = [
-  {
-    href: "/dashboard",
-    icon: Home,
-    label: "Dashboard",
-    section: SIDEBAR_SECTIONS.MAIN,
-  },
-  {
-    href: "/dashboard/generate-image",
-    icon: Sparkles,
-    label: "Generate Image",
-    section: SIDEBAR_SECTIONS.MAIN,
-  },
-  {
-    href: "/dashboard/remove-background",
-    icon: Image,
-    label: "Remove Background",
-    section: SIDEBAR_SECTIONS.MAIN,
-  },
-  {
-    href: "/dashboard/extract-text",
-    icon: FileText,
-    label: "Extract Text",
-    section: SIDEBAR_SECTIONS.MAIN,
-  },
-  {
-    href: "/dashboard/upscale",
-    icon: ArrowUp,
-    label: "Upscale Image",
-    section: SIDEBAR_SECTIONS.MAIN,
-  },
-  {
-    href: "/dashboard/compress-image",
-    icon: Archive,
-    label: "Compress Image",
-    section: SIDEBAR_SECTIONS.MAIN,
-  },
-  {
-    href: "/dashboard/convert-format",
-    icon: RotateCcw,
-    label: "Convert Format",
-    section: SIDEBAR_SECTIONS.MAIN,
-  },
-  {
-    href: "/dashboard/edit-image",
-    icon: Edit,
-    label: "Edit Image",
-    section: SIDEBAR_SECTIONS.MAIN,
-  },
-  {
-    href: "/dashboard/billing",
-    icon: CreditCard,
-    label: "Billing",
-    section: SIDEBAR_SECTIONS.BOTTOM,
-  },
-  {
-    href: "/dashboard/settings",
-    icon: Settings,
-    label: "Settings",
-    section: SIDEBAR_SECTIONS.BOTTOM,
-  },
-];
-
 function Sidebar() {
   const pathname = usePathname();
 
@@ -173,45 +91,167 @@ function Sidebar() {
     <aside className="w-56 min-w-56 h-full border-r border-border bg-background">
       <nav className="flex flex-col h-full px-4 pb-4">
         <div className="space-y-2">
-          {SIDEBAR_LINKS.filter(
-            (link) => link.section === SIDEBAR_SECTIONS.MAIN,
-          ).map(({ icon: Icon, href, label }) => (
-            <Button
-              key={href}
-              size="sm"
-              variant={pathname === href ? "default" : "ghost"}
-              className="w-full"
+          <Button
+            size="sm"
+            variant={pathname === ROUTES.DASHBOARD.ROOT ? "default" : "ghost"}
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.ROOT}
+              className="flex items-center space-x-3 w-full"
             >
-              <Link href={href} className="flex items-center space-x-3 w-full">
-                <Icon className="h-5 w-5" />
-                <span>{label}</span>
-              </Link>
-            </Button>
-          ))}
+              <Home className="h-5 w-5" />
+              <span>Dashboard</span>
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.GENERATE_IMAGE ? "default" : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.GENERATE_IMAGE}
+              className="flex items-center space-x-3 w-full"
+            >
+              <Sparkles className="h-5 w-5" />
+              <span>Generate Image</span>
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.REMOVE_BACKGROUND
+                ? "default"
+                : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.REMOVE_BACKGROUND}
+              className="flex items-center space-x-3 w-full"
+            >
+              <Image className="h-5 w-5" />
+              <span>Remove Background</span>
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.EXTRACT_TEXT ? "default" : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.EXTRACT_TEXT}
+              className="flex items-center space-x-3 w-full"
+            >
+              <FileText className="h-5 w-5" />
+              <span>Extract Text</span>
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.UPSCALE ? "default" : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.UPSCALE}
+              className="flex items-center space-x-3 w-full"
+            >
+              <ArrowUp className="h-5 w-5" />
+              <span>Upscale Image</span>
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.COMPRESS_IMAGE ? "default" : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.COMPRESS_IMAGE}
+              className="flex items-center space-x-3 w-full"
+            >
+              <Archive className="h-5 w-5" />
+              <span>Compress Image</span>
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.CONVERT_FORMAT ? "default" : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.CONVERT_FORMAT}
+              className="flex items-center space-x-3 w-full"
+            >
+              <RotateCcw className="h-5 w-5" />
+              <span>Convert Format</span>
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.EDIT_IMAGE ? "default" : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.EDIT_IMAGE}
+              className="flex items-center space-x-3 w-full"
+            >
+              <Edit className="h-5 w-5" />
+              <span>Edit Image</span>
+            </Link>
+          </Button>
         </div>
         <div className="mt-auto space-y-2">
-          {SIDEBAR_LINKS.filter(
-            (link) => link.section === SIDEBAR_SECTIONS.BOTTOM,
-          ).map(({ icon: Icon, href, label }) => (
-            <Button
-              key={href}
-              size="sm"
-              variant={pathname === href ? "default" : "ghost"}
-              className="w-full"
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.BILLING ? "default" : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.BILLING}
+              className="flex items-center space-x-3 w-full"
             >
-              <Link href={href} className="flex items-center space-x-3 w-full">
-                <Icon className="h-5 w-5" />
-                <span>{label}</span>
-              </Link>
-            </Button>
-          ))}
+              <CreditCard className="h-5 w-5" />
+              <span>Billing</span>
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              pathname === ROUTES.DASHBOARD.SETTINGS ? "default" : "ghost"
+            }
+            className="w-full"
+          >
+            <Link
+              href={ROUTES.DASHBOARD.SETTINGS}
+              className="flex items-center space-x-3 w-full"
+            >
+              <Settings className="h-5 w-5" />
+              <span>Settings</span>
+            </Link>
+          </Button>
         </div>
       </nav>
     </aside>
   );
 }
 
-export default function DashboardLayout({ children }: {
+export default function DashboardLayout({
+  children,
+}: {
   children: React.ReactNode;
 }) {
   return (

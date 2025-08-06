@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/card";
 import { Muted } from "@/components/ui/typography";
 import { CONTACT_EMAIL } from "@/constants/common";
+import { ROUTES } from "@/constants/routes";
 import { trpc } from "@/lib/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -118,7 +119,7 @@ export default function ContactPage() {
               <div className="flex items-center">
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href="/">Home</Link>
+                    <Link href={ROUTES.HOME}>Home</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />

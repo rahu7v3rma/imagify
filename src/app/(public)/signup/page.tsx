@@ -4,6 +4,7 @@ import { Button } from "@/components/buttons";
 import { PasswordInput, EmailInput } from "@/components/inputs";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { ROUTES } from "@/constants/routes";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -34,7 +35,7 @@ export default function SignupPage() {
         </Button>
         <div className="text-center mt-2">
           <Link
-            href="/login"
+            href={ROUTES.LOGIN}
             className="text-xs text-primary hover:text-primary-600 transition-colors underline"
           >
             Already have an account? Login

@@ -5,21 +5,7 @@ import { Link } from "@/components/links";
 import { Logo } from "@/components/logo";
 import NextLink from "next/link";
 import { Button } from "@/components/buttons";
-
-const LINKS = [
-  {
-    label: "Blog",
-    href: "/blog",
-  },
-  {
-    label: "Pricing",
-    href: "/pricing",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
-];
+import { ROUTES } from "@/constants/routes";
 
 function NavbarComponent() {
   return (
@@ -29,15 +15,19 @@ function NavbarComponent() {
           <Logo />
         </div>
         <div className="hidden md:flex md:space-x-6">
-          {LINKS.map(({ label, href }) => (
-            <Link key={href} href={href}>
-              <Small>{label}</Small>
-            </Link>
-          ))}
+          <Link href={ROUTES.BLOG}>
+            <Small>Blog</Small>
+          </Link>
+          <Link href={ROUTES.PRICING}>
+            <Small>Pricing</Small>
+          </Link>
+          <Link href={ROUTES.CONTACT}>
+            <Small>Contact</Small>
+          </Link>
         </div>
         <nav className="flex items-center space-x-2">
           <Button variant="default" asChild>
-            <NextLink href="/login">Login</NextLink>
+            <NextLink href={ROUTES.LOGIN}>Login</NextLink>
           </Button>
         </nav>
       </div>
@@ -50,10 +40,10 @@ function FooterComponent() {
     <footer className="backdrop-blur-sm border-t border-divider mt-auto">
       <div className="flex justify-between items-center p-4">
         <div className="flex items-center gap-4 text-sm">
-          <Link href="/privacy-policy">
+          <Link href={ROUTES.PRIVACY_POLICY}>
             <Small>Privacy Policy</Small>
           </Link>
-          <Link href="/terms-of-service">
+          <Link href={ROUTES.TERMS_OF_SERVICE}>
             <Small>Terms of Service</Small>
           </Link>
         </div>
@@ -68,7 +58,9 @@ function FooterComponent() {
   );
 }
 
-export default function PublicLayout({ children }: {
+export default function PublicLayout({
+  children,
+}: {
   children: React.ReactNode;
 }) {
   return (

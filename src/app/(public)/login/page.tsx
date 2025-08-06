@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ROUTES } from "@/constants/routes";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,7 +36,7 @@ export default function LoginPage() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/">Home</Link>
+                <Link href={ROUTES.HOME}>Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -66,7 +67,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <Link
-                  href="/forgot-password"
+                  href={ROUTES.FORGOT_PASSWORD}
                   className="absolute top-2 right-0 text-[10px] text-primary hover:text-primary-600 transition-colors underline"
                 >
                   Forgot your password?
@@ -79,7 +80,7 @@ export default function LoginPage() {
 
             <div className="mt-4 text-center">
               <Link
-                href="/signup"
+                href={ROUTES.SIGNUP}
                 className="text-xs text-primary hover:text-primary-600 transition-colors underline"
               >
                 Don't have an account? Sign up

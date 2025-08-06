@@ -6,18 +6,15 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { ReactNode } from "react";
+import { TRPCProvider } from "@/lib/trpc/provider";
+import PageTransition from "@/components/transitions";
 
 const geist = Geist({
   subsets: ["latin"],
   display: "swap",
 });
 
-import { TRPCProvider } from "@/lib/trpc/provider";
-import PageTransition from "@/components/transitions";
-
-export default function RootLayout({ children }: {
-  children: ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={clsx(geist.className, "min-h-screen")}>

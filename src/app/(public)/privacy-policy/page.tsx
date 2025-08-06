@@ -1,6 +1,7 @@
 import { H1, H2, P, List, Link } from "@/components/ui/typography";
 import PageTransition from "@/components/transitions";
 import { CONTACT_EMAIL } from "@/constants/common";
+import { ROUTES } from "@/constants/routes";
 import NextLink from "next/link";
 import {
   Breadcrumb,
@@ -21,7 +22,7 @@ export default function PrivacyPolicyPage() {
               <div className="flex items-center">
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <NextLink href="/">Home</NextLink>
+                    <NextLink href={ROUTES.HOME}>Home</NextLink>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />

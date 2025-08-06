@@ -1,0 +1,29 @@
+export const ROUTES = {
+  HOME: "/",
+  BLOG: "/blog",
+  PRICING: "/pricing",
+  CONTACT: "/contact",
+  LOGIN: "/login",
+  SIGNUP: "/signup",
+  FORGOT_PASSWORD: "/forgot-password",
+  CHANGE_PASSWORD: "/change-password",
+  PRIVACY_POLICY: "/privacy-policy",
+  TERMS_OF_SERVICE: "/terms-of-service",
+
+  DASHBOARD: {
+    ROOT: "/dashboard",
+    GENERATE_IMAGE: "/dashboard/generate-image",
+    REMOVE_BACKGROUND: "/dashboard/remove-background",
+    EXTRACT_TEXT: "/dashboard/extract-text",
+    UPSCALE: "/dashboard/upscale",
+    COMPRESS_IMAGE: "/dashboard/compress-image",
+    CONVERT_FORMAT: "/dashboard/convert-format",
+    EDIT_IMAGE: "/dashboard/edit-image",
+    BILLING: "/dashboard/billing",
+    SETTINGS: "/dashboard/settings",
+  },
+
+  API: {
+    TRPC: "/api/trpc",
+  },
+};

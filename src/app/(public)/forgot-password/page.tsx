@@ -4,6 +4,7 @@ import { Button } from "@/components/buttons";
 import Link from "next/link";
 import { EmailInput } from "@/components/inputs";
 import { FormEvent, useState } from "react";
+import { ROUTES } from "@/constants/routes";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ export default function ForgotPasswordPage() {
         </Button>
         <div className="text-center mt-2">
           <Link
-            href="/login"
+            href={ROUTES.LOGIN}
             className="text-xs text-primary hover:text-primary-600 transition-colors underline"
           >
             Back to Login

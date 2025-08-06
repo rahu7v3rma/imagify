@@ -21,6 +21,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { ROUTES } from "@/constants/routes";
 
 export default async function PricingPage() {
   return (
@@ -32,7 +33,7 @@ export default async function PricingPage() {
               <div className="flex items-center">
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href="/">Home</Link>
+                    <Link href={ROUTES.HOME}>Home</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
@@ -188,7 +189,7 @@ export default async function PricingPage() {
               </Muted>
             </div>
             <Button variant="default" asChild>
-              <Link href="/signup">Sign Up</Link>
+              <Link href={ROUTES.SIGNUP}>Sign Up</Link>
             </Button>
           </div>
         </div>
