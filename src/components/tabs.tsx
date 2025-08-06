@@ -5,26 +5,12 @@ import { Root, List, Trigger, Content } from "@radix-ui/react-tabs";
 
 import { cn } from "@/utils/common";
 
-export interface TabsListProps {
-  className?: string;
-  children: React.ReactNode;
-}
-
-export interface TabsTriggerProps {
-  className?: string;
-  children: React.ReactNode;
-  value: string;
-}
-
-export interface TabsContentProps {
-  className?: string;
-  children: React.ReactNode;
-  value: string;
-}
-
 export const Tabs = Root;
 
-export const TabsList = ({ className, children }: TabsListProps) => (
+export const TabsList = ({ className, children }: {
+  className?: string;
+  children: React.ReactNode;
+}) => (
   <List
     className={cn(
       "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
@@ -39,7 +25,11 @@ export const TabsTrigger = ({
   className,
   children,
   value,
-}: TabsTriggerProps) => (
+}: {
+  className?: string;
+  children: React.ReactNode;
+  value: string;
+}) => (
   <Trigger
     value={value}
     className={cn(
@@ -55,7 +45,11 @@ export const TabsContent = ({
   className,
   children,
   value,
-}: TabsContentProps) => (
+}: {
+  className?: string;
+  children: React.ReactNode;
+  value: string;
+}) => (
   <Content
     value={value}
     className={cn(

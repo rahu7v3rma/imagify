@@ -4,12 +4,10 @@ import NextLink from "next/link";
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
-export interface LinkProps {
+export function Link({ href, children }: {
   href: string;
   children: ReactNode;
-}
-
-export function Link({ href, children }: LinkProps) {
+}) {
   return (
     <NextLink href={href}>
       <motion.div

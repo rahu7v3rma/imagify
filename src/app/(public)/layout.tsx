@@ -6,10 +6,6 @@ import { Logo } from "@/components/logo";
 import NextLink from "next/link";
 import { MotionButton } from "@/components/buttons";
 
-export interface PublicLayoutProps {
-  children: React.ReactNode;
-}
-
 const LINKS = [
   {
     label: "Blog",
@@ -72,7 +68,9 @@ function FooterComponent() {
   );
 }
 
-export default function PublicLayout({ children }: PublicLayoutProps) {
+export default function PublicLayout({ children }: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="min-h-screen">
       <div className="fixed top-0 left-0 right-0 z-50">

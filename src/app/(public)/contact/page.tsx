@@ -55,13 +55,11 @@ const withLoader = ({
   );
 };
 
-type ContactFormData = z.infer<typeof ContactSchema>;
-
 const useContactForm = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const form = useForm<ContactFormData>({
+  const form = useForm<z.infer<typeof ContactSchema>>({
     resolver: zodResolver(ContactSchema),
     mode: "onChange",
   });
@@ -80,7 +78,7 @@ const useContactForm = () => {
     },
   });
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: z.infer<typeof ContactSchema>) => {
     setSuccessMessage(null);
     setErrorMessage(null);
 

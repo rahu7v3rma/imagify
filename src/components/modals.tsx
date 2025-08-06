@@ -11,21 +11,19 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-export interface ConfirmationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title: string;
-  message: string;
-}
-
 export default function ConfirmationModal({
   isOpen,
   onClose,
   onConfirm,
   title,
   message,
-}: ConfirmationModalProps) {
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: string;
+}) {
   return (
     <Dialog open={isOpen}>
       <DialogContent>

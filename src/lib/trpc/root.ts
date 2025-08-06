@@ -5,4 +5,3 @@ export const appRouter = router({
   contact: contactRouter,
 });
 
-export type AppRouter = typeof appRouter;

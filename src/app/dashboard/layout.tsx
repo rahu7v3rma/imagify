@@ -25,10 +25,6 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-export interface DashboardLayoutProps {
-  children: React.ReactNode;
-}
-
 const ACTION_KEYS = {
   SETTINGS: "settings",
   LOGOUT: "logout",
@@ -215,7 +211,9 @@ function Sidebar() {
   );
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+export default function DashboardLayout({ children }: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="h-screen flex flex-col">
       <div className="h-[8%]">

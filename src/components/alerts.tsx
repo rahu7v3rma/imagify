@@ -1,10 +1,8 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-export interface AlertProps {
+export function SuccessAlert({ message }: {
   message: string;
-}
-
-export function SuccessAlert({ message }: AlertProps) {
+}) {
   return (
     <Alert>
       <AlertTitle>Success!</AlertTitle>
@@ -13,7 +11,9 @@ export function SuccessAlert({ message }: AlertProps) {
   );
 }
 
-export function ErrorAlert({ message }: AlertProps) {
+export function ErrorAlert({ message }: {
+  message: string;
+}) {
   return (
     <Alert variant="destructive">
       <AlertTitle>Error</AlertTitle>

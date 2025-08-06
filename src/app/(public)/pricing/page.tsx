@@ -23,16 +23,14 @@ import {
 } from "lucide-react";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 
-interface PricingToolsProps {
+function PricingTools({ tools }: {
   tools: {
     icon: LucideIcon;
     title: string;
     description: string;
     cost: string;
   }[];
-}
-
-function PricingTools({ tools }: PricingToolsProps) {
+}) {
   return (
     <div className="flex flex-row gap-4 flex-wrap justify-center w-3/4">
       {tools.map(({ icon: Icon, title, description, cost }) => (

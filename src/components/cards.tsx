@@ -3,11 +3,9 @@
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
-export interface MotionWrapperProps {
+export function MotionCardWrapper({ children }: {
   children: ReactNode;
-}
-
-export function MotionCardWrapper({ children }: MotionWrapperProps) {
+}) {
   return (
     <motion.div
       whileHover={{

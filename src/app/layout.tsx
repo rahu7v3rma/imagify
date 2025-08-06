@@ -15,11 +15,9 @@ const geist = Geist({
 import { TRPCProvider } from "@/lib/trpc/provider";
 import PageTransition from "@/components/transitions";
 
-export interface LayoutProps {
+export default function RootLayout({ children }: {
   children: ReactNode;
-}
-
-export default function RootLayout({ children }: LayoutProps) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={clsx(geist.className, "min-h-screen")}>

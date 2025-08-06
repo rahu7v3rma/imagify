@@ -3,11 +3,9 @@
 import { TextActionInput, ImageInput } from "@/components/inputs";
 import { ChangeEvent, useEffect, useState } from "react";
 import DisplayImage from "./display-image";
-export interface SelectImageProps {
+export default function SelectImage({ onChangeImageUrl }: {
   onChangeImageUrl: (imageUrl: string) => void;
-}
-
-export default function SelectImage({ onChangeImageUrl }: SelectImageProps) {
+}) {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
   const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {

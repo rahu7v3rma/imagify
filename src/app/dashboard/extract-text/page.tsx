@@ -7,12 +7,10 @@ import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { Copy } from "lucide-react";
 import clsx from "clsx";
 
-interface DisplayTextProps {
+function DisplayText({ text, className }: {
   text: string;
   className?: string;
-}
-
-function DisplayText({ text, className }: DisplayTextProps) {
+}) {
   return (
     <div className={clsx("flex-1 max-w-md", className)}>
       <label className="block text-sm font-medium text-gray-700 mb-2">

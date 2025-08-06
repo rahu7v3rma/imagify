@@ -11,92 +11,16 @@ import { MotionButton } from "@/components/buttons";
 import { cn } from "@/utils/common";
 import { ReactNode, ChangeEvent } from "react";
 
-export interface LabelProps {
-  className?: string;
-  htmlFor?: string;
-  children: ReactNode;
-}
-
-export interface SelectTriggerProps {
-  className?: string;
-  children: ReactNode;
-}
-
-export interface SelectContentProps {
-  className?: string;
-  children: ReactNode;
-}
-
-export interface SelectItemProps {
-  className?: string;
-  children: ReactNode;
-  value: string;
-}
-
-export interface SwitchProps {
-  className?: string;
-  checked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
-}
-
-export interface PasswordInputProps {
-  label: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
-
-export interface ImageInputProps {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-}
-
-export interface FileInputProps {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-}
-
-export interface TextInputProps {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-}
-
-export interface EmailInputProps {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  error?: string;
-}
-
-export interface TextActionInputProps {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-  actionButton: {
-    text: string;
-    onPress: () => void;
-    disabled?: boolean;
-  };
-}
-
-export interface TextareaProps {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  label: string;
-  error?: string;
-}
-
-export interface SelectSingleProps {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: string[];
-}
 
 export const PasswordInput = ({
   label,
   value,
   onChange,
-}: PasswordInputProps) => {
+}: {
+  label: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
@@ -127,7 +51,10 @@ export const PasswordInput = ({
   );
 };
 
-export const ImageInput = ({ onChange, label }: ImageInputProps) => {
+export const ImageInput = ({ onChange, label }: {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}) => {
   return (
     <div className="w-full space-y-2">
       <Label htmlFor="image">{label}</Label>
@@ -136,7 +63,10 @@ export const ImageInput = ({ onChange, label }: ImageInputProps) => {
   );
 };
 
-export const FileInput = ({ onChange, label }: FileInputProps) => {
+export const FileInput = ({ onChange, label }: {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}) => {
   return (
     <div className="w-full space-y-2">
       <Label htmlFor="file">{label}</Label>
@@ -145,7 +75,11 @@ export const FileInput = ({ onChange, label }: FileInputProps) => {
   );
 };
 
-export const TextInput = ({ value, onChange, label }: TextInputProps) => {
+export const TextInput = ({ value, onChange, label }: {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}) => {
   return (
     <div className="w-full space-y-2">
       <Label
@@ -169,7 +103,11 @@ export const TextInput = ({ value, onChange, label }: TextInputProps) => {
   );
 };
 
-export const EmailInput = ({ value, onChange, error }: EmailInputProps) => {
+export const EmailInput = ({ value, onChange, error }: {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
+}) => {
   return (
     <div className="space-y-2">
       <Label htmlFor="email">Email</Label>
@@ -184,7 +122,16 @@ export const TextActionInput = ({
   onChange,
   label,
   actionButton,
-}: TextActionInputProps) => {
+}: {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+  actionButton: {
+    text: string;
+    onPress: () => void;
+    disabled?: boolean;
+  };
+}) => {
   return (
     <div className="w-full space-y-2">
       <Label
@@ -218,7 +165,12 @@ export const TextActionInput = ({
   );
 };
 
-export const Textarea = ({ value, onChange, label, error }: TextareaProps) => {
+export const Textarea = ({ value, onChange, label, error }: {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  label: string;
+  error?: string;
+}) => {
   return (
     <div className="space-y-2">
       <Label htmlFor="message">{label}</Label>
@@ -233,7 +185,12 @@ export const SelectSingle = ({
   value,
   onChange,
   options,
-}: SelectSingleProps) => {
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: string[];
+}) => {
   return (
     <div className="w-full space-y-2">
       <Label

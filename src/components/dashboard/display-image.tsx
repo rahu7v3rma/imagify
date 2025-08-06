@@ -1,14 +1,13 @@
 import clsx from "clsx";
 import Image from "next/image";
-export interface DisplayImageProps {
-  imageSrc: string;
-  className?: string;
-}
 
 export default function DisplayImage({
   imageSrc,
   className,
-}: DisplayImageProps) {
+}: {
+  imageSrc: string;
+  className?: string;
+}) {
   return (
     <div className={clsx("flex-1 max-w-md", className)}>
       <label className="block text-sm font-medium text-gray-700 mb-2">

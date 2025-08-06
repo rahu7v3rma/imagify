@@ -4,17 +4,10 @@ import path from "path";
 export const UPLOAD_BASE_DIR = path.join(process.cwd(), "uploads");
 export const CONTACT_DIR = "contact";
 
-export interface UploadFileParams {
+export const uploadFile = async ({ directory, file }: {
   file: File;
   directory: string;
-}
-
-export interface UploadContactFileParams {
-  file: File;
-  fileName: string;
-}
-
-export const uploadFile = async ({ directory, file }: UploadFileParams) => {
+}) => {
   try {
     const fileName = `file-${Date.now()}.${file.name.split(".").pop()}`;
 
@@ -37,6 +30,9 @@ export const uploadFile = async ({ directory, file }: UploadFileParams) => {
 export const uploadContactFile = async ({
   file,
   fileName,
-}: UploadContactFileParams) => {
+}: {
+  file: File;
+  fileName: string;
+}) => {
   return await uploadFile({ directory: CONTACT_DIR, file });
 };
