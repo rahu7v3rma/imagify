@@ -1,0 +1,19 @@
+name: Deploy to Self-Hosted Runner
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Deploy application
+        run: |
+          cd ~/imagify
+          git pull
+          npm install
+          npm run build
+          npx prisma migrate dev
+          npx prisma generate
+          bash pm2-start.sh
