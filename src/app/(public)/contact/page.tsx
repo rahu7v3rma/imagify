@@ -18,9 +18,8 @@ import { Button } from "@/components/buttons";
 import { EmailInput, Textarea, ImageInput } from "@/components/inputs";
 import { Loader2 } from "lucide-react";
 import { P } from "@/components/ui/typography";
-
-const CONTACT_EMAIL = "support@imagify.pro";
 import Link from "next/link";
+import { CONTACT_EMAIL } from "@/constants/common";
 import { Muted } from "@/components/ui/typography";
 import PageTransition from "@/components/transitions";
 import {

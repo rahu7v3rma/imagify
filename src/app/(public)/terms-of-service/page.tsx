@@ -2,8 +2,7 @@
 
 import { H1, H2, P, List, Link } from "@/components/ui/typography";
 import PageTransition from "@/components/transitions";
-
-const CONTACT_EMAIL = "support@imagify.pro";
+import { CONTACT_EMAIL } from "@/constants/common";
 import NextLink from "next/link";
 import {
   Breadcrumb,
