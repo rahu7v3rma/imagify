@@ -6,12 +6,22 @@ import { Logo } from "@/components/logo";
 import NextLink from "next/link";
 import { Button } from "@/components/buttons";
 import { ROUTES } from "@/constants/routes";
+import { Menu } from "lucide-react";
+import { useState } from "react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 function NavbarComponent() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <nav className="backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60 py-2 h-16">
       <div className="container mx-auto flex h-full items-center justify-between px-4">
-        <div className="hidden md:flex">
+        <div className="flex">
           <Logo />
         </div>
         <div className="hidden md:flex md:space-x-6">
@@ -26,9 +36,48 @@ function NavbarComponent() {
           </Link>
         </div>
         <nav className="flex items-center space-x-2">
-          <Button variant="default" asChild>
+          <Button variant="default" asChild className="hidden md:flex">
             <NextLink href={ROUTES.LOGIN}>Login</NextLink>
           </Button>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="sm" className="md:hidden p-1">
+                <Menu className="w-5 h-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-3/4 p-0">
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              <div className="flex flex-col h-full">
+                <div className="flex justify-between items-center p-4 border-b">
+                  <Logo />
+                </div>
+                <div className="flex flex-col flex-1 p-6 space-y-6">
+                  <Link href={ROUTES.BLOG}>
+                    <div className="py-2" onClick={() => setIsOpen(false)}>
+                      <Small className="text-lg font-medium">Blog</Small>
+                    </div>
+                  </Link>
+                  <Link href={ROUTES.PRICING}>
+                    <div className="py-2" onClick={() => setIsOpen(false)}>
+                      <Small className="text-lg font-medium">Pricing</Small>
+                    </div>
+                  </Link>
+                  <Link href={ROUTES.CONTACT}>
+                    <div className="py-2" onClick={() => setIsOpen(false)}>
+                      <Small className="text-lg font-medium">Contact</Small>
+                    </div>
+                  </Link>
+                  <div className="mt-8">
+                    <Button variant="default" asChild className="w-full" onClick={() => setIsOpen(false)}>
+                      <NextLink href={ROUTES.LOGIN}>
+                        Login
+                      </NextLink>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </nav>
       </div>
     </nav>
