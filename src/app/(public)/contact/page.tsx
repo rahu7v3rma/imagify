@@ -7,14 +7,6 @@ import { WithLoader } from "@/components/loaders";
 import PageTransition from "@/components/transitions";
 import { Badge } from "@/components/ui/badge";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -113,25 +105,7 @@ export default function ContactPage() {
   return (
     <PageTransition>
       <div className="h-full w-full">
-        <div className="w-full">
-          <Breadcrumb className="mb-8">
-            <BreadcrumbList>
-              <div className="flex items-center">
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link href={ROUTES.HOME}>Home</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-              </div>
-              <div className="flex items-center">
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Contact</BreadcrumbPage>
-                </BreadcrumbItem>
-              </div>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+        <div className="mb-8"/>
         <div className="space-y-12 flex flex-col items-center justify-center w-full">
           <Card className="flex flex-col items-center justify-center w-1/4">
             <CardHeader>

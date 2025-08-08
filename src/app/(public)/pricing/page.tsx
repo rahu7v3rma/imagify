@@ -4,14 +4,6 @@ import { H1, H2, Muted, P } from "@/components/ui/typography";
 import { Card, CardContent } from "@/components/ui/card";
 import PageTransition from "@/components/transitions";
 import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
   Image,
   Edit,
   ArrowUp,
@@ -27,25 +19,7 @@ export default async function PricingPage() {
   return (
     <PageTransition>
       <div className="h-full w-full">
-        <div className="w-full">
-          <Breadcrumb className="mb-8">
-            <BreadcrumbList>
-              <div className="flex items-center">
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link href={ROUTES.HOME}>Home</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-              </div>
-              <div className="flex items-center">
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Pricing</BreadcrumbPage>
-                </BreadcrumbItem>
-              </div>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+        <div className="mb-8"/>
         <div className="space-y-12 flex flex-col items-center justify-center">
           <div className="text-center space-y-2 max-w-4xl mx-auto">
             <H1>Simple, pay-as-you-go pricing</H1>

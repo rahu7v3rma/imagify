@@ -25,6 +25,9 @@ function NavbarComponent() {
           <Logo />
         </div>
         <div className="hidden md:flex md:space-x-6">
+          <Link href={ROUTES.HOME}>
+            <Small>Home</Small>
+          </Link>
           <Link href={ROUTES.BLOG}>
             <Small>Blog</Small>
           </Link>
@@ -52,6 +55,11 @@ function NavbarComponent() {
                   <Logo />
                 </div>
                 <div className="flex flex-col flex-1 p-6 space-y-6">
+                  <Link href={ROUTES.HOME}>
+                    <div className="py-2" onClick={() => setIsOpen(false)}>
+                      <Small className="text-lg font-medium">Home</Small>
+                    </div>
+                  </Link>
                   <Link href={ROUTES.BLOG}>
                     <div className="py-2" onClick={() => setIsOpen(false)}>
                       <Small className="text-lg font-medium">Blog</Small>

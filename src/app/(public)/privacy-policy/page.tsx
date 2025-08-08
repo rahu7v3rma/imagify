@@ -1,40 +1,12 @@
 import { H1, H2, P, List, Link } from "@/components/ui/typography";
 import PageTransition from "@/components/transitions";
 import { CONTACT_EMAIL } from "@/constants/common";
-import { ROUTES } from "@/constants/routes";
-import NextLink from "next/link";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 
 export default function PrivacyPolicyPage() {
   return (
     <PageTransition>
       <div className="h-full w-full">
-        <div className="w-full">
-          <Breadcrumb className="mb-8">
-            <BreadcrumbList>
-              <div className="flex items-center">
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <NextLink href={ROUTES.HOME}>Home</NextLink>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-              </div>
-              <div className="flex items-center">
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Privacy Policy</BreadcrumbPage>
-                </BreadcrumbItem>
-              </div>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+        <div className="mb-8"/>
         <div className="max-w-3xl mx-auto space-y-6 text-[15px] py-10">
           <H1>Privacy Policy</H1>
           <P>
