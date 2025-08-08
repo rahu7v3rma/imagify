@@ -10,13 +10,15 @@ const ALLOWED_PATHS = [
   ROUTES.CONTACT,
   ROUTES.TERMS_OF_SERVICE,
   ROUTES.PRIVACY_POLICY,
+  ROUTES.SIGNUP,
+  ROUTES.VERIFY_EMAIL,
 ];
 
 let lastRequest = 0;
 
 export async function middleware(request: NextRequest) {
   const appEnv = process.env.APP_ENV;
-  
+
   if (appEnv === APP_ENV.PRODUCTION) {
     if (!ALLOWED_PATHS.includes(request.nextUrl.pathname)) {
       return new NextResponse("Not found", { status: 404 });
@@ -30,7 +32,7 @@ export async function middleware(request: NextRequest) {
 
     lastRequest = now;
   }
-  
+
   return NextResponse.next();
 }
 

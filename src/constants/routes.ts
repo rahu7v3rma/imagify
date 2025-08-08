@@ -9,6 +9,7 @@ export const ROUTES = {
   CHANGE_PASSWORD: "/change-password",
   PRIVACY_POLICY: "/privacy-policy",
   TERMS_OF_SERVICE: "/terms-of-service",
+  VERIFY_EMAIL: "/verify-email",
 
   DASHBOARD: {
     ROOT: "/dashboard",
@@ -21,9 +22,5 @@ export const ROUTES = {
     EDIT_IMAGE: "/dashboard/edit-image",
     BILLING: "/dashboard/billing",
     SETTINGS: "/dashboard/settings",
-  },
-
-  API: {
-    TRPC: "/api/trpc",
   },
 };
