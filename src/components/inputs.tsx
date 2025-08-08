@@ -1,15 +1,20 @@
 "use client";
 
-import { Button } from "@/components/buttons";
+import { Button, IconButtonWrapper } from "@/components/buttons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea as UITextarea } from "@/components/ui/textarea";
 import { Muted } from "@/components/ui/typography";
 import { cn } from "@/utils/common";
 import { Eye, EyeOff } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-
 
 export const PasswordInput = ({
   label,
@@ -35,26 +40,30 @@ export const PasswordInput = ({
           type={isPasswordVisible ? "text" : "password"}
           className="pr-10"
         />
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-          onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+        <IconButtonWrapper
+          className="absolute top-0 right-0 h-full px-3 z-10 flex items-center justify-center"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsPasswordVisible(!isPasswordVisible);
+          }}
         >
           {isPasswordVisible ? (
             <EyeOff className="w-4 h-4 text-muted-foreground" />
           ) : (
             <Eye className="w-4 h-4 text-muted-foreground" />
           )}
-        </Button>
+        </IconButtonWrapper>
       </div>
       {error && <Muted className="text-red-500">{error}</Muted>}
     </div>
   );
 };
 
-export const ImageInput = ({ onChange, label, value }: {
+export const ImageInput = ({
+  onChange,
+  label,
+  value,
+}: {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
   value?: File;
@@ -70,18 +79,21 @@ export const ImageInput = ({ onChange, label, value }: {
   return (
     <div className="w-full space-y-2">
       <Label htmlFor="image">{label}</Label>
-      <Input 
+      <Input
         ref={inputRef}
-        id="image" 
-        type="file" 
-        onChange={onChange} 
-        accept="image/*" 
+        id="image"
+        type="file"
+        onChange={onChange}
+        accept="image/*"
       />
     </div>
   );
 };
 
-export const FileInput = ({ onChange, label }: {
+export const FileInput = ({
+  onChange,
+  label,
+}: {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
 }) => {
@@ -93,7 +105,11 @@ export const FileInput = ({ onChange, label }: {
   );
 };
 
-export const TextInput = ({ value, onChange, label }: {
+export const TextInput = ({
+  value,
+  onChange,
+  label,
+}: {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
@@ -102,7 +118,7 @@ export const TextInput = ({ value, onChange, label }: {
     <div className="w-full space-y-2">
       <Label
         className={cn(
-          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         )}
         htmlFor="text"
       >
@@ -114,14 +130,18 @@ export const TextInput = ({ value, onChange, label }: {
         value={value}
         onChange={onChange}
         className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
         )}
       />
     </div>
   );
 };
 
-export const EmailInput = ({ value, onChange, error }: {
+export const EmailInput = ({
+  value,
+  onChange,
+  error,
+}: {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   error?: string;
@@ -154,7 +174,7 @@ export const TextActionInput = ({
     <div className="w-full space-y-2">
       <Label
         className={cn(
-          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         )}
         htmlFor="action"
       >
@@ -168,7 +188,7 @@ export const TextActionInput = ({
           onChange={onChange}
           className={cn(
             "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-            "pr-20",
+            "pr-20"
           )}
         />
         <Button
@@ -183,7 +203,12 @@ export const TextActionInput = ({
   );
 };
 
-export const Textarea = ({ value, onChange, label, error }: {
+export const Textarea = ({
+  value,
+  onChange,
+  label,
+  error,
+}: {
   value: string;
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   label: string;
@@ -213,7 +238,7 @@ export const SelectSingle = ({
     <div className="w-full space-y-2">
       <Label
         className={cn(
-          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         )}
         htmlFor="select"
       >

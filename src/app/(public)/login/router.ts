@@ -1,0 +1,84 @@
+import { prisma } from "@/lib/prisma";
+import { publicProcedure, router } from "../../../lib/trpc/init";
+import { z } from "zod";
+import { comparePassword } from "@/utils/bcrypt";
+import { sendEmailVerificationEmail } from "@/lib/email";
+import { generateEmailVerificationCode } from "@/utils/common";
+import { generateAccessToken } from "@/utils/jwt";
+
+const LoginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export const loginRouter = router({
+  authenticateUser: publicProcedure
+    .input(LoginSchema)
+    .mutation(async ({ input }) => {
+      try {
+        const { email, password } = input;
+
+        // Find user by email
+        const user = await prisma.user.findUnique({
+          where: { email },
+        });
+
+        if (!user) {
+          return {
+            success: false,
+            message: "Invalid email or password",
+            data: null,
+          };
+        }
+
+        // Check if email is verified
+        if (!user.emailVerified) {
+          const emailVerificationCode = generateEmailVerificationCode();
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { emailVerificationCode },
+          });
+          sendEmailVerificationEmail({
+            to: user.email,
+            emailVerificationCode,
+          });
+          return {
+            success: false,
+            message:
+              "Email not verified, we have sent a verification code to your email",
+            data: null,
+          };
+        }
+
+        // Compare password
+        const isPasswordValid = await comparePassword({
+          password,
+          hashedPassword: user.password,
+        });
+
+        if (!isPasswordValid) {
+          return {
+            success: false,
+            message: "Invalid email or password",
+            data: null,
+          };
+        }
+
+        const accessToken = generateAccessToken({ userId: user.id.toString() });
+
+        return {
+          success: true,
+          message: "Login successful",
+          data: {
+            accessToken,
+          },
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: "Failed to login. Please try again.",
+          data: null,
+        };
+      }
+    }),
+});
