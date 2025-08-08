@@ -25,9 +25,9 @@ export const contactRouter = router({
       try {
         const { email, message, image } = input;
 
-        let imagePath: string | null = null;
+        let uploadsPath: string | null = null;
         if (image) {
-          imagePath = await uploadContactFile({
+          uploadsPath = await uploadContactFile({
             file: image,
           });
         }
@@ -36,7 +36,7 @@ export const contactRouter = router({
           data: {
             email,
             message,
-            imagePath,
+            uploadsPath,
           },
         });
 

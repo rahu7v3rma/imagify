@@ -2,16 +2,10 @@
 
 import { PasswordInput, EmailInput } from "@/components/inputs";
 import { Button } from "@/components/buttons";
+import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import Link from "next/link";
-import { useState, FormEvent } from "react";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { useState, FormEvent, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -24,6 +18,22 @@ import { ROUTES } from "@/constants/routes";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const emailVerifiedSuccess = searchParams.get("email_verified_success");
+    const emailVerifiedFailed = searchParams.get("email_verified_failed");
+
+    if (emailVerifiedSuccess === "1") {
+      setSuccessMessage("Email verified successfully! You can now log in.");
+      setErrorMessage(null);
+    } else if (emailVerifiedFailed === "1") {
+      setErrorMessage("Email verification failed. Please check your verification link or try again.");
+      setSuccessMessage(null);
+    }
+  }, [searchParams]);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -31,21 +41,7 @@ export default function LoginPage() {
 
   return (
     <div className="h-full w-full">
-      <div className="w-full">
-        <Breadcrumb className="mb-8">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href={ROUTES.HOME}>Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Login</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      <div className="mb-8"/>
       <div className="space-y-12 flex flex-col items-center justify-center w-full">
         <Card className="flex flex-col items-center justify-center">
           <CardHeader>
@@ -73,9 +69,11 @@ export default function LoginPage() {
                   Forgot your password?
                 </Link>
               </div>
-              <Button type="submit" variant="default" className="mt-2">
+              <Button type="submit" variant="default" className="mt-2 w-full">
                 Submit
               </Button>
+              {successMessage && <SuccessAlert message={successMessage} />}
+              {errorMessage && <ErrorAlert message={errorMessage} />}
             </form>
 
             <div className="mt-4 text-center">

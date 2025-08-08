@@ -8,17 +8,19 @@ import { Textarea as UITextarea } from "@/components/ui/textarea";
 import { Muted } from "@/components/ui/typography";
 import { cn } from "@/utils/common";
 import { Eye, EyeOff } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 
 export const PasswordInput = ({
   label,
   value,
   onChange,
+  error,
 }: {
   label: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -34,6 +36,7 @@ export const PasswordInput = ({
           className="pr-10"
         />
         <Button
+          type="button"
           variant="ghost"
           size="icon"
           className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
@@ -46,18 +49,34 @@ export const PasswordInput = ({
           )}
         </Button>
       </div>
+      {error && <Muted className="text-red-500">{error}</Muted>}
     </div>
   );
 };
 
-export const ImageInput = ({ onChange, label }: {
+export const ImageInput = ({ onChange, label, value }: {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  value?: File;
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!value && inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }, [value]);
+
   return (
     <div className="w-full space-y-2">
       <Label htmlFor="image">{label}</Label>
-      <Input id="image" type="file" onChange={onChange} accept="image/*" />
+      <Input 
+        ref={inputRef}
+        id="image" 
+        type="file" 
+        onChange={onChange} 
+        accept="image/*" 
+      />
     </div>
   );
 };

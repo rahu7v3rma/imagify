@@ -11,9 +11,21 @@ model Contact {
   id        Int      @id @default(autoincrement()) @map("id")
   email     String   @map("email")
   message   String   @map("message")
-  imagePath String?  @map("image_path")
+  uploadsPath String?  @map("uploads_path")
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
 
   @@map("contact")
+}
+
+model User {
+  id                     Int      @id @default(autoincrement()) @map("id")
+  email                  String   @unique @map("email")
+  password               String   @map("password")
+  emailVerificationCode  String?  @map("email_verification_code")
+  emailVerified          Boolean? @map("email_verified")
+  createdAt              DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt              DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+
+  @@map("users")
 }

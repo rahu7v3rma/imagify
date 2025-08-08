@@ -133,6 +133,7 @@ export default function ContactPage() {
                 />
                 <ImageInput
                   label="Attach image (optional)"
+                  value={image}
                   onChange={(e) => setImage(e.target.files?.[0])}
                 />
                 <Button
