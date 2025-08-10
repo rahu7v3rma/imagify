@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { Zap } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUser } from "@/context/user/provider";
 import {
   Image,
   Settings,
@@ -28,8 +29,7 @@ import { ROUTES } from "@/constants/routes";
 
 function Header() {
   const router = useRouter();
-
-  const logout = async () => {};
+  const { logout } = useUser();
 
   return (
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
@@ -68,10 +68,7 @@ function Header() {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
-                  logout();
-                  router.push(ROUTES.LOGIN);
-                }}
+                onClick={logout}
                 className="text-red-600 focus:text-red-600"
               >
                 Log Out

@@ -6,17 +6,23 @@ import { sendEmailVerificationEmail } from "@/lib/email";
 import { hashPassword } from "@/utils/bcrypt";
 import { isStrongPassword } from "validator";
 
-const SignupSchema = z.object({
-  email: z.email(),
-  password: z.string().refine(isStrongPassword, {
-    message:
-      "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-  }),
-});
-
 export const signupRouter = router({
   createUser: publicProcedure
-    .input(SignupSchema)
+    .input(
+      z.object({
+        email: z.email(),
+        password: z.string().refine(isStrongPassword, {
+          message:
+            "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        }),
+      })
+    )
+    .output(
+      z.object({
+        success: z.boolean(),
+        message: z.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
         const { email, password } = input;

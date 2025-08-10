@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/card";
 import { ROUTES } from "@/constants/routes";
 import { trpc } from "@/lib/trpc/client";
-import { saveAccessToken } from "@/utils/cookies";
+import { useUser } from "@/context/user/provider";
 
 const LoginSchema = z.object({
   email: z.email("Please enter a valid email address"),
@@ -30,6 +30,7 @@ export default function LoginPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const { login } = useUser();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -42,7 +43,7 @@ export default function LoginPage() {
         setSuccessMessage(data.message || "Login successful!");
         setErrorMessage(null);
         if (data.data?.accessToken) {
-          saveAccessToken({ accessToken: data.data.accessToken });
+          login(data.data.accessToken);
         }
       } else {
         setErrorMessage(data.message || "Failed to login. Please try again.");

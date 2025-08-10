@@ -8,6 +8,7 @@ import { Geist } from "next/font/google";
 import { ReactNode } from "react";
 import { TRPCProvider } from "@/lib/trpc/provider";
 import PageTransition from "@/components/transitions";
+import { UserProvider } from "@/context/user/provider";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -28,9 +29,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           disableTransitionOnChange
         >
           <TRPCProvider>
-            <Suspense fallback={null}>
-              <PageTransition>{children}</PageTransition>
-            </Suspense>
+            <UserProvider>
+              <Suspense fallback={null}>
+                <PageTransition>{children}</PageTransition>
+              </Suspense>
+            </UserProvider>
           </TRPCProvider>
         </ThemeProvider>
       </body>

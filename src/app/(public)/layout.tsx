@@ -14,9 +14,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useUser } from "@/context/user/provider";
 
 function NavbarComponent() {
   const [isOpen, setIsOpen] = useState(false);
+  const { userProfile } = useUser();
 
   return (
     <nav className="backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60 py-2 h-16">
@@ -39,9 +41,15 @@ function NavbarComponent() {
           </Link>
         </div>
         <nav className="flex items-center space-x-2">
-          <Button variant="default" asChild className="hidden md:flex">
-            <NextLink href={ROUTES.LOGIN}>Login</NextLink>
-          </Button>
+          {userProfile ? (
+            <Button variant="default" asChild className="hidden md:flex">
+              <NextLink href={ROUTES.DASHBOARD.ROOT}>Dashboard</NextLink>
+            </Button>
+          ) : (
+            <Button variant="default" asChild className="hidden md:flex">
+              <NextLink href={ROUTES.LOGIN}>Login</NextLink>
+            </Button>
+          )}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="sm" className="md:hidden p-1">
@@ -76,11 +84,27 @@ function NavbarComponent() {
                     </div>
                   </Link>
                   <div className="mt-8">
-                    <Button variant="default" asChild className="w-full" onClick={() => setIsOpen(false)}>
-                      <NextLink href={ROUTES.LOGIN}>
-                        Login
-                      </NextLink>
-                    </Button>
+                    {userProfile ? (
+                      <Button
+                        variant="default"
+                        asChild
+                        className="w-full"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <NextLink href={ROUTES.DASHBOARD.ROOT}>
+                          Dashboard
+                        </NextLink>
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="default"
+                        asChild
+                        className="w-full"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <NextLink href={ROUTES.LOGIN}>Login</NextLink>
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -125,9 +149,7 @@ export default function PublicLayout({
       <div className="fixed top-0 left-0 right-0 z-50">
         <NavbarComponent />
       </div>
-      <div className="pt-16 px-10 py-4 flex-1">
-        {children}
-      </div>
+      <div className="pt-16 px-10 py-4 flex-1">{children}</div>
       <FooterComponent />
     </div>
   );

@@ -6,14 +6,25 @@ import { sendEmailVerificationEmail } from "@/lib/email";
 import { generateEmailVerificationCode } from "@/utils/common";
 import { generateAccessToken } from "@/utils/jwt";
 
-const LoginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
 export const loginRouter = router({
   authenticateUser: publicProcedure
-    .input(LoginSchema)
+    .input(
+      z.object({
+        email: z.email("Please enter a valid email address"),
+        password: z.string().min(1, "Password is required"),
+      })
+    )
+    .output(
+      z.object({
+        success: z.boolean(),
+        message: z.string(),
+        data: z
+          .object({
+            accessToken: z.string(),
+          })
+          .nullable(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
         const { email, password } = input;
