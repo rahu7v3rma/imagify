@@ -38,7 +38,7 @@ export const PasswordInput = ({
           value={value}
           onChange={onChange}
           type={isPasswordVisible ? "text" : "password"}
-          className="pr-10"
+          className="pr-10 transition-all duration-300 ease-in-out"
         />
         <IconButtonWrapper
           className="absolute top-0 right-0 h-full px-3 z-10 flex items-center justify-center"
@@ -149,7 +149,13 @@ export const EmailInput = ({
   return (
     <div className="space-y-2">
       <Label htmlFor="email">Email</Label>
-      <Input id="email" type="email" value={value} onChange={onChange} />
+      <Input
+        id="email"
+        type="email"
+        value={value}
+        onChange={onChange}
+        className="transition-all duration-300 ease-in-out"
+      />
       {error && <Muted className="text-red-500">{error}</Muted>}
     </div>
   );
