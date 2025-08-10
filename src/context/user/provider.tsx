@@ -35,6 +35,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const {
+    user: {
+      getProfile: { reset: resetGetProfile },
+    },
+  } = trpc.useUtils();
+  const {
     data: userProfile,
     isLoading: userProfileLoading,
     refetch: fetchUserProfile,
@@ -54,6 +59,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setAuthorizationHeader(null);
     cookiesDeleteAccessToken();
+    resetGetProfile();
     router.push(ROUTES.LOGIN);
   };
 
