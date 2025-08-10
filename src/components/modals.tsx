@@ -25,7 +25,7 @@ export default function ConfirmationModal({
   message: string;
 }) {
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
