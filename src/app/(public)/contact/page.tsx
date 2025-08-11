@@ -15,10 +15,9 @@ import {
 } from "@/components/ui/card";
 import { Muted } from "@/components/ui/typography";
 import { CONTACT_EMAIL } from "@/constants/common";
-import { ROUTES } from "@/constants/routes";
 import { trpc } from "@/lib/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+import { Link } from "@/components/links";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -105,7 +104,7 @@ export default function ContactPage() {
   return (
     <PageTransition>
       <div className="h-full w-full">
-        <div className="mb-8"/>
+        <div className="mb-8" />
         <div className="space-y-12 flex flex-col items-center justify-center w-full">
           <Card className="flex flex-col items-center justify-center w-1/4">
             <CardHeader>
