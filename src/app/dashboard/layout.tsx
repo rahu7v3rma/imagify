@@ -1,35 +1,27 @@
 "use client";
 
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/buttons";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { Zap } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 import { useUser } from "@/context/user/provider";
 import {
-  Image,
-  Settings,
-  Home,
-  CreditCard,
+  Archive,
   ArrowUp,
+  CreditCard,
   Edit,
   FileText,
-  Sparkles,
-  Archive,
+  Home,
+  Image,
+  LogOut,
   RotateCcw,
+  Settings,
+  Sparkles,
+  Zap,
 } from "lucide-react";
-import { ROUTES } from "@/constants/routes";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 function Header() {
   const router = useRouter();
-  const { logout } = useUser();
 
   return (
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
@@ -52,29 +44,6 @@ function Header() {
             <Zap className="w-4 h-4 mr-2" />
             {0} credits
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="" alt="User" />
-                  <AvatarFallback>U</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end">
-              <DropdownMenuItem
-                onClick={() => router.push(ROUTES.DASHBOARD.SETTINGS)}
-              >
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={logout}
-                className="text-red-600 focus:text-red-600"
-              >
-                Log Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
     </header>
@@ -83,6 +52,7 @@ function Header() {
 
 function Sidebar() {
   const pathname = usePathname();
+  const { logout } = useUser();
 
   return (
     <aside className="w-56 min-w-56 h-full border-r border-border bg-background">
@@ -239,6 +209,12 @@ function Sidebar() {
               <Settings className="h-5 w-5" />
               <span>Settings</span>
             </Link>
+          </Button>
+          <Button size="sm" variant="ghost" className="w-full" onClick={logout}>
+            <div className="flex items-center space-x-3 w-full">
+              <LogOut className="h-5 w-5" />
+              <span>Logout</span>
+            </div>
           </Button>
         </div>
       </nav>
