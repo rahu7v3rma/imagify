@@ -28,6 +28,9 @@ import {
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { getAccessToken } from "@/utils/cookies";
+import { ROUTES } from "@/constants/routes";
+import { useRouter } from "next/navigation";
 
 const PurchaseSchema = z.object({
   amount: z
@@ -43,6 +46,7 @@ const PurchaseSchema = z.object({
 export default function PricingPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof PurchaseSchema>>({
     resolver: zodResolver(PurchaseSchema),
@@ -53,31 +57,19 @@ export default function PricingPage() {
     },
   });
 
-  const { mutate, isPending } = {
-    mutate: (data: any) => {
-      // Mock mutation for now
-      setSuccessMessage(null);
-      setErrorMessage(null);
-
-      // Simulate API call delay
-      setTimeout(() => {
-        // Here you would typically make an API call to process the purchase
-        // For now, we'll just show a success message
-        setSuccessMessage(
-          `Successfully purchased ${
-            data.credits
-          } credits for $${data.amount.toFixed(2)}!`
-        );
-        form.reset();
-      }, 1000);
-    },
-    isPending: false,
-  };
-
   const onSubmit = async (data: z.infer<typeof PurchaseSchema>) => {
     setSuccessMessage(null);
     setErrorMessage(null);
-    mutate(data);
+    handleBuyCredits();
+  };
+
+  const handleBuyCredits = () => {
+    const accessToken = getAccessToken();
+    if (accessToken) {
+      router.push(ROUTES.DASHBOARD.BILLING);
+    } else {
+      router.push(ROUTES.SIGNUP);
+    }
   };
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -321,12 +313,12 @@ export default function PricingPage() {
                   error={creditsError}
                 />
                 <Button
-                  type="submit"
+                  type="button"
                   variant="default"
                   className="w-full"
-                  disabled={!isFormValid || isPending}
+                  onClick={handleBuyCredits}
                 >
-                  {WithLoader({ text: "Buy Credits", isLoading: isPending })}
+                  Buy Credits
                 </Button>
                 {successMessage && <SuccessAlert message={successMessage} />}
                 {errorMessage && <ErrorAlert message={errorMessage} />}
