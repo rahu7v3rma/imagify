@@ -17,3 +17,6 @@
 - Razorpay - payment processor
 - Tinify - image compression
 - IPInfo - IP checking
+- Resend - email service
+- Appwrite - file storage
+- Neon - postgresql database
