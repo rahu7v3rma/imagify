@@ -15,6 +15,7 @@ import { Muted } from "@/components/ui/typography";
 import { cn } from "@/utils/common";
 import { Eye, EyeOff } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { FadeWrapper } from "./wrappers";
 
 export const PasswordInput = ({
   label,
@@ -54,7 +55,11 @@ export const PasswordInput = ({
           )}
         </IconButtonWrapper>
       </div>
-      {error && <Muted className="text-red-500">{error}</Muted>}
+      {error && (
+        <FadeWrapper>
+          <Muted className="text-red-500">{error}</Muted>
+        </FadeWrapper>
+      )}
     </div>
   );
 };
@@ -156,7 +161,11 @@ export const EmailInput = ({
         onChange={onChange}
         className="transition-all duration-300 ease-in-out"
       />
-      {error && <Muted className="text-red-500">{error}</Muted>}
+      {error && (
+        <FadeWrapper>
+          <Muted className="text-red-500">{error}</Muted>
+        </FadeWrapper>
+      )}
     </div>
   );
 };
