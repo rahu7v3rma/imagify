@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
     <div className="h-full w-full">
       <div className="mb-8" />
       <div className="space-y-12 flex flex-col items-center justify-center w-full">
-        <Card className="flex flex-col items-center justify-center">
+        <Card className="flex flex-col items-center justify-center w-full max-w-md">
           <CardHeader>
             <CardTitle>Reset Password</CardTitle>
             <CardDescription>
@@ -108,15 +108,6 @@ export default function ForgotPasswordPage() {
               {successMessage && <SuccessAlert message={successMessage} />}
               {errorMessage && <ErrorAlert message={errorMessage} />}
             </form>
-
-            <div className="mt-4 text-center">
-              <Link
-                href={ROUTES.LOGIN}
-                className="text-xs text-primary hover:text-primary-600 transition-colors underline"
-              >
-                Back to Login
-              </Link>
-            </div>
           </CardContent>
         </Card>
       </div>
