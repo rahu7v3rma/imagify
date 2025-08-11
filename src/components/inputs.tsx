@@ -91,13 +91,23 @@ export const ImageInput = ({
   return (
     <div className="w-full space-y-2">
       <Label htmlFor="image">{label}</Label>
-      <Input
-        ref={inputRef}
-        id="image"
-        type="file"
-        onChange={onChange}
-        accept="image/*"
-      />
+      <motion.div
+        whileHover={{
+          filter: "brightness(0.8)",
+        }}
+        transition={{
+          duration: 0.2,
+        }}
+      >
+        <Input
+          ref={inputRef}
+          id="image"
+          type="file"
+          onChange={onChange}
+          accept="image/*"
+          className="cursor-pointer"
+        />
+      </motion.div>
     </div>
   );
 };
