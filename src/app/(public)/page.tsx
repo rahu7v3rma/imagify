@@ -135,7 +135,7 @@ export default function Home() {
                     <div className="text-center space-y-2">
                       <H4 className="font-bold text-sm">Edit Image</H4>
                       <Small className="text-xs text-muted-foreground">
-                        Professional image editing tools
+                        Professional prompt based image editing
                       </Small>
                     </div>
                   </div>

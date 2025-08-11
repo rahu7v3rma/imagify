@@ -309,3 +309,52 @@ export const SelectSingle = ({
     </div>
   );
 };
+
+export const NumberInput = ({
+  value,
+  onChange,
+  label,
+  error,
+  min,
+  max,
+  step,
+  placeholder,
+}: {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+  error?: string;
+  min?: number;
+  max?: number;
+  step?: number;
+  placeholder?: string;
+}) => {
+  return (
+    <div className="w-full space-y-2">
+      <Label htmlFor="number">{label}</Label>
+      <Input
+        id="number"
+        type="number"
+        value={value}
+        onChange={onChange}
+        min={min}
+        max={max}
+        step={step}
+        placeholder={placeholder}
+        className="transition-all duration-300 ease-in-out"
+      />
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};

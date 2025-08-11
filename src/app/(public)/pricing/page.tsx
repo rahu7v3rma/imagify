@@ -1,171 +1,338 @@
-import { Button } from "@/components/buttons";
-import Link from "next/link";
-import { H1, H2, Muted, P } from "@/components/ui/typography";
-import { Card, CardContent } from "@/components/ui/card";
-import PageTransition from "@/components/transitions";
-import {
-  Image,
-  Edit,
-  ArrowUp,
-  FileText,
-  Sparkles,
-  Archive,
-  RotateCcw,
-} from "lucide-react";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { ROUTES } from "@/constants/routes";
+"use client";
 
-export default async function PricingPage() {
+import { ErrorAlert, SuccessAlert } from "@/components/alerts";
+import { Button } from "@/components/buttons";
+import { NumberInput } from "@/components/inputs";
+import { WithLoader } from "@/components/loaders";
+import PageTransition from "@/components/transitions";
+import { MotionCardWrapper } from "@/components/cards";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { H1, H4, P, Small } from "@/components/ui/typography";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Archive,
+  ArrowUp,
+  Edit,
+  FileText,
+  Image,
+  RotateCcw,
+  Sparkles,
+} from "lucide-react";
+import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const PurchaseSchema = z.object({
+  amount: z
+    .number()
+    .min(1, "Amount must be at least $1")
+    .max(100, "Amount must be at most $100"),
+  credits: z
+    .number()
+    .min(100, "Credits must be at least 100")
+    .max(10000, "Credits must be at most 10000"),
+});
+
+export default function PricingPage() {
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const form = useForm<z.infer<typeof PurchaseSchema>>({
+    resolver: zodResolver(PurchaseSchema),
+    mode: "onChange",
+    defaultValues: {
+      amount: 1,
+      credits: 100,
+    },
+  });
+
+  const { mutate, isPending } = {
+    mutate: (data: any) => {
+      // Mock mutation for now
+      setSuccessMessage(null);
+      setErrorMessage(null);
+
+      // Simulate API call delay
+      setTimeout(() => {
+        // Here you would typically make an API call to process the purchase
+        // For now, we'll just show a success message
+        setSuccessMessage(
+          `Successfully purchased ${
+            data.credits
+          } credits for $${data.amount.toFixed(2)}!`
+        );
+        form.reset();
+      }, 1000);
+    },
+    isPending: false,
+  };
+
+  const onSubmit = async (data: z.infer<typeof PurchaseSchema>) => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
+    mutate(data);
+  };
+
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const numValue = value ? parseFloat(value) : 0;
+    form.setValue("amount", numValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+    form.setValue("credits", Math.round(numValue * 100), {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  const handleCreditsChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const numValue = value ? parseInt(value) : 0;
+    form.setValue("credits", numValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+    form.setValue("amount", parseFloat((numValue / 100).toFixed(2)), {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  const values = form.watch();
+  const amount = values.amount;
+  const credits = values.credits;
+  const errors = form.formState.errors;
+  const amountError = errors.amount?.message;
+  const creditsError = errors.credits?.message;
+  const isFormValid = form.formState.isValid;
+  const handleSubmit = form.handleSubmit(onSubmit);
+
   return (
     <PageTransition>
-      <div className="h-full w-full">
-        <div className="mb-8"/>
-        <div className="space-y-12 flex flex-col items-center justify-center">
-          <div className="text-center space-y-2 max-w-4xl mx-auto">
-            <H1>Simple, pay-as-you-go pricing</H1>
-            <P>
-              Purchase prepaid processing credits and use them across any tool.
-              No subscriptions, surprise bills, or hidden fees—just
-              straight-forward pricing that scales with your creativity.
-            </P>
-          </div>
+      <div className="max-w-6xl mx-auto px-4 py-12 flex flex-col items-center">
+        <div className="text-center mb-12 mt-12">
+          <H1>Simple, pay-as-you-go pricing</H1>
+          <P>
+            Purchase prepaid processing credits and use them across any tool.
+          </P>
+        </div>
 
-          <div className="flex flex-row gap-4 flex-wrap justify-center w-3/4">
-            <Card className="h-full w-[300px]">
+        <div className="flex flex-wrap gap-4 justify-center items-center">
+          <MotionCardWrapper>
+            <Card className="h-[250px] w-[250px]">
               <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <Sparkles />
+                <div className="h-full flex flex-col items-center justify-center space-y-4">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                    <Sparkles className="w-8 h-8" />
                   </div>
-                  <div className="text-center mt-4">
-                    <P>Generate Image</P>
-                    <Muted>Create stunning images from text using AI</Muted>
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits</P>
+                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
+                    <div>
+                      <H4 className="font-bold text-sm">Generate Image</H4>
+                      <Small className="text-xs text-muted-foreground">
+                        Create stunning images from text using AI
+                      </Small>
+                    </div>
+                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                      💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits
+                    </Small>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </MotionCardWrapper>
 
-            <Card className="h-full w-[300px]">
+          <MotionCardWrapper>
+            <Card className="h-[250px] w-[250px]">
               <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <Image />
+                <div className="h-full flex flex-col items-center justify-center space-y-4">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                    <Image className="w-8 h-8" />
                   </div>
-                  <div className="text-center mt-4">
-                    <P>Remove Background</P>
-                    <Muted>Remove backgrounds from images instantly</Muted>
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>💳 {CREDIT_REQUIREMENTS.REMOVE_BACKGROUND} credits</P>
+                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
+                    <div>
+                      <H4 className="font-bold text-sm">Remove Background</H4>
+                      <Small className="text-xs text-muted-foreground">
+                        Remove backgrounds from images instantly
+                      </Small>
+                    </div>
+                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                      💳 {CREDIT_REQUIREMENTS.REMOVE_BACKGROUND} credits
+                    </Small>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </MotionCardWrapper>
 
-            <Card className="h-full w-[300px]">
+          <MotionCardWrapper>
+            <Card className="h-[250px] w-[250px]">
               <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <FileText />
+                <div className="h-full flex flex-col items-center justify-center space-y-4">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                    <FileText className="w-8 h-8" />
                   </div>
-                  <div className="text-center mt-4">
-                    <P>Extract Text (OCR)</P>
-                    <Muted>
-                      Extract text from screenshots or scanned documents
-                    </Muted>
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>💳 {CREDIT_REQUIREMENTS.EXTRACT_TEXT} credits</P>
+                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
+                    <div>
+                      <H4 className="font-bold text-sm">Extract Text</H4>
+                      <Small className="text-xs text-muted-foreground">
+                        Extract text from images using OCR
+                      </Small>
+                    </div>
+                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                      💳 {CREDIT_REQUIREMENTS.EXTRACT_TEXT} credits
+                    </Small>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </MotionCardWrapper>
 
-            <Card className="h-full w-[300px]">
+          <MotionCardWrapper>
+            <Card className="h-[250px] w-[250px]">
               <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <ArrowUp />
+                <div className="h-full flex flex-col items-center justify-center space-y-4">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                    <ArrowUp className="w-8 h-8" />
                   </div>
-                  <div className="text-center mt-4">
-                    <P>Upscale Image</P>
-                    <Muted>
-                      Enlarge images up to 4× while preserving detail
-                    </Muted>
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>💳 {CREDIT_REQUIREMENTS.UPSCALE} credits</P>
+                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
+                    <div>
+                      <H4 className="font-bold text-sm">Upscale Image</H4>
+                      <Small className="text-xs text-muted-foreground">
+                        Enhance and upscale your images
+                      </Small>
+                    </div>
+                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                      💳 {CREDIT_REQUIREMENTS.UPSCALE} credits
+                    </Small>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </MotionCardWrapper>
 
-            <Card className="h-full w-[300px]">
+          <MotionCardWrapper>
+            <Card className="h-[250px] w-[250px]">
               <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <Archive />
+                <div className="h-full flex flex-col items-center justify-center space-y-4">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                    <Archive className="w-8 h-8" />
                   </div>
-                  <div className="text-center mt-4">
-                    <P>Compress Image</P>
-                    <Muted>Reduce image file size without losing quality</Muted>
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>💳 {CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits</P>
+                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
+                    <div>
+                      <H4 className="font-bold text-sm">Compress Image</H4>
+                      <Small className="text-xs text-muted-foreground">
+                        Reduce image file size without losing quality
+                      </Small>
+                    </div>
+                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                      💳 {CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits
+                    </Small>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </MotionCardWrapper>
 
-            <Card className="h-full w-[300px]">
+          <MotionCardWrapper>
+            <Card className="h-[250px] w-[250px]">
               <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <RotateCcw />
+                <div className="h-full flex flex-col items-center justify-center space-y-4">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                    <RotateCcw className="w-8 h-8" />
                   </div>
-                  <div className="text-center mt-4">
-                    <P>Convert Format</P>
-                    <Muted>Convert images between different formats</Muted>
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>💳 {CREDIT_REQUIREMENTS.CONVERT_FORMAT} credits</P>
+                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
+                    <div>
+                      <H4 className="font-bold text-sm">Convert Format</H4>
+                      <Small className="text-xs text-muted-foreground">
+                        Convert images between different formats
+                      </Small>
+                    </div>
+                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                      💳 {CREDIT_REQUIREMENTS.CONVERT_FORMAT} credits
+                    </Small>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </MotionCardWrapper>
 
-            <Card className="h-full w-[300px]">
+          <MotionCardWrapper>
+            <Card className="h-[250px] w-[250px]">
               <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <Edit />
+                <div className="h-full flex flex-col items-center justify-center space-y-4">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                    <Edit className="w-8 h-8" />
                   </div>
-                  <div className="text-center mt-4">
-                    <P>Edit Image</P>
-                    <Muted>Smart adjustments and transformations</Muted>
-                  </div>
-                  <div className="text-center mt-4">
-                    <P>💳 {CREDIT_REQUIREMENTS.EDIT_IMAGE} credits</P>
+                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
+                    <div>
+                      <H4 className="font-bold text-sm">Edit Image</H4>
+                      <Small className="text-xs text-muted-foreground">
+                        Professional prompt based image editing
+                      </Small>
+                    </div>
+                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                      💳 {CREDIT_REQUIREMENTS.EDIT_IMAGE} credits
+                    </Small>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </MotionCardWrapper>
+        </div>
 
-          <div className="text-center space-y-4 pt-4">
-            <div className="flex flex-col items-center justify-center">
-              <H2>Ready to get started?</H2>
-              <Muted>
-                Create a free account and top-up credits whenever you need them.
-              </Muted>
-            </div>
-            <Button variant="default" asChild>
-              <Link href={ROUTES.SIGNUP}>Sign Up</Link>
-            </Button>
-          </div>
+        <div className="mt-12">
+          <Card className="w-full max-w-md mx-auto">
+            <CardHeader>
+              <CardTitle>Purchase Credits</CardTitle>
+              <CardDescription>
+                Buy processing credits to use across all tools
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <NumberInput
+                  label="Amount (USD)"
+                  value={amount.toString()}
+                  onChange={handleAmountChange}
+                  min={1}
+                  step={1}
+                  placeholder="Enter amount in USD"
+                  error={amountError}
+                />
+                <NumberInput
+                  label="Credits"
+                  value={credits.toString()}
+                  onChange={handleCreditsChange}
+                  min={100}
+                  step={100}
+                  placeholder="Enter number of credits"
+                  error={creditsError}
+                />
+                <Button
+                  type="submit"
+                  variant="default"
+                  className="w-full"
+                  disabled={!isFormValid || isPending}
+                >
+                  {WithLoader({ text: "Buy Credits", isLoading: isPending })}
+                </Button>
+                {successMessage && <SuccessAlert message={successMessage} />}
+                {errorMessage && <ErrorAlert message={errorMessage} />}
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </PageTransition>
