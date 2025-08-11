@@ -1,14 +1,9 @@
 "use client";
 
-import { EmailInput } from "@/components/inputs";
-import { Button } from "@/components/buttons";
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
+import { Button } from "@/components/buttons";
+import { EmailInput } from "@/components/inputs";
 import { WithLoader } from "@/components/loaders";
-import Link from "next/link";
-import { ChangeEvent, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import {
   Card,
   CardContent,
@@ -16,7 +11,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ROUTES } from "@/constants/routes";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { trpc } from "@/lib/trpc/client";
 
 const ForgotPasswordSchema = z.object({
   email: z.email("Please enter a valid email address"),
@@ -25,32 +24,35 @@ const ForgotPasswordSchema = z.object({
 export default function ForgotPasswordPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<z.infer<typeof ForgotPasswordSchema>>({
     resolver: zodResolver(ForgotPasswordSchema),
     mode: "onChange",
   });
 
-  const onSubmit = async (_data: z.infer<typeof ForgotPasswordSchema>) => {
+  const { mutate, isPending } = trpc.forgotPassword.resetPassword.useMutation({
+    onSuccess: (data) => {
+      if (data.success) {
+        setSuccessMessage(data.message || "Password reset email sent! Check your inbox for instructions.");
+        setErrorMessage(null);
+      } else {
+        setErrorMessage(data.message || "Failed to send password reset email. Please try again.");
+        setSuccessMessage(null);
+      }
+    },
+    onError: (error) => {
+      setErrorMessage(error.message || "Failed to send password reset email. Please try again.");
+      setSuccessMessage(null);
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof ForgotPasswordSchema>) => {
     setSuccessMessage(null);
     setErrorMessage(null);
-    setIsPending(true);
 
-    try {
-      // TODO: Implement forgot password API call
-      // For now, just simulate success
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSuccessMessage(
-        "Password reset email sent! Check your inbox for instructions."
-      );
-      setErrorMessage(null);
-    } catch (error) {
-      setErrorMessage("Failed to send password reset email. Please try again.");
-      setSuccessMessage(null);
-    } finally {
-      setIsPending(false);
-    }
+    mutate({
+      email: data.email,
+    });
   };
 
   const setFormValue = (
