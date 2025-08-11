@@ -13,9 +13,9 @@ import {
 import { Textarea as UITextarea } from "@/components/ui/textarea";
 import { Muted } from "@/components/ui/typography";
 import { cn } from "@/utils/common";
+import { AnimatePresence, motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { FadeWrapper } from "./wrappers";
 
 export const PasswordInput = ({
   label,
@@ -55,11 +55,18 @@ export const PasswordInput = ({
           )}
         </IconButtonWrapper>
       </div>
-      {error && (
-        <FadeWrapper>
-          <Muted className="text-red-500">{error}</Muted>
-        </FadeWrapper>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -161,11 +168,18 @@ export const EmailInput = ({
         onChange={onChange}
         className="transition-all duration-300 ease-in-out"
       />
-      {error && (
-        <FadeWrapper>
-          <Muted className="text-red-500">{error}</Muted>
-        </FadeWrapper>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -233,7 +247,18 @@ export const Textarea = ({
     <div className="space-y-2">
       <Label htmlFor="message">{label}</Label>
       <UITextarea id="message" value={value} onChange={onChange} />
-      {error && <Muted className="text-red-500">{error}</Muted>}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
