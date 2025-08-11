@@ -4,7 +4,7 @@ import { PasswordInput, EmailInput } from "@/components/inputs";
 import { Button } from "@/components/buttons";
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { WithLoader } from "@/components/loaders";
-import Link from "next/link";
+import { Link } from "@/components/links";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +19,7 @@ import {
 import { ROUTES } from "@/constants/routes";
 import { trpc } from "@/lib/trpc/client";
 import { isStrongPassword } from "validator";
+import { Small } from "@/components/ui/typography";
 
 const SignupSchema = z
   .object({
@@ -118,7 +119,7 @@ export default function SignupPage() {
     <div className="h-full w-full">
       <div className="mb-8" />
       <div className="space-y-12 flex flex-col items-center justify-center w-full">
-        <Card className="flex flex-col items-center justify-center">
+        <Card className="flex flex-col items-center justify-center w-full max-w-md">
           <CardHeader>
             <CardTitle>Sign Up</CardTitle>
             <CardDescription>
@@ -159,13 +160,12 @@ export default function SignupPage() {
               {errorMessage && <ErrorAlert message={errorMessage} />}
             </form>
 
-            <div className="mt-4 text-center">
-              <Link
-                href={ROUTES.LOGIN}
-                className="text-xs text-primary hover:text-primary-600 transition-colors underline"
-              >
-                Already have an account? Login
-              </Link>
+            <div className="mt-4 text-center space-y-2">
+              <div>
+                <Link href={ROUTES.LOGIN}>
+                  <Small>Already have an account? Login</Small>
+                </Link>
+              </div>
             </div>
           </CardContent>
         </Card>
