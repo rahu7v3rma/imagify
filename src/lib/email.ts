@@ -1,33 +1,34 @@
-import nodemailer from "nodemailer";
+import { CONTACT_EMAIL } from "@/constants/common";
+import { Resend } from "resend";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendEmail({
   to,
   subject,
   html,
   text,
+  react,
 }: {
   to: string;
   subject: string;
   html?: string;
   text?: string;
+  react?: React.ReactNode;
 }) {
   try {
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
+    const response = await resend.emails.send({
+      from: CONTACT_EMAIL,
       to,
       subject,
       html,
       text,
+      react,
     });
+
+    if (response.error) {
+      return false;
+    }
 
     return true;
   } catch (error) {
