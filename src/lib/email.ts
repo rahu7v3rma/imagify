@@ -66,7 +66,7 @@ export async function sendForgotPasswordEmail({
   to: string;
   verificationCode: string;
 }) {
-  const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?email=${to}&code=${verificationCode}`;
+  const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/change-password?email=${to}&code=${verificationCode}`;
 
   const subject = "Reset Your Password";
 
