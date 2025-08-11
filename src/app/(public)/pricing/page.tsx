@@ -2,10 +2,9 @@
 
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
-import { NumberInput } from "@/components/inputs";
-import { WithLoader } from "@/components/loaders";
-import PageTransition from "@/components/transitions";
 import { MotionCardWrapper } from "@/components/cards";
+import { NumberInput } from "@/components/inputs";
+import PageTransition from "@/components/transitions";
 import {
   Card,
   CardContent,
@@ -15,6 +14,8 @@ import {
 } from "@/components/ui/card";
 import { H1, H4, P, Small } from "@/components/ui/typography";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { ROUTES } from "@/constants/routes";
+import { getAccessToken } from "@/utils/cookies";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Archive,
@@ -25,12 +26,10 @@ import {
   RotateCcw,
   Sparkles,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { getAccessToken } from "@/utils/cookies";
-import { ROUTES } from "@/constants/routes";
-import { useRouter } from "next/navigation";
 
 const PurchaseSchema = z.object({
   amount: z
