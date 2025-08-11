@@ -4,7 +4,7 @@ import { PasswordInput, EmailInput } from "@/components/inputs";
 import { Button } from "@/components/buttons";
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { WithLoader } from "@/components/loaders";
-import Link from "next/link";
+import { Link } from "@/components/links";
 import { ChangeEvent, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -20,6 +20,7 @@ import {
 import { ROUTES } from "@/constants/routes";
 import { trpc } from "@/lib/trpc/client";
 import { useUser } from "@/context/user/provider";
+import { Small } from "@/components/ui/typography";
 
 const LoginSchema = z.object({
   email: z.email("Please enter a valid email address"),
@@ -149,19 +150,13 @@ export default function LoginPage() {
 
             <div className="mt-4 text-center space-y-2">
               <div>
-                <Link
-                  href={ROUTES.SIGNUP}
-                  className="text-xs text-primary hover:text-primary-600 transition-colors underline"
-                >
-                  Don't have an account? Sign up
+                <Link href={ROUTES.SIGNUP}>
+                  <Small>Don't have an account? Sign up</Small>
                 </Link>
               </div>
               <div>
-                <Link
-                  href={ROUTES.FORGOT_PASSWORD}
-                  className="text-xs text-primary hover:text-primary-600 transition-colors underline"
-                >
-                  Forgot your password?
+                <Link href={ROUTES.FORGOT_PASSWORD}>
+                  <Small>Forgot your password?</Small>
                 </Link>
               </div>
             </div>
