@@ -1,7 +1,7 @@
 export function getTheme(): string | null {
-  return localStorage.getItem("theme");
+  return localStorage.getItem("imagify-theme");
 }
 
 export function setTheme(theme: string): void {
-  localStorage.setItem("theme", theme);
+  localStorage.setItem("imagify-theme", theme);
 }

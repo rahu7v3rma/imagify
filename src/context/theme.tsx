@@ -1,8 +1,5 @@
 import { createContext, useContext, ReactNode, useEffect } from "react";
-import {
-  ThemeProvider as NextThemesProvider,
-  useTheme as useNextTheme,
-} from "next-themes";
+import { useTheme as useNextTheme } from "next-themes";
 import {
   getTheme as getLocalStorageTheme,
   setTheme as setLocalStorageTheme,
@@ -39,14 +36,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
   return (
     <ThemeContext.Provider value={{ mode, setMode }}>
-      <NextThemesProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        disableTransitionOnChange
-      >
-        {children}
-      </NextThemesProvider>
+      {children}
     </ThemeContext.Provider>
   );
 };

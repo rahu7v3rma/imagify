@@ -1,6 +1,7 @@
 "use client";
 
 import { Small, Muted } from "@/components/ui/typography";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Link } from "@/components/links";
 import { Logo } from "@/components/logo";
 import NextLink from "next/link";
@@ -118,9 +119,9 @@ function NavbarComponent() {
 
 function FooterComponent() {
   return (
-    <footer className="backdrop-blur-sm border-t border-divider mt-auto">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center items-center p-4 gap-4 md:gap-0">
-        <div className="flex flex-col md:flex-row items-center gap-4 text-sm order-1 md:order-1">
+    <footer className="backdrop-blur-sm border-t border-divider mt-auto w-full">
+      <div className="flex justify-between items-center p-4 w-full">
+        <div className="flex space-x-4">
           <Link href={ROUTES.PRIVACY_POLICY}>
             <Small>Privacy Policy</Small>
           </Link>
@@ -128,11 +129,13 @@ function FooterComponent() {
             <Small>Terms of Service</Small>
           </Link>
         </div>
-
-        <div className="flex items-center gap-2 order-2 md:order-2">
+        <div className="absolute left-1/2 transform -translate-x-1/2">
           <Muted>
             © {new Date().getFullYear()} imagify.pro. All rights reserved.
           </Muted>
+        </div>
+        <div>
+          <ThemeToggle />
         </div>
       </div>
     </footer>
