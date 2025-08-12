@@ -6,18 +6,29 @@ import {
 } from "@/components/ui/button";
 import { cn } from "@/utils/common";
 import { motion } from "framer-motion";
+import { useTheme } from "@/context/theme";
 
 export function Button({ children, disabled, ...props }: UIButtonProps) {
+  const { isDark } = useTheme();
+
   return (
     <motion.div
       whileHover={
         disabled
           ? undefined
+          : isDark
+          ? {
+              scale: 1.02,
+              filter: "brightness(0.9)",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
+            }
           : {
-              filter: "brightness(0.5)",
+              scale: 1.02,
+              filter: "brightness(1.2)",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
             }
       }
-      transition={disabled ? undefined : { duration: 0.2 }}
+      transition={disabled ? undefined : { duration: 0.4 }}
     >
       <UIButton disabled={disabled} {...props}>
         {children}

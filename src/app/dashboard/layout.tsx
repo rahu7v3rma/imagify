@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { Logo } from "@/components/logo";
 
 function Header() {
   const router = useRouter();
@@ -27,16 +28,15 @@ function Header() {
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center justify-between px-4">
         <div>
-          <p
-            className="font-bold text-lg cursor-pointer"
+          <div
+            className="cursor-pointer"
             onClick={() => router.push(ROUTES.HOME)}
           >
-            imagify.pro
-          </p>
+            <Logo />
+          </div>
         </div>
         <div className="flex items-center space-x-4">
           <Button
-            variant="outline"
             size="sm"
             onClick={() => router.push(ROUTES.DASHBOARD.BILLING)}
             className="text-sm font-medium"
@@ -56,11 +56,11 @@ function Sidebar() {
 
   return (
     <aside className="w-56 min-w-56 h-full border-r border-border bg-background">
-      <nav className="flex flex-col h-full px-4 pb-4">
-        <div className="space-y-2">
+      <nav className="flex flex-col h-full p-4">
+        <div className="space-y-1">
           <Button
             size="sm"
-            variant={pathname === ROUTES.DASHBOARD.ROOT ? "default" : "ghost"}
+            variant={pathname === ROUTES.DASHBOARD.ROOT ? "default" : "outline"}
             className="w-full"
           >
             <Link
@@ -74,7 +74,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.GENERATE_IMAGE ? "default" : "ghost"
+              pathname === ROUTES.DASHBOARD.GENERATE_IMAGE ? "default" : "outline"
             }
             className="w-full"
           >
@@ -91,7 +91,7 @@ function Sidebar() {
             variant={
               pathname === ROUTES.DASHBOARD.REMOVE_BACKGROUND
                 ? "default"
-                : "ghost"
+                : "outline"
             }
             className="w-full"
           >
@@ -106,7 +106,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.EXTRACT_TEXT ? "default" : "ghost"
+              pathname === ROUTES.DASHBOARD.EXTRACT_TEXT ? "default" : "outline"
             }
             className="w-full"
           >
@@ -121,7 +121,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.UPSCALE ? "default" : "ghost"
+              pathname === ROUTES.DASHBOARD.UPSCALE ? "default" : "outline"
             }
             className="w-full"
           >
@@ -136,7 +136,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.COMPRESS_IMAGE ? "default" : "ghost"
+              pathname === ROUTES.DASHBOARD.COMPRESS_IMAGE ? "default" : "outline"
             }
             className="w-full"
           >
@@ -151,7 +151,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.CONVERT_FORMAT ? "default" : "ghost"
+              pathname === ROUTES.DASHBOARD.CONVERT_FORMAT ? "default" : "outline"
             }
             className="w-full"
           >
@@ -166,7 +166,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.EDIT_IMAGE ? "default" : "ghost"
+              pathname === ROUTES.DASHBOARD.EDIT_IMAGE ? "default" : "outline"
             }
             className="w-full"
           >
@@ -179,11 +179,11 @@ function Sidebar() {
             </Link>
           </Button>
         </div>
-        <div className="mt-auto space-y-2">
+        <div className="mt-auto space-y-1">
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.BILLING ? "default" : "ghost"
+              pathname === ROUTES.DASHBOARD.BILLING ? "default" : "outline"
             }
             className="w-full"
           >
@@ -198,7 +198,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.SETTINGS ? "default" : "ghost"
+              pathname === ROUTES.DASHBOARD.SETTINGS ? "default" : "outline"
             }
             className="w-full"
           >
@@ -210,7 +210,7 @@ function Sidebar() {
               <span>Settings</span>
             </Link>
           </Button>
-          <Button size="sm" variant="ghost" className="w-full" onClick={logout}>
+          <Button size="sm" variant="outline" className="w-full" onClick={logout}>
             <div className="flex items-center space-x-3 w-full">
               <LogOut className="h-5 w-5" />
               <span>Logout</span>
@@ -229,12 +229,12 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="h-screen flex flex-col">
-      <div className="h-[8%]">
+      <div>
         <Header />
       </div>
-      <div className="flex h-[92%] w-full">
+      <div className="flex flex-1 w-full">
         <Sidebar />
-        <main className="p-4 w-full overflow-y-auto">{children}</main>
+        <main className="p-10 w-full overflow-y-auto">{children}</main>
       </div>
     </div>
   );

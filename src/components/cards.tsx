@@ -10,7 +10,7 @@ export function MotionCardWrapper({ children }: {
     <motion.div
       whileHover={{
         scale: 1.05,
-        filter: "brightness(1.2)",
+        // filter: "brightness(1.2)",
         boxShadow: "0 6px 15px rgba(0, 0, 0, 0.3)",
       }}
       whileTap={{

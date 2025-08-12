@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Muted } from "@/components/ui/typography";
+import { Small } from "@/components/ui/typography";
 import { CONTACT_EMAIL } from "@/constants/common";
 import { trpc } from "@/lib/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -149,10 +149,10 @@ export default function ContactPage() {
               <div className="mt-4 flex justify-center w-full">
                 <Badge variant="outline" className="text-center w-full text-xs">
                   <Link href={`mailto:${CONTACT_EMAIL}`}>
-                    <Muted className="text-xs">
+                    <Small className="text-xs">
                       If you&apos;re having trouble with the form, you can also
                       reach us directly at {CONTACT_EMAIL}
-                    </Muted>
+                    </Small>
                   </Link>
                 </Badge>
               </div>
