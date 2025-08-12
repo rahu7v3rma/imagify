@@ -10,6 +10,8 @@ type ThemeMode = "light" | "dark";
 interface ThemeContextType {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
+  isLight: boolean;
+  isDark: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -34,8 +36,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     setLocalStorageTheme(mode);
   };
 
+  const isLight = mode === "light";
+  const isDark = mode === "dark";
+
   return (
-    <ThemeContext.Provider value={{ mode, setMode }}>
+    <ThemeContext.Provider value={{ mode, setMode, isLight, isDark }}>
       {children}
     </ThemeContext.Provider>
   );
