@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Logo } from "@/components/logo";
+import PageTransition from "@/components/transitions";
 
 function Header() {
   const router = useRouter();
@@ -74,7 +75,9 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.GENERATE_IMAGE ? "default" : "outline"
+              pathname === ROUTES.DASHBOARD.GENERATE_IMAGE
+                ? "default"
+                : "outline"
             }
             className="w-full"
           >
@@ -136,7 +139,9 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.COMPRESS_IMAGE ? "default" : "outline"
+              pathname === ROUTES.DASHBOARD.COMPRESS_IMAGE
+                ? "default"
+                : "outline"
             }
             className="w-full"
           >
@@ -151,7 +156,9 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.CONVERT_FORMAT ? "default" : "outline"
+              pathname === ROUTES.DASHBOARD.CONVERT_FORMAT
+                ? "default"
+                : "outline"
             }
             className="w-full"
           >
@@ -210,7 +217,12 @@ function Sidebar() {
               <span>Settings</span>
             </Link>
           </Button>
-          <Button size="sm" variant="outline" className="w-full" onClick={logout}>
+          <Button
+            size="sm"
+            variant="outline"
+            className="w-full"
+            onClick={logout}
+          >
             <div className="flex items-center space-x-3 w-full">
               <LogOut className="h-5 w-5" />
               <span>Logout</span>
@@ -228,14 +240,16 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-screen flex flex-col">
-      <div>
-        <Header />
+    <PageTransition>
+      <div className="h-screen flex flex-col">
+        <div>
+          <Header />
+        </div>
+        <div className="flex flex-1 w-full">
+          <Sidebar />
+          <main className="p-10 w-full overflow-y-auto">{children}</main>
+        </div>
       </div>
-      <div className="flex flex-1 w-full">
-        <Sidebar />
-        <main className="p-10 w-full overflow-y-auto">{children}</main>
-      </div>
-    </div>
+    </PageTransition>
   );
 }

@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/buttons";
 import { Zap, Plus, Minus } from "lucide-react";
 import { useState } from "react";
+import PageTransition from "@/components/transitions";
 
 export default function BillingPage() {
   const [creditAmount, setCreditAmount] = useState(500);
@@ -12,10 +13,11 @@ export default function BillingPage() {
   const handleBuyCredits = async () => {};
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">Billing</h1>
+    <PageTransition>
+      <div className="container mx-auto px-4 py-6">
+        <h1 className="text-2xl font-bold mb-6">Billing</h1>
 
-      <Tabs defaultValue="credits" className="w-full">
+        <Tabs defaultValue="credits" className="w-full">
         <TabsList className="grid w-full grid-cols-1">
           <TabsTrigger value="credits" className="flex items-center space-x-2">
             <Zap className="w-4 h-4" />
@@ -107,5 +109,6 @@ export default function BillingPage() {
         </TabsContent>
       </Tabs>
     </div>
+    </PageTransition>
   );
 }
