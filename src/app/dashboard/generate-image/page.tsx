@@ -6,6 +6,7 @@ import { FormEvent, useState } from "react";
 import DisplayImage from "@/components/dashboard/display-image";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import PageTransition from "@/components/transitions";
+import { H1, Muted, P } from "@/components/ui/typography";
 
 export default function GenerateImagePage() {
   const [prompt, setPrompt] = useState<string>("");
@@ -17,12 +18,12 @@ export default function GenerateImagePage() {
 
   return (
     <PageTransition>
-      <div className="p-6 w-full">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Generate Image</h1>
-        <p className="text-gray-600 mb-2">
-          Enter a prompt to generate an image using AI.
-        </p>
-        <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+      <div className="w-full">
+        <div className="mb-4 flex flex-col items-start">
+          <H1>Generate Image</H1>
+          <Muted>Enter a prompt to generate an image using AI.</Muted>
+        </div>
+        <div className="mb-6 inline-flex items-center px-2 py-1 rounded border text-xs font-medium">
           💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits
         </div>
 

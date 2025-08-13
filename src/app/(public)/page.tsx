@@ -1,4 +1,4 @@
-import { H1, P, H4, Small } from "@/components/ui/typography";
+import { H1, P, H4, Small, Muted } from "@/components/ui/typography";
 import { Card, CardContent } from "@/components/ui/card";
 import { MotionCardWrapper } from "@/components/cards";
 import NextLink from "next/link";
@@ -20,7 +20,9 @@ export default function Home() {
       <div className="max-w-4xl mx-auto px-4 py-12 flex flex-col items-center">
         <div className="text-center mb-12 mt-12">
           <H1>Image Processing Tools</H1>
-          <P>Powerful AI-driven tools for all your image processing needs</P>
+          <Muted>
+            Powerful AI-driven tools for all your image processing needs
+          </Muted>
         </div>
 
         <div className="flex flex-wrap gap-4 justify-center items-center">
@@ -32,11 +34,11 @@ export default function Home() {
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
                       <Image className="w-8 h-8" />
                     </div>
-                    <div className="text-center space-y-2">
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Remove Background</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Remove backgrounds from images instantly
-                      </Small>
+                      </Muted>
                     </div>
                   </div>
                 </CardContent>
@@ -52,11 +54,11 @@ export default function Home() {
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
                       <FileText className="w-8 h-8" />
                     </div>
-                    <div className="text-center space-y-2">
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Extract Text</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Extract text from images using OCR
-                      </Small>
+                      </Muted>
                     </div>
                   </div>
                 </CardContent>
@@ -72,11 +74,11 @@ export default function Home() {
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
                       <ArrowUp className="w-8 h-8" />
                     </div>
-                    <div className="text-center space-y-2">
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Upscale Image</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Enhance and upscale your images
-                      </Small>
+                      </Muted>
                     </div>
                   </div>
                 </CardContent>
@@ -92,11 +94,11 @@ export default function Home() {
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
                       <Archive className="w-8 h-8" />
                     </div>
-                    <div className="text-center space-y-2">
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Compress Image</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Reduce image file size without losing quality
-                      </Small>
+                      </Muted>
                     </div>
                   </div>
                 </CardContent>
@@ -112,11 +114,11 @@ export default function Home() {
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
                       <RotateCcw className="w-8 h-8" />
                     </div>
-                    <div className="text-center space-y-2">
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Convert Format</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Convert images between different formats
-                      </Small>
+                      </Muted>
                     </div>
                   </div>
                 </CardContent>
@@ -132,11 +134,11 @@ export default function Home() {
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
                       <Edit className="w-8 h-8" />
                     </div>
-                    <div className="text-center space-y-2">
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Edit Image</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Professional prompt based image editing
-                      </Small>
+                      </Muted>
                     </div>
                   </div>
                 </CardContent>
@@ -152,11 +154,11 @@ export default function Home() {
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
                       <Sparkles className="w-8 h-8" />
                     </div>
-                    <div className="text-center space-y-2">
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Generate Image</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Create stunning images from text using AI
-                      </Small>
+                      </Muted>
                     </div>
                   </div>
                 </CardContent>

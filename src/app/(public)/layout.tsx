@@ -120,7 +120,12 @@ function NavbarComponent() {
 function FooterComponent() {
   return (
     <footer className="backdrop-blur-sm border-t border-divider mt-auto w-full">
-      <div className="flex justify-between items-center p-4 w-full">
+      <div className="flex justify-end items-center p-4 w-full">
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Muted>
+            © {new Date().getFullYear()} imagify.pro. All rights reserved.
+          </Muted>
+        </div>
         <div className="flex space-x-4">
           <Link href={ROUTES.PRIVACY_POLICY}>
             <Small>Privacy Policy</Small>
@@ -129,14 +134,9 @@ function FooterComponent() {
             <Small>Terms of Service</Small>
           </Link>
         </div>
-        <div className="absolute left-1/2 transform -translate-x-1/2">
-          <Muted>
-            © {new Date().getFullYear()} imagify.pro. All rights reserved.
-          </Muted>
-        </div>
-        <div>
+        {/* <div>
           <ThemeToggle />
-        </div>
+        </div> */}
       </div>
     </footer>
   );

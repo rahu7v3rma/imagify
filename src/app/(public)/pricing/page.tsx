@@ -12,7 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { H1, H4, P, Small } from "@/components/ui/typography";
+import { H1, H4, Muted, P } from "@/components/ui/typography";
+import { Badge } from "@/components/ui/badge";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { ROUTES } from "@/constants/routes";
 import { getAccessToken } from "@/utils/cookies";
@@ -30,6 +31,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import NextLink from "next/link";
 
 const PurchaseSchema = z.object({
   amount: z
@@ -113,173 +115,173 @@ export default function PricingPage() {
   return (
     <PageTransition>
       <div className="max-w-6xl mx-auto px-4 py-12 flex flex-col items-center">
-        <div className="text-center mb-12 mt-12">
+        <div className="text-center mb-12">
           <H1>Simple, pay-as-you-go pricing</H1>
-          <P>
+          <Muted>
             Purchase prepaid processing credits and use them across any tool.
-          </P>
+          </Muted>
         </div>
 
         <div className="flex flex-wrap gap-4 justify-center items-center">
           <MotionCardWrapper>
-            <Card className="h-[250px] w-[250px]">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center space-y-4">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                    <Sparkles className="w-8 h-8" />
-                  </div>
-                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
-                    <div>
+            <NextLink href={ROUTES.DASHBOARD.GENERATE_IMAGE}>
+              <Card className="h-[220px] w-[250px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center space-y-4">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                      <Sparkles className="w-8 h-8" />
+                    </div>
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Generate Image</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Create stunning images from text using AI
-                      </Small>
+                      </Muted>
                     </div>
-                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                    <Badge variant="default" className="text-xs">
                       💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits
-                    </Small>
+                    </Badge>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </NextLink>
           </MotionCardWrapper>
 
           <MotionCardWrapper>
-            <Card className="h-[250px] w-[250px]">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center space-y-4">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                    <Image className="w-8 h-8" />
-                  </div>
-                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
-                    <div>
+            <NextLink href={ROUTES.DASHBOARD.REMOVE_BACKGROUND}>
+              <Card className="h-[220px] w-[250px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center space-y-4">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                      <Image className="w-8 h-8" />
+                    </div>
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Remove Background</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Remove backgrounds from images instantly
-                      </Small>
+                      </Muted>
                     </div>
-                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                    <Badge variant="default" className="text-xs">
                       💳 {CREDIT_REQUIREMENTS.REMOVE_BACKGROUND} credits
-                    </Small>
+                    </Badge>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </NextLink>
           </MotionCardWrapper>
 
           <MotionCardWrapper>
-            <Card className="h-[250px] w-[250px]">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center space-y-4">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                    <FileText className="w-8 h-8" />
-                  </div>
-                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
-                    <div>
+            <NextLink href={ROUTES.DASHBOARD.EXTRACT_TEXT}>
+              <Card className="h-[220px] w-[250px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center space-y-4">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                      <FileText className="w-8 h-8" />
+                    </div>
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Extract Text</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Extract text from images using OCR
-                      </Small>
+                      </Muted>
                     </div>
-                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                    <Badge variant="default" className="text-xs">
                       💳 {CREDIT_REQUIREMENTS.EXTRACT_TEXT} credits
-                    </Small>
+                    </Badge>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </NextLink>
           </MotionCardWrapper>
 
           <MotionCardWrapper>
-            <Card className="h-[250px] w-[250px]">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center space-y-4">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                    <ArrowUp className="w-8 h-8" />
-                  </div>
-                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
-                    <div>
+            <NextLink href={ROUTES.DASHBOARD.UPSCALE}>
+              <Card className="h-[220px] w-[250px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center space-y-4">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                      <ArrowUp className="w-8 h-8" />
+                    </div>
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Upscale Image</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Enhance and upscale your images
-                      </Small>
+                      </Muted>
                     </div>
-                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                    <Badge variant="default" className="text-xs">
                       💳 {CREDIT_REQUIREMENTS.UPSCALE} credits
-                    </Small>
+                    </Badge>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </NextLink>
           </MotionCardWrapper>
 
           <MotionCardWrapper>
-            <Card className="h-[250px] w-[250px]">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center space-y-4">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                    <Archive className="w-8 h-8" />
-                  </div>
-                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
-                    <div>
+            <NextLink href={ROUTES.DASHBOARD.COMPRESS_IMAGE}>
+              <Card className="h-[220px] w-[250px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center space-y-4">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                      <Archive className="w-8 h-8" />
+                    </div>
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Compress Image</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Reduce image file size without losing quality
-                      </Small>
+                      </Muted>
                     </div>
-                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                    <Badge variant="default" className="text-xs">
                       💳 {CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits
-                    </Small>
+                    </Badge>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </NextLink>
           </MotionCardWrapper>
 
           <MotionCardWrapper>
-            <Card className="h-[250px] w-[250px]">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center space-y-4">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                    <RotateCcw className="w-8 h-8" />
-                  </div>
-                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
-                    <div>
+            <NextLink href={ROUTES.DASHBOARD.CONVERT_FORMAT}>
+              <Card className="h-[220px] w-[250px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center space-y-4">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                      <RotateCcw className="w-8 h-8" />
+                    </div>
+                    <div className="text-center">
                       <H4 className="font-bold text-sm">Convert Format</H4>
-                      <Small className="text-xs text-muted-foreground">
+                      <Muted className="text-xs text-muted-foreground">
                         Convert images between different formats
-                      </Small>
+                      </Muted>
                     </div>
-                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                    <Badge variant="default" className="text-xs">
                       💳 {CREDIT_REQUIREMENTS.CONVERT_FORMAT} credits
-                    </Small>
+                    </Badge>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </NextLink>
           </MotionCardWrapper>
 
           <MotionCardWrapper>
-            <Card className="h-[250px] w-[250px]">
-              <CardContent className="p-6 h-full">
-                <div className="h-full flex flex-col items-center justify-center space-y-4">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                    <Edit className="w-8 h-8" />
-                  </div>
-                  <div className="text-center space-y-2 flex flex-col items-center gap-2">
-                    <div>
-                      <H4 className="font-bold text-sm">Edit Image</H4>
-                      <Small className="text-xs text-muted-foreground">
-                        Professional prompt based image editing
-                      </Small>
+            <NextLink href={ROUTES.DASHBOARD.EDIT_IMAGE}>
+              <Card className="h-[220px] w-[250px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center space-y-4">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                      <Edit className="w-8 h-8" />
                     </div>
-                    <Small className="text-xs font-medium border rounded px-2 py-1">
+                    <div className="text-center">
+                      <H4 className="font-bold text-sm">Edit Image</H4>
+                      <Muted className="text-xs text-muted-foreground">
+                        Professional prompt based image editing
+                      </Muted>
+                    </div>
+                    <Badge variant="default" className="text-xs">
                       💳 {CREDIT_REQUIREMENTS.EDIT_IMAGE} credits
-                    </Small>
+                    </Badge>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </NextLink>
           </MotionCardWrapper>
         </div>
 

@@ -46,12 +46,13 @@ export default function SettingsPage() {
             </div>
           </TabsContent>
           <TabsContent value="preferences">
-            <div className="pt-2 space-y-4">
-              <div className="flex items-center justify-between">
+            {/* <div className="pt-2 space-y-4"> */}
+            {/* Dark Mode toggle intentionally disabled for now */}
+            {/* <div className="flex items-center justify-between">
                 <span>Dark Mode</span>
                 <ThemeToggle />
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </TabsContent>
         </Tabs>
 
