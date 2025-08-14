@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { P } from "@/components/ui/typography";
+import { useEffect, useState } from "react";
 
 export const WithLoader = ({
   text,
@@ -25,6 +26,35 @@ export const WithLoaderNode = ({
   content: React.ReactNode;
   isLoading: boolean;
 }) => {
+  return isLoading ? (
+    <div className="flex items-center gap-2">
+      <Loader2 className="h-4 w-4 animate-spin" />
+      <P>Loading...</P>
+    </div>
+  ) : (
+    <>{content}</>
+  );
+};
+
+export const WithLoaderNodeSafe = ({
+  content,
+  fallback,
+  isLoading,
+}: {
+  content: React.ReactNode;
+  fallback: React.ReactNode;
+  isLoading: boolean;
+}) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <>{fallback}</>;
+  }
+
   return isLoading ? (
     <div className="flex items-center gap-2">
       <Loader2 className="h-4 w-4 animate-spin" />

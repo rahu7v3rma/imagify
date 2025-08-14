@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { WithLoaderNode } from "@/components/loaders";
+import { WithLoaderNode, WithLoaderNodeSafe } from "@/components/loaders";
 import { trpc } from "@/lib/trpc/client";
 import { useUser } from "@/context/user/provider";
 
@@ -156,7 +156,7 @@ function BuyCreditsForm() {
 }
 
 export default function BillingPage() {
-  const { userProfile } = useUser();
+  const { userProfile, isLoading } = useUser();
 
   return (
     <PageTransition className="">
@@ -185,7 +185,11 @@ export default function BillingPage() {
                         <H3>Total Credits</H3>
                         <Muted>Available processing credits</Muted>
                       </div>
-                      <H1>{userProfile?.credits ?? 0}</H1>
+                      <WithLoaderNodeSafe
+                        content={<H1>{userProfile?.credits ?? 0}</H1>}
+                        fallback={<H1>0</H1>}
+                        isLoading={isLoading}
+                      />
                     </div>
                   </CardContent>
                 </Card>

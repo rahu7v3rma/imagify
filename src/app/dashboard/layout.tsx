@@ -21,10 +21,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Logo } from "@/components/logo";
 import PageTransition from "@/components/transitions";
+import { WithLoaderNodeSafe } from "@/components/loaders";
 
 function Header() {
   const router = useRouter();
-  const { userProfile } = useUser();
+  const { userProfile, isLoading } = useUser();
 
   return (
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
@@ -44,7 +45,11 @@ function Header() {
             className="text-sm font-medium"
           >
             <Zap className="w-4 h-4 mr-2" />
-            {userProfile?.credits ?? 0} credits
+            <WithLoaderNodeSafe
+              content={`${userProfile?.credits ?? 0} credits`}
+              fallback="0 credits"
+              isLoading={isLoading}
+            />
           </Button>
         </div>
       </div>
