@@ -1,20 +1,49 @@
 "use client";
 
-import ConfirmationModal from "@/components/modals";
+import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { PasswordInput } from "@/components/inputs";
 import { TabLink } from "@/components/links";
-import { useState } from "react";
-import { trpc } from "@/lib/trpc/client";
-import { useUser } from "@/context/user/provider";
+import { WithLoader } from "@/components/loaders";
+import ConfirmationModal from "@/components/modals";
 import PageTransition from "@/components/transitions";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useUser } from "@/context/user/provider";
+import { trpc } from "@/lib/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { isStrongPassword } from "validator";
+import { z } from "zod";
+
+const ChangePasswordSchema = z
+  .object({
+    currentPassword: z.string(),
+    newPassword: z.string().refine(isStrongPassword, {
+      message:
+        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    }),
+    confirmNewPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords don't match",
+    path: ["confirmNewPassword"],
+  });
+
+type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>;
 
 export default function SettingsPage() {
   const [isOpen, setIsOpen] = useState(false);
   const { logout } = useUser();
 
-  const { mutate: deleteAccount, isPending } =
+  const { mutate: deleteAccount, isPending: isDeletePending } =
     trpc.settings.deleteAccount.useMutation({
       onSuccess: (ok) => {
         if (ok) {
@@ -23,6 +52,74 @@ export default function SettingsPage() {
         }
       },
     });
+
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const form = useForm<ChangePasswordFormValues>({
+    resolver: zodResolver(ChangePasswordSchema),
+    mode: "onChange",
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    },
+  });
+
+  const { mutate: changePassword, isPending: isChangePending } =
+    trpc.settings.changePassword.useMutation({
+      onSuccess: (data) => {
+        if (data.success) {
+          setSuccessMessage(data.message || "Password changed successfully!");
+          setErrorMessage(null);
+          form.reset();
+        } else {
+          setErrorMessage(
+            data.message || "Failed to change password. Please try again."
+          );
+          setSuccessMessage(null);
+        }
+      },
+      onError: (error) => {
+        console.log(error);
+        setErrorMessage(
+          error.message || "Failed to change password. Please try again."
+        );
+        setSuccessMessage(null);
+      },
+    });
+
+  const onSubmit = async (data: ChangePasswordFormValues) => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
+
+    changePassword({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    });
+  };
+
+  const setFormValue = (
+    field: keyof ChangePasswordFormValues,
+    value: string
+  ) => {
+    form.setValue(field, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  const values = form.watch();
+  const currentPassword = values.currentPassword;
+  const newPassword = values.newPassword;
+  const confirmNewPassword = values.confirmNewPassword;
+  const errors = form.formState.errors;
+  const currentPasswordError = errors.currentPassword?.message;
+  const newPasswordError = errors.newPassword?.message;
+  const confirmNewPasswordError = errors.confirmNewPassword?.message;
+  const isFormValid = form.formState.isValid;
+  const handleSubmit = form.handleSubmit(onSubmit);
 
   return (
     <PageTransition>
@@ -39,10 +136,66 @@ export default function SettingsPage() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="account">
-            <div className="flex flex-row gap-4 items-center pt-2">
-              <Button variant="destructive" onClick={() => setIsOpen(true)}>
-                Delete Account
-              </Button>
+            <div className="space-y-6">
+              <Card className="w-full max-w-md">
+                <CardHeader>
+                  <CardTitle>Change Password</CardTitle>
+                  <CardDescription>
+                    Update your account password.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col gap-4 w-full"
+                  >
+                    <PasswordInput
+                      label="Current Password"
+                      value={currentPassword}
+                      onChange={(e) =>
+                        setFormValue("currentPassword", e.target.value)
+                      }
+                      error={currentPasswordError}
+                    />
+                    <PasswordInput
+                      label="New Password"
+                      value={newPassword}
+                      onChange={(e) =>
+                        setFormValue("newPassword", e.target.value)
+                      }
+                      error={newPasswordError}
+                    />
+                    <PasswordInput
+                      label="Confirm New Password"
+                      value={confirmNewPassword}
+                      onChange={(e) =>
+                        setFormValue("confirmNewPassword", e.target.value)
+                      }
+                      error={confirmNewPasswordError}
+                    />
+                    <Button
+                      type="submit"
+                      variant="default"
+                      className="mt-2 w-full"
+                      disabled={!isFormValid || isChangePending}
+                    >
+                      {WithLoader({
+                        text: "Change Password",
+                        isLoading: isChangePending,
+                      })}
+                    </Button>
+                    {successMessage && (
+                      <SuccessAlert message={successMessage} />
+                    )}
+                    {errorMessage && <ErrorAlert message={errorMessage} />}
+                  </form>
+                </CardContent>
+              </Card>
+              <div className="flex flex-row gap-4 items-center pt-2">
+                <Button variant="destructive" onClick={() => setIsOpen(true)}>
+                  Delete Account
+                </Button>
+              </div>
             </div>
           </TabsContent>
           <TabsContent value="preferences">
@@ -62,8 +215,8 @@ export default function SettingsPage() {
           onConfirm={() => deleteAccount()}
           title="Confirm Account Deletion"
           message="Are you sure you want to delete your account? This action cannot be undone."
-          disabled={isPending}
-          loading={isPending}
+          disabled={isDeletePending}
+          loading={isDeletePending}
         />
       </div>
     </PageTransition>
