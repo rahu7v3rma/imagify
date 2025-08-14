@@ -131,10 +131,12 @@ export const TextInput = ({
   value,
   onChange,
   label,
+  error,
 }: {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  error?: string;
 }) => {
   return (
     <div className="w-full space-y-2">
@@ -152,9 +154,22 @@ export const TextInput = ({
         value={value}
         onChange={onChange}
         className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          "transition-all duration-300 ease-in-out"
         )}
       />
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

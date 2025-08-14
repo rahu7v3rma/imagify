@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { router, protectedProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { hashPassword, comparePassword } from "@/utils/bcrypt";
+import { generateEmailVerificationCode } from "@/utils/common";
+import { sendEmailVerificationEmail } from "@/lib/email";
 
 export const settingsRouter = router({
   deleteAccount: protectedProcedure
@@ -62,6 +64,68 @@ export const settingsRouter = router({
         return { success: true, message: "Password changed successfully" };
       } catch (error) {
         return { success: false, message: "Failed to change password" };
+      }
+    }),
+  changeEmail: protectedProcedure
+    .input(
+      z.object({
+        updatedEmail: z.email("Please enter a valid email address"),
+      })
+    )
+    .output(
+      z.object({
+        success: z.boolean(),
+        message: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        if (!ctx.user) {
+          return { success: false, message: "User not found" };
+        }
+
+        const { updatedEmail } = input;
+
+        // Check if the new email already exists
+        const existingUser = await prisma.user.findUnique({
+          where: { email: updatedEmail },
+        });
+
+        if (existingUser) {
+          return {
+            success: false,
+            message: "Email address is already in use",
+          };
+        }
+
+        // Generate new email verification code
+        const emailVerificationCode = generateEmailVerificationCode();
+
+        // Update user's email and set emailVerified to false
+        await prisma.user.update({
+          where: { email: ctx.user.email },
+          data: {
+            email: updatedEmail,
+            emailVerified: false,
+            emailVerificationCode,
+          },
+        });
+
+        // Send verification email to the new email address
+        sendEmailVerificationEmail({
+          to: updatedEmail,
+          emailVerificationCode,
+        });
+
+        return {
+          success: true,
+          message: "Email changed successfully. Please check your new email to verify your account.",
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: "Failed to change email address",
+        };
       }
     }),
 });

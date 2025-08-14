@@ -1,8 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-export default function PageTransition({ children }: {
+export default function PageTransition({
+  children,
+  className,
+}: {
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
     <motion.div
@@ -10,6 +14,7 @@ export default function PageTransition({ children }: {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.6, ease: [0.4, 0.0, 0.2, 1] }}
+      className={className}
     >
       {children}
     </motion.div>

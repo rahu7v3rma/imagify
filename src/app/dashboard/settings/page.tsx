@@ -2,10 +2,9 @@
 
 import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
-import { PasswordInput } from "@/components/inputs";
+import { PasswordInput, EmailInput, TextInput } from "@/components/inputs";
 import { TabLink } from "@/components/links";
-import { WithLoader } from "@/components/loaders";
-import ConfirmationModal from "@/components/modals";
+import { WithLoader, WithLoaderNode } from "@/components/loaders";
 import PageTransition from "@/components/transitions";
 import {
   Card,
@@ -37,7 +36,12 @@ const ChangePasswordSchema = z
     path: ["confirmNewPassword"],
   });
 
+const ChangeEmailSchema = z.object({
+  updatedEmail: z.email("Please enter a valid email address"),
+});
+
 type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>;
+type ChangeEmailFormValues = z.infer<typeof ChangeEmailSchema>;
 
 function ChangePasswordForm() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -68,7 +72,6 @@ function ChangePasswordForm() {
         }
       },
       onError: (error) => {
-        console.log(error);
         setErrorMessage(
           error.message || "Failed to change password. Please try again."
         );
@@ -109,22 +112,17 @@ function ChangePasswordForm() {
   const handleSubmit = form.handleSubmit(onSubmit);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Change Password</CardTitle>
         <CardDescription>Update your account password.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
           <PasswordInput
             label="Current Password"
             value={currentPassword}
-            onChange={(e) =>
-              setFormValue("currentPassword", e.target.value)
-            }
+            onChange={(e) => setFormValue("currentPassword", e.target.value)}
             error={currentPasswordError}
           />
           <PasswordInput
@@ -136,9 +134,7 @@ function ChangePasswordForm() {
           <PasswordInput
             label="Confirm New Password"
             value={confirmNewPassword}
-            onChange={(e) =>
-              setFormValue("confirmNewPassword", e.target.value)
-            }
+            onChange={(e) => setFormValue("confirmNewPassword", e.target.value)}
             error={confirmNewPasswordError}
           />
           <Button
@@ -160,26 +156,211 @@ function ChangePasswordForm() {
   );
 }
 
-export default function SettingsPage() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { logout } = useUser();
+function ChangeEmailForm() {
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { logout, userProfile } = useUser();
+
+  const form = useForm<ChangeEmailFormValues>({
+    resolver: zodResolver(ChangeEmailSchema),
+    mode: "onChange",
+    defaultValues: {
+      updatedEmail: "",
+    },
+    values: {
+      updatedEmail: userProfile?.email || "",
+    },
+  });
+
+  const { mutate: changeEmail, isPending: isChangePending } =
+    trpc.settings.changeEmail.useMutation({
+      onSuccess: (data) => {
+        if (data.success) {
+          setSuccessMessage(data.message || "Email changed successfully!");
+          setErrorMessage(null);
+          form.reset();
+          logout();
+        } else {
+          setErrorMessage(
+            data.message || "Failed to change email. Please try again."
+          );
+          setSuccessMessage(null);
+        }
+      },
+      onError: (error) => {
+        setErrorMessage(
+          error.message || "Failed to change email. Please try again."
+        );
+        setSuccessMessage(null);
+      },
+    });
+
+  const onSubmit = async (data: ChangeEmailFormValues) => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
+
+    changeEmail({
+      updatedEmail: data.updatedEmail,
+    });
+  };
+
+  const setFormValue = (field: keyof ChangeEmailFormValues, value: string) => {
+    form.setValue(field, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  const values = form.watch();
+  const updatedEmail = values.updatedEmail;
+  const errors = form.formState.errors;
+  const updatedEmailError = errors.updatedEmail?.message;
+  const isFormValid = form.formState.isValid;
+  const handleSubmit = form.handleSubmit(onSubmit);
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>Change Email</CardTitle>
+        <CardDescription>Update your account email address.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+          {WithLoaderNode({
+            isLoading: !userProfile,
+            content: (
+              <EmailInput
+                value={updatedEmail}
+                onChange={(e) => setFormValue("updatedEmail", e.target.value)}
+                error={updatedEmailError}
+              />
+            ),
+          })}
+          <Button
+            type="submit"
+            variant="default"
+            className="mt-2 w-full"
+            disabled={!isFormValid || isChangePending || !userProfile}
+          >
+            {WithLoader({
+              text: "Change Email",
+              isLoading: isChangePending,
+            })}
+          </Button>
+          {successMessage && <SuccessAlert message={successMessage} />}
+          {errorMessage && <ErrorAlert message={errorMessage} />}
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
+
+const DeleteAccountSchema = z.object({
+  confirmationText: z.string().refine((val) => val === "delete my account", {
+    message: "Please type 'delete my account' to confirm",
+  }),
+});
+
+type DeleteAccountFormValues = z.infer<typeof DeleteAccountSchema>;
+
+function DeleteAccount() {
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const form = useForm<DeleteAccountFormValues>({
+    resolver: zodResolver(DeleteAccountSchema),
+    mode: "onChange",
+    defaultValues: {
+      confirmationText: "",
+    },
+  });
 
   const { mutate: deleteAccount, isPending: isDeletePending } =
     trpc.settings.deleteAccount.useMutation({
       onSuccess: (ok) => {
         if (ok) {
-          setIsOpen(false);
-          logout();
+          setSuccessMessage("Account deleted successfully");
+          setErrorMessage(null);
+        } else {
+          setErrorMessage("Failed to delete account. Please try again.");
+          setSuccessMessage(null);
         }
+      },
+      onError: (error) => {
+        setErrorMessage(
+          error.message || "Failed to delete account. Please try again."
+        );
+        setSuccessMessage(null);
       },
     });
 
+  const onSubmit = async (data: DeleteAccountFormValues) => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
+    deleteAccount();
+  };
+
+  const setFormValue = (
+    field: keyof DeleteAccountFormValues,
+    value: string
+  ) => {
+    form.setValue(field, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  const values = form.watch();
+  const confirmationText = values.confirmationText;
+  const errors = form.formState.errors;
+  const confirmationTextError = errors.confirmationText?.message;
+  const isFormValid = form.formState.isValid;
+  const handleSubmit = form.handleSubmit(onSubmit);
+
   return (
-    <PageTransition>
-      <div className="">
+    <Card className="w-full border-red-200">
+      <CardHeader>
+        <CardTitle className="text-red-600">Delete Account</CardTitle>
+        <CardDescription>
+          Permanently delete your account. This action cannot be undone.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+          <TextInput
+            label={`Type "delete my account" to confirm`}
+            value={confirmationText}
+            onChange={(e) => setFormValue("confirmationText", e.target.value)}
+            error={confirmationTextError}
+          />
+          <Button
+            type="submit"
+            variant="destructive"
+            className="mt-2 w-full"
+            disabled={!isFormValid || isDeletePending}
+          >
+            {WithLoader({
+              text: "Delete Account",
+              isLoading: isDeletePending,
+            })}
+          </Button>
+          {successMessage && <SuccessAlert message={successMessage} />}
+          {errorMessage && <ErrorAlert message={errorMessage} />}
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <PageTransition className="">
+      <div className="w-full">
         <h1 className="text-2xl font-bold mb-6">Settings</h1>
 
-        <Tabs defaultValue="account" className="max-w-md">
+        <Tabs defaultValue="account">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="account">
               <TabLink>Account</TabLink>
@@ -188,13 +369,16 @@ export default function SettingsPage() {
               <TabLink>Preferences</TabLink>
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="account">
-            <div className="space-y-6">
-              <ChangePasswordForm />
-              <div className="flex flex-row gap-4 items-center pt-2">
-                <Button variant="destructive" onClick={() => setIsOpen(true)}>
-                  Delete Account
-                </Button>
+          <TabsContent value="account" className="w-full">
+            <div className="flex flex-row gap-6">
+              <div className="w-full flex flex-col">
+                <ChangeEmailForm />
+                <div className="w-full pt-6">
+                  <DeleteAccount />
+                </div>
+              </div>
+              <div className="w-full">
+                <ChangePasswordForm />
               </div>
             </div>
           </TabsContent>
@@ -208,16 +392,6 @@ export default function SettingsPage() {
             {/* </div> */}
           </TabsContent>
         </Tabs>
-
-        <ConfirmationModal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          onConfirm={() => deleteAccount()}
-          title="Confirm Account Deletion"
-          message="Are you sure you want to delete your account? This action cannot be undone."
-          disabled={isDeletePending}
-          loading={isDeletePending}
-        />
       </div>
     </PageTransition>
   );

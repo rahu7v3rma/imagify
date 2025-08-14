@@ -17,3 +17,20 @@ export const WithLoader = ({
     <P>{text}</P>
   );
 };
+
+export const WithLoaderNode = ({
+  content,
+  isLoading,
+}: {
+  content: React.ReactNode;
+  isLoading: boolean;
+}) => {
+  return isLoading ? (
+    <div className="flex items-center gap-2">
+      <Loader2 className="h-4 w-4 animate-spin" />
+      <P>Loading...</P>
+    </div>
+  ) : (
+    <>{content}</>
+  );
+};
