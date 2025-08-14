@@ -8,15 +8,11 @@ const client = new Client()
 const storage = new Storage(client);
 
 export const uploadFile = async ({ file }: { file: File }) => {
-  try {
-    const response = await storage.createFile(
-      process.env.APPWRITE_STORAGE_BUCKET_ID!,
-      ID.unique(),
-      file
-    );
+  const response = await storage.createFile(
+    process.env.APPWRITE_STORAGE_BUCKET_ID!,
+    ID.unique(),
+    file
+  );
 
-    return response.$id;
-  } catch (error) {
-    return null;
-  }
+  return response.$id;
 };

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { publicProcedure, router } from "../../../lib/trpc/init";
 import { z } from "zod";
 import { generateEmailVerificationCode } from "@/utils/common";
-import { sendEmailVerificationEmail } from "@/lib/email";
+import { sendEmailVerificationEmail, sendErrorEmail } from "@/lib/email";
 import { hashPassword } from "@/utils/bcrypt";
 import { isStrongPassword } from "validator";
 
@@ -66,7 +66,8 @@ export const signupRouter = router({
           message:
             "User created successfully, please check your email to verify your account.",
         };
-      } catch (error) {
+      } catch (error: any) {
+        sendErrorEmail({ error });
         return {
           success: false,
           message: "Failed to create user",

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { publicProcedure, router } from "../../../lib/trpc/init";
 import { z } from "zod";
 import { comparePassword } from "@/utils/bcrypt";
-import { sendEmailVerificationEmail } from "@/lib/email";
+import { sendEmailVerificationEmail, sendErrorEmail } from "@/lib/email";
 import { generateEmailVerificationCode } from "@/utils/common";
 import { generateAccessToken } from "@/utils/jwt";
 
@@ -87,7 +87,8 @@ export const loginRouter = router({
             accessToken,
           },
         };
-      } catch (error) {
+      } catch (error: any) {
+        sendErrorEmail({ error });
         return {
           success: false,
           message: "Failed to login. Please try again.",

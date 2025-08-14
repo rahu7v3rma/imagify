@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendErrorEmail } from "@/lib/email";
 
 export async function GET(request: NextRequest) {
   try {
@@ -40,7 +41,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(
       new URL("/login?email_verified_success=1", request.url)
     );
-  } catch (error) {
+  } catch (error: any) {
+    sendErrorEmail({ error });
     return NextResponse.redirect(
       new URL("/login?email_verified_failed=1", request.url)
     );

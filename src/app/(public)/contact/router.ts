@@ -4,6 +4,7 @@ import { publicProcedure, router } from "../../../lib/trpc/init";
 import { uploadFile } from "@/lib/upload";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
+import { sendErrorEmail } from "@/lib/email";
 
 export const contactRouter = router({
   sendMessage: publicProcedure
@@ -42,7 +43,8 @@ export const contactRouter = router({
         });
 
         return true;
-      } catch (error) {
+      } catch (error: any) {
+        sendErrorEmail({ error });
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });

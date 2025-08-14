@@ -13,11 +13,7 @@ export function encodeJWT({
 }
 
 export function decodeJWT({ token }: { token: string }) {
-  try {
-    return jwt.verify(token, JWT_SECRET);
-  } catch (error) {
-    return null;
-  }
+  return jwt.verify(token, JWT_SECRET);
 }
 
 export function generateAccessToken({ userId }: { userId: string }) {

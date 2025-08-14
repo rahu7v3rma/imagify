@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { paypalOrdersController } from "@/lib/paypal";
+import { sendErrorEmail } from "@/lib/email";
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,17 +9,19 @@ export async function GET(request: NextRequest) {
     const token = searchParams.get("token");
 
     if (!token) {
-      return NextResponse.redirect(
-        new URL("/dashboard/billing?buy_credits_failure=1", request.url)
-      );
+      throw new Error("Token is required", {
+        cause: {
+          token,
+        },
+      });
     }
 
-    const { result: captureResult } = await paypalOrdersController.captureOrder(
-      {
-        id: token,
-        body: {},
-      }
-    );
+    const captureResponse = await paypalOrdersController.captureOrder({
+      id: token,
+      body: {},
+    });
+
+    const captureResult = captureResponse.result;
 
     const amount = parseFloat(
       captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.amount
@@ -28,15 +31,19 @@ export async function GET(request: NextRequest) {
       captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.customId;
 
     if (!amount || !userId) {
-      return NextResponse.redirect(
-        new URL("/dashboard/billing?buy_credits_failure=1", request.url)
-      );
+      throw new Error("Invalid capture result", {
+        cause: {
+          captureResult,
+        },
+      });
     }
 
     if (captureResult.status !== "COMPLETED") {
-      return NextResponse.redirect(
-        new URL("/dashboard/billing?buy_credits_failure=1", request.url)
-      );
+      throw new Error("Invalid capture status", {
+        cause: {
+          captureResult,
+        },
+      });
     }
 
     const creditsToAdd = Math.floor(amount * 100);
@@ -57,6 +64,7 @@ export async function GET(request: NextRequest) {
       new URL("/dashboard/billing?buy_credits_success=1", request.url)
     );
   } catch (error: unknown) {
+    sendErrorEmail({ error });
     return NextResponse.redirect(
       new URL("/dashboard/billing?buy_credits_failure=1", request.url)
     );

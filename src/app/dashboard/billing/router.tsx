@@ -6,6 +6,7 @@ import {
   OrderRequest,
   OrderApplicationContextShippingPreference,
 } from "@paypal/paypal-server-sdk";
+import { sendErrorEmail } from "@/lib/email";
 
 const AmountSchema = z.object({
   amount: z
@@ -59,19 +60,18 @@ export const billingRouter = router({
           },
         };
 
-        const { result } = await paypalOrdersController.createOrder({
+        const order = await paypalOrdersController.createOrder({
           body: orderPayload,
         });
 
         const approvalLink =
-          result.links?.find((link) => link.rel === "approve")?.href || null;
+          order.result.links?.find((link) => link.rel === "approve")?.href ||
+          null;
 
         if (!approvalLink) {
-          return {
-            success: false,
-            message: "Failed to generate payment URL",
-            data: null,
-          };
+          throw new Error("Failed to generate payment URL", {
+            cause: order,
+          });
         }
 
         return {
@@ -81,7 +81,8 @@ export const billingRouter = router({
             paymentUrl: approvalLink,
           },
         };
-      } catch (_error) {
+      } catch (error: any) {
+        sendErrorEmail({ error });
         return {
           success: false,
           message: "Failed to create order",

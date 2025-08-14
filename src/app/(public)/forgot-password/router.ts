@@ -3,6 +3,7 @@ import { publicProcedure, router } from "../../../lib/trpc/init";
 import { z } from "zod";
 import { sendForgotPasswordEmail } from "@/lib/email";
 import { generateEmailVerificationCode } from "@/utils/common";
+import { sendErrorEmail } from "@/lib/email";
 
 export const forgotPasswordRouter = router({
   resetPassword: publicProcedure
@@ -52,7 +53,8 @@ export const forgotPasswordRouter = router({
           success: true,
           message: "Verification code sent to email",
         };
-      } catch (error) {
+      } catch (error: any) {
+        sendErrorEmail({ error });
         return {
           success: false,
           message:

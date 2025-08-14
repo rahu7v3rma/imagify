@@ -3,6 +3,7 @@ import { publicProcedure, router } from "@/lib/trpc/init";
 import { z } from "zod";
 import { hashPassword } from "@/utils/bcrypt";
 import { isStrongPassword } from "validator";
+import { sendErrorEmail } from "@/lib/email";
 
 export const changePasswordRouter = router({
   changePassword: publicProcedure
@@ -44,7 +45,7 @@ export const changePasswordRouter = router({
         // Update user's password and clear the verification code
         await prisma.user.update({
           where: { id: user.id },
-          data: { 
+          data: {
             password: hashedPassword,
             emailVerificationCode: null,
             updatedAt: new Date().toISOString(),
@@ -55,7 +56,8 @@ export const changePasswordRouter = router({
           success: true,
           message: "Password changed successfully",
         };
-      } catch (error) {
+      } catch (error: any) {
+        sendErrorEmail({ error });
         return {
           success: false,
           message: "Failed to change password. Please try again.",

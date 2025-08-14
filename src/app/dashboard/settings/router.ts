@@ -3,7 +3,7 @@ import { router, protectedProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { hashPassword, comparePassword } from "@/utils/bcrypt";
 import { generateEmailVerificationCode } from "@/utils/common";
-import { sendEmailVerificationEmail } from "@/lib/email";
+import { sendEmailVerificationEmail, sendErrorEmail } from "@/lib/email";
 
 export const settingsRouter = router({
   deleteAccount: protectedProcedure
@@ -65,7 +65,8 @@ export const settingsRouter = router({
         });
 
         return { success: true, message: "Password changed successfully" };
-      } catch (error) {
+      } catch (error: any) {
+        sendErrorEmail({ error });
         return { success: false, message: "Failed to change password" };
       }
     }),
@@ -126,7 +127,8 @@ export const settingsRouter = router({
           message:
             "Email changed successfully. Please check your new email to verify your account.",
         };
-      } catch (error) {
+      } catch (error: any) {
+        sendErrorEmail({ error });
         return {
           success: false,
           message: "Failed to change email address",
