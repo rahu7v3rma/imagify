@@ -370,10 +370,10 @@ export default function SettingsPage() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="account" className="w-full">
-            <div className="flex flex-row gap-6">
-              <div className="w-full flex flex-col">
+            <div className="flex flex-row gap-6 mt-4">
+              <div className="w-full flex flex-col gap-4">
                 <ChangeEmailForm />
-                <div className="w-full pt-6">
+                <div className="w-full">
                   <DeleteAccount />
                 </div>
               </div>
