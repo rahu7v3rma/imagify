@@ -39,20 +39,7 @@ const ChangePasswordSchema = z
 
 type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>;
 
-export default function SettingsPage() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { logout } = useUser();
-
-  const { mutate: deleteAccount, isPending: isDeletePending } =
-    trpc.settings.deleteAccount.useMutation({
-      onSuccess: (ok) => {
-        if (ok) {
-          setIsOpen(false);
-          logout();
-        }
-      },
-    });
-
+function ChangePasswordForm() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -122,6 +109,72 @@ export default function SettingsPage() {
   const handleSubmit = form.handleSubmit(onSubmit);
 
   return (
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>Change Password</CardTitle>
+        <CardDescription>Update your account password.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 w-full"
+        >
+          <PasswordInput
+            label="Current Password"
+            value={currentPassword}
+            onChange={(e) =>
+              setFormValue("currentPassword", e.target.value)
+            }
+            error={currentPasswordError}
+          />
+          <PasswordInput
+            label="New Password"
+            value={newPassword}
+            onChange={(e) => setFormValue("newPassword", e.target.value)}
+            error={newPasswordError}
+          />
+          <PasswordInput
+            label="Confirm New Password"
+            value={confirmNewPassword}
+            onChange={(e) =>
+              setFormValue("confirmNewPassword", e.target.value)
+            }
+            error={confirmNewPasswordError}
+          />
+          <Button
+            type="submit"
+            variant="default"
+            className="mt-2 w-full"
+            disabled={!isFormValid || isChangePending}
+          >
+            {WithLoader({
+              text: "Change Password",
+              isLoading: isChangePending,
+            })}
+          </Button>
+          {successMessage && <SuccessAlert message={successMessage} />}
+          {errorMessage && <ErrorAlert message={errorMessage} />}
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function SettingsPage() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useUser();
+
+  const { mutate: deleteAccount, isPending: isDeletePending } =
+    trpc.settings.deleteAccount.useMutation({
+      onSuccess: (ok) => {
+        if (ok) {
+          setIsOpen(false);
+          logout();
+        }
+      },
+    });
+
+  return (
     <PageTransition>
       <div className="">
         <h1 className="text-2xl font-bold mb-6">Settings</h1>
@@ -137,60 +190,7 @@ export default function SettingsPage() {
           </TabsList>
           <TabsContent value="account">
             <div className="space-y-6">
-              <Card className="w-full max-w-md">
-                <CardHeader>
-                  <CardTitle>Change Password</CardTitle>
-                  <CardDescription>
-                    Update your account password.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form
-                    onSubmit={handleSubmit}
-                    className="flex flex-col gap-4 w-full"
-                  >
-                    <PasswordInput
-                      label="Current Password"
-                      value={currentPassword}
-                      onChange={(e) =>
-                        setFormValue("currentPassword", e.target.value)
-                      }
-                      error={currentPasswordError}
-                    />
-                    <PasswordInput
-                      label="New Password"
-                      value={newPassword}
-                      onChange={(e) =>
-                        setFormValue("newPassword", e.target.value)
-                      }
-                      error={newPasswordError}
-                    />
-                    <PasswordInput
-                      label="Confirm New Password"
-                      value={confirmNewPassword}
-                      onChange={(e) =>
-                        setFormValue("confirmNewPassword", e.target.value)
-                      }
-                      error={confirmNewPasswordError}
-                    />
-                    <Button
-                      type="submit"
-                      variant="default"
-                      className="mt-2 w-full"
-                      disabled={!isFormValid || isChangePending}
-                    >
-                      {WithLoader({
-                        text: "Change Password",
-                        isLoading: isChangePending,
-                      })}
-                    </Button>
-                    {successMessage && (
-                      <SuccessAlert message={successMessage} />
-                    )}
-                    {errorMessage && <ErrorAlert message={errorMessage} />}
-                  </form>
-                </CardContent>
-              </Card>
+              <ChangePasswordForm />
               <div className="flex flex-row gap-4 items-center pt-2">
                 <Button variant="destructive" onClick={() => setIsOpen(true)}>
                   Delete Account
