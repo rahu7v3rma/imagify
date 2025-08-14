@@ -29,6 +29,15 @@ export async function GET(request: NextRequest) {
     );
     const userId =
       captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.customId;
+    const orderId = captureResult.id;
+
+    if (!orderId) {
+      throw new Error("Order ID is required", {
+        cause: {
+          captureResult,
+        },
+      });
+    }
 
     if (!amount || !userId) {
       throw new Error("Invalid capture result", {
@@ -48,6 +57,14 @@ export async function GET(request: NextRequest) {
 
     const creditsToAdd = Math.floor(amount * 100);
     const parsedUserId = parseInt(userId);
+
+    // Create order record
+    await prisma.order.create({
+      data: {
+        orderId: orderId,
+        userId: parsedUserId,
+      },
+    });
 
     // Update user credits using Prisma
     await prisma.user.update({
