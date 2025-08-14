@@ -13,6 +13,7 @@ import { ROUTES } from "@/constants/routes";
 
 type UserProfile = {
   email?: string;
+  credits?: number;
 };
 
 type UserContextType = {

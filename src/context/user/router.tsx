@@ -6,11 +6,13 @@ export const userRouter = router({
     .output(
       z.object({
         email: z.string().optional(),
+        credits: z.number().optional(),
       })
     )
     .query(({ ctx }) => {
       return {
         email: ctx.user?.email,
+        credits: ctx.user?.credits,
       };
     }),
 });

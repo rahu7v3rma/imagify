@@ -10,3 +10,4 @@ tsconfig.tsbuildinfo
 .aider*
 uploads
 notes.md
+.kilocode

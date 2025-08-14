@@ -39,7 +39,7 @@ export const forgotPasswordRouter = router({
         // Update user with the verification code
         await prisma.user.update({
           where: { id: user.id },
-          data: { emailVerificationCode },
+          data: { emailVerificationCode, updatedAt: new Date().toISOString() },
         });
 
         // Send verification email

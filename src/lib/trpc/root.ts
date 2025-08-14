@@ -6,6 +6,7 @@ import { forgotPasswordRouter } from "@/app/(public)/forgot-password/router";
 import { changePasswordRouter } from "@/app/(public)/change-password/router";
 import { userRouter } from "@/context/user/router";
 import { settingsRouter } from "@/app/dashboard/settings/router";
+import { billingRouter } from "@/app/dashboard/billing/router";
 
 export const appRouter = router({
   contact: contactRouter,
@@ -15,6 +16,7 @@ export const appRouter = router({
   changePassword: changePasswordRouter,
   user: userRouter,
   settings: settingsRouter,
+  billing: billingRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -24,6 +24,7 @@ import PageTransition from "@/components/transitions";
 
 function Header() {
   const router = useRouter();
+  const { userProfile } = useUser();
 
   return (
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
@@ -43,7 +44,7 @@ function Header() {
             className="text-sm font-medium"
           >
             <Zap className="w-4 h-4 mr-2" />
-            {0} credits
+            {userProfile?.credits ?? 0} credits
           </Button>
         </div>
       </div>

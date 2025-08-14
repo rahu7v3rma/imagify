@@ -58,7 +58,10 @@ export const settingsRouter = router({
         });
         await prisma.user.update({
           where: { email: ctx.user.email },
-          data: { password: hashedPassword },
+          data: {
+            password: hashedPassword,
+            updatedAt: new Date().toISOString(),
+          },
         });
 
         return { success: true, message: "Password changed successfully" };
@@ -108,6 +111,7 @@ export const settingsRouter = router({
             email: updatedEmail,
             emailVerified: false,
             emailVerificationCode,
+            updatedAt: new Date().toISOString(),
           },
         });
 
@@ -119,7 +123,8 @@ export const settingsRouter = router({
 
         return {
           success: true,
-          message: "Email changed successfully. Please check your new email to verify your account.",
+          message:
+            "Email changed successfully. Please check your new email to verify your account.",
         };
       } catch (error) {
         return {

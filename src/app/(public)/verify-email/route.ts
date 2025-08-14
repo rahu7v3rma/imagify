@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
       data: {
         emailVerified: true,
         emailVerificationCode: null,
+        updatedAt: new Date().toISOString(),
       },
     });
 

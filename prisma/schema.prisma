@@ -24,6 +24,7 @@ model User {
   password               String   @map("password")
   emailVerificationCode  String?  @map("email_verification_code")
   emailVerified          Boolean? @map("email_verified")
+  credits                Int      @default(0) @map("credits")
   createdAt              DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt              DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
 

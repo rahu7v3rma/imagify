@@ -47,6 +47,7 @@ export const changePasswordRouter = router({
           data: { 
             password: hashedPassword,
             emailVerificationCode: null,
+            updatedAt: new Date().toISOString(),
           },
         });
 

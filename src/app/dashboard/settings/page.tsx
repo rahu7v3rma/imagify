@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { H1 } from "@/components/ui/typography";
 import { useUser } from "@/context/user/provider";
 import { trpc } from "@/lib/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -358,7 +359,9 @@ export default function SettingsPage() {
   return (
     <PageTransition className="">
       <div className="w-full">
-        <h1 className="text-2xl font-bold mb-6">Settings</h1>
+        <div className="mb-6 flex justify-start">
+          <H1>Settings</H1>
+        </div>
 
         <Tabs defaultValue="account">
           <TabsList className="grid w-full grid-cols-2">
