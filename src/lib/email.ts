@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL } from "@/constants/common";
+import { CONTACT_EMAIL, ADMIN_EMAIL } from "@/constants/common";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -76,6 +76,30 @@ export async function sendForgotPasswordEmail({
 
   return sendEmail({
     to,
+    subject,
+    html,
+    text,
+  });
+}
+
+export async function sendErrorEmail({
+  error,
+}: {
+  error: any;
+}) {
+  const subject = "Application Error Report";
+  
+  const errorString = JSON.stringify(error, null, 2);
+  
+  const html = `
+    <h2>Application Error Report</h2>
+    <pre>${errorString}</pre>
+  `;
+  
+  const text = `Application Error Report:\n\n${errorString}`;
+  
+  return sendEmail({
+    to: ADMIN_EMAIL,
     subject,
     html,
     text,
