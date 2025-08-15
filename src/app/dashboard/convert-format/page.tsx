@@ -2,8 +2,6 @@
 
 import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
-import SelectImage from "@/components/dashboard/select-image";
-import DisplayImage from "@/components/dashboard/display-image";
 import { SelectSingle } from "@/components/inputs";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import PageTransition from "@/components/transitions";
@@ -34,8 +32,6 @@ export default function ConvertFormatPage() {
         <div className="flex gap-8">
           <div className="flex-1 max-w-md">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <SelectImage onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
-
               <SelectSingle
                 label="Output Format"
                 value={outputFormat}
@@ -52,8 +48,6 @@ export default function ConvertFormatPage() {
               </Button>
             </form>
           </div>
-
-          {convertedImage && <DisplayImage imageSrc={convertedImage} />}
         </div>
       </div>
     </PageTransition>

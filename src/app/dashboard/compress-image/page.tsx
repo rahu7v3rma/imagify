@@ -2,8 +2,6 @@
 
 import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
-import ImageInput from "@/components/dashboard/select-image";
-import DisplayImage from "@/components/dashboard/display-image";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import PageTransition from "@/components/transitions";
 
@@ -30,8 +28,6 @@ export default function CompressImagePage() {
         <div className="flex gap-8">
           <div className="flex-1 max-w-md">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <ImageInput onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
-
               <Button
                 type="submit"
                 disabled={!selectedImageUrl}
@@ -41,8 +37,6 @@ export default function CompressImagePage() {
               </Button>
             </form>
           </div>
-
-          {compressedImage && <DisplayImage imageSrc={compressedImage} />}
         </div>
       </div>
     </PageTransition>

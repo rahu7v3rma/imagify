@@ -262,16 +262,18 @@ export const Textarea = ({
   onChange,
   label,
   error,
+  placeholder,
 }: {
   value: string;
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   label: string;
   error?: string;
+  placeholder?: string;
 }) => {
   return (
     <div className="space-y-2">
       <Label htmlFor="message">{label}</Label>
-      <UITextarea id="message" value={value} onChange={onChange} />
+      <UITextarea id="message" value={value} onChange={onChange} placeholder={placeholder} />
       <AnimatePresence>
         {error && (
           <motion.div

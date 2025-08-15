@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/buttons";
 import { FormEvent, useState, ChangeEvent } from "react";
-import SelectImage from "@/components/dashboard/select-image";
-import DisplayImage from "@/components/dashboard/display-image";
+
 import { Textarea } from "@/components/inputs";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import PageTransition from "@/components/transitions";
@@ -33,8 +32,6 @@ export default function EditImagePage() {
         <div className="flex gap-8">
           <div className="flex-1 max-w-md">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <SelectImage onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
-
               <Textarea
                 value={prompt}
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
@@ -51,8 +48,6 @@ export default function EditImagePage() {
               </Button>
             </form>
           </div>
-
-          {editedImage && <DisplayImage imageSrc={editedImage} />}
         </div>
       </div>
     </PageTransition>

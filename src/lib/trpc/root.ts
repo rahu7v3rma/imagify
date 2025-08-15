@@ -7,6 +7,7 @@ import { changePasswordRouter } from "@/app/(public)/change-password/router";
 import { userRouter } from "@/context/user/router";
 import { settingsRouter } from "@/app/dashboard/settings/router";
 import { billingRouter } from "@/app/dashboard/billing/router";
+import { generateImageRouter } from "@/app/dashboard/generate-image/router";
 
 export const appRouter = router({
   contact: contactRouter,
@@ -17,6 +18,7 @@ export const appRouter = router({
   user: userRouter,
   settings: settingsRouter,
   billing: billingRouter,
+  generateImage: generateImageRouter,
 });
 
 export type AppRouter = typeof appRouter;

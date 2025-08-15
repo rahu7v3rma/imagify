@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/buttons";
 import { FormEvent, useState } from "react";
-import SelectImage from "@/components/dashboard/select-image";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { Copy } from "lucide-react";
 import clsx from "clsx";
@@ -31,8 +30,6 @@ export default function ExtractTextPage() {
         <div className="flex gap-8">
           <div className="flex-1 max-w-md">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <SelectImage onChangeImageUrl={(url) => setSelectedImageUrl(url)} />
-
               <Button type="submit" disabled={!selectedImageUrl}>
                 Extract Text
               </Button>
