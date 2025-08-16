@@ -22,3 +22,17 @@ export async function getReplicateImageUrl(
 
   return replicateOutputUrl;
 }
+
+export async function getReplicateOutput(
+  modelVersion: string,
+  input: Record<string, any>
+) {
+  const replicateOutput = await replicate.run(
+    modelVersion as "`${string}/${string}` | `${string}/${string}:${string}`",
+    {
+      input,
+    }
+  );
+
+  return replicateOutput;
+}

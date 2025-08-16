@@ -10,10 +10,10 @@ export const generateEmailVerificationCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-export const downloadImage = (imageHref: string) => {
+export const downloadImage = (imageHref: string, format = "png") => {
   const link = document.createElement("a");
   link.href = imageHref;
-  link.download = "generated-image.png";
+  link.download = `generated-image.${format}`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -28,19 +28,23 @@ export const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
-export async function convertImageUrlToBase64(imageUrl: string): Promise<string> {
+export async function convertImageUrlToBase64(
+  imageUrl: string
+): Promise<string> {
   const response = await axios.get(imageUrl, {
     responseType: "arraybuffer",
   });
-  
+
   // Check if the response content type is an image
-  const contentType = response.headers['content-type'];
-  if (!contentType || !contentType.startsWith('image/')) {
-    throw new Error(`Invalid content type: ${contentType}. Expected image content.`);
+  const contentType = response.headers["content-type"];
+  if (!contentType || !contentType.startsWith("image/")) {
+    throw new Error(
+      `Invalid content type: ${contentType}. Expected image content.`
+    );
   }
-  
+
   const imageBuffer = Buffer.from(response.data);
   const imageBase64 = imageBuffer.toString("base64");
-  
+
   return `data:${contentType};base64,${imageBase64}`;
 }

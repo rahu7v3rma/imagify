@@ -1,31 +1,27 @@
 "use client";
 
+import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
-import { ImageInput, TextActionInput } from "@/components/inputs";
-import { useState } from "react";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { InputImagePreview } from "@/components/input-image-preview";
+import { WithLoader } from "@/components/loaders";
+import { ProcessedImage } from "@/components/processed-image";
 import PageTransition from "@/components/transitions";
-import { H1, Muted } from "@/components/ui/typography";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import {
-  downloadImage,
-  fileToBase64,
-  convertImageUrlToBase64,
-} from "@/utils/common";
-import { trpc } from "@/lib/trpc/client";
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { WithLoader } from "@/components/loaders";
+import { H1, Muted } from "@/components/ui/typography";
+import { UploadImage } from "@/components/upload-image";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { useUser } from "@/context/user/provider";
+import { trpc } from "@/lib/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const RemoveBackgroundSchema = z.object({
   imageBase64: z
@@ -39,10 +35,6 @@ export default function RemoveBackgroundPage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const [imageInputError, setImageInputError] = useState<string | null>(null);
-  const [urlInputError, setUrlInputError] = useState<string | null>(null);
-  const [isUrlConversionLoading, setIsUrlConversionLoading] = useState(false);
   const { fetchUserProfile } = useUser();
 
   const form = useForm<RemoveBackgroundFormValues>({
@@ -84,31 +76,6 @@ export default function RemoveBackgroundPage() {
     });
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Check if file is a supported image type
-      const allowedTypes = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
-      ];
-      if (!allowedTypes.includes(file.type)) {
-        setImageInputError("Please select a JPG, PNG, or WebP image file");
-        setUrlInputError(null);
-        // Clear the input and form value
-        e.target.value = "";
-        return;
-      }
-
-      const base64 = await fileToBase64(file);
-      setFormValue("imageBase64", base64);
-      setImageInputError(null);
-      setUrlInputError(null);
-    }
-  };
-
   const setFormValue = (
     field: keyof RemoveBackgroundFormValues,
     value: string
@@ -120,27 +87,12 @@ export default function RemoveBackgroundPage() {
     });
   };
 
-  const handleUrlToBase64 = async () => {
-    try {
-      if (!imageUrl.trim()) {
-        setUrlInputError("Please enter a valid image URL");
-        setImageInputError(null);
-        return;
-      }
+  const handleFileUpload = (base64: string) => {
+    setFormValue("imageBase64", base64);
+  };
 
-      setIsUrlConversionLoading(true);
-      const base64 = await convertImageUrlToBase64(imageUrl);
-      setFormValue("imageBase64", base64);
-      setImageInputError(null);
-      setUrlInputError(null);
-    } catch (error) {
-      setUrlInputError(
-        "Failed to load image from URL. Please check the URL and try again."
-      );
-      setImageInputError(null);
-    } finally {
-      setIsUrlConversionLoading(false);
-    }
+  const handleUrlUpload = (base64: string) => {
+    setFormValue("imageBase64", base64);
   };
 
   const values = form.watch();
@@ -172,22 +124,9 @@ export default function RemoveBackgroundPage() {
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-4 w-full"
                 >
-                  <ImageInput
-                    label="Upload Image"
-                    onChange={handleFileChange}
-                    error={imageInputError}
-                  />
-                  <TextActionInput
-                    label="Or use image URL"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    actionButton={{
-                      text: "Use",
-                      onPress: handleUrlToBase64,
-                      disabled: !imageUrl.trim(),
-                      isLoading: isUrlConversionLoading,
-                    }}
-                    error={urlInputError}
+                  <UploadImage
+                    onUploadFile={handleFileUpload}
+                    onUploadUrl={handleUrlUpload}
                   />
                   <Button
                     type="submit"
@@ -205,54 +144,10 @@ export default function RemoveBackgroundPage() {
                 </form>
               </CardContent>
             </Card>
-            {imageBase64 && (
-              <Card className="w-full mb-6 mt-6">
-                <CardHeader>
-                  <CardTitle>Input Image</CardTitle>
-                  <CardDescription>
-                    Your uploaded image ready for background removal
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="w-full flex justify-center">
-                    <img
-                      src={imageBase64}
-                      alt="Preview image"
-                      className="rounded-lg border max-h-64 object-contain"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <InputImagePreview imageBase64={imageBase64} />
           </div>
 
-          {processedImage && (
-            <div className="flex-1">
-              <Card className="max-w-[500px] max-h-[500px]">
-                <CardHeader>
-                  <CardTitle>Processed Image</CardTitle>
-                  <CardDescription>
-                    Your background-removed image is ready
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="w-full flex justify-center">
-                    <img
-                      src={processedImage}
-                      alt="Processed image"
-                      className="rounded-lg border"
-                    />
-                  </div>
-                  <Button
-                    className="w-full"
-                    onClick={() => downloadImage(processedImage)}
-                  >
-                    Download Image
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {processedImage && <ProcessedImage processedImage={processedImage} />}
         </div>
       </div>
     </PageTransition>

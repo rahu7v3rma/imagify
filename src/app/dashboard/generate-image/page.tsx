@@ -1,27 +1,26 @@
 "use client";
 
+import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
 import { Textarea } from "@/components/inputs";
-import { useState } from "react";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { WithLoader } from "@/components/loaders";
+import { ProcessedImage } from "@/components/processed-image";
 import PageTransition from "@/components/transitions";
-import { H1, Muted } from "@/components/ui/typography";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { downloadImage } from "@/utils/common";
-import { trpc } from "@/lib/trpc/client";
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { WithLoader } from "@/components/loaders";
+import { H1, Muted } from "@/components/ui/typography";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { useUser } from "@/context/user/provider";
+import { trpc } from "@/lib/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const GenerateImageSchema = z.object({
   prompt: z
@@ -142,33 +141,7 @@ export default function GenerateImagePage() {
             </Card>
           </div>
 
-          {generatedImage && (
-            <div className="flex-1">
-              <Card className="max-w-[500px] max-h-[500px]">
-                <CardHeader>
-                  <CardTitle>Generated Image</CardTitle>
-                  <CardDescription>
-                    Your AI-generated image is ready
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="w-full flex justify-center">
-                    <img
-                      src={generatedImage}
-                      alt="Generated image"
-                      className="rounded-lg border"
-                    />
-                  </div>
-                  <Button
-                    className="w-full"
-                    onClick={() => downloadImage(generatedImage)}
-                  >
-                    Download Image
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {generatedImage && <ProcessedImage processedImage={generatedImage} />}
         </div>
       </div>
     </PageTransition>

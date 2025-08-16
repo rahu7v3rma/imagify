@@ -1,42 +1,153 @@
 "use client";
 
+import { ErrorAlert, SuccessAlert } from "@/components/alerts";
 import { Button } from "@/components/buttons";
-import { FormEvent, useState } from "react";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { InputImagePreview } from "@/components/input-image-preview";
+import { WithLoader } from "@/components/loaders";
+import { ProcessedImage } from "@/components/processed-image";
 import PageTransition from "@/components/transitions";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { H1, Muted } from "@/components/ui/typography";
+import { UploadImage } from "@/components/upload-image";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { useUser } from "@/context/user/provider";
+import { trpc } from "@/lib/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const CompressImageSchema = z.object({
+  imageBase64: z
+    .string()
+    .min(1, "Please upload an image to compress"),
+});
+
+type CompressImageFormValues = z.infer<typeof CompressImageSchema>;
 
 export default function CompressImagePage() {
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
-  const [compressedImage, setCompressedImage] = useState<string | null>(null);
+  const [processedImage, setProcessedImage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { fetchUserProfile } = useUser();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const form = useForm<CompressImageFormValues>({
+    resolver: zodResolver(CompressImageSchema),
+    mode: "onChange",
+    defaultValues: {
+      imageBase64: "",
+    },
+  });
+
+  const { mutate: compressImage, isPending: isCompressImagePending } =
+    trpc.compressImage.compressImage.useMutation({
+      onSuccess: (data) => {
+        if (data.success && data.data?.imageBase64) {
+          setProcessedImage(data.data.imageBase64);
+          setSuccessMessage(data.message || "Image compressed successfully!");
+          setErrorMessage(null);
+          fetchUserProfile();
+        } else {
+          setErrorMessage(
+            data.message || "Failed to compress image. Please try again."
+          );
+          setSuccessMessage(null);
+        }
+      },
+      onError: (error) => {
+        setErrorMessage(
+          error.message || "Failed to compress image. Please try again."
+        );
+        setSuccessMessage(null);
+      },
+    });
+
+  const onSubmit = async (data: CompressImageFormValues) => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
+    compressImage({
+      imageBase64: data.imageBase64,
+    });
   };
+
+  const setFormValue = (
+    field: keyof CompressImageFormValues,
+    value: string
+  ) => {
+    form.setValue(field, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
+
+  const handleFileUpload = (base64: string) => {
+    setFormValue("imageBase64", base64);
+  };
+
+  const handleUrlUpload = (base64: string) => {
+    setFormValue("imageBase64", base64);
+  };
+
+  const values = form.watch();
+  const imageBase64 = values.imageBase64;
+  const isFormValid = form.formState.isValid;
+  const handleSubmit = form.handleSubmit(onSubmit);
 
   return (
     <PageTransition>
-      <div className="p-6 w-full">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Compress Image</h1>
-        <p className="text-gray-600 mb-2">
-          Upload an image or provide an image URL to compress it and reduce file
-          size.
-        </p>
-        <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-          💳 {CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits
-        </div>
-
+      <div className="w-full">
         <div className="flex gap-8">
           <div className="flex-1 max-w-md">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <Button
-                type="submit"
-                disabled={!selectedImageUrl}
-                variant="default"
-              >
-                Compress Image
-              </Button>
-            </form>
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>
+                  <div className="flex flex-col items-start">
+                    <H1>Compress Image</H1>
+                    <Muted>
+                      Upload an image to compress it using AI
+                    </Muted>
+                  </div>
+                </CardTitle>
+                <Badge variant="default" className="w-fit">
+                  💳 {CREDIT_REQUIREMENTS.COMPRESS_IMAGE} credits
+                </Badge>
+              </CardHeader>
+              <CardContent>
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-4 w-full"
+                >
+                  <UploadImage
+                    onUploadFile={handleFileUpload}
+                    onUploadUrl={handleUrlUpload}
+                  />
+                  <Button
+                    type="submit"
+                    variant="default"
+                    className="mt-2 w-full"
+                    disabled={!isFormValid || isCompressImagePending}
+                  >
+                    {WithLoader({
+                      text: "Compress Image",
+                      isLoading: isCompressImagePending,
+                    })}
+                  </Button>
+                  {successMessage && <SuccessAlert message={successMessage} />}
+                  {errorMessage && <ErrorAlert message={errorMessage} />}
+                </form>
+              </CardContent>
+            </Card>
+            <InputImagePreview imageBase64={imageBase64} />
           </div>
+
+          {processedImage && <ProcessedImage processedImage={processedImage} />}
         </div>
       </div>
     </PageTransition>
