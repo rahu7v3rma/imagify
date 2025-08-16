@@ -1,11 +1,11 @@
 "use client";
 
 import { Small, Muted } from "@/components/ui/typography";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Link } from "@/components/links";
-import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { Link } from "@/components/shared/links";
+import { Logo } from "@/components/shared/logo";
 import NextLink from "next/link";
-import { Button } from "@/components/buttons";
+import { Button } from "@/components/shared/buttons";
 import { ROUTES } from "@/constants/routes";
 import { Menu } from "lucide-react";
 import { useState } from "react";

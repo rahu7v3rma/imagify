@@ -6,7 +6,7 @@ import "./globals.css";
 import { Geist } from "next/font/google";
 import { ReactNode } from "react";
 import { TRPCProvider } from "@/lib/trpc/provider";
-import PageTransition from "@/components/transitions";
+import PageTransition from "@/components/shared/transitions";
 import { UserProvider } from "@/context/user/provider";
 import { ThemeProvider } from "@/context/theme";
 import { ThemeProvider as NextThemesProvider } from "next-themes";

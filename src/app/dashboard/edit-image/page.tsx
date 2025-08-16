@@ -1,16 +1,16 @@
 "use client";
 
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { Button } from "@/components/buttons";
-import { Textarea } from "@/components/inputs";
-import { InputImagePreview } from "@/components/input-image-preview";
-import { WithLoader } from "@/components/loaders";
-import { ProcessedImage } from "@/components/processed-image";
-import PageTransition from "@/components/transitions";
+import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
+import { Button } from "@/components/shared/buttons";
+import { Textarea } from "@/components/shared/inputs";
+import { InputImagePreview } from "@/components/shared/input-image-preview";
+import { WithLoader } from "@/components/shared/loaders";
+import { ProcessedImage } from "@/components/shared/processed-image";
+import PageTransition from "@/components/shared/transitions";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { H1, Muted } from "@/components/ui/typography";
-import { UploadImage } from "@/components/upload-image";
+import { UploadImage } from "@/components/shared/upload-image";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { useUser } from "@/context/user/provider";
 import { trpc } from "@/lib/trpc/client";

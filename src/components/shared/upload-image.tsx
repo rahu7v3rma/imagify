@@ -1,6 +1,6 @@
 "use client";
 
-import { ImageInput, TextActionInput } from "@/components/inputs";
+import { ImageInput, TextActionInput } from "@/components/shared/inputs";
 import { convertImageUrlToBase64, fileToBase64 } from "@/utils/common";
 import { useState } from "react";
 

@@ -1,10 +1,10 @@
 "use client";
 
-import { PasswordInput, EmailInput } from "@/components/inputs";
-import { Button } from "@/components/buttons";
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { WithLoader } from "@/components/loaders";
-import { Link } from "@/components/links";
+import { PasswordInput, EmailInput } from "@/components/shared/inputs";
+import { Button } from "@/components/shared/buttons";
+import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
+import { WithLoader } from "@/components/shared/loaders";
+import { Link } from "@/components/shared/links";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

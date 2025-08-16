@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/buttons";
+import { Button } from "@/components/shared/buttons";
 import { ROUTES } from "@/constants/routes";
 import { useUser } from "@/context/user/provider";
 import {
@@ -19,9 +19,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Logo } from "@/components/logo";
-import PageTransition from "@/components/transitions";
-import { WithLoaderNodeSafe } from "@/components/loaders";
+import { Logo } from "@/components/shared/logo";
+import PageTransition from "@/components/shared/transitions";
+import { WithLoaderNodeSafe } from "@/components/shared/loaders";
 
 function Header() {
   const router = useRouter();

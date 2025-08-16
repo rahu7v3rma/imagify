@@ -1,5 +1,5 @@
 import { H1, P } from "@/components/ui/typography";
-import PageTransition from "@/components/transitions";
+import PageTransition from "@/components/shared/transitions";
 
 export const metadata = {
   title: "Blog - Imagify",

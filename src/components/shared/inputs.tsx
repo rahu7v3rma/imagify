@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, IconButtonWrapper } from "@/components/buttons";
+import { Button, IconButtonWrapper } from "@/components/shared/buttons";
 import { Input } from "@/components/ui/input";
 import { Button as UIButton } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

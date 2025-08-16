@@ -1,6 +1,6 @@
 import { H1, P, H4, Small, Muted } from "@/components/ui/typography";
 import { Card, CardContent } from "@/components/ui/card";
-import { MotionCardWrapper } from "@/components/cards";
+import { MotionCardWrapper } from "@/components/shared/cards";
 import NextLink from "next/link";
 import {
   Image,
@@ -11,7 +11,7 @@ import {
   Archive,
   RotateCcw,
 } from "lucide-react";
-import PageTransition from "@/components/transitions";
+import PageTransition from "@/components/shared/transitions";
 import { ROUTES } from "@/constants/routes";
 
 export const metadata = {

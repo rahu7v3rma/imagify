@@ -1,11 +1,11 @@
 "use client";
 
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { Button } from "@/components/buttons";
-import { PasswordInput, EmailInput, TextInput } from "@/components/inputs";
-import { TabLink } from "@/components/links";
-import { WithLoader, WithLoaderNode } from "@/components/loaders";
-import PageTransition from "@/components/transitions";
+import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
+import { Button } from "@/components/shared/buttons";
+import { PasswordInput, EmailInput, TextInput } from "@/components/shared/inputs";
+import { TabLink } from "@/components/shared/links";
+import { WithLoader, WithLoaderNode } from "@/components/shared/loaders";
+import PageTransition from "@/components/shared/transitions";
 import {
   Card,
   CardContent,

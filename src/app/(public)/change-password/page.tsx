@@ -1,9 +1,9 @@
 "use client";
 
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { Button } from "@/components/buttons";
-import { PasswordInput } from "@/components/inputs";
-import { WithLoader } from "@/components/loaders";
+import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
+import { Button } from "@/components/shared/buttons";
+import { PasswordInput } from "@/components/shared/inputs";
+import { WithLoader } from "@/components/shared/loaders";
 import {
   Card,
   CardContent,

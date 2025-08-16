@@ -1,4 +1,4 @@
-import { Button } from "@/components/buttons";
+import { Button } from "@/components/shared/buttons";
 import {
   Card,
   CardContent,

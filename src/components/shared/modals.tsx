@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/buttons";
+import { Button } from "@/components/shared/buttons";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { WithLoader } from "@/components/loaders";
+import { WithLoader } from "@/components/shared/loaders";
 
 export default function ConfirmationModal({
   isOpen,

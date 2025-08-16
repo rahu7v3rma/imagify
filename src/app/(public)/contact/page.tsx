@@ -1,10 +1,10 @@
 "use client";
 
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { Button } from "@/components/buttons";
-import { EmailInput, ImageInput, Textarea } from "@/components/inputs";
-import { WithLoader } from "@/components/loaders";
-import PageTransition from "@/components/transitions";
+import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
+import { Button } from "@/components/shared/buttons";
+import { EmailInput, ImageInput, Textarea } from "@/components/shared/inputs";
+import { WithLoader } from "@/components/shared/loaders";
+import PageTransition from "@/components/shared/transitions";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -17,7 +17,7 @@ import { Small } from "@/components/ui/typography";
 import { CONTACT_EMAIL } from "@/constants/common";
 import { trpc } from "@/lib/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "@/components/links";
+import { Link } from "@/components/shared/links";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

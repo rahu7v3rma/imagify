@@ -1,19 +1,19 @@
 "use client";
 
-import PageTransition from "@/components/transitions";
+import PageTransition from "@/components/shared/transitions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { H1, H3, Muted } from "@/components/ui/typography";
-import { Button } from "@/components/buttons";
-import { NumberInput } from "@/components/inputs";
+import { Button } from "@/components/shared/buttons";
+import { NumberInput } from "@/components/shared/inputs";
 import { Zap } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { WithLoaderNode, WithLoaderNodeSafe } from "@/components/loaders";
+import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
+import { WithLoaderNode, WithLoaderNodeSafe } from "@/components/shared/loaders";
 import { trpc } from "@/lib/trpc/client";
 import { useUser } from "@/context/user/provider";
 

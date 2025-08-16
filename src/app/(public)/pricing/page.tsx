@@ -1,10 +1,10 @@
 "use client";
 
-import { ErrorAlert, SuccessAlert } from "@/components/alerts";
-import { Button } from "@/components/buttons";
-import { MotionCardWrapper } from "@/components/cards";
-import { NumberInput } from "@/components/inputs";
-import PageTransition from "@/components/transitions";
+import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
+import { Button } from "@/components/shared/buttons";
+import { MotionCardWrapper } from "@/components/shared/cards";
+import { NumberInput } from "@/components/shared/inputs";
+import PageTransition from "@/components/shared/transitions";
 import {
   Card,
   CardContent,

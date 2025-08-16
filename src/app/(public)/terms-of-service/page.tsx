@@ -1,4 +1,4 @@
-import PageTransition from "@/components/transitions";
+import PageTransition from "@/components/shared/transitions";
 import { H1, List } from "@/components/ui/typography";
 
 export const metadata = {

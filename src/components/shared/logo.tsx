@@ -1,5 +1,5 @@
 import { Link } from "./links";
-import { Large } from "./ui/typography";
+import { Large } from "../ui/typography";
 import { ROUTES } from "@/constants/routes";
 
 export function Logo() {
