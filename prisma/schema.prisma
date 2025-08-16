@@ -25,6 +25,7 @@ model User {
   emailVerificationCode  String?  @map("email_verification_code")
   emailVerified          Boolean? @map("email_verified")
   credits                Int      @default(0) @map("credits")
+  role                   String?  @map("role")
   createdAt              DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt              DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
 
@@ -39,4 +40,16 @@ model Order {
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
 
   @@map("order")
+}
+
+model Blog {
+  id        Int      @id @default(autoincrement()) @map("id")
+  title     String   @map("title")
+  content   String   @map("content")
+  ctaLink   String?  @map("cta_link")
+  slug      String?  @map("slug")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+
+  @@map("blogs")
 }
