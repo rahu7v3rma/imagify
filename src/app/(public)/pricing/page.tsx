@@ -33,6 +33,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import NextLink from "next/link";
 
+export const metadata = {
+  title: "Pricing - Imagify",
+  description: "Simple, pay-as-you-go pricing for AI image processing tools. Purchase prepaid credits and use them across any tool.",
+};
+
 const PurchaseSchema = z.object({
   amount: z
     .number()

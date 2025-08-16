@@ -23,6 +23,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+export const metadata = {
+  title: "Compress Image - Imagify",
+  description: "Reduce image file size without losing quality using AI. Upload your image and compress it instantly.",
+};
+
 const CompressImageSchema = z.object({
   imageBase64: z
     .string()

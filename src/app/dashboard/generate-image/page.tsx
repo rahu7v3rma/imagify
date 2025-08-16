@@ -22,6 +22,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+export const metadata = {
+  title: "Generate Image - Imagify",
+  description: "Create stunning images from text using AI. Describe what you want and generate unique images instantly.",
+};
+
 const GenerateImageSchema = z.object({
   prompt: z
     .string()

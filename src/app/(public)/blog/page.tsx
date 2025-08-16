@@ -1,6 +1,11 @@
 import { H1, P } from "@/components/ui/typography";
 import PageTransition from "@/components/transitions";
 
+export const metadata = {
+  title: "Blog - Imagify",
+  description: "Read the latest insights, tips, and updates on AI image processing and our tools.",
+};
+
 export default function BlogPage() {
   return (
     <PageTransition>

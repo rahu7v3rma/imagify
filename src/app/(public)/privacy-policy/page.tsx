@@ -1,6 +1,11 @@
 import PageTransition from "@/components/transitions";
 import { H1, List } from "@/components/ui/typography";
 
+export const metadata = {
+  title: "Privacy Policy - Imagify",
+  description: "Learn how Imagify collects, uses, and protects your personal information. Your privacy is important to us.",
+};
+
 export default function PrivacyPolicyPage() {
   return (
     <PageTransition>

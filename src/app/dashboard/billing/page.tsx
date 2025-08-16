@@ -17,6 +17,11 @@ import { WithLoaderNode, WithLoaderNodeSafe } from "@/components/loaders";
 import { trpc } from "@/lib/trpc/client";
 import { useUser } from "@/context/user/provider";
 
+export const metadata = {
+  title: "Billing - Imagify",
+  description: "Manage your Imagify account billing, purchase credits, and view your credit balance.",
+};
+
 // Local schema copied from pricing page reference
 const PurchaseSchema = z.object({
   amount: z

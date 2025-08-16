@@ -23,6 +23,11 @@ import { useForm } from "react-hook-form";
 import { isStrongPassword } from "validator";
 import { z } from "zod";
 
+export const metadata = {
+  title: "Settings - Imagify",
+  description: "Manage your Imagify account settings, update your email, change your password, or delete your account.",
+};
+
 const ChangePasswordSchema = z
   .object({
     currentPassword: z.string(),

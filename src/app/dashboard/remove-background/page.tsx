@@ -23,6 +23,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+export const metadata = {
+  title: "Remove Background - Imagify",
+  description: "Remove backgrounds from images instantly using AI. Upload your image and get a transparent background in seconds.",
+};
+
 const RemoveBackgroundSchema = z.object({
   imageBase64: z
     .string()

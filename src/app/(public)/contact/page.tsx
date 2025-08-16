@@ -22,6 +22,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+export const metadata = {
+  title: "Contact Us - Imagify",
+  description: "Get in touch with the Imagify team. Have questions or need help with our AI image processing tools? We're here to assist you.",
+};
+
 const ContactSchema = z.object({
   email: z.string().email(),
   message: z.string().min(10).max(1000),

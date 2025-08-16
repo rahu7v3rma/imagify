@@ -19,6 +19,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+export const metadata = {
+  title: "Convert Image Format - Imagify",
+  description: "Convert images between different formats like PNG, JPEG, JPG, and WebP. Upload your image and choose the output format.",
+};
+
 const ConvertFormatSchema = z.object({
   imageBase64: z.string().min(1, "Please upload an image to convert"),
   format: z.string().min(1, "Please select a format"),

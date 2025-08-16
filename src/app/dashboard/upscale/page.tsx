@@ -23,6 +23,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+export const metadata = {
+  title: "Upscale Image - Imagify",
+  description: "Enhance and upscale your images using AI. Upload your image and increase its resolution while maintaining quality.",
+};
+
 const UpscaleSchema = z.object({
   imageBase64: z
     .string()

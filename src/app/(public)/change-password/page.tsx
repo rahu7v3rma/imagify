@@ -19,6 +19,11 @@ import { trpc } from "@/lib/trpc/client";
 import { useSearchParams } from "next/navigation";
 import { isStrongPassword } from "validator";
 
+export const metadata = {
+  title: "Change Password - Imagify",
+  description: "Update your Imagify account password. Create a strong new password to secure your account.",
+};
+
 const ChangePasswordSchema = z
   .object({
     password: z.string().refine(isStrongPassword, {

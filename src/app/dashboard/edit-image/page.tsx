@@ -19,6 +19,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+export const metadata = {
+  title: "Edit Image - Imagify",
+  description: "Professional prompt-based image editing using AI. Upload your image and describe the changes you want to make.",
+};
+
 const EditImageSchema = z.object({
   imageBase64: z.string().min(1, "Please upload an image to edit"),
   prompt: z

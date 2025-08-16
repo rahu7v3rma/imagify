@@ -1,6 +1,11 @@
 import PageTransition from "@/components/transitions";
 import { H1, Muted } from "@/components/ui/typography";
 
+export const metadata = {
+  title: "Dashboard - Imagify",
+  description: "Access all your image processing tools in one place.",
+};
+
 export default function DashboardPage() {
   return (
     <PageTransition>

@@ -22,6 +22,11 @@ import { trpc } from "@/lib/trpc/client";
 import { useUser } from "@/context/user/provider";
 import { Small } from "@/components/ui/typography";
 
+export const metadata = {
+  title: "Login - Imagify",
+  description: "Sign in to your Imagify account to access powerful AI image processing tools.",
+};
+
 const LoginSchema = z.object({
   email: z.email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),

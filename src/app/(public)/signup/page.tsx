@@ -21,6 +21,11 @@ import { trpc } from "@/lib/trpc/client";
 import { isStrongPassword } from "validator";
 import { Muted, Small } from "@/components/ui/typography";
 
+export const metadata = {
+  title: "Sign Up - Imagify",
+  description: "Create an account to access powerful AI image processing tools.",
+};
+
 const SignupSchema = z
   .object({
     email: z.email(),
