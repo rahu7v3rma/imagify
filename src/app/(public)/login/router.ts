@@ -88,7 +88,11 @@ export const loginRouter = router({
           },
         };
       } catch (error: any) {
-        sendErrorEmail({ error });
+        if (process.env.APP_ENV === 'production') {
+          sendErrorEmail({ error });
+        } else {
+          console.log('Error in login:', error);
+        }
         return {
           success: false,
           message: "Failed to login. Please try again.",

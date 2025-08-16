@@ -8,6 +8,7 @@ import { userRouter } from "@/context/user/router";
 import { settingsRouter } from "@/app/dashboard/settings/router";
 import { billingRouter } from "@/app/dashboard/billing/router";
 import { generateImageRouter } from "@/app/dashboard/generate-image/router";
+import { removeBackgroundRouter } from "@/app/dashboard/remove-background/router";
 
 export const appRouter = router({
   contact: contactRouter,
@@ -19,6 +20,7 @@ export const appRouter = router({
   settings: settingsRouter,
   billing: billingRouter,
   generateImage: generateImageRouter,
+  removeBackground: removeBackgroundRouter,
 });
 
 export type AppRouter = typeof appRouter;

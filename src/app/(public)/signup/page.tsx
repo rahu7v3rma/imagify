@@ -19,7 +19,7 @@ import {
 import { ROUTES } from "@/constants/routes";
 import { trpc } from "@/lib/trpc/client";
 import { isStrongPassword } from "validator";
-import { Small } from "@/components/ui/typography";
+import { Muted, Small } from "@/components/ui/typography";
 
 const SignupSchema = z
   .object({
@@ -148,10 +148,14 @@ export default function SignupPage() {
                 onChange={setConfirmPassword}
                 error={confirmPasswordError}
               />
+              <Muted className="text-muted-foreground text-center text-xs">
+                By signing up, you agree to our Privacy Policy and Terms of
+                Service.
+              </Muted>
               <Button
                 type="submit"
                 variant="default"
-                className="mt-2 w-full"
+                className="w-full"
                 disabled={!isFormValid || isPending}
               >
                 {WithLoader({ text: "Create Account", isLoading: isPending })}

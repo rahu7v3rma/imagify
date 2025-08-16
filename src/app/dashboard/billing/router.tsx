@@ -82,7 +82,11 @@ export const billingRouter = router({
           },
         };
       } catch (error: any) {
-        sendErrorEmail({ error });
+        if (process.env.APP_ENV === 'production') {
+          sendErrorEmail({ error });
+        } else {
+          console.log('Error in billing create order:', error);
+        }
         return {
           success: false,
           message: "Failed to create order",

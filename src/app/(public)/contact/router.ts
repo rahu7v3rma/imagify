@@ -44,7 +44,11 @@ export const contactRouter = router({
 
         return true;
       } catch (error: any) {
-        sendErrorEmail({ error });
+        if (process.env.APP_ENV === 'production') {
+          sendErrorEmail({ error });
+        } else {
+          console.log('Error in contact:', error);
+        }
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });

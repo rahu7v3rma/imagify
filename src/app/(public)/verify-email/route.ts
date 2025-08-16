@@ -42,7 +42,11 @@ export async function GET(request: NextRequest) {
       new URL("/login?email_verified_success=1", request.url)
     );
   } catch (error: any) {
-    sendErrorEmail({ error });
+    if (process.env.APP_ENV === 'production') {
+      sendErrorEmail({ error });
+    } else {
+      console.log('Error in verify email:', error);
+    }
     return NextResponse.redirect(
       new URL("/login?email_verified_failed=1", request.url)
     );

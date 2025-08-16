@@ -1,18 +1,16 @@
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { sendErrorEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
-import { getReplicateImageUrl } from "@/lib/replicate";
-import { protectedProcedure, router } from "@/lib/trpc/init";
-import { convertImageUrlToBase64 } from "@/utils/common";
+import { router, protectedProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
+import { sendErrorEmail } from "@/lib/email";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { getReplicateImageUrl } from "@/lib/replicate";
+import { convertImageUrlToBase64 } from "@/utils/common";
 
-export const generateImageRouter = router({
-  generateImage: protectedProcedure
+export const removeBackgroundRouter = router({
+  removeBackground: protectedProcedure
     .input(
       z.object({
-        prompt: z
-          .string()
-          .max(1000, "Prompt must be at most 1000 characters long"),
+        imageBase64: z.string().min(1, "Image is required"),
       })
     )
     .output(
@@ -33,16 +31,16 @@ export const generateImageRouter = router({
         }
 
         const credits = ctx.user.credits || 0;
-        if (credits < CREDIT_REQUIREMENTS.GENERATE_IMAGE) {
+        if (credits < CREDIT_REQUIREMENTS.REMOVE_BACKGROUND) {
           return { success: false, message: "You do not have enough credits." };
         }
 
         const replicateInput = {
-          prompt: input.prompt,
+          image: input.imageBase64,
         };
 
         const replicateImageUrl = await getReplicateImageUrl(
-          "black-forest-labs/flux-schnell",
+          "lucataco/remove-bg:95fcc2a26d3899cd6c2691c900465aaeff466285a65c14638cc5f36f34befaf1",
           replicateInput
         );
 
@@ -54,25 +52,25 @@ export const generateImageRouter = router({
           where: { id: ctx.user.id },
           data: {
             credits: {
-              decrement: CREDIT_REQUIREMENTS.GENERATE_IMAGE,
+              decrement: CREDIT_REQUIREMENTS.REMOVE_BACKGROUND,
             },
           },
         });
 
         return {
           success: true,
-          message: "Image generated successfully!",
+          message: "Background removed successfully!",
           data: {
             imageBase64: replicateImageBase64,
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
+        if (process.env.APP_ENV === "production") {
           sendErrorEmail({ error });
         } else {
-          console.log('Error in generate image:', error);
+          console.log("Error in remove background:", error);
         }
-        return { success: false, message: "Failed to generate image." };
+        return { success: false, message: "Failed to remove background." };
       }
     }),
 });

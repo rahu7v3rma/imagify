@@ -57,7 +57,11 @@ export const changePasswordRouter = router({
           message: "Password changed successfully",
         };
       } catch (error: any) {
-        sendErrorEmail({ error });
+        if (process.env.APP_ENV === 'production') {
+          sendErrorEmail({ error });
+        } else {
+          console.log('Error in change password:', error);
+        }
         return {
           success: false,
           message: "Failed to change password. Please try again.",

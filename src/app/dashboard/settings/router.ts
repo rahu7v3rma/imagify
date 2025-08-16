@@ -66,7 +66,11 @@ export const settingsRouter = router({
 
         return { success: true, message: "Password changed successfully" };
       } catch (error: any) {
-        sendErrorEmail({ error });
+        if (process.env.APP_ENV === 'production') {
+          sendErrorEmail({ error });
+        } else {
+          console.log('Error in change password:', error);
+        }
         return { success: false, message: "Failed to change password" };
       }
     }),
@@ -128,7 +132,11 @@ export const settingsRouter = router({
             "Email changed successfully. Please check your new email to verify your account.",
         };
       } catch (error: any) {
-        sendErrorEmail({ error });
+        if (process.env.APP_ENV === 'production') {
+          sendErrorEmail({ error });
+        } else {
+          console.log('Error in change email:', error);
+        }
         return {
           success: false,
           message: "Failed to change email address",

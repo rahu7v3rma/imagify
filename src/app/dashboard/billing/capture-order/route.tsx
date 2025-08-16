@@ -81,7 +81,11 @@ export async function GET(request: NextRequest) {
       new URL("/dashboard/billing?buy_credits_success=1", request.url)
     );
   } catch (error: unknown) {
-    sendErrorEmail({ error });
+    if (process.env.APP_ENV === 'production') {
+      sendErrorEmail({ error });
+    } else {
+      console.log('Error in capture order:', error);
+    }
     return NextResponse.redirect(
       new URL("/dashboard/billing?buy_credits_failure=1", request.url)
     );

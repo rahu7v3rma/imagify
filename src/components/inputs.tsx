@@ -2,6 +2,7 @@
 
 import { Button, IconButtonWrapper } from "@/components/buttons";
 import { Input } from "@/components/ui/input";
+import { Button as UIButton } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -14,7 +15,7 @@ import { Textarea as UITextarea } from "@/components/ui/textarea";
 import { Muted } from "@/components/ui/typography";
 import { cn } from "@/utils/common";
 import { AnimatePresence, motion } from "framer-motion";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export const PasswordInput = ({
@@ -75,10 +76,12 @@ export const ImageInput = ({
   onChange,
   label,
   value,
+  error,
 }: {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
   value?: File;
+  error?: string | null;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -104,10 +107,22 @@ export const ImageInput = ({
           id="image"
           type="file"
           onChange={onChange}
-          accept="image/*"
+          accept=".jpg,.jpeg,.png,.webp"
           className="cursor-pointer"
         />
       </motion.div>
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -214,6 +229,7 @@ export const TextActionInput = ({
   onChange,
   label,
   actionButton,
+  error,
 }: {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -222,7 +238,9 @@ export const TextActionInput = ({
     text: string;
     onPress: () => void;
     disabled?: boolean;
+    isLoading?: boolean;
   };
+  error?: string | null;
 }) => {
   return (
     <div className="w-full space-y-2">
@@ -234,7 +252,7 @@ export const TextActionInput = ({
       >
         {label}
       </Label>
-      <div className="relative">
+      <div className="relative flex items-center gap-2">
         <Input
           id="action"
           type="text"
@@ -242,17 +260,37 @@ export const TextActionInput = ({
           onChange={onChange}
           className={cn(
             "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-            "pr-20"
+            "transition-all duration-300 ease-in-out"
           )}
         />
         <Button
-          className="absolute right-1 top-1/2 -translate-y-1/2 h-8"
+          type="button"
           onClick={actionButton.onPress}
-          disabled={actionButton.disabled}
+          disabled={actionButton.disabled || actionButton.isLoading}
+          className="flex items-center gap-2"
         >
-          {actionButton.text}
+          {actionButton.isLoading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Loading...
+            </>
+          ) : (
+            actionButton.text
+          )}
         </Button>
       </div>
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -273,7 +311,12 @@ export const Textarea = ({
   return (
     <div className="space-y-2">
       <Label htmlFor="message">{label}</Label>
-      <UITextarea id="message" value={value} onChange={onChange} placeholder={placeholder} />
+      <UITextarea
+        id="message"
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
       <AnimatePresence>
         {error && (
           <motion.div
