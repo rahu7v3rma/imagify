@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { publicProcedure, router } from "../../../lib/trpc/init";
+import { publicProcedure, router } from "@/lib/trpc/init";
 import { z } from "zod";
 import { sendForgotPasswordEmail } from "@/lib/email";
 import { generateEmailVerificationCode } from "@/utils/common";
@@ -54,10 +54,10 @@ export const forgotPasswordRouter = router({
           message: "Verification code sent to email",
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
+        if (process.env.APP_ENV === "production") {
           sendErrorEmail({ error });
         } else {
-          console.log('Error in forgot password:', error);
+          console.log("Error in forgot password:", error);
         }
         return {
           success: false,

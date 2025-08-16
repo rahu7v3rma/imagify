@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { TRPCError } from "@trpc/server";
-import { publicProcedure, router } from "../../../lib/trpc/init";
+import { publicProcedure, router } from "@/lib/trpc/init";
 import { uploadFile } from "@/lib/upload";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -44,10 +44,10 @@ export const contactRouter = router({
 
         return true;
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
+        if (process.env.APP_ENV === "production") {
           sendErrorEmail({ error });
         } else {
-          console.log('Error in contact:', error);
+          console.log("Error in contact:", error);
         }
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",

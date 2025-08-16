@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { APP_ENV } from "./constants/common";
-import { getAccessTokenServer } from "./utils/cookies-server";
+import { APP_ENV } from "@/constants/common";
+import { getAccessTokenServer } from "@/utils/cookies-server";
 
 let lastRequest = 0;
 

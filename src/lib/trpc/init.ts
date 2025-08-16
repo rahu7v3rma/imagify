@@ -1,5 +1,5 @@
 import { initTRPC } from "@trpc/server";
-import { accessTokenMiddleware } from "./middleware";
+import { accessTokenMiddleware } from "@/lib/trpc/middleware";
 import type { User } from "@prisma/client";
 import { NextRequest } from "next/server";
 

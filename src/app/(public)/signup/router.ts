@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { publicProcedure, router } from "../../../lib/trpc/init";
+import { publicProcedure, router } from "@/lib/trpc/init";
 import { z } from "zod";
 import { generateEmailVerificationCode } from "@/utils/common";
 import { sendEmailVerificationEmail, sendErrorEmail } from "@/lib/email";
@@ -67,10 +67,10 @@ export const signupRouter = router({
             "User created successfully, please check your email to verify your account.",
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
+        if (process.env.APP_ENV === "production") {
           sendErrorEmail({ error });
         } else {
-          console.log('Error in signup:', error);
+          console.log("Error in signup:", error);
         }
         return {
           success: false,

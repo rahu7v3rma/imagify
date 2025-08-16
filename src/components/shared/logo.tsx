@@ -1,5 +1,5 @@
-import { Link } from "./links";
-import { Large } from "../ui/typography";
+import { Link } from "@/components/shared/links";
+import { Large } from "@/components/ui/typography";
 import { ROUTES } from "@/constants/routes";
 
 export function Logo() {

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { publicProcedure, router } from "../../../lib/trpc/init";
+import { publicProcedure, router } from "@/lib/trpc/init";
 import { z } from "zod";
 import { comparePassword } from "@/utils/bcrypt";
 import { sendEmailVerificationEmail, sendErrorEmail } from "@/lib/email";
@@ -88,10 +88,10 @@ export const loginRouter = router({
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
+        if (process.env.APP_ENV === "production") {
           sendErrorEmail({ error });
         } else {
-          console.log('Error in login:', error);
+          console.log("Error in login:", error);
         }
         return {
           success: false,

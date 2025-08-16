@@ -1,4 +1,4 @@
-import { router } from "./init";
+import { router } from "@/lib/trpc/init";
 import { contactRouter } from "@/app/(public)/contact/router";
 import { signupRouter } from "@/app/(public)/signup/router";
 import { loginRouter } from "@/app/(public)/login/router";
