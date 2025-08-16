@@ -19,9 +19,7 @@ const geist = Geist({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta name="robots" content="noindex, nofollow" />
-      </head>
+      <head></head>
       <body className={clsx(geist.className, "min-h-screen")}>
         <NextThemesProvider
           attribute="class"
