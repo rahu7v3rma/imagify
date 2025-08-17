@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
       const accessToken = await getAccessTokenServer();
       if (!accessToken) {
-        return NextResponse.redirect("/login");
+        return NextResponse.redirect(new URL("/login", request.url));
       }
     }
   }
