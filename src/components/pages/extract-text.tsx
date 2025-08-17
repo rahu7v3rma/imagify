@@ -2,9 +2,10 @@
 
 import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
 import { Button } from "@/components/shared/buttons";
-import { ImageInput, TextActionInput } from "@/components/shared/inputs";
+import { InputImagePreview } from "@/components/shared/input-image-preview";
 import { WithLoader } from "@/components/shared/loaders";
 import PageTransition from "@/components/shared/transitions";
+import { UploadImage } from "@/components/shared/upload-image";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -14,11 +15,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { H1, Muted } from "@/components/ui/typography";
-import { InputImagePreview } from "@/components/shared/input-image-preview";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { useUser } from "@/context/user/provider";
 import { trpc } from "@/lib/trpc/client";
-import { convertImageUrlToBase64, fileToBase64 } from "@/utils/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
@@ -35,10 +34,6 @@ export default function ExtractTextPage() {
   const [processedText, setProcessedText] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const [imageInputError, setImageInputError] = useState<string | null>(null);
-  const [urlInputError, setUrlInputError] = useState<string | null>(null);
-  const [isUrlConversionLoading, setIsUrlConversionLoading] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const { fetchUserProfile } = useUser();
 
@@ -81,32 +76,10 @@ export default function ExtractTextPage() {
     });
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Check if file is a supported image type
-      const allowedTypes = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
-      ];
-      if (!allowedTypes.includes(file.type)) {
-        setImageInputError("Please select a JPG, PNG, or WebP image file");
-        setUrlInputError(null);
-        // Clear the input and form value
-        e.target.value = "";
-        return;
-      }
-
-      const base64 = await fileToBase64(file);
-      setFormValue("imageBase64", base64);
-      setImageInputError(null);
-      setUrlInputError(null);
-    }
-  };
-
-  const setFormValue = (field: keyof ExtractTextFormValues, value: string) => {
+  const setFormValue = (
+    field: keyof ExtractTextFormValues,
+    value: string
+  ) => {
     form.setValue(field, value, {
       shouldValidate: true,
       shouldDirty: true,
@@ -114,27 +87,12 @@ export default function ExtractTextPage() {
     });
   };
 
-  const handleUrlToBase64 = async () => {
-    try {
-      if (!imageUrl.trim()) {
-        setUrlInputError("Please enter a valid image URL");
-        setImageInputError(null);
-        return;
-      }
+  const handleFileUpload = (base64: string) => {
+    setFormValue("imageBase64", base64);
+  };
 
-      setIsUrlConversionLoading(true);
-      const base64 = await convertImageUrlToBase64(imageUrl);
-      setFormValue("imageBase64", base64);
-      setImageInputError(null);
-      setUrlInputError(null);
-    } catch (error) {
-      setUrlInputError(
-        "Failed to load image from URL. Please check the URL and try again."
-      );
-      setImageInputError(null);
-    } finally {
-      setIsUrlConversionLoading(false);
-    }
+  const handleUrlUpload = (base64: string) => {
+    setFormValue("imageBase64", base64);
   };
 
   const handleCopyText = () => {
@@ -174,22 +132,9 @@ export default function ExtractTextPage() {
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-4 w-full"
                 >
-                  <ImageInput
-                    label="Upload Image"
-                    onChange={handleFileChange}
-                    error={imageInputError}
-                  />
-                  <TextActionInput
-                    label="Or use image URL"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    actionButton={{
-                      text: "Use",
-                      onPress: handleUrlToBase64,
-                      disabled: !imageUrl.trim(),
-                      isLoading: isUrlConversionLoading,
-                    }}
-                    error={urlInputError}
+                  <UploadImage
+                    onUploadFile={handleFileUpload}
+                    onUploadUrl={handleUrlUpload}
                   />
                   <Button
                     type="submit"
