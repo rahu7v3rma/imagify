@@ -147,27 +147,32 @@ export const TextInput = ({
   onChange,
   label,
   error,
+  placeholder,
 }: {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
+  label?: string;
   error?: string;
+  placeholder?: string;
 }) => {
   return (
     <div className="w-full space-y-2">
-      <Label
-        className={cn(
-          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        )}
-        htmlFor="text"
-      >
-        {label}
-      </Label>
+      {label && (
+        <Label
+          className={cn(
+            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          )}
+          htmlFor="text"
+        >
+          {label}
+        </Label>
+      )}
       <Input
         id="text"
         type="text"
         value={value}
         onChange={onChange}
+        placeholder={placeholder}
         className={cn(
           "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
           "transition-all duration-300 ease-in-out"

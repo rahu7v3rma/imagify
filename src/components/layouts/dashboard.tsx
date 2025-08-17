@@ -22,6 +22,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { Logo } from "@/components/shared/logo";
 import PageTransition from "@/components/shared/transitions";
 import { WithLoaderNodeSafe } from "@/components/shared/loaders";
+import { useState } from "react";
+import { TextInput } from "@/components/shared/inputs";
 
 function Header() {
   const router = useRouter();
@@ -60,137 +62,73 @@ function Header() {
 function Sidebar() {
   const pathname = usePathname();
   const { logout } = useUser();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const navigationButtons = [
+    { href: ROUTES.DASHBOARD.ROOT, icon: Home, label: "Dashboard" },
+    {
+      href: ROUTES.DASHBOARD.GENERATE_IMAGE,
+      icon: Sparkles,
+      label: "Generate Image",
+    },
+    {
+      href: ROUTES.DASHBOARD.REMOVE_BACKGROUND,
+      icon: Image,
+      label: "Remove Background",
+    },
+    {
+      href: ROUTES.DASHBOARD.EXTRACT_TEXT,
+      icon: FileText,
+      label: "Extract Text",
+    },
+    { href: ROUTES.DASHBOARD.UPSCALE, icon: ArrowUp, label: "Upscale Image" },
+    {
+      href: ROUTES.DASHBOARD.COMPRESS_IMAGE,
+      icon: Archive,
+      label: "Compress Image",
+    },
+    {
+      href: ROUTES.DASHBOARD.CONVERT_FORMAT,
+      icon: RotateCcw,
+      label: "Convert Format",
+    },
+    { href: ROUTES.DASHBOARD.EDIT_IMAGE, icon: Edit, label: "Edit Image" },
+  ];
+
+  const filteredButtons = navigationButtons.filter((button) =>
+    button.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <aside className="w-56 min-w-56 h-full border-r border-border bg-background">
       <nav className="flex flex-col h-full p-4">
+        <div className="mb-4">
+          <TextInput
+            placeholder="Search tools"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
         <div className="space-y-1">
-          <Button
-            size="sm"
-            variant={pathname === ROUTES.DASHBOARD.ROOT ? "default" : "outline"}
-            className="w-full"
-          >
-            <Link
-              href={ROUTES.DASHBOARD.ROOT}
-              className="flex items-center space-x-3 w-full"
-            >
-              <Home className="h-5 w-5" />
-              <span>Dashboard</span>
-            </Link>
-          </Button>
-          <Button
-            size="sm"
-            variant={
-              pathname === ROUTES.DASHBOARD.GENERATE_IMAGE
-                ? "default"
-                : "outline"
-            }
-            className="w-full"
-          >
-            <Link
-              href={ROUTES.DASHBOARD.GENERATE_IMAGE}
-              className="flex items-center space-x-3 w-full"
-            >
-              <Sparkles className="h-5 w-5" />
-              <span>Generate Image</span>
-            </Link>
-          </Button>
-          <Button
-            size="sm"
-            variant={
-              pathname === ROUTES.DASHBOARD.REMOVE_BACKGROUND
-                ? "default"
-                : "outline"
-            }
-            className="w-full"
-          >
-            <Link
-              href={ROUTES.DASHBOARD.REMOVE_BACKGROUND}
-              className="flex items-center space-x-3 w-full"
-            >
-              <Image className="h-5 w-5" />
-              <span>Remove Background</span>
-            </Link>
-          </Button>
-          <Button
-            size="sm"
-            variant={
-              pathname === ROUTES.DASHBOARD.EXTRACT_TEXT ? "default" : "outline"
-            }
-            className="w-full"
-          >
-            <Link
-              href={ROUTES.DASHBOARD.EXTRACT_TEXT}
-              className="flex items-center space-x-3 w-full"
-            >
-              <FileText className="h-5 w-5" />
-              <span>Extract Text</span>
-            </Link>
-          </Button>
-          <Button
-            size="sm"
-            variant={
-              pathname === ROUTES.DASHBOARD.UPSCALE ? "default" : "outline"
-            }
-            className="w-full"
-          >
-            <Link
-              href={ROUTES.DASHBOARD.UPSCALE}
-              className="flex items-center space-x-3 w-full"
-            >
-              <ArrowUp className="h-5 w-5" />
-              <span>Upscale Image</span>
-            </Link>
-          </Button>
-          <Button
-            size="sm"
-            variant={
-              pathname === ROUTES.DASHBOARD.COMPRESS_IMAGE
-                ? "default"
-                : "outline"
-            }
-            className="w-full"
-          >
-            <Link
-              href={ROUTES.DASHBOARD.COMPRESS_IMAGE}
-              className="flex items-center space-x-3 w-full"
-            >
-              <Archive className="h-5 w-5" />
-              <span>Compress Image</span>
-            </Link>
-          </Button>
-          <Button
-            size="sm"
-            variant={
-              pathname === ROUTES.DASHBOARD.CONVERT_FORMAT
-                ? "default"
-                : "outline"
-            }
-            className="w-full"
-          >
-            <Link
-              href={ROUTES.DASHBOARD.CONVERT_FORMAT}
-              className="flex items-center space-x-3 w-full"
-            >
-              <RotateCcw className="h-5 w-5" />
-              <span>Convert Format</span>
-            </Link>
-          </Button>
-          <Button
-            size="sm"
-            variant={
-              pathname === ROUTES.DASHBOARD.EDIT_IMAGE ? "default" : "outline"
-            }
-            className="w-full"
-          >
-            <Link
-              href={ROUTES.DASHBOARD.EDIT_IMAGE}
-              className="flex items-center space-x-3 w-full"
-            >
-              <Edit className="h-5 w-5" />
-              <span>Edit Image</span>
-            </Link>
-          </Button>
+          {filteredButtons.map((button) => {
+            const IconComponent = button.icon;
+            return (
+              <Button
+                key={button.href}
+                size="sm"
+                variant={pathname === button.href ? "default" : "outline"}
+                className="w-full"
+              >
+                <Link
+                  href={button.href}
+                  className="flex items-center space-x-3 w-full"
+                >
+                  <IconComponent className="h-5 w-5" />
+                  <span>{button.label}</span>
+                </Link>
+              </Button>
+            );
+          })}
         </div>
         <div className="mt-auto space-y-1">
           <Button
