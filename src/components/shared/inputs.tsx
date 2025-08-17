@@ -511,7 +511,7 @@ export const DragDropImageInput = ({
       {label && <Label>{label}</Label>}
       <motion.div
         className={cn(
-          "h-[100px] border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center p-6 cursor-pointer transition-colors",
+          "h-[100px] border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center p-6 transition-colors",
           isDragOver
             ? "border-ring bg-accent"
             : "border-border hover:border-input"
@@ -531,30 +531,10 @@ export const DragDropImageInput = ({
           transition: { duration: 0.1 },
         }}
       >
-        <motion.div
-          className="text-muted-foreground"
-          animate={{
-            y: isDragOver ? -5 : 0,
-          }}
-          transition={{
-            duration: 0.2,
-            ease: "easeInOut",
-          }}
-        >
-          <motion.div
-            animate={{
-              scale: isDragOver ? 1.1 : 1,
-              rotate: isDragOver ? 5 : 0,
-            }}
-            transition={{
-              duration: 0.2,
-              ease: "easeInOut",
-            }}
-          >
-            <ImageIcon className="mx-auto h-8 w-8" />
-          </motion.div>
+        <div className="text-muted-foreground">
+          <ImageIcon className="mx-auto h-8 w-8" />
           <P className="text-sm font-medium">Drop image here</P>
-        </motion.div>
+        </div>
       </motion.div>
       <AnimatePresence>
         {error && (
