@@ -1,6 +1,10 @@
 "use client";
 
-import { ImageInput, TextActionInput } from "@/components/shared/inputs";
+import {
+  ImageInput,
+  TextActionInput,
+  DragDropImageInput,
+} from "@/components/shared/inputs";
 import { convertImageUrlToBase64, fileToBase64 } from "@/utils/common";
 import { useState } from "react";
 
@@ -9,10 +13,14 @@ interface UploadImageProps {
   onUploadUrl: (base64: string) => void;
 }
 
-export const UploadImage = ({ onUploadFile, onUploadUrl }: UploadImageProps) => {
+export const UploadImage = ({
+  onUploadFile,
+  onUploadUrl,
+}: UploadImageProps) => {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [imageInputError, setImageInputError] = useState<string | null>(null);
   const [urlInputError, setUrlInputError] = useState<string | null>(null);
+  const [dragDropError, setDragDropError] = useState<string | null>(null);
   const [isUrlConversionLoading, setIsUrlConversionLoading] = useState(false);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,9 +46,13 @@ export const UploadImage = ({ onUploadFile, onUploadUrl }: UploadImageProps) => 
         onUploadFile(base64);
         setImageInputError(null);
         setUrlInputError(null);
+        setDragDropError(null);
       } catch (error) {
-        setImageInputError("Failed to process the image file. Please try another file.");
+        setImageInputError(
+          "Failed to process the image file. Please try another file."
+        );
         setUrlInputError(null);
+        setDragDropError(null);
       }
     }
   };
@@ -58,14 +70,29 @@ export const UploadImage = ({ onUploadFile, onUploadUrl }: UploadImageProps) => 
       onUploadUrl(base64);
       setImageInputError(null);
       setUrlInputError(null);
+      setDragDropError(null);
     } catch (error) {
       setUrlInputError(
         "Failed to load image from URL. Please check the URL and try again."
       );
       setImageInputError(null);
+      setDragDropError(null);
     } finally {
       setIsUrlConversionLoading(false);
     }
+  };
+
+  const handleDragDropUpload = (base64: string) => {
+    onUploadFile(base64);
+    setImageInputError(null);
+    setUrlInputError(null);
+    setDragDropError(null);
+  };
+
+  const handleDragDropError = (error: string) => {
+    setDragDropError(error);
+    setImageInputError(null);
+    setUrlInputError(null);
   };
 
   return (
@@ -75,6 +102,13 @@ export const UploadImage = ({ onUploadFile, onUploadUrl }: UploadImageProps) => 
         onChange={handleFileChange}
         error={imageInputError}
       />
+
+      <DragDropImageInput
+        onUpload={handleDragDropUpload}
+        onError={handleDragDropError}
+        error={dragDropError}
+      />
+
       <TextActionInput
         label="Or use image URL"
         value={imageUrl}

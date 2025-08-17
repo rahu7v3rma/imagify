@@ -2,7 +2,6 @@
 
 import { Button, IconButtonWrapper } from "@/components/shared/buttons";
 import { Input } from "@/components/ui/input";
-import { Button as UIButton } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -12,10 +11,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea as UITextarea } from "@/components/ui/textarea";
-import { Muted } from "@/components/ui/typography";
-import { cn } from "@/utils/common";
+import { Muted, P } from "@/components/ui/typography";
+import { cn, fileToBase64 } from "@/utils/common";
 import { AnimatePresence, motion } from "framer-motion";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, ImageIcon } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export const PasswordInput = ({
@@ -437,6 +436,126 @@ export const NumberInput = ({
         placeholder={placeholder}
         className="transition-all duration-300 ease-in-out"
       />
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export const DragDropImageInput = ({
+  onUpload,
+  onError,
+  label,
+  error,
+}: {
+  onUpload: (base64: string) => void;
+  onError?: (error: string) => void;
+  label?: string;
+  error?: string | null;
+}) => {
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+
+      // Check if file is a supported image type
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        onError?.("Please select a JPG, PNG, or WebP image file");
+        return;
+      }
+
+      try {
+        const base64 = await fileToBase64(file);
+        onUpload(base64);
+      } catch (error) {
+        onError?.(
+          "Failed to process the dropped file. Please try another file."
+        );
+      }
+    }
+  };
+
+  return (
+    <div className="w-full space-y-2">
+      {label && <Label>{label}</Label>}
+      <motion.div
+        className={cn(
+          "h-[100px] border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center p-6 cursor-pointer transition-colors",
+          isDragOver
+            ? "border-ring bg-accent"
+            : "border-border hover:border-input"
+        )}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        animate={{
+          scale: isDragOver ? 1.02 : 1,
+        }}
+        transition={{
+          duration: 0.2,
+          ease: "easeInOut",
+        }}
+        whileHover={{
+          scale: 1.01,
+          transition: { duration: 0.1 },
+        }}
+      >
+        <motion.div
+          className="text-muted-foreground"
+          animate={{
+            y: isDragOver ? -5 : 0,
+          }}
+          transition={{
+            duration: 0.2,
+            ease: "easeInOut",
+          }}
+        >
+          <motion.div
+            animate={{
+              scale: isDragOver ? 1.1 : 1,
+              rotate: isDragOver ? 5 : 0,
+            }}
+            transition={{
+              duration: 0.2,
+              ease: "easeInOut",
+            }}
+          >
+            <ImageIcon className="mx-auto h-8 w-8" />
+          </motion.div>
+          <P className="text-sm font-medium">Drop image here</P>
+        </motion.div>
+      </motion.div>
       <AnimatePresence>
         {error && (
           <motion.div
