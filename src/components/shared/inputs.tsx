@@ -355,16 +355,45 @@ export const SelectSingle = ({
         {label}
       </Label>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger>
-          <SelectValue placeholder="Select an option" />
-        </SelectTrigger>
-        <SelectContent position="popper">
-          {options.map((option) => (
-            <SelectItem key={option} value={option}>
-              {option}
-            </SelectItem>
-          ))}
-        </SelectContent>
+        <motion.div
+          whileHover={{
+            filter: "brightness(0.8)",
+          }}
+          transition={{
+            duration: 0.2,
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select an option" />
+          </SelectTrigger>
+        </motion.div>
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <SelectContent position="popper">
+              {options.map((option) => (
+                <motion.div
+                  key={option}
+                  whileHover={{
+                    filter: "brightness(0.8)",
+                  }}
+                  transition={{
+                    duration: 0.2,
+                  }}
+                  className="cursor-pointer"
+                >
+                  <SelectItem value={option} className="cursor-pointer">
+                    {option}
+                  </SelectItem>
+                </motion.div>
+              ))}
+            </SelectContent>
+          </motion.div>
+        </AnimatePresence>
       </Select>
     </div>
   );
