@@ -12,6 +12,7 @@ import {
   Home,
   Image,
   LogOut,
+  Maximize,
   RotateCcw,
   Settings,
   Sparkles,
@@ -91,6 +92,11 @@ function Sidebar() {
       href: ROUTES.DASHBOARD.CONVERT_FORMAT,
       icon: RotateCcw,
       label: "Convert Format",
+    },
+    {
+      href: ROUTES.DASHBOARD.RESIZE_IMAGE,
+      icon: Maximize,
+      label: "Resize Image",
     },
     { href: ROUTES.DASHBOARD.EDIT_IMAGE, icon: Edit, label: "Edit Image" },
   ];

@@ -14,6 +14,7 @@ import { upscaleRouter } from "@/app/dashboard/upscale/router";
 import { editImageRouter } from "@/app/dashboard/edit-image/router";
 import { compressImageRouter } from "@/app/dashboard/compress-image/router";
 import { convertFormatRouter } from "@/app/dashboard/convert-format/router";
+import { resizeImageRouter } from "@/app/dashboard/resize-image/router";
 
 export const appRouter = router({
   contact: contactRouter,
@@ -31,6 +32,7 @@ export const appRouter = router({
   editImage: editImageRouter,
   compressImage: compressImageRouter,
   convertFormat: convertFormatRouter,
+  resizeImage: resizeImageRouter,
 });
 
 export type AppRouter = typeof appRouter;

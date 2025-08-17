@@ -75,3 +75,41 @@ export async function convertFormatBase64Image(
 
   return `data:${mimeType};base64,${resultBase64}`;
 }
+
+export async function resizeBase64Image(
+  base64String: string,
+  width: number,
+  height: number
+): Promise<string> {
+  // Remove the data:image/*;base64, prefix if present
+  const base64Data = base64String.replace(/^data:image\/\w+;base64,/, "");
+
+  // Create buffer from base64 string
+  const buffer = Buffer.from(base64Data, "base64");
+
+  // Resize the image using tinify
+  const source = tinify.fromBuffer(buffer);
+  const resized = source.resize({
+    method: "fit",
+    width: width,
+    height: height,
+  });
+
+  // Convert result buffer back to base64 using callback
+  const resultBuffer = await new Promise<Buffer>((resolve, reject) => {
+    resized.toBuffer((err, data) => {
+      if (err) reject(err);
+      else if (data) resolve(Buffer.from(data));
+      else reject(new Error("No data returned from tinify"));
+    });
+  });
+
+  // Convert result buffer back to base64
+  const resultBase64 = resultBuffer.toString("base64");
+
+  // Add the data:image/*;base64, prefix back
+  const mimeTypeMatch = base64String.match(/^data:(image\/\w+);base64,/);
+  const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : "image/png";
+
+  return `data:${mimeType};base64,${resultBase64}`;
+}

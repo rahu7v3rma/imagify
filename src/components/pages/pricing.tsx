@@ -24,6 +24,7 @@ import {
   Edit,
   FileText,
   Image,
+  Maximize,
   RotateCcw,
   Sparkles,
 } from "lucide-react";
@@ -254,6 +255,29 @@ export default function PricingPage() {
                     </div>
                     <Badge variant="default" className="text-xs">
                       💳 {CREDIT_REQUIREMENTS.CONVERT_FORMAT} credits
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </NextLink>
+          </MotionCardWrapper>
+
+          <MotionCardWrapper>
+            <NextLink href={ROUTES.DASHBOARD.RESIZE_IMAGE}>
+              <Card className="h-[220px] w-[250px]">
+                <CardContent className="p-6 h-full">
+                  <div className="h-full flex flex-col items-center justify-center space-y-4">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
+                      <Maximize className="w-8 h-8" />
+                    </div>
+                    <div className="text-center">
+                      <H4 className="font-bold text-sm">Resize Image</H4>
+                      <Muted className="text-xs text-muted-foreground">
+                        Resize images to specific dimensions
+                      </Muted>
+                    </div>
+                    <Badge variant="default" className="text-xs">
+                      💳 {CREDIT_REQUIREMENTS.RESIZE_IMAGE} credits
                     </Badge>
                   </div>
                 </CardContent>

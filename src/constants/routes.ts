@@ -19,6 +19,7 @@ export const ROUTES = {
     UPSCALE: "/dashboard/upscale",
     COMPRESS_IMAGE: "/dashboard/compress-image",
     CONVERT_FORMAT: "/dashboard/convert-format",
+    RESIZE_IMAGE: "/dashboard/resize-image",
     EDIT_IMAGE: "/dashboard/edit-image",
     BILLING: "/dashboard/billing",
     SETTINGS: "/dashboard/settings",
