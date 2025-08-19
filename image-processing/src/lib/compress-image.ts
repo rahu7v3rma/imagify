@@ -31,11 +31,11 @@ export async function compressPNG(
     const originalStats = await fs.stat(inputPath);
     const originalSize = formatFileSize(originalStats.size);
 
-    // Use OptipNG for PNG compression with quality control
-    // For PNG, higher quality = lower compression level (0=no compression/best quality, 7=max compression/lower quality)
-    const compressionLevel = Math.floor(((100 - quality) / 100) * 7);
-    const optipngCommand = `optipng -o${compressionLevel} -strip all -out "${outputPath}" "${inputPath}"`;
-    await execAsync(optipngCommand);
+    // Use pngquant for PNG compression with quality control
+    // Quality range: use quality-10 to quality for better compression control
+    const minQuality = Math.max(1, quality - 10);
+    const pngquantCommand = `pngquant --quality=${minQuality}-${quality} --force --output "${outputPath}" "${inputPath}"`;
+    await execAsync(pngquantCommand);
 
     // Read compressed image and get file stats
     const compressedBuffer = await fs.readFile(outputPath);

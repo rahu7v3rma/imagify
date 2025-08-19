@@ -1,5 +1,8 @@
 export const CREDIT_REQUIREMENTS = {
-  GENERATE_IMAGE: 2,
+  GENERATE_IMAGE: {
+    standard: 2,
+    pro: 6,
+  },
   REMOVE_BACKGROUND: 2,
   EXTRACT_TEXT: 2,
   UPSCALE: 2,

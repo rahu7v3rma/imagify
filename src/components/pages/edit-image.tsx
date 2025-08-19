@@ -31,6 +31,7 @@ type EditImageFormValues = z.infer<typeof EditImageSchema>;
 
 export default function EditImagePage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>("edited-image");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
@@ -84,12 +85,30 @@ export default function EditImagePage() {
     });
   };
 
-  const handleFileUpload = (base64: string) => {
+  const handleFileUpload = (
+    base64: string,
+    fileSize?: string,
+    fileName?: string
+  ) => {
     setFormValue("imageBase64", base64);
+    if (fileName) setFileName(fileName);
   };
 
-  const handleUrlUpload = (base64: string) => {
+  const handleUrlUpload = (
+    base64: string,
+    fileSize?: string,
+    fileName?: string
+  ) => {
     setFormValue("imageBase64", base64);
+    if (fileName) setFileName(fileName);
+  };
+
+  const getEditBasedFileName = (originalName: string, prompt: string) => {
+    const promptBasedName = prompt
+      .slice(0, 20)
+      .replace(/[^a-zA-Z0-9]/g, "-")
+      .toLowerCase();
+    return `${originalName}-${promptBasedName}`;
   };
 
   const values = form.watch();
@@ -154,7 +173,12 @@ export default function EditImagePage() {
             <InputImagePreview imageBase64={imageBase64} />
           </div>
 
-          {processedImage && <ProcessedImage processedImage={processedImage} />}
+          {processedImage && (
+            <ProcessedImage
+              processedImage={processedImage}
+              name={getEditBasedFileName(fileName, prompt)}
+            />
+          )}
         </div>
       </div>
     </PageTransition>

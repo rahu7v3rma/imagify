@@ -10,10 +10,14 @@ export const generateEmailVerificationCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-export const downloadImage = (imageHref: string, format = "png") => {
+export const downloadImage = (
+  imageHref: string,
+  format = "png",
+  filename = "generated-image"
+) => {
   const link = document.createElement("a");
   link.href = imageHref;
-  link.download = `generated-image.${format}`;
+  link.download = `${filename}.${format}`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -57,10 +61,11 @@ export async function convertImageUrlToBase64(
 
   const imageBuffer = Buffer.from(response.data);
   const imageBase64 = imageBuffer.toString("base64");
-  const fileSizeInMB = (parseInt(contentLength) / 1024 / 1024).toFixed(2) + " MB";
+  const fileSizeInMB =
+    (parseInt(contentLength) / 1024 / 1024).toFixed(2) + " MB";
 
   return {
     base64: `data:${contentType};base64,${imageBase64}`,
-    fileSize: fileSizeInMB
+    fileSize: fileSizeInMB,
   };
 }

@@ -14,12 +14,14 @@ interface ProcessedImageProps {
   processedImage: string;
   format?: string;
   fileSize?: string;
+  name?: string;
 }
 
 export function ProcessedImage({
   processedImage,
   format = "png",
   fileSize,
+  name = "processed-image",
 }: ProcessedImageProps) {
   return (
     <div className="flex-1">
@@ -41,7 +43,7 @@ export function ProcessedImage({
           </div>
           <Button
             className="w-full"
-            onClick={() => downloadImage(processedImage, format)}
+            onClick={() => downloadImage(processedImage, format, name)}
           >
             <Download className="mr-2 h-4 w-4" />
             Download Image

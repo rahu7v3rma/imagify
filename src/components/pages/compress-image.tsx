@@ -31,6 +31,7 @@ export default function CompressImagePage() {
   const [processedImageCompressedSize, setProcessedImageCompressedSize] =
     useState<string>();
   const [processedImageFormat, setProcessedImageFormat] = useState<string>();
+  const [fileName, setFileName] = useState<string>("compressed-image");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [fileSize, setFileSize] = useState<string>();
@@ -91,18 +92,20 @@ export default function CompressImagePage() {
     });
   };
 
-  const handleFileUpload = (base64: string, fileSizeValue?: string) => {
+  const handleFileUpload = (base64: string, fileSizeValue?: string, fileName?: string) => {
     setFormValue("imageBase64", base64);
     if (fileSizeValue) {
       setFileSize(fileSizeValue);
     }
+    if (fileName) setFileName(fileName);
   };
 
-  const handleUrlUpload = (base64: string, fileSizeValue?: string) => {
+  const handleUrlUpload = (base64: string, fileSizeValue?: string, fileName?: string) => {
     setFormValue("imageBase64", base64);
     if (fileSizeValue) {
       setFileSize(fileSizeValue);
     }
+    if (fileName) setFileName(fileName);
   };
 
   const handleSliderChange = (value: number[]) => {
@@ -177,6 +180,7 @@ export default function CompressImagePage() {
               processedImage={processedImage}
               format={processedImageFormat}
               fileSize={processedImageCompressedSize}
+              name={fileName}
             />
           )}
         </div>

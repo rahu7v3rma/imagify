@@ -28,6 +28,7 @@ type RemoveBackgroundFormValues = z.infer<typeof RemoveBackgroundSchema>;
 
 export default function RemoveBackgroundPage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>("removed-background");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
@@ -82,12 +83,22 @@ export default function RemoveBackgroundPage() {
     });
   };
 
-  const handleFileUpload = (base64: string) => {
+  const handleFileUpload = (
+    base64: string,
+    fileSize?: string,
+    fileName?: string
+  ) => {
     setFormValue("imageBase64", base64);
+    if (fileName) setFileName(fileName);
   };
 
-  const handleUrlUpload = (base64: string) => {
+  const handleUrlUpload = (
+    base64: string,
+    fileSize?: string,
+    fileName?: string
+  ) => {
     setFormValue("imageBase64", base64);
+    if (fileName) setFileName(fileName);
   };
 
   const values = form.watch();
@@ -142,7 +153,9 @@ export default function RemoveBackgroundPage() {
             <InputImagePreview imageBase64={imageBase64} />
           </div>
 
-          {processedImage && <ProcessedImage processedImage={processedImage} />}
+          {processedImage && (
+            <ProcessedImage processedImage={processedImage} name={fileName} />
+          )}
         </div>
       </div>
     </PageTransition>

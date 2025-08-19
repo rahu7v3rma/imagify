@@ -139,7 +139,8 @@ export default function PricingPage() {
                       </Muted>
                     </div>
                     <Badge variant="default" className="text-xs">
-                      💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits
+                      💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE.standard}-
+                      {CREDIT_REQUIREMENTS.GENERATE_IMAGE.pro} credits
                     </Badge>
                   </div>
                 </CardContent>

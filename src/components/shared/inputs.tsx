@@ -13,6 +13,7 @@ import {
 import { Textarea as UITextarea } from "@/components/ui/textarea";
 import { Muted, P } from "@/components/ui/typography";
 import { cn, fileToBase64 } from "@/utils/common";
+import { formatFileSize } from "@/utils/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Eye, EyeOff, Loader2, ImageIcon } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -458,7 +459,7 @@ export const DragDropImageInput = ({
   label,
   error,
 }: {
-  onUpload: (base64: string, fileSize?: string) => void;
+  onUpload: (base64: string, fileSize?: string, fileName?: string) => void;
   onError?: (error: string) => void;
   label?: string;
   error?: string | null;
@@ -504,8 +505,16 @@ export const DragDropImageInput = ({
 
       try {
         const base64 = await fileToBase64(file);
-        const fileSize = (file.size / 1024 / 1024).toFixed(2) + " MB";
-        onUpload(base64, fileSize);
+        const fileSize = formatFileSize(file.size);
+        const fileName = file.name
+          .replace(".webp", "")
+          .replace(".jpg", "")
+          .replace(".jpeg", "")
+          .replace(".png", "")
+          .slice(0, 20)
+          .replace(/[^a-zA-Z0-9]/g, "-")
+          .toLowerCase();
+        onUpload(base64, fileSize, fileName);
       } catch (error) {
         onError?.(
           "Failed to process the dropped file. Please try another file."

@@ -28,6 +28,7 @@ type ConvertFormatFormValues = z.infer<typeof ConvertFormatSchema>;
 
 export default function ConvertFormatPage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>("converted-image");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
@@ -86,12 +87,22 @@ export default function ConvertFormatPage() {
     });
   };
 
-  const handleFileUpload = (base64: string) => {
+  const handleFileUpload = (
+    base64: string,
+    fileSize?: string,
+    fileName?: string
+  ) => {
     setFormValue("imageBase64", base64);
+    if (fileName) setFileName(fileName);
   };
 
-  const handleUrlUpload = (base64: string) => {
+  const handleUrlUpload = (
+    base64: string,
+    fileSize?: string,
+    fileName?: string
+  ) => {
     setFormValue("imageBase64", base64);
+    if (fileName) setFileName(fileName);
   };
 
   const values = form.watch();
@@ -154,7 +165,11 @@ export default function ConvertFormatPage() {
           </div>
 
           {processedImage && (
-            <ProcessedImage processedImage={processedImage} format={format} />
+            <ProcessedImage
+              processedImage={processedImage}
+              format={format}
+              name={fileName}
+            />
           )}
         </div>
       </div>

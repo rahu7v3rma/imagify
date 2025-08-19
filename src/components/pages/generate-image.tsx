@@ -2,7 +2,7 @@
 
 import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
 import { Button } from "@/components/shared/buttons";
-import { Textarea } from "@/components/shared/inputs";
+import { Textarea, SelectSingle } from "@/components/shared/inputs";
 import { WithLoader } from "@/components/shared/loaders";
 import { ProcessedImage } from "@/components/shared/processed-image";
 import PageTransition from "@/components/shared/transitions";
@@ -22,12 +22,16 @@ const GenerateImageSchema = z.object({
     .string()
     .min(1, "Please enter a prompt to generate an image")
     .max(1000, "Prompt must be at most 1000 characters long"),
+  generateType: z.enum(["standard", "pro"]),
+  outputFormat: z.string(),
+  aspectRatio: z.string(),
 });
 
 type GenerateImageFormValues = z.infer<typeof GenerateImageSchema>;
 
 export default function GenerateImagePage() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [imageFormat, setImageFormat] = useState<string>("png");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
@@ -37,6 +41,9 @@ export default function GenerateImagePage() {
     mode: "onChange",
     defaultValues: {
       prompt: "",
+      generateType: "standard",
+      outputFormat: "png",
+      aspectRatio: "1:1",
     },
   });
 
@@ -45,6 +52,7 @@ export default function GenerateImagePage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setGeneratedImage(data.data.imageBase64);
+          setImageFormat(data.data.outputFormat);
           setSuccessMessage(data.message || "Image generated successfully!");
           setErrorMessage(null);
           fetchUserProfile();
@@ -68,6 +76,9 @@ export default function GenerateImagePage() {
     setErrorMessage(null);
     generateImage({
       prompt: data.prompt,
+      generateType: data.generateType,
+      outputFormat: data.outputFormat,
+      aspectRatio: data.aspectRatio,
     });
   };
 
@@ -86,6 +97,55 @@ export default function GenerateImagePage() {
   const prompt = values.prompt;
   const errors = form.formState.errors;
   const promptError = errors.prompt?.message;
+
+  const getOutputFormatOptions = () => {
+    if (values.generateType === "standard") {
+      return ["png", "jpg", "webp"];
+    } else {
+      return ["png", "jpg"];
+    }
+  };
+
+  const getAspectRatioOptions = () => {
+    if (values.generateType === "standard") {
+      return [
+        "1:1",
+        "16:9",
+        "21:9",
+        "3:2",
+        "2:3",
+        "4:5",
+        "5:4",
+        "3:4",
+        "4:3",
+        "8:16",
+        "9:16",
+      ];
+    } else {
+      return [
+        "1:1",
+        "16:9",
+        "9:16",
+        "4:3",
+        "3:4",
+        "3:2",
+        "2:3",
+        "1:0",
+        "5:4",
+        "21:9",
+        "9:21",
+        "2:1",
+        "1:2",
+      ];
+    }
+  };
+
+  const getPromptBasedFileName = (prompt: string) => {
+    return prompt
+      .slice(0, 20)
+      .replace(/[^a-zA-Z0-9]/g, "-")
+      .toLowerCase();
+  };
   const isFormValid = form.formState.isValid;
   const handleSubmit = form.handleSubmit(onSubmit);
 
@@ -103,7 +163,8 @@ export default function GenerateImagePage() {
                   </div>
                 </CardTitle>
                 <Badge variant="default" className="w-fit">
-                  💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE} credits
+                  💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE[values.generateType]}{" "}
+                  credits
                 </Badge>
               </CardHeader>
               <CardContent>
@@ -118,6 +179,42 @@ export default function GenerateImagePage() {
                     error={promptError}
                     placeholder="Describe the image you want to generate"
                   />
+                  <SelectSingle
+                    label="Output Format"
+                    value={values.outputFormat}
+                    onChange={(value) => setFormValue("outputFormat", value)}
+                    options={getOutputFormatOptions()}
+                  />
+                  <SelectSingle
+                    label="Aspect Ratio"
+                    value={values.aspectRatio}
+                    onChange={(value) => setFormValue("aspectRatio", value)}
+                    options={getAspectRatioOptions()}
+                  />
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant={
+                        values.generateType === "standard"
+                          ? "default"
+                          : "outline"
+                      }
+                      onClick={() => setFormValue("generateType", "standard")}
+                      className="flex-1"
+                    >
+                      Standard
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={
+                        values.generateType === "pro" ? "default" : "outline"
+                      }
+                      onClick={() => setFormValue("generateType", "pro")}
+                      className="flex-1"
+                    >
+                      Pro
+                    </Button>
+                  </div>
                   <Button
                     type="submit"
                     variant="default"
@@ -136,7 +233,13 @@ export default function GenerateImagePage() {
             </Card>
           </div>
 
-          {generatedImage && <ProcessedImage processedImage={generatedImage} />}
+          {generatedImage && (
+            <ProcessedImage
+              processedImage={generatedImage}
+              format={imageFormat}
+              name={getPromptBasedFileName(prompt)}
+            />
+          )}
         </div>
       </div>
     </PageTransition>

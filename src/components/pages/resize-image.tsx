@@ -21,14 +21,21 @@ import { z } from "zod";
 
 const ResizeImageSchema = z.object({
   imageBase64: z.string().min(1, "Please upload an image to resize"),
-  width: z.number().min(1, "Width must be at least 1 pixel").max(5000, "Width cannot exceed 5000 pixels"),
-  height: z.number().min(1, "Height must be at least 1 pixel").max(5000, "Height cannot exceed 5000 pixels"),
+  width: z
+    .number()
+    .min(1, "Width must be at least 1 pixel")
+    .max(5000, "Width cannot exceed 5000 pixels"),
+  height: z
+    .number()
+    .min(1, "Height must be at least 1 pixel")
+    .max(5000, "Height cannot exceed 5000 pixels"),
 });
 
 type ResizeImageFormValues = z.infer<typeof ResizeImageSchema>;
 
 export default function ResizeImagePage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>("resized-image");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
@@ -99,12 +106,22 @@ export default function ResizeImagePage() {
     setFormValue("height", numValue);
   };
 
-  const handleFileUpload = (base64: string) => {
+  const handleFileUpload = (
+    base64: string,
+    fileSize?: string,
+    fileName?: string
+  ) => {
     setFormValue("imageBase64", base64);
+    if (fileName) setFileName(fileName);
   };
 
-  const handleUrlUpload = (base64: string) => {
+  const handleUrlUpload = (
+    base64: string,
+    fileSize?: string,
+    fileName?: string
+  ) => {
     setFormValue("imageBase64", base64);
+    if (fileName) setFileName(fileName);
   };
 
   const values = form.watch();
@@ -138,7 +155,7 @@ export default function ResizeImagePage() {
                     onUploadFile={handleFileUpload}
                     onUploadUrl={handleUrlUpload}
                   />
-                  
+
                   <div className="flex gap-4">
                     <div className="flex-1">
                       <NumberInput
@@ -151,7 +168,7 @@ export default function ResizeImagePage() {
                         error={form.formState.errors.width?.message}
                       />
                     </div>
-                    
+
                     <div className="flex-1">
                       <NumberInput
                         label="Height (px)"
@@ -184,7 +201,9 @@ export default function ResizeImagePage() {
             <InputImagePreview imageBase64={imageBase64} />
           </div>
 
-          {processedImage && <ProcessedImage processedImage={processedImage} />}
+          {processedImage && (
+            <ProcessedImage processedImage={processedImage} name={fileName} />
+          )}
         </div>
       </div>
     </PageTransition>

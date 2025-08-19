@@ -13,6 +13,9 @@ export const generateImageRouter = router({
         prompt: z
           .string()
           .max(1000, "Prompt must be at most 1000 characters long"),
+        generateType: z.enum(["standard", "pro"]).default("standard"),
+        outputFormat: z.string().default("png"),
+        aspectRatio: z.string().default("1:1"),
       })
     )
     .output(
@@ -22,6 +25,7 @@ export const generateImageRouter = router({
         data: z
           .object({
             imageBase64: z.string(),
+            outputFormat: z.string(),
           })
           .optional(),
       })
@@ -33,16 +37,23 @@ export const generateImageRouter = router({
         }
 
         const credits = ctx.user.credits || 0;
-        if (credits < CREDIT_REQUIREMENTS.GENERATE_IMAGE) {
+        const requiredCredits = CREDIT_REQUIREMENTS.GENERATE_IMAGE[input.generateType];
+        if (credits < requiredCredits) {
           return { success: false, message: "You do not have enough credits." };
         }
 
         const replicateInput = {
           prompt: input.prompt,
+          output_format: input.outputFormat,
+          aspect_ratio: input.aspectRatio,
         };
 
+        const model = input.generateType === "pro" 
+          ? "black-forest-labs/flux-kontext-pro" 
+          : "black-forest-labs/flux-schnell";
+
         const replicateImageUrl = await getReplicateImageUrl(
-          "black-forest-labs/flux-schnell",
+          model,
           replicateInput
         );
 
@@ -54,7 +65,7 @@ export const generateImageRouter = router({
           where: { id: ctx.user.id },
           data: {
             credits: {
-              decrement: CREDIT_REQUIREMENTS.GENERATE_IMAGE,
+              decrement: requiredCredits,
             },
           },
         });
@@ -64,6 +75,7 @@ export const generateImageRouter = router({
           message: "Image generated successfully!",
           data: {
             imageBase64: replicateImageBase64.base64,
+            outputFormat: input.outputFormat,
           },
         };
       } catch (error: any) {
