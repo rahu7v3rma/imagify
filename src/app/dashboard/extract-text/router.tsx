@@ -1,7 +1,7 @@
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { sendErrorEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
-import { getReplicateOutput } from "@/lib/replicate";
+import { extractText } from "@/lib/image-processing";
 import { imageProcedure, router } from "@/lib/trpc/init";
 import { z } from "zod";
 
@@ -9,7 +9,13 @@ export const extractTextRouter = router({
   extractText: imageProcedure
     .input(
       z.object({
-        imageBase64: z.string().min(1, "Image is required").regex(/^data:image\/(jpeg|jpg|png|webp);base64,/, "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"),
+        imageBase64: z
+          .string()
+          .min(1, "Image is required")
+          .regex(
+            /^data:image\/(jpeg|jpg|png|webp);base64,/,
+            "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"
+          ),
       })
     )
     .output(
@@ -34,14 +40,8 @@ export const extractTextRouter = router({
           return { success: false, message: "You do not have enough credits." };
         }
 
-        const replicateInput = {
-          image: input.imageBase64,
-        };
-
-        const replicateOutput = await getReplicateOutput(
-          "abiruyt/text-extract-ocr:a524caeaa23495bc9edc805ab08ab5fe943afd3febed884a4f3747aa32e9cd61",
-          replicateInput
-        );
+        // Extract text using image processing API
+        const response = await extractText(input.imageBase64);
 
         await prisma.user.update({
           where: { id: ctx.user.id },
@@ -56,7 +56,7 @@ export const extractTextRouter = router({
           success: true,
           message: "Text extracted successfully!",
           data: {
-            extractedText: String(replicateOutput),
+            extractedText: response.data.extractedText,
           },
         };
       } catch (error: any) {

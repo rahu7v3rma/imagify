@@ -459,7 +459,12 @@ export const DragDropImageInput = ({
   label,
   error,
 }: {
-  onUpload: (base64: string, fileSize?: string, fileName?: string) => void;
+  onUpload: (
+    base64: string,
+    fileSize?: string,
+    fileName?: string,
+    format?: string
+  ) => void;
   onError?: (error: string) => void;
   label?: string;
   error?: string | null;
@@ -514,7 +519,8 @@ export const DragDropImageInput = ({
           .slice(0, 20)
           .replace(/[^a-zA-Z0-9]/g, "-")
           .toLowerCase();
-        onUpload(base64, fileSize, fileName);
+        const format = file.type.replace("image/", "");
+        onUpload(base64, fileSize, fileName, format);
       } catch (error) {
         onError?.(
           "Failed to process the dropped file. Please try another file."

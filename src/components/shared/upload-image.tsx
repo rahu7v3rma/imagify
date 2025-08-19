@@ -11,8 +11,18 @@ import { Muted } from "@/components/ui/typography";
 import { useState } from "react";
 
 interface UploadImageProps {
-  onUploadFile: (base64: string, fileSize?: string, fileName?: string) => void;
-  onUploadUrl: (base64: string, fileSize?: string, fileName?: string) => void;
+  onUploadFile: (
+    base64: string,
+    fileSize?: string,
+    fileName?: string,
+    format?: string
+  ) => void;
+  onUploadUrl: (
+    base64: string,
+    fileSize?: string,
+    fileName?: string,
+    format?: string
+  ) => void;
 }
 
 export const UploadImage = ({
@@ -64,7 +74,8 @@ export const UploadImage = ({
           .slice(0, 20)
           .replace(/[^a-zA-Z0-9]/g, "-")
           .toLowerCase();
-        onUploadFile(base64, fileSize, fileName);
+        const format = file.type.replace("image/", "");
+        onUploadFile(base64, fileSize, fileName, format);
         setImageInputError(null);
         setUrlInputError(null);
         setDragDropError(null);
@@ -95,7 +106,7 @@ export const UploadImage = ({
         .slice(0, 20)
         .replace(/[^a-zA-Z0-9]/g, "-")
         .toLowerCase();
-      onUploadUrl(result.base64, result.fileSize, urlFileName);
+      onUploadUrl(result.base64, result.fileSize, urlFileName, result.format);
       setImageInputError(null);
       setUrlInputError(null);
       setDragDropError(null);
@@ -113,9 +124,10 @@ export const UploadImage = ({
   const handleDragDropUpload = (
     base64: string,
     fileSize?: string,
-    fileName?: string
+    fileName?: string,
+    format?: string
   ) => {
-    onUploadFile(base64, fileSize, fileName);
+    onUploadFile(base64, fileSize, fileName, format);
     setImageInputError(null);
     setUrlInputError(null);
     setDragDropError(null);

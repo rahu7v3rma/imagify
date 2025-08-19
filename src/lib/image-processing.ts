@@ -23,18 +23,46 @@ export const compressImage = async (
   };
 }> => {
   const endpoint = "/compress-image";
-  const response = await request.post(
-    endpoint,
-    {
-      imageBase64,
-      quality,
-    },
-    {
-      headers: {
-        Authorization: process.env.IMAGE_PROCESSING_API_TOKEN,
-      },
-    }
-  );
+  const response = await request.post(endpoint, {
+    imageBase64,
+    quality,
+  });
+
+  return response.data;
+};
+
+export const extractText = async (
+  imageBase64: string
+): Promise<{
+  success: boolean;
+  message: string;
+  data: {
+    extractedText: string;
+  };
+}> => {
+  const endpoint = "/extract-text";
+  const response = await request.post(endpoint, {
+    imageBase64,
+  });
+
+  return response.data;
+};
+
+export const convertFormat = async (
+  imageBase64: string,
+  format: string
+): Promise<{
+  success: boolean;
+  message: string;
+  data: {
+    imageBase64: string;
+  };
+}> => {
+  const endpoint = "/convert-format";
+  const response = await request.post(endpoint, {
+    imageBase64,
+    format,
+  });
 
   return response.data;
 };

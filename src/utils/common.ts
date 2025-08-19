@@ -34,7 +34,7 @@ export const fileToBase64 = (file: File): Promise<string> => {
 
 export async function convertImageUrlToBase64(
   imageUrl: string
-): Promise<{ base64: string; fileSize: string }> {
+): Promise<{ base64: string; fileSize: string; format: string }> {
   const response = await axios.get(imageUrl, {
     responseType: "arraybuffer",
   });
@@ -64,8 +64,11 @@ export async function convertImageUrlToBase64(
   const fileSizeInMB =
     (parseInt(contentLength) / 1024 / 1024).toFixed(2) + " MB";
 
+  const format = contentType.replace("image/", "");
+
   return {
     base64: `data:${contentType};base64,${imageBase64}`,
     fileSize: fileSizeInMB,
+    format: format,
   };
 }

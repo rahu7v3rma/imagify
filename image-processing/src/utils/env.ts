@@ -17,4 +17,5 @@ export const env = {
   FROM_EMAIL: getEnvVar("FROM_EMAIL"),
   ADMIN_EMAIL: getEnvVar("ADMIN_EMAIL"),
   APP_ENV: process.env.APP_ENV || "development",
+  CORS_ORIGIN: getEnvVar("CORS_ORIGIN"),
 };

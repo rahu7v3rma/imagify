@@ -3,7 +3,7 @@ import { router, imageProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { sendErrorEmail } from "@/lib/email";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { convertFormatBase64Image } from "@/lib/tinify";
+import { convertFormat } from "@/lib/image-processing";
 
 export const convertFormatRouter = router({
   convertFormat: imageProcedure
@@ -35,11 +35,8 @@ export const convertFormatRouter = router({
           return { success: false, message: "You do not have enough credits." };
         }
 
-        // Convert the image format using tinify
-        const convertedImageBase64 = await convertFormatBase64Image(
-          input.imageBase64,
-          input.format
-        );
+        // Convert the image format using image processing API
+        const response = await convertFormat(input.imageBase64, input.format);
 
         await prisma.user.update({
           where: { id: ctx.user.id },
@@ -54,7 +51,7 @@ export const convertFormatRouter = router({
           success: true,
           message: "Image format converted successfully!",
           data: {
-            imageBase64: convertedImageBase64,
+            imageBase64: response.data.imageBase64,
           },
         };
       } catch (error: any) {

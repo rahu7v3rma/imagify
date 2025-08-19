@@ -28,7 +28,10 @@ export function ProcessedImage({
       <Card className="w-[500px]">
         <CardHeader>
           <CardTitle>Processed Image</CardTitle>
-          {fileSize && <Muted className="mt-1">{fileSize}</Muted>}
+          <div className="mt-1 space-y-1">
+            {fileSize && <Muted>{fileSize}</Muted>}
+            {format && <Muted>{format.toUpperCase()}</Muted>}
+          </div>
           <CardDescription>
             Your background-removed image is ready
           </CardDescription>
