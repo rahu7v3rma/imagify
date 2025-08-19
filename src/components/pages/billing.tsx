@@ -25,16 +25,17 @@ import {
 } from "@/components/shared/loaders";
 import { trpc } from "@/lib/trpc/client";
 import { useUser } from "@/context/user/provider";
+import { BILLING_CONSTANTS } from "@/constants/credits";
 
 // Local schema copied from pricing page reference
 const PurchaseSchema = z.object({
   amount: z
     .number()
-    .min(1, "Amount must be at least $1")
+    .min(BILLING_CONSTANTS.MIN_CREDITS / 100, `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`)
     .max(100, "Amount must be at most $100"),
   credits: z
     .number()
-    .min(100, "Credits must be at least 100")
+    .min(BILLING_CONSTANTS.MIN_CREDITS, `Credits must be at least ${BILLING_CONSTANTS.MIN_CREDITS}`)
     .max(10000, "Credits must be at most 10000"),
 });
 
@@ -64,8 +65,8 @@ function BuyCreditsForm() {
     resolver: zodResolver(PurchaseSchema),
     mode: "onChange",
     defaultValues: {
-      amount: 1,
-      credits: 100,
+      amount: BILLING_CONSTANTS.MIN_CREDITS / 100,
+      credits: BILLING_CONSTANTS.MIN_CREDITS,
     },
   });
 
@@ -150,7 +151,7 @@ function BuyCreditsForm() {
             label="Amount (USD)"
             value={(amount ?? 0).toString()}
             onChange={handleAmountChange}
-            min={1}
+            min={BILLING_CONSTANTS.MIN_CREDITS / 100}
             step={1}
             placeholder="Enter amount in USD"
             error={amountError}
@@ -159,7 +160,7 @@ function BuyCreditsForm() {
             label="Credits"
             value={(credits ?? 0).toString()}
             onChange={handleCreditsChange}
-            min={100}
+            min={BILLING_CONSTANTS.MIN_CREDITS}
             step={100}
             placeholder="Enter number of credits"
             error={creditsError}

@@ -1,13 +1,17 @@
 export const CREDIT_REQUIREMENTS = {
   GENERATE_IMAGE: {
-    standard: 2,
-    pro: 6,
+    standard: 5,
+    pro: 10,
   },
-  REMOVE_BACKGROUND: 2,
-  EXTRACT_TEXT: 2,
-  UPSCALE: 2,
-  COMPRESS_IMAGE: 2,
-  CONVERT_FORMAT: 2,
-  RESIZE_IMAGE: 2,
-  EDIT_IMAGE: 6,
+  REMOVE_BACKGROUND: 5,
+  EXTRACT_TEXT: 5,
+  UPSCALE: 5,
+  COMPRESS_IMAGE: 5,
+  CONVERT_FORMAT: 5,
+  RESIZE_IMAGE: 5,
+  EDIT_IMAGE: 10,
+};
+
+export const BILLING_CONSTANTS = {
+  MIN_CREDITS: 500,
 };

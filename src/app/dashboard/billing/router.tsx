@@ -1,6 +1,7 @@
 import { router, protectedProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { paypalOrdersController } from "@/lib/paypal";
+import { BILLING_CONSTANTS } from "@/constants/credits";
 import {
   CheckoutPaymentIntent,
   OrderRequest,
@@ -11,7 +12,7 @@ import { sendErrorEmail } from "@/lib/email";
 const AmountSchema = z.object({
   amount: z
     .number()
-    .min(1, "Amount must be at least $1")
+    .min(BILLING_CONSTANTS.MIN_CREDITS / 100, `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`)
     .max(100, "Amount must be at most $100"),
 });
 
