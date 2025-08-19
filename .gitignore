@@ -4,10 +4,9 @@ node_modules
 .cursor
 .DS_Store
 dist
-.claude
 CLAUDE.md
 tsconfig.tsbuildinfo
-.aider*
 uploads
 notes.md
-.kilocode
+out
+.aider*

@@ -6,11 +6,12 @@ import {
   DragDropImageInput,
 } from "@/components/shared/inputs";
 import { convertImageUrlToBase64, fileToBase64 } from "@/utils/common";
+import { Muted } from "@/components/ui/typography";
 import { useState } from "react";
 
 interface UploadImageProps {
-  onUploadFile: (base64: string) => void;
-  onUploadUrl: (base64: string) => void;
+  onUploadFile: (base64: string, fileSize?: string) => void;
+  onUploadUrl: (base64: string, fileSize?: string) => void;
 }
 
 export const UploadImage = ({
@@ -26,6 +27,16 @@ export const UploadImage = ({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Check file size (10MB limit)
+      const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+      if (file.size > maxSizeInBytes) {
+        setImageInputError("File size must be less than 10MB");
+        setUrlInputError(null);
+        // Clear the input
+        e.target.value = "";
+        return;
+      }
+
       // Check if file is a supported image type
       const allowedTypes = [
         "image/jpeg",
@@ -43,7 +54,8 @@ export const UploadImage = ({
 
       try {
         const base64 = await fileToBase64(file);
-        onUploadFile(base64);
+        const fileSize = (file.size / 1024 / 1024).toFixed(2) + " MB";
+        onUploadFile(base64, fileSize);
         setImageInputError(null);
         setUrlInputError(null);
         setDragDropError(null);
@@ -66,8 +78,8 @@ export const UploadImage = ({
       }
 
       setIsUrlConversionLoading(true);
-      const base64 = await convertImageUrlToBase64(imageUrl);
-      onUploadUrl(base64);
+      const result = await convertImageUrlToBase64(imageUrl);
+      onUploadUrl(result.base64, result.fileSize);
       setImageInputError(null);
       setUrlInputError(null);
       setDragDropError(null);
@@ -82,8 +94,8 @@ export const UploadImage = ({
     }
   };
 
-  const handleDragDropUpload = (base64: string) => {
-    onUploadFile(base64);
+  const handleDragDropUpload = (base64: string, fileSize?: string) => {
+    onUploadFile(base64, fileSize);
     setImageInputError(null);
     setUrlInputError(null);
     setDragDropError(null);
@@ -121,6 +133,11 @@ export const UploadImage = ({
         }}
         error={urlInputError}
       />
+      
+      <div className="mt-2 space-y-0">
+        <Muted>Maximum allowed file size: 10MB</Muted>
+        <Muted>Allowed image types: JPEG, JPG, PNG, WebP</Muted>
+      </div>
     </div>
   );
 };

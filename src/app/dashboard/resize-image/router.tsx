@@ -1,15 +1,15 @@
 import { prisma } from "@/lib/prisma";
-import { router, protectedProcedure } from "@/lib/trpc/init";
+import { router, imageProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { sendErrorEmail } from "@/lib/email";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { resizeBase64Image } from "@/lib/tinify";
 
 export const resizeImageRouter = router({
-  resizeImage: protectedProcedure
+  resizeImage: imageProcedure
     .input(
       z.object({
-        imageBase64: z.string().min(1, "Image is required"),
+        imageBase64: z.string().min(1, "Image is required").regex(/^data:image\/(jpeg|jpg|png|webp);base64,/, "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"),
         width: z.number().min(1, "Width must be at least 1 pixel").max(5000, "Width cannot exceed 5000 pixels"),
         height: z.number().min(1, "Height must be at least 1 pixel").max(5000, "Height cannot exceed 5000 pixels"),
       })

@@ -6,23 +6,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Muted } from "@/components/ui/typography";
 import { downloadImage } from "@/utils/common";
 import { Download } from "lucide-react";
 
 interface ProcessedImageProps {
   processedImage: string;
   format?: string;
+  fileSize?: string;
 }
 
 export function ProcessedImage({
   processedImage,
   format = "png",
+  fileSize,
 }: ProcessedImageProps) {
   return (
     <div className="flex-1">
       <Card className="w-[500px]">
         <CardHeader>
           <CardTitle>Processed Image</CardTitle>
+          {fileSize && <Muted className="mt-1">{fileSize}</Muted>}
           <CardDescription>
             Your background-removed image is ready
           </CardDescription>

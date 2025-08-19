@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { router, protectedProcedure } from "@/lib/trpc/init";
+import { router, imageProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { sendErrorEmail } from "@/lib/email";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
@@ -7,10 +7,10 @@ import { getReplicateImageUrl } from "@/lib/replicate";
 import { convertImageUrlToBase64 } from "@/utils/common";
 
 export const editImageRouter = router({
-  editImage: protectedProcedure
+  editImage: imageProcedure
     .input(
       z.object({
-        imageBase64: z.string().min(1, "Image is required"),
+        imageBase64: z.string().min(1, "Image is required").regex(/^data:image\/(jpeg|jpg|png|webp);base64,/, "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"),
         prompt: z.string().min(1, "Prompt is required"),
       })
     )
@@ -63,7 +63,7 @@ export const editImageRouter = router({
           success: true,
           message: "Image edited successfully!",
           data: {
-            imageBase64: replicateImageBase64,
+            imageBase64: replicateImageBase64.base64,
           },
         };
       } catch (error: any) {

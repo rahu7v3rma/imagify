@@ -30,7 +30,7 @@ export const fileToBase64 = (file: File): Promise<string> => {
 
 export async function convertImageUrlToBase64(
   imageUrl: string
-): Promise<string> {
+): Promise<{ base64: string; fileSize: string }> {
   const response = await axios.get(imageUrl, {
     responseType: "arraybuffer",
   });
@@ -43,8 +43,24 @@ export async function convertImageUrlToBase64(
     );
   }
 
+  // Check file size (10MB limit) using content-length header
+  const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+  const contentLength = response.headers["content-length"];
+  if (!contentLength) {
+    throw new Error(
+      "Unable to determine file size. Content-Length header is missing."
+    );
+  }
+  if (parseInt(contentLength) > maxSizeInBytes) {
+    throw new Error("File size must be less than 10MB");
+  }
+
   const imageBuffer = Buffer.from(response.data);
   const imageBase64 = imageBuffer.toString("base64");
+  const fileSizeInMB = (parseInt(contentLength) / 1024 / 1024).toFixed(2) + " MB";
 
-  return `data:${contentType};base64,${imageBase64}`;
+  return {
+    base64: `data:${contentType};base64,${imageBase64}`,
+    fileSize: fileSizeInMB
+  };
 }

@@ -63,7 +63,7 @@ export const generateImageRouter = router({
           success: true,
           message: "Image generated successfully!",
           data: {
-            imageBase64: replicateImageBase64,
+            imageBase64: replicateImageBase64.base64,
           },
         };
       } catch (error: any) {

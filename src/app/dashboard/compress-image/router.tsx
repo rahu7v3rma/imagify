@@ -1,15 +1,16 @@
 import { prisma } from "@/lib/prisma";
-import { router, protectedProcedure } from "@/lib/trpc/init";
+import { router, imageProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { sendErrorEmail } from "@/lib/email";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { compressBase64Image } from "@/lib/tinify";
+import { compressImage } from "@/lib/image-processing";
 
 export const compressImageRouter = router({
-  compressImage: protectedProcedure
+  compressImage: imageProcedure
     .input(
       z.object({
-        imageBase64: z.string().min(1, "Image is required"),
+        imageBase64: z.string().min(1, "Image is required").regex(/^data:image\/(jpeg|jpg|png|webp);base64,/, "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"),
+        quality: z.number().min(1).max(100),
       })
     )
     .output(
@@ -19,6 +20,9 @@ export const compressImageRouter = router({
         data: z
           .object({
             imageBase64: z.string(),
+            compressedSize: z.string().optional(),
+            originalSize: z.string().optional(),
+            format: z.string().optional(),
           })
           .optional(),
       })
@@ -34,10 +38,8 @@ export const compressImageRouter = router({
           return { success: false, message: "You do not have enough credits." };
         }
 
-        // Compress the image using tinify
-        const compressedImageBase64 = await compressBase64Image(
-          input.imageBase64
-        );
+        // Compress the image using image processing API
+        const response = await compressImage(input.imageBase64, input.quality);
 
         await prisma.user.update({
           where: { id: ctx.user.id },
@@ -52,7 +54,10 @@ export const compressImageRouter = router({
           success: true,
           message: "Image compressed successfully!",
           data: {
-            imageBase64: compressedImageBase64,
+            imageBase64: response.data.imageBase64,
+            compressedSize: response.data.compressedSize,
+            originalSize: response.data.originalSize,
+            format: response.data.format,
           },
         };
       } catch (error: any) {

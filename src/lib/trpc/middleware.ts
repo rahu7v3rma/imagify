@@ -50,3 +50,29 @@ export const accessTokenMiddleware = async (opts: any) => {
     });
   }
 };
+
+export const jsonSizeLimitMiddleware = async (opts: any) => {
+  const { ctx, next } = opts;
+  
+  const MAX_JSON_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+  
+  const contentLengthHeader = ctx.req?.headers?.get("content-length");
+  
+  if (!contentLengthHeader) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Content-Length header is required.",
+    });
+  }
+  
+  const contentLength = parseInt(contentLengthHeader, 10);
+  
+  if (contentLength > MAX_JSON_SIZE) {
+    throw new TRPCError({
+      code: "PAYLOAD_TOO_LARGE",
+      message: "Request payload too large. Maximum size is 10MB.",
+    });
+  }
+  
+  return next();
+};

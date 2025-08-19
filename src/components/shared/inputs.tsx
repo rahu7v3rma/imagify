@@ -458,7 +458,7 @@ export const DragDropImageInput = ({
   label,
   error,
 }: {
-  onUpload: (base64: string) => void;
+  onUpload: (base64: string, fileSize?: string) => void;
   onError?: (error: string) => void;
   label?: string;
   error?: string | null;
@@ -483,6 +483,13 @@ export const DragDropImageInput = ({
     if (files && files.length > 0) {
       const file = files[0];
 
+      // Check file size (10MB limit)
+      const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+      if (file.size > maxSizeInBytes) {
+        onError?.("File size must be less than 10MB");
+        return;
+      }
+
       // Check if file is a supported image type
       const allowedTypes = [
         "image/jpeg",
@@ -497,7 +504,8 @@ export const DragDropImageInput = ({
 
       try {
         const base64 = await fileToBase64(file);
-        onUpload(base64);
+        const fileSize = (file.size / 1024 / 1024).toFixed(2) + " MB";
+        onUpload(base64, fileSize);
       } catch (error) {
         onError?.(
           "Failed to process the dropped file. Please try another file."
