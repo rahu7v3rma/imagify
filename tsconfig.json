@@ -29,5 +29,5 @@
     ".next/types/**/*.ts",
     "../server/src/lib/email.ts"
   ],
-  "exclude": ["node_modules", "functions"]
+  "exclude": ["node_modules", "functions", "image-processing"]
 }
