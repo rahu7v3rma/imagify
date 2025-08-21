@@ -14,7 +14,7 @@ export function BlogSlug({ title, content, ctaLink }: BlogSlugProps) {
   const router = useRouter();
   return (
     <div className="container py-8 mt-10 text-center mx-auto">
-      <H1 className="mb-6">{title}</H1>
+      <H1 className="mb-6 max-w-4xl mx-auto">{title}</H1>
       <P className="mb-8 w-1/2 mx-auto">{content}</P>
       {ctaLink && (
         <div className="w-max mx-auto">
