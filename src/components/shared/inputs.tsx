@@ -338,6 +338,85 @@ export const Textarea = ({
   );
 };
 
+export const TextareaAction = ({
+  value,
+  onChange,
+  label,
+  error,
+  placeholder,
+  actionButtonNode,
+  onActionButtonClick,
+  isActionButtonLoading,
+  actionButtonVisible,
+  actionButtonLoadingText,
+}: {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  label: string;
+  error?: string;
+  placeholder?: string;
+  actionButtonNode?: React.ReactNode;
+  onActionButtonClick?: () => void;
+  isActionButtonLoading?: boolean;
+  actionButtonVisible?: boolean;
+  actionButtonLoadingText?: string;
+}) => {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor="message-action">{label}</Label>
+      <div className="relative">
+        <UITextarea
+          id="message-action"
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
+        <AnimatePresence mode="wait">
+          {actionButtonNode && actionButtonVisible && (
+            <motion.div
+              key="action-button"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute bottom-2 right-2 z-10"
+            >
+              <Button
+                type="button"
+                onClick={onActionButtonClick}
+                disabled={isActionButtonLoading}
+                className="text-xs px-2 py-1 h-auto flex flex-col items-center gap-0.5 leading-tight"
+              >
+                {isActionButtonLoading ? (
+                  <div className="flex items-center gap-1">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    <P>{actionButtonLoadingText || "Loading..."}</P>
+                  </div>
+                ) : (
+                  actionButtonNode
+                )}
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <AnimatePresence mode="wait">
+        {error && (
+          <motion.div
+            key="error-message"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Muted className="text-red-500">{error}</Muted>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 export const SelectSingle = ({
   label,
   value,

@@ -2,13 +2,13 @@
 
 import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
 import { Button } from "@/components/shared/buttons";
-import { Textarea, SelectSingle } from "@/components/shared/inputs";
+import { TextareaAction, SelectSingle } from "@/components/shared/inputs";
 import { WithLoader } from "@/components/shared/loaders";
 import { ProcessedImage } from "@/components/shared/processed-image";
 import PageTransition from "@/components/shared/transitions";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
+import { H1, Muted, P } from "@/components/ui/typography";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { useUser } from "@/context/user/provider";
 import { trpc } from "@/lib/trpc/client";
@@ -71,6 +71,27 @@ export default function GenerateImagePage() {
       },
     });
 
+  const { mutate: enhancePrompt, isPending: isEnhancePromptPending } =
+    trpc.generateImage.enhancePrompt.useMutation({
+      onSuccess: (data) => {
+        if (data.success && data.data?.enhancedPrompt) {
+          setFormValue("prompt", data.data.enhancedPrompt);
+          fetchUserProfile();
+        } else {
+          setErrorMessage(
+            data.message || "Failed to enhance prompt. Please try again."
+          );
+          setSuccessMessage(null);
+        }
+      },
+      onError: (error) => {
+        setErrorMessage(
+          error.message || "Failed to enhance prompt. Please try again."
+        );
+        setSuccessMessage(null);
+      },
+    });
+
   const onSubmit = async (data: GenerateImageFormValues) => {
     setSuccessMessage(null);
     setErrorMessage(null);
@@ -80,6 +101,14 @@ export default function GenerateImagePage() {
       outputFormat: data.outputFormat,
       aspectRatio: data.aspectRatio,
     });
+  };
+
+  const handleEnhancePrompt = () => {
+    if (prompt.trim()) {
+      setSuccessMessage(null);
+      setErrorMessage(null);
+      enhancePrompt({ prompt: prompt.trim() });
+    }
   };
 
   const setFormValue = (
@@ -172,12 +201,26 @@ export default function GenerateImagePage() {
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-4 w-full"
                 >
-                  <Textarea
+                  <TextareaAction
                     label="Image Prompt"
                     value={prompt}
                     onChange={(e) => setFormValue("prompt", e.target.value)}
                     error={promptError}
                     placeholder="Describe the image you want to generate"
+                    actionButtonNode={
+                      <div className="flex flex-col items-end justify-center leading-none">
+                        <P className="text-[12px] font-medium m-0 p-0 leading-none">
+                          Enhance
+                        </P>
+                        <P className="text-[8px] m-0 p-0 leading-none text-gray-300">
+                          {CREDIT_REQUIREMENTS.ENHANCE_PROMPT} credits
+                        </P>
+                      </div>
+                    }
+                    onActionButtonClick={handleEnhancePrompt}
+                    isActionButtonLoading={isEnhancePromptPending}
+                    actionButtonVisible={!!prompt.trim()}
+                    actionButtonLoadingText="Enhancing..."
                   />
                   <SelectSingle
                     label="Output Format"
@@ -236,7 +279,6 @@ export default function GenerateImagePage() {
           {generatedImage && (
             <ProcessedImage
               processedImage={generatedImage}
-              format={imageFormat}
               name={getPromptBasedFileName(prompt)}
             />
           )}

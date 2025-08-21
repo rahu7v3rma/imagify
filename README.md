@@ -10,5 +10,5 @@
 - Linux-Docker(render) - Image procesing tools
 - Appwrite - file storage
 - Resend - email service
-- Replicate - image processing
+- Replicate, Gemini - AI services
 - PayPal - payment processor

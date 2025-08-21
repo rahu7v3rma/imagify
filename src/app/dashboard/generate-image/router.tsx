@@ -3,10 +3,70 @@ import { sendErrorEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { getReplicateImageUrl } from "@/lib/replicate";
 import { protectedProcedure, router } from "@/lib/trpc/init";
+import { enhancePrompt } from "@/lib/gemini";
 import { convertImageUrlToBase64 } from "@/utils/common";
 import { z } from "zod";
 
 export const generateImageRouter = router({
+  enhancePrompt: protectedProcedure
+    .input(
+      z.object({
+        prompt: z
+          .string()
+          .max(1000, "Prompt must be at most 1000 characters long"),
+      })
+    )
+    .output(
+      z.object({
+        success: z.boolean(),
+        message: z.string(),
+        data: z
+          .object({
+            enhancedPrompt: z.string(),
+          })
+          .optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        if (!ctx.user) {
+          return { success: false, message: "User not found" };
+        }
+
+        const credits = ctx.user.credits || 0;
+        const requiredCredits = CREDIT_REQUIREMENTS.ENHANCE_PROMPT;
+        if (credits < requiredCredits) {
+          return { success: false, message: "You do not have enough credits." };
+        }
+
+        const enhancedPrompt = await enhancePrompt(input.prompt);
+
+        await prisma.user.update({
+          where: { id: ctx.user.id },
+          data: {
+            credits: {
+              decrement: requiredCredits,
+            },
+          },
+        });
+
+        return {
+          success: true,
+          message: "Prompt enhanced successfully!",
+          data: {
+            enhancedPrompt,
+          },
+        };
+      } catch (error: any) {
+        if (process.env.APP_ENV === "production") {
+          sendErrorEmail({ error });
+        } else {
+          console.log("Error in enhance prompt:", error);
+        }
+        return { success: false, message: "Failed to enhance prompt." };
+      }
+    }),
+
   generateImage: protectedProcedure
     .input(
       z.object({
@@ -37,7 +97,8 @@ export const generateImageRouter = router({
         }
 
         const credits = ctx.user.credits || 0;
-        const requiredCredits = CREDIT_REQUIREMENTS.GENERATE_IMAGE[input.generateType];
+        const requiredCredits =
+          CREDIT_REQUIREMENTS.GENERATE_IMAGE[input.generateType];
         if (credits < requiredCredits) {
           return { success: false, message: "You do not have enough credits." };
         }
@@ -48,9 +109,10 @@ export const generateImageRouter = router({
           aspect_ratio: input.aspectRatio,
         };
 
-        const model = input.generateType === "pro" 
-          ? "black-forest-labs/flux-kontext-pro" 
-          : "black-forest-labs/flux-schnell";
+        const model =
+          input.generateType === "pro"
+            ? "black-forest-labs/flux-kontext-pro"
+            : "black-forest-labs/flux-schnell";
 
         const replicateImageUrl = await getReplicateImageUrl(
           model,
@@ -79,10 +141,10 @@ export const generateImageRouter = router({
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
+        if (process.env.APP_ENV === "production") {
           sendErrorEmail({ error });
         } else {
-          console.log('Error in generate image:', error);
+          console.log("Error in generate image:", error);
         }
         return { success: false, message: "Failed to generate image." };
       }
