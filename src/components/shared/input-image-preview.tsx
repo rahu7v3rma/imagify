@@ -13,12 +13,14 @@ interface InputImagePreviewProps {
   imageBase64: string;
   fileSize?: string;
   format?: string | null;
+  dimensions?: string;
 }
 
 export const InputImagePreview = ({
   imageBase64,
   fileSize,
   format,
+  dimensions,
 }: InputImagePreviewProps) => {
   if (!imageBase64) return null;
 
@@ -29,6 +31,7 @@ export const InputImagePreview = ({
         <div className="mt-1 space-y-1">
           {fileSize && <Muted>{fileSize}</Muted>}
           {format && <Muted>{format.toUpperCase()}</Muted>}
+          {dimensions && <Muted>{dimensions}</Muted>}
         </div>
         <CardDescription>
           Your uploaded image ready for processing

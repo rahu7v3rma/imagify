@@ -14,6 +14,7 @@ import { UploadImage } from "@/components/shared/upload-image";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
 import { useUser } from "@/context/user/provider";
 import { trpc } from "@/lib/trpc/client";
+import { extractImageDimensions } from "@/utils/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -36,6 +37,9 @@ type ResizeImageFormValues = z.infer<typeof ResizeImageSchema>;
 export default function ResizeImagePage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("resized-image");
+  const [inputImageDimensions, setInputImageDimensions] = useState<string>();
+  const [processedImageDimensions, setProcessedImageDimensions] =
+    useState<string>();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
@@ -52,9 +56,13 @@ export default function ResizeImagePage() {
 
   const { mutate: resizeImage, isPending: isResizeImagePending } =
     trpc.resizeImage.resizeImage.useMutation({
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
+          const processedDimensions = await extractImageDimensions(
+            data.data.imageBase64
+          );
+          setProcessedImageDimensions(processedDimensions);
           setSuccessMessage(data.message || "Image resized successfully!");
           setErrorMessage(null);
           fetchUserProfile();
@@ -106,22 +114,26 @@ export default function ResizeImagePage() {
     setFormValue("height", numValue);
   };
 
-  const handleFileUpload = (
+  const handleFileUpload = async (
     base64: string,
-    fileSize?: string,
+    fileSizeValue?: string,
     fileName?: string
   ) => {
     setFormValue("imageBase64", base64);
     if (fileName) setFileName(fileName);
+    const dimensions = await extractImageDimensions(base64);
+    setInputImageDimensions(dimensions);
   };
 
-  const handleUrlUpload = (
+  const handleUrlUpload = async (
     base64: string,
-    fileSize?: string,
+    fileSizeValue?: string,
     fileName?: string
   ) => {
     setFormValue("imageBase64", base64);
     if (fileName) setFileName(fileName);
+    const dimensions = await extractImageDimensions(base64);
+    setInputImageDimensions(dimensions);
   };
 
   const values = form.watch();
@@ -198,11 +210,18 @@ export default function ResizeImagePage() {
                 </form>
               </CardContent>
             </Card>
-            <InputImagePreview imageBase64={imageBase64} />
+            <InputImagePreview
+              imageBase64={imageBase64}
+              dimensions={inputImageDimensions}
+            />
           </div>
 
           {processedImage && (
-            <ProcessedImage processedImage={processedImage} name={fileName} />
+            <ProcessedImage
+              processedImage={processedImage}
+              name={fileName}
+              dimensions={processedImageDimensions}
+            />
           )}
         </div>
       </div>

@@ -7,6 +7,7 @@ import {
   Archive,
   ArrowUp,
   CreditCard,
+  Crop,
   Edit,
   FileText,
   Home,
@@ -99,6 +100,11 @@ function Sidebar() {
       label: "Resize Image",
     },
     { href: ROUTES.DASHBOARD.EDIT_IMAGE, icon: Edit, label: "Edit Image" },
+    {
+      href: ROUTES.DASHBOARD.CROP_ROTATE_FLIP,
+      icon: Crop,
+      label: "Crop-Rotate-Flip Image",
+    },
   ];
 
   const filteredButtons = navigationButtons.filter((button) =>
@@ -106,7 +112,7 @@ function Sidebar() {
   );
 
   return (
-    <aside className="w-56 min-w-56 h-full border-r border-border bg-background">
+    <aside className="w-76 min-w-76 h-full border-r border-border bg-background">
       <nav className="flex flex-col h-full p-4">
         <div className="mb-4">
           <TextInput

@@ -6,23 +6,24 @@ import * as os from "os";
 
 const execAsync = promisify(exec);
 
-export async function convertFormat(
+export async function resizeImage(
   imageBase64: string,
-  targetFormat: string
+  width: number,
+  height: number
 ): Promise<{ imageBase64: string }> {
   const tempDir = os.tmpdir();
-  
+
   // Extract format from the data URI
   const formatMatch = imageBase64.match(/^data:image\/([a-z]+);base64,/);
   if (!formatMatch) {
     throw new Error("Invalid image format");
   }
-  
-  const inputFormat = formatMatch[1];
-  const inputPath = path.join(tempDir, `convert-input-${Date.now()}.${inputFormat}`);
+
+  const format = formatMatch[1];
+  const inputPath = path.join(tempDir, `resize-input-${Date.now()}.${format}`);
   const outputPath = path.join(
     tempDir,
-    `convert-output-${Date.now()}.${targetFormat}`
+    `resize-output-${Date.now()}.${format}`
   );
 
   try {
@@ -33,22 +34,23 @@ export async function convertFormat(
     // Write the image to a temporary file
     fs.writeFileSync(inputPath, imageBuffer);
 
-    // Use ImageMagick to convert the format
-    await execAsync(`convert "${inputPath}" "${outputPath}"`);
+    // Use ImageMagick to resize the image
+    await execAsync(
+      `convert "${inputPath}" -resize ${width}x${height} "${outputPath}"`
+    );
 
-    // Read the converted image
-    const convertedBuffer = fs.readFileSync(outputPath);
-    const convertedBase64 = convertedBuffer.toString("base64");
+    // Read the resized image
+    const resizedBuffer = fs.readFileSync(outputPath);
+    const resizedBase64 = resizedBuffer.toString("base64");
 
-    // Create the data URI with the correct MIME type
-    const mimeType = `image/${targetFormat}`;
-    const dataUri = `data:${mimeType};base64,${convertedBase64}`;
+    // Create the data URI with the original format
+    const mimeType = `image/${format}`;
+    const dataUri = `data:${mimeType};base64,${resizedBase64}`;
 
     return {
       imageBase64: dataUri,
     };
   } finally {
-    // Clean up temporary files
     fs.unlinkSync(inputPath);
     fs.unlinkSync(outputPath);
   }

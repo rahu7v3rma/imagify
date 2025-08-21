@@ -66,3 +66,24 @@ export const convertFormat = async (
 
   return response.data;
 };
+
+export const resizeImage = async (
+  imageBase64: string,
+  width: number,
+  height: number
+): Promise<{
+  success: boolean;
+  message: string;
+  data: {
+    imageBase64: string;
+  };
+}> => {
+  const endpoint = "/resize";
+  const response = await request.post(endpoint, {
+    imageBase64,
+    width,
+    height,
+  });
+
+  return response.data;
+};

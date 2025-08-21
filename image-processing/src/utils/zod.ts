@@ -56,3 +56,19 @@ export const convertFormatRequestBody = z.object({
 export const convertFormatResponseData = z.object({
   imageBase64: z.string(),
 });
+
+export const resizeImageRequestBody = z.object({
+  imageBase64: z
+    .string()
+    .min(1, "Base64 image is required")
+    .regex(
+      /^data:image\/(jpeg|jpg|png|webp);base64,/,
+      "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"
+    ),
+  width: z.number().min(1).max(5000),
+  height: z.number().min(1).max(5000),
+});
+
+export const resizeImageResponseData = z.object({
+  imageBase64: z.string(),
+});

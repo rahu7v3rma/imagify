@@ -15,13 +15,15 @@ interface ProcessedImageProps {
   format?: string;
   fileSize?: string;
   name?: string;
+  dimensions?: string;
 }
 
 export function ProcessedImage({
   processedImage,
-  format = "png",
+  format,
   fileSize,
   name = "processed-image",
+  dimensions,
 }: ProcessedImageProps) {
   return (
     <div className="flex-1">
@@ -31,6 +33,7 @@ export function ProcessedImage({
           <div className="mt-1 space-y-1">
             {fileSize && <Muted>{fileSize}</Muted>}
             {format && <Muted>{format.toUpperCase()}</Muted>}
+            {dimensions && <Muted>{dimensions}</Muted>}
           </div>
           <CardDescription>
             Your background-removed image is ready

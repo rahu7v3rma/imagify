@@ -4,19 +4,11 @@
 
 # Tech Stack
 
-- PostgreSQL/Prisma - database
-- trpc - api framework
-- NextJS - backend framework
-- ReactJS - frontend framework
+- PostgreSQL(neon) - database
+- NextJS(vercel) - full stack framework
 - Shadcn - frontend components
-
-# Services
-
+- Linux-Docker(render) - Image procesing tools
+- Appwrite - file storage
+- Resend - email service
 - Replicate - image processing
 - PayPal - payment processor
-- Razorpay - payment processor
-- Tinify - image compression
-- IPInfo - IP checking
-- Resend - email service
-- Appwrite - file storage
-- Neon - postgresql database

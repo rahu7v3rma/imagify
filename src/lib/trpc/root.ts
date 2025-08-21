@@ -15,6 +15,7 @@ import { editImageRouter } from "@/app/dashboard/edit-image/router";
 import { compressImageRouter } from "@/app/dashboard/compress-image/router";
 import { convertFormatRouter } from "@/app/dashboard/convert-format/router";
 import { resizeImageRouter } from "@/app/dashboard/resize-image/router";
+import { cropRotateFlipRouter } from "@/app/dashboard/crop-rotate-flip/router";
 
 export const appRouter = router({
   contact: contactRouter,
@@ -33,6 +34,7 @@ export const appRouter = router({
   compressImage: compressImageRouter,
   convertFormat: convertFormatRouter,
   resizeImage: resizeImageRouter,
+  cropRotateFlip: cropRotateFlipRouter,
 });
 
 export type AppRouter = typeof appRouter;

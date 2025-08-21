@@ -21,6 +21,7 @@ export const ROUTES = {
     CONVERT_FORMAT: "/dashboard/convert-format",
     RESIZE_IMAGE: "/dashboard/resize-image",
     EDIT_IMAGE: "/dashboard/edit-image",
+    CROP_ROTATE_FLIP: "/dashboard/crop-rotate-flip",
     BILLING: "/dashboard/billing",
     SETTINGS: "/dashboard/settings",
   },

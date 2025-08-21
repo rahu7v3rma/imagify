@@ -24,3 +24,16 @@ export const parseDataUri = (dataUri: string) => {
     extension: normalizedFormat === "jpeg" ? "jpg" : normalizedFormat,
   };
 };
+
+export const extractImageDimensions = (base64: string): Promise<string> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve(`${img.width} × ${img.height}`);
+    };
+    img.onerror = () => {
+      resolve("Unknown dimensions");
+    };
+    img.src = base64;
+  });
+};

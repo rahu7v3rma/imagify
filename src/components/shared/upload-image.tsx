@@ -15,7 +15,8 @@ interface UploadImageProps {
     base64: string,
     fileSize?: string,
     fileName?: string,
-    format?: string
+    format?: string,
+    file?: File
   ) => void;
   onUploadUrl: (
     base64: string,
@@ -75,7 +76,7 @@ export const UploadImage = ({
           .replace(/[^a-zA-Z0-9]/g, "-")
           .toLowerCase();
         const format = file.type.replace("image/", "");
-        onUploadFile(base64, fileSize, fileName, format);
+        onUploadFile(base64, fileSize, fileName, format, file);
         setImageInputError(null);
         setUrlInputError(null);
         setDragDropError(null);
@@ -125,9 +126,10 @@ export const UploadImage = ({
     base64: string,
     fileSize?: string,
     fileName?: string,
-    format?: string
+    format?: string,
+    file?: File
   ) => {
-    onUploadFile(base64, fileSize, fileName, format);
+    onUploadFile(base64, fileSize, fileName, format, file);
     setImageInputError(null);
     setUrlInputError(null);
     setDragDropError(null);
