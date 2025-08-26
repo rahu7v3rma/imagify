@@ -59,3 +59,46 @@ export function IconButtonWrapper({
     </motion.div>
   );
 }
+
+export function IconButton({ 
+  children, 
+  onClick, 
+  className,
+  variant = "ghost",
+  ...props 
+}: UIButtonProps & {
+  children: React.ReactNode;
+  onClick?: () => void;
+}) {
+  const { isDark } = useTheme();
+
+  return (
+    <motion.div
+      whileHover={
+        props.disabled
+          ? undefined
+          : isDark
+          ? {
+              scale: 1.1,
+              filter: "brightness(0.9)",
+            }
+          : {
+              scale: 1.1,
+              filter: "brightness(1.2)",
+            }
+      }
+      whileTap={{ scale: 0.95 }}
+      transition={{ duration: 0.2 }}
+    >
+      <UIButton
+        variant={variant}
+        size="icon"
+        onClick={onClick}
+        className={cn(className)}
+        {...props}
+      >
+        {children}
+      </UIButton>
+    </motion.div>
+  );
+}
