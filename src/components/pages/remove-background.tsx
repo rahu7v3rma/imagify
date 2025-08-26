@@ -22,6 +22,7 @@ const RemoveBackgroundSchema = z.object({
   imageBase64: z
     .string()
     .min(1, "Please upload an image to remove its background"),
+  generateType: z.enum(["fast", "standard"]),
 });
 
 type RemoveBackgroundFormValues = z.infer<typeof RemoveBackgroundSchema>;
@@ -38,6 +39,7 @@ export default function RemoveBackgroundPage() {
     mode: "onChange",
     defaultValues: {
       imageBase64: "",
+      generateType: "fast",
     },
   });
 
@@ -69,6 +71,7 @@ export default function RemoveBackgroundPage() {
     setErrorMessage(null);
     removeBackground({
       imageBase64: data.imageBase64,
+      generateType: data.generateType,
     });
   };
 
@@ -134,6 +137,30 @@ export default function RemoveBackgroundPage() {
                     onUploadFile={handleFileUpload}
                     onUploadUrl={handleUrlUpload}
                   />
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant={
+                        values.generateType === "fast"
+                          ? "default"
+                          : "outline"
+                      }
+                      onClick={() => setFormValue("generateType", "fast")}
+                      className="flex-1"
+                    >
+                      Fast
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={
+                        values.generateType === "standard" ? "default" : "outline"
+                      }
+                      onClick={() => setFormValue("generateType", "standard")}
+                      className="flex-1"
+                    >
+                      Standard
+                    </Button>
+                  </div>
                   <Button
                     type="submit"
                     variant="default"
