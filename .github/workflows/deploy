@@ -16,4 +16,5 @@ jobs:
           npx prisma migrate dev
           npx prisma generate
           npm run build
-          bash pm2-start.sh
+          pm2 delete imagify || true
+          pm2 start npm --name "imagify" -- start
