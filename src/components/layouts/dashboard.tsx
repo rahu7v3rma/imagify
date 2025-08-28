@@ -197,11 +197,11 @@ export default function DashboardLayout({
 }) {
   return (
     <PageTransition>
-      <div className="h-screen flex flex-col">
+      <div className="h-screen flex flex-col overflow-hidden">
         <div>
           <Header />
         </div>
-        <div className="flex flex-1 w-full">
+        <div className="flex flex-1 w-full overflow-hidden">
           <Sidebar />
           <main className="p-10 w-full overflow-y-auto">{children}</main>
         </div>
