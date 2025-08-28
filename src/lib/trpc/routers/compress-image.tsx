@@ -3,7 +3,7 @@ import { router, imageProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { sendErrorEmail } from "@/lib/email";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { compressImage } from "@/lib/image-processing";
+import { compressImage } from "@/lib/image/compress-image";
 
 export const compressImageRouter = router({
   compressImage: imageProcedure
@@ -54,10 +54,10 @@ export const compressImageRouter = router({
           success: true,
           message: "Image compressed successfully!",
           data: {
-            imageBase64: response.data.imageBase64,
-            compressedSize: response.data.compressedSize,
-            originalSize: response.data.originalSize,
-            format: response.data.format,
+            imageBase64: response.dataUri,
+            compressedSize: response.compressedSize,
+            originalSize: response.originalSize,
+            format: response.format,
           },
         };
       } catch (error: any) {

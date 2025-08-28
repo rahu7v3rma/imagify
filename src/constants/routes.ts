@@ -10,6 +10,7 @@ export const ROUTES = {
   PRIVACY_POLICY: "/privacy-policy",
   TERMS_OF_SERVICE: "/terms-of-service",
   VERIFY_EMAIL: "/verify-email",
+  REMOVE_BACKGROUND: "/remove-background",
 
   DASHBOARD: {
     ROOT: "/dashboard",

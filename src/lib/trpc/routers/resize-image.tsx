@@ -1,12 +1,12 @@
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { sendErrorEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
-import { extractText } from "@/lib/image-processing";
-import { imageProcedure, router } from "@/lib/trpc/init";
+import { router, imageProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
+import { sendErrorEmail } from "@/lib/email";
+import { CREDIT_REQUIREMENTS } from "@/constants/credits";
+import { resizeImage } from "@/lib/image/resize";
 
-export const extractTextRouter = router({
-  extractText: imageProcedure
+export const resizeImageRouter = router({
+  resizeImage: imageProcedure
     .input(
       z.object({
         imageBase64: z
@@ -16,6 +16,14 @@ export const extractTextRouter = router({
             /^data:image\/(jpeg|jpg|png|webp);base64,/,
             "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"
           ),
+        width: z
+          .number()
+          .min(1, "Width must be at least 1 pixel")
+          .max(5000, "Width cannot exceed 5000 pixels"),
+        height: z
+          .number()
+          .min(1, "Height must be at least 1 pixel")
+          .max(5000, "Height cannot exceed 5000 pixels"),
       })
     )
     .output(
@@ -24,7 +32,7 @@ export const extractTextRouter = router({
         message: z.string(),
         data: z
           .object({
-            extractedText: z.string(),
+            imageBase64: z.string(),
           })
           .optional(),
       })
@@ -36,36 +44,40 @@ export const extractTextRouter = router({
         }
 
         const credits = ctx.user.credits || 0;
-        if (credits < CREDIT_REQUIREMENTS.EXTRACT_TEXT) {
+        if (credits < CREDIT_REQUIREMENTS.RESIZE_IMAGE) {
           return { success: false, message: "You do not have enough credits." };
         }
 
-        // Extract text using image processing API
-        const response = await extractText(input.imageBase64);
+        // Resize the image using image processing API
+        const response = await resizeImage(
+          input.imageBase64,
+          input.width,
+          input.height
+        );
 
         await prisma.user.update({
           where: { id: ctx.user.id },
           data: {
             credits: {
-              decrement: CREDIT_REQUIREMENTS.EXTRACT_TEXT,
+              decrement: CREDIT_REQUIREMENTS.RESIZE_IMAGE,
             },
           },
         });
 
         return {
           success: true,
-          message: "Text extracted successfully!",
+          message: "Image resized successfully!",
           data: {
-            extractedText: response.data.extractedText,
+            imageBase64: response.imageBase64,
           },
         };
       } catch (error: any) {
         if (process.env.APP_ENV === "production") {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in extract text:", error);
+          console.log("Error in resize image:", error);
         }
-        return { success: false, message: "Failed to extract text." };
+        return { success: false, message: "Failed to resize image." };
       }
     }),
 });

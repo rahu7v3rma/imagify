@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { TRPCError } from "@trpc/server";
 import { publicProcedure, router } from "@/lib/trpc/init";
-import { uploadFile } from "@/lib/upload";
+import { uploadContactFile } from "@/lib/upload";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { sendErrorEmail } from "@/lib/email";
@@ -29,7 +29,7 @@ export const contactRouter = router({
 
         let uploadsPath: string | null = null;
         if (image) {
-          uploadsPath = await uploadFile({
+          uploadsPath = await uploadContactFile({
             file: image,
           });
         }

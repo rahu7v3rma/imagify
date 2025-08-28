@@ -3,7 +3,7 @@ import { router, imageProcedure } from "@/lib/trpc/init";
 import { z } from "zod";
 import { sendErrorEmail } from "@/lib/email";
 import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { convertFormat } from "@/lib/image-processing";
+import { convertFormat } from "@/lib/image/convert-format";
 
 export const convertFormatRouter = router({
   convertFormat: imageProcedure
@@ -51,7 +51,7 @@ export const convertFormatRouter = router({
           success: true,
           message: "Image format converted successfully!",
           data: {
-            imageBase64: response.data.imageBase64,
+            imageBase64: response.imageBase64,
           },
         };
       } catch (error: any) {

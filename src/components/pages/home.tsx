@@ -28,7 +28,7 @@ export default function Home() {
         </div>
 
         <div className="flex flex-wrap gap-4 justify-center items-center">
-          <NextLink href={ROUTES.DASHBOARD.REMOVE_BACKGROUND}>
+          <NextLink href={ROUTES.REMOVE_BACKGROUND}>
             <MotionCardWrapper>
               <Card className="h-[220px] w-[250px]">
                 <CardContent className="p-6 h-full">

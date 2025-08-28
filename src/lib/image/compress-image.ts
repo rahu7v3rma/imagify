@@ -2,7 +2,7 @@ import { exec } from "child_process";
 import { promisify } from "util";
 import fs from "fs/promises";
 import path from "path";
-import { formatFileSize, parseDataUri } from "../utils/image";
+import { formatFileSize, parseDataUri } from "@/utils/image";
 
 const execAsync = promisify(exec);
 
@@ -10,6 +10,7 @@ export interface CompressionResult {
   dataUri: string;
   compressedSize: string;
   originalSize: string;
+  format: string;
 }
 
 export async function compressPNG(
@@ -49,6 +50,7 @@ export async function compressPNG(
       dataUri,
       compressedSize,
       originalSize,
+      format: "png",
     };
   } finally {
     // Clean up temporary files
@@ -93,6 +95,7 @@ export async function compressJPEG(
       dataUri,
       compressedSize,
       originalSize,
+      format: "jpeg",
     };
   } finally {
     // Clean up temporary file
@@ -136,6 +139,7 @@ export async function compressWebP(
       dataUri,
       compressedSize,
       originalSize,
+      format: "webp",
     };
   } finally {
     // Clean up temporary files

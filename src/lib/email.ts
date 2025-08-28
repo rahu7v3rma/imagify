@@ -1,35 +1,40 @@
 import { CONTACT_EMAIL, ADMIN_EMAIL } from "@/constants/common";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 export async function sendEmail({
   to,
   subject,
   html,
   text,
-  react,
 }: {
   to: string;
   subject: string;
   html?: string;
   text?: string;
-  react?: React.ReactNode;
 }) {
-  const response = await resend.emails.send({
+  const mailOptions = {
     from: CONTACT_EMAIL,
     to,
     subject,
     html,
     text,
-    react,
-  });
+  };
 
-  if (response.error) {
-    throw new Error(response.error.message);
+  try {
+    await transporter.sendMail(mailOptions);
+    return true;
+  } catch (error: any) {
+    throw new Error(error.message);
   }
-
-  return true;
 }
 
 export async function sendEmailVerificationEmail({
