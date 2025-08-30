@@ -19,15 +19,19 @@ model Contact {
 }
 
 model User {
-  id                     Int      @id @default(autoincrement()) @map("id")
-  email                  String   @unique @map("email")
-  password               String   @map("password")
-  emailVerificationCode  String?  @map("email_verification_code")
-  emailVerified          Boolean? @map("email_verified")
-  credits                Int      @default(0) @map("credits")
-  role                   String?  @map("role")
-  createdAt              DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt              DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+  id                         Int       @id @default(autoincrement()) @map("id")
+  email                      String    @unique @map("email")
+  password                   String    @map("password")
+  emailVerificationCode      String?   @map("email_verification_code")
+  emailVerified              Boolean?  @map("email_verified")
+  credits                    Int       @default(0) @map("credits")
+  role                       String?   @map("role")
+  subscriptionPlanId         String?   @map("subscription_plan_id")
+  subscriptionCreditResetDate DateTime? @map("subscription_credit_reset_date") @db.Timestamp(6)
+  subscriptionCredits        Int       @default(0) @map("subscription_credits")
+  subscriptionActive         Boolean   @default(false) @map("subscription_active")
+  createdAt                  DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt                  DateTime  @default(now()) @map("updated_at") @db.Timestamp(6)
 
   @@map("users")
 }

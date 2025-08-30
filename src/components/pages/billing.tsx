@@ -9,10 +9,10 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { H1, H3, Muted } from "@/components/ui/typography";
+import { H1, H3, Muted, Large, List } from "@/components/ui/typography";
 import { Button } from "@/components/shared/buttons";
 import { NumberInput } from "@/components/shared/inputs";
-import { Zap } from "lucide-react";
+import { Zap, CreditCard } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,11 +31,17 @@ import { BILLING_CONSTANTS } from "@/constants/credits";
 const PurchaseSchema = z.object({
   amount: z
     .number()
-    .min(BILLING_CONSTANTS.MIN_CREDITS / 100, `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`)
+    .min(
+      BILLING_CONSTANTS.MIN_CREDITS / 100,
+      `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`
+    )
     .max(100, "Amount must be at most $100"),
   credits: z
     .number()
-    .min(BILLING_CONSTANTS.MIN_CREDITS, `Credits must be at least ${BILLING_CONSTANTS.MIN_CREDITS}`)
+    .min(
+      BILLING_CONSTANTS.MIN_CREDITS,
+      `Credits must be at least ${BILLING_CONSTANTS.MIN_CREDITS}`
+    )
     .max(10000, "Credits must be at most 10000"),
 });
 
@@ -181,8 +187,105 @@ function BuyCreditsForm() {
   );
 }
 
+// Buy Subscription form component
+function BuySubscriptionForm() {
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+
+  // Effect to check search params for success/failure messages
+  useEffect(() => {
+    const buySubscriptionSuccess = searchParams.get("buy_subscription_success");
+    const buySubscriptionFailure = searchParams.get("buy_subscription_failure");
+
+    if (buySubscriptionSuccess === "1") {
+      setSuccessMessage(
+        "Subscription created successfully! You now have access to premium features."
+      );
+      setErrorMessage(null);
+    } else if (buySubscriptionFailure === "1") {
+      setErrorMessage("Subscription failed or was cancelled. Please try again.");
+      setSuccessMessage(null);
+    }
+  }, [searchParams]);
+
+  const { mutate, isPending } = trpc.billing.createSubscription.useMutation({
+    onSuccess: (data) => {
+      if (data.success && data.data?.approvalUrl) {
+        setSuccessMessage(
+          data.message ||
+            "Subscription created successfully! Redirecting to payment..."
+        );
+        setErrorMessage(null);
+        // Redirect to PayPal subscription URL
+        window.open(data.data.approvalUrl, "_blank");
+      } else {
+        setErrorMessage(
+          data.message || "Failed to create subscription. Please try again."
+        );
+        setSuccessMessage(null);
+      }
+    },
+    onError: (error) => {
+      setErrorMessage(
+        error.message || "Failed to create subscription. Please try again."
+      );
+      setSuccessMessage(null);
+    },
+  });
+
+  const handleSubscribe = () => {
+    mutate();
+  };
+
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>Standard Plan</CardTitle>
+        <CardDescription>Most value for your money</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex items-center">
+            <Large className="text-black font-bold !text-2xl">$10</Large>
+            <Muted>/month</Muted>
+          </div>
+          <List
+            options={[
+              <Muted key="credits">1000 credits per month</Muted>,
+              <Muted key="links">Share processed image links</Muted>,
+              <Muted key="history">Save image history</Muted>,
+            ]}
+            className=""
+          />
+          <Button
+            type="button"
+            variant="default"
+            className="w-full"
+            disabled={isPending}
+            onClick={handleSubscribe}
+          >
+            <WithLoaderNode content="Subscribe" isLoading={isPending} />
+          </Button>
+          {successMessage && <SuccessAlert message={successMessage} />}
+          {errorMessage && <ErrorAlert message={errorMessage} />}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function BillingPage() {
   const { userProfile, isLoading } = useUser();
+  const [activeTab, setActiveTab] = useState<string>("credits");
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
 
   return (
     <PageTransition className="">
@@ -191,14 +294,23 @@ export default function BillingPage() {
           <H1>Billing</H1>
         </div>
 
-        <Tabs defaultValue="credits" className="w-full">
-          <TabsList className="grid w-full grid-cols-1">
+        <Tabs defaultValue="credits" className="w-full" value={activeTab}>
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger
               value="credits"
               className="flex items-center space-x-2"
+              onClick={() => setActiveTab("credits")}
             >
               <Zap className="w-4 h-4" />
               <span>Credits</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="subscription"
+              className="flex items-center space-x-2"
+              onClick={() => setActiveTab("subscription")}
+            >
+              <CreditCard className="w-4 h-4" />
+              <span>Subscription</span>
             </TabsTrigger>
           </TabsList>
           <TabsContent value="credits">
@@ -223,6 +335,11 @@ export default function BillingPage() {
                 {/* Buy Credits Form (reference applied from pricing page) */}
                 <BuyCreditsForm />
               </div>
+            </div>
+          </TabsContent>
+          <TabsContent value="subscription">
+            <div className="py-4">
+              <BuySubscriptionForm />
             </div>
           </TabsContent>
         </Tabs>
