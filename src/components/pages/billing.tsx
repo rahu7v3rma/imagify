@@ -9,7 +9,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { H1, H3, Muted, Large, List } from "@/components/ui/typography";
+import { H1, H3, H4, Muted, Large, List } from "@/components/ui/typography";
 import { Button } from "@/components/shared/buttons";
 import { NumberInput } from "@/components/shared/inputs";
 import { Zap, CreditCard } from "lucide-react";
@@ -204,7 +204,9 @@ function BuySubscriptionForm() {
       );
       setErrorMessage(null);
     } else if (buySubscriptionFailure === "1") {
-      setErrorMessage("Subscription failed or was cancelled. Please try again.");
+      setErrorMessage(
+        "Subscription failed or was cancelled. Please try again."
+      );
       setSuccessMessage(null);
     }
   }, [searchParams]);
@@ -280,7 +282,7 @@ function CurrentSubscriptionCard() {
   const { userProfile, isLoading } = useUser();
 
   return (
-    <Card className="w-full max-w-md mt-4">
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>Current Subscription</CardTitle>
         <CardDescription>Your subscription details</CardDescription>
@@ -290,23 +292,36 @@ function CurrentSubscriptionCard() {
           content={
             userProfile?.subscriptionPlanName ? (
               <div className="space-y-4">
-                <div className="flex items-center">
-                  <Large className="text-black font-bold !text-2xl">{userProfile?.subscriptionPlanName}</Large>
-                  <Muted className="ml-2">Plan</Muted>
-                </div>
                 <div className="space-y-2">
-                  <Muted>
-                    Status: <span className="text-green-600 font-medium">
+                  <div className="flex items-center gap-2">
+                    <Muted>Plan</Muted>
+                    <H4 className="!text-lg !mt-0">
+                      {userProfile?.subscriptionPlanName}
+                    </H4>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Muted>Status</Muted>
+                    <H4 className="!text-lg !mt-0">
                       {userProfile?.subscriptionActive ? "Active" : "Inactive"}
-                    </span>
-                  </Muted>
+                    </H4>
+                  </div>
                   {userProfile?.subscriptionCredits && (
-                    <Muted>Credits: {userProfile.subscriptionCredits}</Muted>
+                    <div className="flex items-center gap-2">
+                      <Muted>Credits</Muted>
+                      <H4 className="!text-lg !mt-0">
+                        {userProfile.subscriptionCredits}
+                      </H4>
+                    </div>
                   )}
                   {userProfile?.subscriptionCreditResetDate && (
-                    <Muted>
-                      Next reset: {new Date(userProfile.subscriptionCreditResetDate).toLocaleDateString()}
-                    </Muted>
+                    <div className="flex items-center gap-2">
+                      <Muted>Next reset</Muted>
+                      <H4 className="!text-lg !mt-0">
+                        {new Date(
+                          userProfile.subscriptionCreditResetDate
+                        ).toLocaleDateString()}
+                      </H4>
+                    </div>
                   )}
                 </div>
               </div>
@@ -392,8 +407,11 @@ export default function BillingPage() {
           </TabsContent>
           <TabsContent value="subscription">
             <div className="py-4">
-              <BuySubscriptionForm />
-              <CurrentSubscriptionCard />
+              {userProfile?.subscriptionPlanName ? (
+                <CurrentSubscriptionCard />
+              ) : (
+                <BuySubscriptionForm />
+              )}
             </div>
           </TabsContent>
         </Tabs>
