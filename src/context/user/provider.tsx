@@ -14,6 +14,10 @@ import { ROUTES } from "@/constants/routes";
 type UserProfile = {
   email?: string;
   credits?: number;
+  subscriptionPlanName?: string | null;
+  subscriptionCreditResetDate?: string | null;
+  subscriptionCredits?: number;
+  subscriptionActive?: boolean;
 };
 
 type UserContextType = {

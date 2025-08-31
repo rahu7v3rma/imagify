@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/shared/buttons";
+import { Button, IconButton } from "@/components/shared/buttons";
 import { ROUTES } from "@/constants/routes";
 import { useUser } from "@/context/user/provider";
 import {
@@ -14,6 +14,7 @@ import {
   Image,
   LogOut,
   Maximize,
+  RefreshCw,
   RotateCcw,
   Settings,
   Sparkles,
@@ -29,7 +30,7 @@ import { TextInput } from "@/components/shared/inputs";
 
 function Header() {
   const router = useRouter();
-  const { userProfile, isLoading } = useUser();
+  const { userProfile, isLoading, fetchUserProfile } = useUser();
 
   return (
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
@@ -55,6 +56,14 @@ function Header() {
               isLoading={isLoading}
             />
           </Button>
+          <IconButton
+            onClick={fetchUserProfile}
+            size="sm"
+            className="w-8 h-8"
+            variant="outline"
+          >
+            <RefreshCw className="w-4 h-4" />
+          </IconButton>
         </div>
       </div>
     </header>

@@ -275,6 +275,59 @@ function BuySubscriptionForm() {
   );
 }
 
+// Current Subscription card component
+function CurrentSubscriptionCard() {
+  const { userProfile, isLoading } = useUser();
+
+  return (
+    <Card className="w-full max-w-md mt-4">
+      <CardHeader>
+        <CardTitle>Current Subscription</CardTitle>
+        <CardDescription>Your subscription details</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <WithLoaderNodeSafe
+          content={
+            userProfile?.subscriptionPlanName ? (
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <Large className="text-black font-bold !text-2xl">{userProfile?.subscriptionPlanName}</Large>
+                  <Muted className="ml-2">Plan</Muted>
+                </div>
+                <div className="space-y-2">
+                  <Muted>
+                    Status: <span className="text-green-600 font-medium">
+                      {userProfile?.subscriptionActive ? "Active" : "Inactive"}
+                    </span>
+                  </Muted>
+                  {userProfile?.subscriptionCredits && (
+                    <Muted>Credits: {userProfile.subscriptionCredits}</Muted>
+                  )}
+                  {userProfile?.subscriptionCreditResetDate && (
+                    <Muted>
+                      Next reset: {new Date(userProfile.subscriptionCreditResetDate).toLocaleDateString()}
+                    </Muted>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-4">
+                <Muted>No active subscription</Muted>
+              </div>
+            )
+          }
+          fallback={
+            <div className="text-center py-4">
+              <Muted>Loading subscription details...</Muted>
+            </div>
+          }
+          isLoading={isLoading}
+        />
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function BillingPage() {
   const { userProfile, isLoading } = useUser();
   const [activeTab, setActiveTab] = useState<string>("credits");
@@ -340,6 +393,7 @@ export default function BillingPage() {
           <TabsContent value="subscription">
             <div className="py-4">
               <BuySubscriptionForm />
+              <CurrentSubscriptionCard />
             </div>
           </TabsContent>
         </Tabs>

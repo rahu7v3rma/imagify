@@ -1,6 +1,7 @@
 import { IS_PRODUCTION } from "@/constants/common";
 import {
-  SUBSCRIPTION_PLAN_CREDITS
+  SUBSCRIPTION_PLAN_CREDITS,
+  SUBSCRIPTION_PLAN_NAMES
 } from "@/constants/credits";
 import { sendErrorEmail } from "@/lib/email";
 import { getSubscription } from "@/lib/paypal";
@@ -56,6 +57,15 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    const subscriptionPlanName = SUBSCRIPTION_PLAN_NAMES[subscriptionPlanId as keyof typeof SUBSCRIPTION_PLAN_NAMES];
+    if (!subscriptionPlanName) {
+      throw new Error("Subscription plan name is required", {
+        cause: {
+          subscription,
+        },
+      });
+    }
+
     const subscriptionCreditResetDate = new Date(
       Date.now() + 31 * 24 * 60 * 60 * 1000
     );
@@ -64,6 +74,7 @@ export async function GET(request: NextRequest) {
       where: { id: parseInt(subscriberCustomId) },
       data: {
         subscriptionPlanId: subscriptionPlanId,
+        subscriptionPlanName: subscriptionPlanName,
         subscriptionCredits: subscriptionPlanCredits,
         subscriptionActive: true,
         subscriptionCreditResetDate: subscriptionCreditResetDate.toISOString(),

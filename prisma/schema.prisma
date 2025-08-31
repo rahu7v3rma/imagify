@@ -27,6 +27,7 @@ model User {
   credits                    Int       @default(0) @map("credits")
   role                       String?   @map("role")
   subscriptionPlanId         String?   @map("subscription_plan_id")
+  subscriptionPlanName       String?   @map("subscription_plan_name")
   subscriptionCreditResetDate DateTime? @map("subscription_credit_reset_date") @db.Timestamp(6)
   subscriptionCredits        Int       @default(0) @map("subscription_credits")
   subscriptionActive         Boolean   @default(false) @map("subscription_active")

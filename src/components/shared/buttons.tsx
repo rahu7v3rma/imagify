@@ -7,6 +7,7 @@ import {
 import { cn } from "@/utils/common";
 import { motion } from "framer-motion";
 import { useTheme } from "@/context/theme";
+import { useEffect, useState } from "react";
 
 export function Button({ children, disabled, ...props }: UIButtonProps) {
   const { isDark } = useTheme();
@@ -70,7 +71,17 @@ export function IconButton({
   children: React.ReactNode;
   onClick?: () => void;
 }) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const { isDark } = useTheme();
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <motion.div
