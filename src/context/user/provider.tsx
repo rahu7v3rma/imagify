@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { createContext, useContext, ReactNode, useEffect } from "react";
-import { trpc } from "@/lib/trpc/client";
+import { createContext, useContext, ReactNode, useEffect } from 'react';
+import { trpc } from '@/lib/trpc/client';
 import {
   getAccessToken as cookiesGetAccessToken,
   deleteAccessToken as cookiesDeleteAccessToken,
   saveAccessToken as cookiesSaveAccessToken,
-} from "@/utils/cookies";
-import { setAuthorizationHeader } from "@/lib/trpc/provider";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/constants/routes";
+} from '@/utils/cookies';
+import { setAuthorizationHeader } from '@/lib/trpc/provider';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 
 type UserProfile = {
   email?: string;

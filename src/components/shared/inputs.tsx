@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { Button, IconButtonWrapper } from "@/components/shared/buttons";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, IconButtonWrapper } from '@/components/shared/buttons';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea as UITextarea } from "@/components/ui/textarea";
-import { Muted, P } from "@/components/ui/typography";
-import { cn, fileToBase64 } from "@/utils/common";
-import { formatFileSize } from "@/utils/image";
-import { AnimatePresence, motion } from "framer-motion";
-import { Eye, EyeOff, Loader2, ImageIcon } from "lucide-react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+} from '@/components/ui/select';
+import { Textarea as UITextarea } from '@/components/ui/textarea';
+import { Muted, P } from '@/components/ui/typography';
+import { cn, fileToBase64 } from '@/utils/common';
+import { formatFileSize } from '@/utils/image';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Eye, EyeOff, Loader2, ImageIcon } from 'lucide-react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export const PasswordInput = ({
   label,
@@ -39,7 +39,7 @@ export const PasswordInput = ({
           id="password"
           value={value}
           onChange={onChange}
-          type={isPasswordVisible ? "text" : "password"}
+          type={isPasswordVisible ? 'text' : 'password'}
           className="pr-10 transition-all duration-300 ease-in-out"
         />
         <IconButtonWrapper
@@ -87,7 +87,7 @@ export const ImageInput = ({
 
   useEffect(() => {
     if (!value && inputRef.current) {
-      inputRef.current.value = "";
+      inputRef.current.value = '';
     }
   }, [value]);
 
@@ -96,7 +96,7 @@ export const ImageInput = ({
       <Label htmlFor="image">{label}</Label>
       <motion.div
         whileHover={{
-          filter: "brightness(0.8)",
+          filter: 'brightness(0.8)',
         }}
         transition={{
           duration: 0.2,
@@ -160,7 +160,7 @@ export const TextInput = ({
       {label && (
         <Label
           className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
           )}
           htmlFor="text"
         >
@@ -174,8 +174,8 @@ export const TextInput = ({
         onChange={onChange}
         placeholder={placeholder}
         className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          "transition-all duration-300 ease-in-out"
+          'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+          'transition-all duration-300 ease-in-out',
         )}
       />
       <AnimatePresence>
@@ -251,7 +251,7 @@ export const TextActionInput = ({
     <div className="w-full space-y-2">
       <Label
         className={cn(
-          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
         )}
         htmlFor="action"
       >
@@ -264,8 +264,8 @@ export const TextActionInput = ({
           value={value}
           onChange={onChange}
           className={cn(
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-            "transition-all duration-300 ease-in-out"
+            'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+            'transition-all duration-300 ease-in-out',
           )}
         />
         <Button
@@ -390,7 +390,7 @@ export const TextareaAction = ({
                 {isActionButtonLoading ? (
                   <div className="flex items-center gap-1">
                     <Loader2 className="w-3 h-3 animate-spin" />
-                    <P>{actionButtonLoadingText || "Loading..."}</P>
+                    <P>{actionButtonLoadingText || 'Loading...'}</P>
                   </div>
                 ) : (
                   actionButtonNode
@@ -432,7 +432,7 @@ export const SelectSingle = ({
     <div className="w-full space-y-2">
       <Label
         className={cn(
-          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
         )}
         htmlFor="select"
       >
@@ -441,7 +441,7 @@ export const SelectSingle = ({
       <Select value={value} onValueChange={onChange}>
         <motion.div
           whileHover={{
-            filter: "brightness(0.8)",
+            filter: 'brightness(0.8)',
           }}
           transition={{
             duration: 0.2,
@@ -463,7 +463,7 @@ export const SelectSingle = ({
                 <motion.div
                   key={option}
                   whileHover={{
-                    filter: "brightness(0.8)",
+                    filter: 'brightness(0.8)',
                   }}
                   transition={{
                     duration: 0.2,
@@ -543,7 +543,7 @@ export const DragDropImageInput = ({
     fileSize?: string,
     fileName?: string,
     format?: string,
-    file?: File
+    file?: File,
   ) => void;
   onError?: (error: string) => void;
   label?: string;
@@ -572,19 +572,19 @@ export const DragDropImageInput = ({
       // Check file size (10MB limit)
       const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
       if (file.size > maxSizeInBytes) {
-        onError?.("File size must be less than 10MB");
+        onError?.('File size must be less than 10MB');
         return;
       }
 
       // Check if file is a supported image type
       const allowedTypes = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
       ];
       if (!allowedTypes.includes(file.type)) {
-        onError?.("Please select a JPG, PNG, or WebP image file");
+        onError?.('Please select a JPG, PNG, or WebP image file');
         return;
       }
 
@@ -592,18 +592,18 @@ export const DragDropImageInput = ({
         const base64 = await fileToBase64(file);
         const fileSize = formatFileSize(file.size);
         const fileName = file.name
-          .replace(".webp", "")
-          .replace(".jpg", "")
-          .replace(".jpeg", "")
-          .replace(".png", "")
+          .replace('.webp', '')
+          .replace('.jpg', '')
+          .replace('.jpeg', '')
+          .replace('.png', '')
           .slice(0, 20)
-          .replace(/[^a-zA-Z0-9]/g, "-")
+          .replace(/[^a-zA-Z0-9]/g, '-')
           .toLowerCase();
-        const format = file.type.replace("image/", "");
+        const format = file.type.replace('image/', '');
         onUpload(base64, fileSize, fileName, format, file);
       } catch (error) {
         onError?.(
-          "Failed to process the dropped file. Please try another file."
+          'Failed to process the dropped file. Please try another file.',
         );
       }
     }
@@ -614,10 +614,10 @@ export const DragDropImageInput = ({
       {label && <Label>{label}</Label>}
       <motion.div
         className={cn(
-          "h-[100px] border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center p-6 transition-colors",
+          'h-[100px] border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center p-6 transition-colors',
           isDragOver
-            ? "border-ring bg-accent"
-            : "border-border hover:border-input"
+            ? 'border-ring bg-accent'
+            : 'border-border hover:border-input',
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -627,7 +627,7 @@ export const DragDropImageInput = ({
         }}
         transition={{
           duration: 0.2,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
         whileHover={{
           scale: 1.01,

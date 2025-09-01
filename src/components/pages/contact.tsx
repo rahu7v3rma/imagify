@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { EmailInput, ImageInput, Textarea } from "@/components/shared/inputs";
-import { WithLoader } from "@/components/shared/loaders";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { EmailInput, ImageInput, Textarea } from '@/components/shared/inputs';
+import { WithLoader } from '@/components/shared/loaders';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Small } from "@/components/ui/typography";
-import { CONTACT_EMAIL } from "@/constants/common";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "@/components/shared/links";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from '@/components/ui/card';
+import { Small } from '@/components/ui/typography';
+import { CONTACT_EMAIL } from '@/constants/common';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from '@/components/shared/links';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const ContactSchema = z.object({
   email: z.string().email(),
@@ -34,19 +34,19 @@ export default function ContactPage() {
 
   const form = useForm<z.infer<typeof ContactSchema>>({
     resolver: zodResolver(ContactSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const { mutate, isPending } = trpc.contact.sendMessage.useMutation({
     onSuccess: (data) => {
       setSuccessMessage(
-        "Your message has been sent successfully! We'll get back to you soon."
+        "Your message has been sent successfully! We'll get back to you soon.",
       );
       setErrorMessage(null);
       form.reset();
     },
     onError: (error) => {
-      setErrorMessage("Failed to send message. Please try again.");
+      setErrorMessage('Failed to send message. Please try again.');
       setSuccessMessage(null);
     },
   });
@@ -56,10 +56,10 @@ export default function ContactPage() {
     setErrorMessage(null);
 
     const formData = new FormData();
-    formData.append("email", data.email);
-    formData.append("message", data.message);
+    formData.append('email', data.email);
+    formData.append('message', data.message);
     if (data.image) {
-      formData.append("image", data.image);
+      formData.append('image', data.image);
     }
 
     mutate(formData);
@@ -71,7 +71,7 @@ export default function ContactPage() {
   const image = values.image;
 
   const setEmail = (email: string) => {
-    form.setValue("email", email, {
+    form.setValue('email', email, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -79,7 +79,7 @@ export default function ContactPage() {
   };
 
   const setMessage = (message: string) => {
-    form.setValue("message", message, {
+    form.setValue('message', message, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -87,7 +87,7 @@ export default function ContactPage() {
   };
 
   const setImage = (image: File | undefined) => {
-    form.setValue("image", image, {
+    form.setValue('image', image, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -120,13 +120,13 @@ export default function ContactPage() {
                 className="flex flex-col gap-4 w-full"
               >
                 <EmailInput
-                  value={email || ""}
+                  value={email || ''}
                   onChange={(e) => setEmail(e.target.value)}
                   error={emailError}
                 />
                 <Textarea
                   label="Your message"
-                  value={message || ""}
+                  value={message || ''}
                   onChange={(e) => setMessage(e.target.value)}
                   error={messageError}
                 />
@@ -141,7 +141,7 @@ export default function ContactPage() {
                   disabled={!isFormValid || isPending}
                   type="submit"
                 >
-                  {WithLoader({ text: "Send Message", isLoading: isPending })}
+                  {WithLoader({ text: 'Send Message', isLoading: isPending })}
                 </Button>
                 {successMessage && <SuccessAlert message={successMessage} />}
                 {errorMessage && <ErrorAlert message={errorMessage} />}

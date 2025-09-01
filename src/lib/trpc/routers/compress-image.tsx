@@ -1,17 +1,23 @@
-import { prisma } from "@/lib/prisma";
-import { router, imageProcedure } from "@/lib/trpc/init";
-import { z } from "zod";
-import { sendErrorEmail } from "@/lib/email";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { compressImage } from "@/lib/image/compress-image";
+import { prisma } from '@/lib/prisma';
+import { router, imageProcedure } from '@/lib/trpc/init';
+import { z } from 'zod';
+import { sendErrorEmail } from '@/lib/email';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { compressImage } from '@/lib/image/compress-image';
 
 export const compressImageRouter = router({
   compressImage: imageProcedure
     .input(
       z.object({
-        imageBase64: z.string().min(1, "Image is required").regex(/^data:image\/(jpeg|jpg|png|webp);base64,/, "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"),
+        imageBase64: z
+          .string()
+          .min(1, 'Image is required')
+          .regex(
+            /^data:image\/(jpeg|jpg|png|webp);base64,/,
+            'Invalid image format. Only JPEG, JPG, PNG, and WebP are supported',
+          ),
         quality: z.number().min(1).max(100),
-      })
+      }),
     )
     .output(
       z.object({
@@ -25,17 +31,17 @@ export const compressImageRouter = router({
             format: z.string().optional(),
           })
           .optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         if (!ctx.user) {
-          return { success: false, message: "User not found" };
+          return { success: false, message: 'User not found' };
         }
 
         const credits = ctx.user.credits || 0;
         if (credits < CREDIT_REQUIREMENTS.COMPRESS_IMAGE) {
-          return { success: false, message: "You do not have enough credits." };
+          return { success: false, message: 'You do not have enough credits.' };
         }
 
         // Compress the image using image processing API
@@ -52,7 +58,7 @@ export const compressImageRouter = router({
 
         return {
           success: true,
-          message: "Image compressed successfully!",
+          message: 'Image compressed successfully!',
           data: {
             imageBase64: response.dataUri,
             compressedSize: response.compressedSize,
@@ -61,12 +67,12 @@ export const compressImageRouter = router({
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === "production") {
+        if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in compress image:", error);
+          console.log('Error in compress image:', error);
         }
-        return { success: false, message: "Failed to compress image." };
+        return { success: false, message: 'Failed to compress image.' };
       }
     }),
 });

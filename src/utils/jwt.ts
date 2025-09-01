@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -17,7 +17,7 @@ export function decodeJWT({ token }: { token: string }) {
 }
 
 export function generateAccessToken({ userId }: { userId: string }) {
-  return encodeJWT({ payload: { userId }, options: { expiresIn: "7d" } });
+  return encodeJWT({ payload: { userId }, options: { expiresIn: '7d' } });
 }
 
 export function decodeAccessToken({ token }: { token: string }) {

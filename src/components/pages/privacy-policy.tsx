@@ -1,5 +1,5 @@
-import PageTransition from "@/components/shared/transitions";
-import { H1, List } from "@/components/ui/typography";
+import PageTransition from '@/components/shared/transitions';
+import { H1, List } from '@/components/ui/typography';
 
 export default function PrivacyPolicyPage() {
   return (
@@ -10,11 +10,11 @@ export default function PrivacyPolicyPage() {
           <H1>Privacy Policy</H1>
           <List
             options={[
-              "We collect email address for authentication and notifications",
-              "We do not collect your images and prompts",
-              "We do not collect your payment information, which is handled by Paypal",
-              "We save cookies for authentication",
-              "You can delete your account at any time",
+              'We collect email address for authentication and notifications',
+              'We do not collect your images and prompts',
+              'We do not collect your payment information, which is handled by Paypal',
+              'We save cookies for authentication',
+              'You can delete your account at any time',
             ]}
           />
         </div>

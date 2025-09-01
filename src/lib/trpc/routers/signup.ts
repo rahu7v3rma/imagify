@@ -1,10 +1,10 @@
-import { prisma } from "@/lib/prisma";
-import { publicProcedure, router } from "@/lib/trpc/init";
-import { z } from "zod";
-import { generateEmailVerificationCode } from "@/utils/common";
-import { sendEmailVerificationEmail, sendErrorEmail } from "@/lib/email";
-import { hashPassword } from "@/utils/bcrypt";
-import { isStrongPassword } from "validator";
+import { prisma } from '@/lib/prisma';
+import { publicProcedure, router } from '@/lib/trpc/init';
+import { z } from 'zod';
+import { generateEmailVerificationCode } from '@/utils/common';
+import { sendEmailVerificationEmail, sendErrorEmail } from '@/lib/email';
+import { hashPassword } from '@/utils/bcrypt';
+import { isStrongPassword } from 'validator';
 
 export const signupRouter = router({
   createUser: publicProcedure
@@ -13,15 +13,15 @@ export const signupRouter = router({
         email: z.email(),
         password: z.string().refine(isStrongPassword, {
           message:
-            "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+            'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
         }),
-      })
+      }),
     )
     .output(
       z.object({
         success: z.boolean(),
         message: z.string(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       try {
@@ -35,7 +35,7 @@ export const signupRouter = router({
         if (existingUser) {
           return {
             success: false,
-            message: "User with this email already exists",
+            message: 'User with this email already exists',
           };
         }
 
@@ -64,17 +64,17 @@ export const signupRouter = router({
         return {
           success: true,
           message:
-            "User created successfully, please check your email to verify your account.",
+            'User created successfully, please check your email to verify your account.',
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === "production") {
+        if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in signup:", error);
+          console.log('Error in signup:', error);
         }
         return {
           success: false,
-          message: "Failed to create user",
+          message: 'Failed to create user',
         };
       }
     }),

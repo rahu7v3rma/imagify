@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { MotionCardWrapper } from "@/components/shared/cards";
-import { NumberInput } from "@/components/shared/inputs";
-import PageTransition from "@/components/shared/transitions";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { MotionCardWrapper } from '@/components/shared/cards';
+import { NumberInput } from '@/components/shared/inputs';
+import PageTransition from '@/components/shared/transitions';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { H1, H4, Muted, P } from "@/components/ui/typography";
-import { Badge } from "@/components/ui/badge";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { ROUTES } from "@/constants/routes";
-import { getAccessToken } from "@/utils/cookies";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '@/components/ui/card';
+import { H1, H4, Muted, P } from '@/components/ui/typography';
+import { Badge } from '@/components/ui/badge';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { ROUTES } from '@/constants/routes';
+import { getAccessToken } from '@/utils/cookies';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Archive,
   ArrowUp,
@@ -28,22 +28,22 @@ import {
   Maximize,
   RotateCcw,
   Sparkles,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import NextLink from "next/link";
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ChangeEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import NextLink from 'next/link';
 
 const PurchaseSchema = z.object({
   amount: z
     .number()
-    .min(1, "Amount must be at least $1")
-    .max(100, "Amount must be at most $100"),
+    .min(1, 'Amount must be at least $1')
+    .max(100, 'Amount must be at most $100'),
   credits: z
     .number()
-    .min(100, "Credits must be at least 100")
-    .max(10000, "Credits must be at most 10000"),
+    .min(100, 'Credits must be at least 100')
+    .max(10000, 'Credits must be at most 10000'),
 });
 
 export default function PricingPage() {
@@ -53,7 +53,7 @@ export default function PricingPage() {
 
   const form = useForm<z.infer<typeof PurchaseSchema>>({
     resolver: zodResolver(PurchaseSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       amount: 1,
       credits: 100,
@@ -78,12 +78,12 @@ export default function PricingPage() {
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numValue = value ? parseFloat(value) : 0;
-    form.setValue("amount", numValue, {
+    form.setValue('amount', numValue, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
-    form.setValue("credits", Math.round(numValue * 100), {
+    form.setValue('credits', Math.round(numValue * 100), {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -93,12 +93,12 @@ export default function PricingPage() {
   const handleCreditsChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numValue = value ? parseInt(value) : 0;
-    form.setValue("credits", numValue, {
+    form.setValue('credits', numValue, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
-    form.setValue("amount", parseFloat((numValue / 100).toFixed(2)), {
+    form.setValue('amount', parseFloat((numValue / 100).toFixed(2)), {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -319,7 +319,9 @@ export default function PricingPage() {
                       <Crop className="w-8 h-8" />
                     </div>
                     <div className="text-center">
-                      <H4 className="font-bold text-sm">Crop-Rotate-Flip Image</H4>
+                      <H4 className="font-bold text-sm">
+                        Crop-Rotate-Flip Image
+                      </H4>
                       <Muted className="text-xs text-muted-foreground">
                         Crop, rotate, and flip your images
                       </Muted>

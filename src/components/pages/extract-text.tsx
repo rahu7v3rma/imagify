@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { InputImagePreview } from "@/components/shared/input-image-preview";
-import { WithLoader } from "@/components/shared/loaders";
-import PageTransition from "@/components/shared/transitions";
-import { UploadImage } from "@/components/shared/upload-image";
-import { Badge } from "@/components/ui/badge";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { InputImagePreview } from '@/components/shared/input-image-preview';
+import { WithLoader } from '@/components/shared/loaders';
+import PageTransition from '@/components/shared/transitions';
+import { UploadImage } from '@/components/shared/upload-image';
+import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, Copy } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from '@/components/ui/card';
+import { H1, Muted } from '@/components/ui/typography';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, Copy } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const ExtractTextSchema = z.object({
-  imageBase64: z.string().min(1, "Please upload an image to extract text from"),
+  imageBase64: z.string().min(1, 'Please upload an image to extract text from'),
 });
 
 type ExtractTextFormValues = z.infer<typeof ExtractTextSchema>;
@@ -39,9 +39,9 @@ export default function ExtractTextPage() {
 
   const form = useForm<ExtractTextFormValues>({
     resolver: zodResolver(ExtractTextSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      imageBase64: "",
+      imageBase64: '',
     },
   });
 
@@ -50,19 +50,19 @@ export default function ExtractTextPage() {
       onSuccess: (data) => {
         if (data.success && data.data?.extractedText) {
           setProcessedText(data.data.extractedText);
-          setSuccessMessage(data.message || "Text extracted successfully!");
+          setSuccessMessage(data.message || 'Text extracted successfully!');
           setErrorMessage(null);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to extract text. Please try again."
+            data.message || 'Failed to extract text. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to extract text. Please try again."
+          error.message || 'Failed to extract text. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -76,10 +76,7 @@ export default function ExtractTextPage() {
     });
   };
 
-  const setFormValue = (
-    field: keyof ExtractTextFormValues,
-    value: string
-  ) => {
+  const setFormValue = (field: keyof ExtractTextFormValues, value: string) => {
     form.setValue(field, value, {
       shouldValidate: true,
       shouldDirty: true,
@@ -88,11 +85,11 @@ export default function ExtractTextPage() {
   };
 
   const handleFileUpload = (base64: string) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
   };
 
   const handleUrlUpload = (base64: string) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
   };
 
   const handleCopyText = () => {
@@ -143,7 +140,7 @@ export default function ExtractTextPage() {
                     disabled={!isFormValid || isExtractTextPending}
                   >
                     {WithLoader({
-                      text: "Extract Text",
+                      text: 'Extract Text',
                       isLoading: isExtractTextPending,
                     })}
                   </Button>

@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { paypalOrdersController } from "@/lib/paypal";
-import { sendErrorEmail } from "@/lib/email";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { paypalOrdersController } from '@/lib/paypal';
+import { sendErrorEmail } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const token = searchParams.get("token");
+    const token = searchParams.get('token');
 
     if (!token) {
-      throw new Error("Token is required", {
+      throw new Error('Token is required', {
         cause: {
           token,
         },
@@ -25,14 +25,14 @@ export async function GET(request: NextRequest) {
 
     const amount = parseFloat(
       captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.amount
-        ?.value || "0"
+        ?.value || '0',
     );
     const userId =
       captureResult.purchaseUnits?.[0]?.payments?.captures?.[0]?.customId;
     const orderId = captureResult.id;
 
     if (!orderId) {
-      throw new Error("Order ID is required", {
+      throw new Error('Order ID is required', {
         cause: {
           captureResult,
         },
@@ -40,15 +40,15 @@ export async function GET(request: NextRequest) {
     }
 
     if (!amount || !userId) {
-      throw new Error("Invalid capture result", {
+      throw new Error('Invalid capture result', {
         cause: {
           captureResult,
         },
       });
     }
 
-    if (captureResult.status !== "COMPLETED") {
-      throw new Error("Invalid capture status", {
+    if (captureResult.status !== 'COMPLETED') {
+      throw new Error('Invalid capture status', {
         cause: {
           captureResult,
         },
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.redirect(
-      new URL("/dashboard/billing?buy_credits_success=1", request.url)
+      new URL('/dashboard/billing?buy_credits_success=1', request.url),
     );
   } catch (error: unknown) {
     if (process.env.APP_ENV === 'production') {
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
       console.log('Error in capture order:', error);
     }
     return NextResponse.redirect(
-      new URL("/dashboard/billing?buy_credits_failure=1", request.url)
+      new URL('/dashboard/billing?buy_credits_failure=1', request.url),
     );
   }
 }

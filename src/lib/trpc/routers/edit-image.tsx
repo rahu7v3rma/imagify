@@ -1,18 +1,24 @@
-import { prisma } from "@/lib/prisma";
-import { router, imageProcedure } from "@/lib/trpc/init";
-import { z } from "zod";
-import { sendErrorEmail } from "@/lib/email";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { getReplicateImageUrl } from "@/lib/replicate";
-import { convertImageUrlToBase64 } from "@/utils/common";
+import { prisma } from '@/lib/prisma';
+import { router, imageProcedure } from '@/lib/trpc/init';
+import { z } from 'zod';
+import { sendErrorEmail } from '@/lib/email';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { getReplicateImageUrl } from '@/lib/replicate';
+import { convertImageUrlToBase64 } from '@/utils/common';
 
 export const editImageRouter = router({
   editImage: imageProcedure
     .input(
       z.object({
-        imageBase64: z.string().min(1, "Image is required").regex(/^data:image\/(jpeg|jpg|png|webp);base64,/, "Invalid image format. Only JPEG, JPG, PNG, and WebP are supported"),
-        prompt: z.string().min(1, "Prompt is required"),
-      })
+        imageBase64: z
+          .string()
+          .min(1, 'Image is required')
+          .regex(
+            /^data:image\/(jpeg|jpg|png|webp);base64,/,
+            'Invalid image format. Only JPEG, JPG, PNG, and WebP are supported',
+          ),
+        prompt: z.string().min(1, 'Prompt is required'),
+      }),
     )
     .output(
       z.object({
@@ -23,17 +29,17 @@ export const editImageRouter = router({
             imageBase64: z.string(),
           })
           .optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         if (!ctx.user) {
-          return { success: false, message: "User not found" };
+          return { success: false, message: 'User not found' };
         }
 
         const credits = ctx.user.credits || 0;
         if (credits < CREDIT_REQUIREMENTS.EDIT_IMAGE) {
-          return { success: false, message: "You do not have enough credits." };
+          return { success: false, message: 'You do not have enough credits.' };
         }
 
         const replicateInput = {
@@ -42,13 +48,12 @@ export const editImageRouter = router({
         };
 
         const replicateImageUrl = await getReplicateImageUrl(
-          "black-forest-labs/flux-kontext-pro",
-          replicateInput
+          'black-forest-labs/flux-kontext-pro',
+          replicateInput,
         );
 
-        const replicateImageBase64 = await convertImageUrlToBase64(
-          replicateImageUrl
-        );
+        const replicateImageBase64 =
+          await convertImageUrlToBase64(replicateImageUrl);
 
         await prisma.user.update({
           where: { id: ctx.user.id },
@@ -61,18 +66,18 @@ export const editImageRouter = router({
 
         return {
           success: true,
-          message: "Image edited successfully!",
+          message: 'Image edited successfully!',
           data: {
             imageBase64: replicateImageBase64.base64,
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === "production") {
+        if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in edit image:", error);
+          console.log('Error in edit image:', error);
         }
-        return { success: false, message: "Failed to edit image." };
+        return { success: false, message: 'Failed to edit image.' };
       }
     }),
 });

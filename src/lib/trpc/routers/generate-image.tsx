@@ -1,11 +1,11 @@
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { sendErrorEmail } from "@/lib/email";
-import { prisma } from "@/lib/prisma";
-import { getReplicateImageUrl } from "@/lib/replicate";
-import { protectedProcedure, router } from "@/lib/trpc/init";
-import { enhancePrompt } from "@/lib/gemini";
-import { convertImageUrlToBase64 } from "@/utils/common";
-import { z } from "zod";
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { sendErrorEmail } from '@/lib/email';
+import { prisma } from '@/lib/prisma';
+import { getReplicateImageUrl } from '@/lib/replicate';
+import { protectedProcedure, router } from '@/lib/trpc/init';
+import { enhancePrompt } from '@/lib/gemini';
+import { convertImageUrlToBase64 } from '@/utils/common';
+import { z } from 'zod';
 
 export const generateImageRouter = router({
   enhancePrompt: protectedProcedure
@@ -13,8 +13,8 @@ export const generateImageRouter = router({
       z.object({
         prompt: z
           .string()
-          .max(1000, "Prompt must be at most 1000 characters long"),
-      })
+          .max(1000, 'Prompt must be at most 1000 characters long'),
+      }),
     )
     .output(
       z.object({
@@ -25,18 +25,18 @@ export const generateImageRouter = router({
             enhancedPrompt: z.string(),
           })
           .optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         if (!ctx.user) {
-          return { success: false, message: "User not found" };
+          return { success: false, message: 'User not found' };
         }
 
         const credits = ctx.user.credits || 0;
         const requiredCredits = CREDIT_REQUIREMENTS.ENHANCE_PROMPT;
         if (credits < requiredCredits) {
-          return { success: false, message: "You do not have enough credits." };
+          return { success: false, message: 'You do not have enough credits.' };
         }
 
         const enhancedPrompt = await enhancePrompt(input.prompt);
@@ -52,18 +52,18 @@ export const generateImageRouter = router({
 
         return {
           success: true,
-          message: "Prompt enhanced successfully!",
+          message: 'Prompt enhanced successfully!',
           data: {
             enhancedPrompt,
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === "production") {
+        if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in enhance prompt:", error);
+          console.log('Error in enhance prompt:', error);
         }
-        return { success: false, message: "Failed to enhance prompt." };
+        return { success: false, message: 'Failed to enhance prompt.' };
       }
     }),
 
@@ -72,11 +72,11 @@ export const generateImageRouter = router({
       z.object({
         prompt: z
           .string()
-          .max(1000, "Prompt must be at most 1000 characters long"),
-        generateType: z.enum(["standard", "pro"]).default("standard"),
-        outputFormat: z.string().default("png"),
-        aspectRatio: z.string().default("1:1"),
-      })
+          .max(1000, 'Prompt must be at most 1000 characters long'),
+        generateType: z.enum(['standard', 'pro']).default('standard'),
+        outputFormat: z.string().default('png'),
+        aspectRatio: z.string().default('1:1'),
+      }),
     )
     .output(
       z.object({
@@ -88,19 +88,19 @@ export const generateImageRouter = router({
             outputFormat: z.string(),
           })
           .optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         if (!ctx.user) {
-          return { success: false, message: "User not found" };
+          return { success: false, message: 'User not found' };
         }
 
         const credits = ctx.user.credits || 0;
         const requiredCredits =
           CREDIT_REQUIREMENTS.GENERATE_IMAGE[input.generateType];
         if (credits < requiredCredits) {
-          return { success: false, message: "You do not have enough credits." };
+          return { success: false, message: 'You do not have enough credits.' };
         }
 
         const replicateInput = {
@@ -110,18 +110,17 @@ export const generateImageRouter = router({
         };
 
         const model =
-          input.generateType === "pro"
-            ? "black-forest-labs/flux-kontext-pro"
-            : "black-forest-labs/flux-schnell";
+          input.generateType === 'pro'
+            ? 'black-forest-labs/flux-kontext-pro'
+            : 'black-forest-labs/flux-schnell';
 
         const replicateImageUrl = await getReplicateImageUrl(
           model,
-          replicateInput
+          replicateInput,
         );
 
-        const replicateImageBase64 = await convertImageUrlToBase64(
-          replicateImageUrl
-        );
+        const replicateImageBase64 =
+          await convertImageUrlToBase64(replicateImageUrl);
 
         await prisma.user.update({
           where: { id: ctx.user.id },
@@ -134,19 +133,19 @@ export const generateImageRouter = router({
 
         return {
           success: true,
-          message: "Image generated successfully!",
+          message: 'Image generated successfully!',
           data: {
             imageBase64: replicateImageBase64.base64,
             outputFormat: input.outputFormat,
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === "production") {
+        if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in generate image:", error);
+          console.log('Error in generate image:', error);
         }
-        return { success: false, message: "Failed to generate image." };
+        return { success: false, message: 'Failed to generate image.' };
       }
     }),
 });

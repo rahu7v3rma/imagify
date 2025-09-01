@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const baseUrl = process.env.IMAGE_PROCESSING_API_ENDPOINT;
 
@@ -11,7 +11,7 @@ const request = axios.create({
 
 export const compressImage = async (
   imageBase64: string,
-  quality: number
+  quality: number,
 ): Promise<{
   success: boolean;
   message: string;
@@ -22,7 +22,7 @@ export const compressImage = async (
     format: string;
   };
 }> => {
-  const endpoint = "/compress-image";
+  const endpoint = '/compress-image';
   const response = await request.post(endpoint, {
     imageBase64,
     quality,
@@ -32,7 +32,7 @@ export const compressImage = async (
 };
 
 export const extractText = async (
-  imageBase64: string
+  imageBase64: string,
 ): Promise<{
   success: boolean;
   message: string;
@@ -40,7 +40,7 @@ export const extractText = async (
     extractedText: string;
   };
 }> => {
-  const endpoint = "/extract-text";
+  const endpoint = '/extract-text';
   const response = await request.post(endpoint, {
     imageBase64,
   });
@@ -50,7 +50,7 @@ export const extractText = async (
 
 export const convertFormat = async (
   imageBase64: string,
-  format: string
+  format: string,
 ): Promise<{
   success: boolean;
   message: string;
@@ -58,7 +58,7 @@ export const convertFormat = async (
     imageBase64: string;
   };
 }> => {
-  const endpoint = "/convert-format";
+  const endpoint = '/convert-format';
   const response = await request.post(endpoint, {
     imageBase64,
     format,
@@ -70,7 +70,7 @@ export const convertFormat = async (
 export const resizeImage = async (
   imageBase64: string,
   width: number,
-  height: number
+  height: number,
 ): Promise<{
   success: boolean;
   message: string;
@@ -78,7 +78,7 @@ export const resizeImage = async (
     imageBase64: string;
   };
 }> => {
-  const endpoint = "/resize";
+  const endpoint = '/resize';
   const response = await request.post(endpoint, {
     imageBase64,
     width,

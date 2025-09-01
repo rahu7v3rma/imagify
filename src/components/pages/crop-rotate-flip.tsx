@@ -1,56 +1,56 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { WithLoader } from "@/components/shared/loaders";
-import { ProcessedImage } from "@/components/shared/processed-image";
-import { Slider } from "@/components/shared/slider";
-import { UploadImage } from "@/components/shared/upload-image";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FlipHorizontal, FlipVertical, RotateCcw } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import Cropper from "react-easy-crop";
-import { getOrientation } from "get-orientation/browser";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { WithLoader } from '@/components/shared/loaders';
+import { ProcessedImage } from '@/components/shared/processed-image';
+import { Slider } from '@/components/shared/slider';
+import { UploadImage } from '@/components/shared/upload-image';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { H1, Muted } from '@/components/ui/typography';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FlipHorizontal, FlipVertical, RotateCcw } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import Cropper from 'react-easy-crop';
+import { getOrientation } from 'get-orientation/browser';
 
 // Canvas utility functions
 const createImage = (url: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     const image = new Image();
-    image.addEventListener("load", () => resolve(image));
-    image.addEventListener("error", (error) => reject(error));
-    image.setAttribute("crossOrigin", "anonymous");
+    image.addEventListener('load', () => resolve(image));
+    image.addEventListener('error', (error) => reject(error));
+    image.setAttribute('crossOrigin', 'anonymous');
     image.src = url;
   });
 
 const detectImageFormat = (dataUrl: string): string => {
-  if (dataUrl.startsWith("data:image/png")) return "image/png";
-  if (dataUrl.startsWith("data:image/webp")) return "image/webp";
-  if (dataUrl.startsWith("data:image/jpg")) return "image/jpg";
-  if (dataUrl.startsWith("data:image/jpeg")) return "image/jpeg";
-  return "image/jpeg"; // default to JPEG for unknown formats
+  if (dataUrl.startsWith('data:image/png')) return 'image/png';
+  if (dataUrl.startsWith('data:image/webp')) return 'image/webp';
+  if (dataUrl.startsWith('data:image/jpg')) return 'image/jpg';
+  if (dataUrl.startsWith('data:image/jpeg')) return 'image/jpeg';
+  return 'image/jpeg'; // default to JPEG for unknown formats
 };
 
 const getFileExtension = (format: string): string => {
   switch (format) {
-    case "image/png":
-      return "png";
-    case "image/webp":
-      return "webp";
-    case "image/jpg":
-      return "jpg";
-    case "image/jpeg":
-      return "jpeg";
+    case 'image/png':
+      return 'png';
+    case 'image/webp':
+      return 'webp';
+    case 'image/jpg':
+      return 'jpg';
+    case 'image/jpeg':
+      return 'jpeg';
     default:
-      return "jpg";
+      return 'jpg';
   }
 };
 
@@ -82,16 +82,16 @@ const getCroppedImg = async (
   rotation = 0,
   flipHorizontal = false,
   flipVertical = false,
-  format?: string
+  format?: string,
 ): Promise<string> => {
   const image = await createImage(imageSrc);
 
   // First, create a canvas for the full transformed image
-  const fullCanvas = document.createElement("canvas");
-  const fullCtx = fullCanvas.getContext("2d");
+  const fullCanvas = document.createElement('canvas');
+  const fullCtx = fullCanvas.getContext('2d');
 
   if (!fullCtx) {
-    throw new Error("Canvas context is not available");
+    throw new Error('Canvas context is not available');
   }
 
   const rotRad = getRadianAngle(rotation);
@@ -100,7 +100,7 @@ const getCroppedImg = async (
   const { width: bBoxWidth, height: bBoxHeight } = rotateSize(
     image.width,
     image.height,
-    rotation
+    rotation,
   );
 
   // set full canvas size to match the bounding box
@@ -122,11 +122,11 @@ const getCroppedImg = async (
   fullCtx.drawImage(image, 0, 0);
 
   // Now create final canvas for the cropped result
-  const finalCanvas = document.createElement("canvas");
-  const finalCtx = finalCanvas.getContext("2d");
+  const finalCanvas = document.createElement('canvas');
+  const finalCtx = finalCanvas.getContext('2d');
 
   if (!finalCtx) {
-    throw new Error("Canvas context is not available");
+    throw new Error('Canvas context is not available');
   }
 
   // Set final canvas to crop size
@@ -154,7 +154,7 @@ const getCroppedImg = async (
     0,
     0,
     pixelCrop.width,
-    pixelCrop.height
+    pixelCrop.height,
   );
 
   // Detect format if not provided, preserve original format
@@ -167,14 +167,14 @@ const getCroppedImg = async (
 const getRotatedImage = async (
   imageSrc: string,
   rotation: number,
-  format?: string
+  format?: string,
 ): Promise<string> => {
   const image = await createImage(imageSrc);
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
 
   if (!ctx) {
-    throw new Error("Canvas context is not available");
+    throw new Error('Canvas context is not available');
   }
 
   const orientationChanged =
@@ -207,19 +207,19 @@ const CropRotateFlipSchema = z.object({
 type CropRotateFlipFormValues = z.infer<typeof CropRotateFlipSchema>;
 
 const ORIENTATION_TO_ANGLE: Record<string, number> = {
-  "3": 180,
-  "6": 90,
-  "8": -90,
+  '3': 180,
+  '6': 90,
+  '8': -90,
 };
 
 export default function CropRotateFlipPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("crop-rotate-flip-image");
+  const [fileName, setFileName] = useState<string>('crop-rotate-flip-image');
 
   // Crop-Rotate-Flip State
-  const [imageSrc, setImageSrc] = useState<string>("");
-  const [imageFormat, setImageFormat] = useState<string>("");
+  const [imageSrc, setImageSrc] = useState<string>('');
+  const [imageFormat, setImageFormat] = useState<string>('');
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
@@ -232,7 +232,7 @@ export default function CropRotateFlipPage() {
 
   const form = useForm<CropRotateFlipFormValues>({
     resolver: zodResolver(CropRotateFlipSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       ready: false,
     },
@@ -253,24 +253,24 @@ export default function CropRotateFlipPage() {
               rotation,
               flipHorizontal,
               flipVertical,
-              imageFormat
+              imageFormat,
             );
             setProcessedImage(croppedImg);
           } catch {
-            setErrorMessage("Failed to process image. Please try again.");
+            setErrorMessage('Failed to process image. Please try again.');
           }
 
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to process image. Please try again."
+            data.message || 'Failed to process image. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to process image. Please try again."
+          error.message || 'Failed to process image. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -293,9 +293,9 @@ export default function CropRotateFlipPage() {
     _?: string,
     fileName?: string,
     format?: string,
-    file?: File
+    file?: File,
   ) => {
-    form.setValue("ready", true, {
+    form.setValue('ready', true, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -314,11 +314,11 @@ export default function CropRotateFlipPage() {
           imageDataUrl = await getRotatedImage(
             imageDataUrl,
             rotationAngle,
-            detectedFormat
+            detectedFormat,
           );
         }
       } catch (e) {
-        console.warn("Failed to detect orientation");
+        console.warn('Failed to detect orientation');
       }
     }
 
@@ -327,7 +327,7 @@ export default function CropRotateFlipPage() {
   };
 
   const handleUrlUpload = (base64: string) => {
-    form.setValue("ready", true, {
+    form.setValue('ready', true, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -395,8 +395,8 @@ export default function CropRotateFlipPage() {
                     <div className="relative mx-auto w-full max-w-[480px] h-[360px] max-h-[75vw] aspect-[4/3]">
                       <div
                         className={`w-full h-full ${
-                          flipHorizontal ? "-scale-x-100" : ""
-                        } ${flipVertical ? "-scale-y-100" : ""}`}
+                          flipHorizontal ? '-scale-x-100' : ''
+                        } ${flipVertical ? '-scale-y-100' : ''}`}
                       >
                         <Cropper
                           image={imageSrc}
@@ -410,17 +410,17 @@ export default function CropRotateFlipPage() {
                           onZoomChange={setZoom}
                           style={{
                             containerStyle: {
-                              width: "100%",
-                              height: "100%",
-                              backgroundColor: "#fafafa",
-                              borderRadius: "0.5rem",
-                              padding: "1.25rem",
+                              width: '100%',
+                              height: '100%',
+                              backgroundColor: '#fafafa',
+                              borderRadius: '0.5rem',
+                              padding: '1.25rem',
                             },
                             cropAreaStyle: {
-                              border: "2px solid hsl(var(--primary))",
+                              border: '2px solid hsl(var(--primary))',
                             },
                             mediaStyle: {
-                              objectFit: "contain",
+                              objectFit: 'contain',
                             },
                           }}
                         />
@@ -459,7 +459,7 @@ export default function CropRotateFlipPage() {
                       <Muted>Flip Options</Muted>
                       <div className="flex gap-2">
                         <Button
-                          variant={flipHorizontal ? "default" : "outline"}
+                          variant={flipHorizontal ? 'default' : 'outline'}
                           size="sm"
                           onClick={() => setFlipHorizontal(!flipHorizontal)}
                           type="button"
@@ -468,7 +468,7 @@ export default function CropRotateFlipPage() {
                           Flip Horizontal
                         </Button>
                         <Button
-                          variant={flipVertical ? "default" : "outline"}
+                          variant={flipVertical ? 'default' : 'outline'}
                           size="sm"
                           onClick={() => setFlipVertical(!flipVertical)}
                           type="button"
@@ -502,7 +502,7 @@ export default function CropRotateFlipPage() {
                         }
                       >
                         {WithLoader({
-                          text: "Process Image",
+                          text: 'Process Image',
                           isLoading: isCropRotateFlipPending,
                         })}
                       </Button>

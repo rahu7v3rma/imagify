@@ -1,10 +1,10 @@
-import { prisma } from "@/lib/prisma";
-import { TRPCError } from "@trpc/server";
-import { publicProcedure, router } from "@/lib/trpc/init";
-import { uploadContactFile } from "@/lib/upload";
-import { z } from "zod";
-import { zfd } from "zod-form-data";
-import { sendErrorEmail } from "@/lib/email";
+import { prisma } from '@/lib/prisma';
+import { TRPCError } from '@trpc/server';
+import { publicProcedure, router } from '@/lib/trpc/init';
+import { uploadContactFile } from '@/lib/upload';
+import { z } from 'zod';
+import { zfd } from 'zod-form-data';
+import { sendErrorEmail } from '@/lib/email';
 
 export const contactRouter = router({
   sendMessage: publicProcedure
@@ -17,10 +17,10 @@ export const contactRouter = router({
             z
               .instanceof(File)
               .refine((file) => !file || file.size <= 10 * 1024 * 1024)
-              .refine((file) => !file || file.type.startsWith("image/"))
+              .refine((file) => !file || file.type.startsWith('image/')),
           )
           .optional(),
-      })
+      }),
     )
     .output(z.boolean())
     .mutation(async ({ input }) => {
@@ -44,13 +44,13 @@ export const contactRouter = router({
 
         return true;
       } catch (error: any) {
-        if (process.env.APP_ENV === "production") {
+        if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in contact:", error);
+          console.log('Error in contact:', error);
         }
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+          code: 'INTERNAL_SERVER_ERROR',
         });
       }
     }),

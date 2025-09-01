@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Moon, Sun } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { useTheme } from "@/context/theme";
+import { useState, useEffect } from 'react';
+import { Moon, Sun } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { useTheme } from '@/context/theme';
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -14,7 +14,7 @@ export function ThemeToggle() {
   }, []);
 
   const handleToggle = (checked: boolean) => {
-    setMode(checked ? "dark" : "light");
+    setMode(checked ? 'dark' : 'light');
   };
 
   if (!mounted) {
@@ -30,7 +30,7 @@ export function ThemeToggle() {
   return (
     <div className="flex items-center space-x-2">
       <Sun className="h-4 w-4" />
-      <Switch checked={mode === "dark"} onCheckedChange={handleToggle} />
+      <Switch checked={mode === 'dark'} onCheckedChange={handleToggle} />
       <Moon className="h-4 w-4" />
     </div>
   );

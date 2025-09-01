@@ -1,5 +1,5 @@
-import { CONTACT_EMAIL, ADMIN_EMAIL } from "@/constants/common";
-import nodemailer from "nodemailer";
+import { CONTACT_EMAIL, ADMIN_EMAIL } from '@/constants/common';
+import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -46,7 +46,7 @@ export async function sendEmailVerificationEmail({
 }) {
   const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?email=${to}&code=${emailVerificationCode}`;
 
-  const subject = "Verify Your Email Address";
+  const subject = 'Verify Your Email Address';
 
   const html = `<p>Click <a href="${verificationUrl}">here</a> to verify your email address.</p>`;
 
@@ -69,7 +69,7 @@ export async function sendForgotPasswordEmail({
 }) {
   const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/change-password?email=${to}&code=${verificationCode}`;
 
-  const subject = "Reset Your Password";
+  const subject = 'Reset Your Password';
 
   const html = `<p>Click <a href="${verificationUrl}">here</a> to reset your password.</p>`;
 
@@ -84,11 +84,11 @@ export async function sendForgotPasswordEmail({
 }
 
 export async function sendErrorEmail({ error }: { error: any }) {
-  const subject = "Application Error Report";
+  const subject = 'Application Error Report';
 
-  const errorMessage = error?.message || "Unknown error";
+  const errorMessage = error?.message || 'Unknown error';
   const errorString = JSON.stringify(error, null, 2);
-  const errorCause = error?.cause || "No cause provided";
+  const errorCause = error?.cause || 'No cause provided';
 
   const html = `
     <h2>Application Error Report</h2>

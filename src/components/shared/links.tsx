@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import NextLink from "next/link";
-import { motion } from "framer-motion";
-import { ReactNode } from "react";
-import { useTheme } from "@/context/theme";
+import NextLink from 'next/link';
+import { motion } from 'framer-motion';
+import { ReactNode } from 'react';
+import { useTheme } from '@/context/theme';
 
 export function Link({
   href,
@@ -20,7 +20,7 @@ export function Link({
         <NextLink href={href}>
           <motion.div
             whileHover={{
-              filter: "brightness(0.5)",
+              filter: 'brightness(0.5)',
             }}
             transition={{
               duration: 0.2,
@@ -36,7 +36,7 @@ export function Link({
         <NextLink href={href}>
           <motion.div
             whileHover={{
-              filter: "brightness(11.8)",
+              filter: 'brightness(11.8)',
             }}
             transition={{
               duration: 0.2,

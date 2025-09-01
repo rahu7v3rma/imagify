@@ -1,18 +1,18 @@
-import { prisma } from "@/lib/prisma";
-import { publicProcedure, router } from "@/lib/trpc/init";
-import { z } from "zod";
-import { comparePassword } from "@/utils/bcrypt";
-import { sendEmailVerificationEmail, sendErrorEmail } from "@/lib/email";
-import { generateEmailVerificationCode } from "@/utils/common";
-import { generateAccessToken } from "@/utils/jwt";
+import { prisma } from '@/lib/prisma';
+import { publicProcedure, router } from '@/lib/trpc/init';
+import { z } from 'zod';
+import { comparePassword } from '@/utils/bcrypt';
+import { sendEmailVerificationEmail, sendErrorEmail } from '@/lib/email';
+import { generateEmailVerificationCode } from '@/utils/common';
+import { generateAccessToken } from '@/utils/jwt';
 
 export const loginRouter = router({
   authenticateUser: publicProcedure
     .input(
       z.object({
-        email: z.email("Please enter a valid email address"),
-        password: z.string().min(1, "Password is required"),
-      })
+        email: z.email('Please enter a valid email address'),
+        password: z.string().min(1, 'Password is required'),
+      }),
     )
     .output(
       z.object({
@@ -23,7 +23,7 @@ export const loginRouter = router({
             accessToken: z.string(),
           })
           .nullable(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       try {
@@ -37,7 +37,7 @@ export const loginRouter = router({
         if (!user) {
           return {
             success: false,
-            message: "Invalid email or password",
+            message: 'Invalid email or password',
             data: null,
           };
         }
@@ -59,7 +59,7 @@ export const loginRouter = router({
           return {
             success: false,
             message:
-              "Email not verified, we have sent a verification code to your email",
+              'Email not verified, we have sent a verification code to your email',
             data: null,
           };
         }
@@ -73,7 +73,7 @@ export const loginRouter = router({
         if (!isPasswordValid) {
           return {
             success: false,
-            message: "Invalid email or password",
+            message: 'Invalid email or password',
             data: null,
           };
         }
@@ -82,20 +82,20 @@ export const loginRouter = router({
 
         return {
           success: true,
-          message: "Login successful",
+          message: 'Login successful',
           data: {
             accessToken,
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === "production") {
+        if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in login:", error);
+          console.log('Error in login:', error);
         }
         return {
           success: false,
-          message: "Failed to login. Please try again.",
+          message: 'Failed to login. Please try again.',
           data: null,
         };
       }

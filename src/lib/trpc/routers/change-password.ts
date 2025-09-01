@@ -1,27 +1,27 @@
-import { prisma } from "@/lib/prisma";
-import { publicProcedure, router } from "@/lib/trpc/init";
-import { z } from "zod";
-import { hashPassword } from "@/utils/bcrypt";
-import { isStrongPassword } from "validator";
-import { sendErrorEmail } from "@/lib/email";
+import { prisma } from '@/lib/prisma';
+import { publicProcedure, router } from '@/lib/trpc/init';
+import { z } from 'zod';
+import { hashPassword } from '@/utils/bcrypt';
+import { isStrongPassword } from 'validator';
+import { sendErrorEmail } from '@/lib/email';
 
 export const changePasswordRouter = router({
   changePassword: publicProcedure
     .input(
       z.object({
-        email: z.string().email("Please enter a valid email address"),
+        email: z.string().email('Please enter a valid email address'),
         code: z.string(),
         password: z.string().refine(isStrongPassword, {
           message:
-            "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+            'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
         }),
-      })
+      }),
     )
     .output(
       z.object({
         success: z.boolean(),
         message: z.string(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       try {
@@ -35,7 +35,7 @@ export const changePasswordRouter = router({
         if (!user) {
           return {
             success: false,
-            message: "Email not exist",
+            message: 'Email not exist',
           };
         }
 
@@ -54,7 +54,7 @@ export const changePasswordRouter = router({
 
         return {
           success: true,
-          message: "Password changed successfully",
+          message: 'Password changed successfully',
         };
       } catch (error: any) {
         if (process.env.APP_ENV === 'production') {
@@ -64,7 +64,7 @@ export const changePasswordRouter = router({
         }
         return {
           success: false,
-          message: "Failed to change password. Please try again.",
+          message: 'Failed to change password. Please try again.',
         };
       }
     }),

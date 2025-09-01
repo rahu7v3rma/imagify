@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 import {
   Button as UIButton,
   ButtonProps as UIButtonProps,
-} from "@/components/ui/button";
-import { cn } from "@/utils/common";
-import { motion } from "framer-motion";
-import { useTheme } from "@/context/theme";
-import { useEffect, useState } from "react";
+} from '@/components/ui/button';
+import { cn } from '@/utils/common';
+import { motion } from 'framer-motion';
+import { useTheme } from '@/context/theme';
+import { useEffect, useState } from 'react';
 
 export function Button({ children, disabled, ...props }: UIButtonProps) {
   const { isDark } = useTheme();
@@ -18,16 +18,16 @@ export function Button({ children, disabled, ...props }: UIButtonProps) {
         disabled
           ? undefined
           : isDark
-          ? {
-              scale: 1.02,
-              filter: "brightness(0.9)",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
-            }
-          : {
-              scale: 1.02,
-              filter: "brightness(1.2)",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
-            }
+            ? {
+                scale: 1.02,
+                filter: 'brightness(0.9)',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
+              }
+            : {
+                scale: 1.02,
+                filter: 'brightness(1.2)',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
+              }
       }
       transition={disabled ? undefined : { duration: 0.4 }}
     >
@@ -50,23 +50,23 @@ export function IconButtonWrapper({
   return (
     <motion.div
       whileHover={{
-        filter: "brightness(0.5)",
+        filter: 'brightness(0.5)',
       }}
       transition={{ duration: 0.2 }}
       onClick={onClick}
-      className={cn("cursor-pointer", className)}
+      className={cn('cursor-pointer', className)}
     >
       {children}
     </motion.div>
   );
 }
 
-export function IconButton({ 
-  children, 
-  onClick, 
+export function IconButton({
+  children,
+  onClick,
   className,
-  variant = "ghost",
-  ...props 
+  variant = 'ghost',
+  ...props
 }: UIButtonProps & {
   children: React.ReactNode;
   onClick?: () => void;
@@ -89,14 +89,14 @@ export function IconButton({
         props.disabled
           ? undefined
           : isDark
-          ? {
-              scale: 1.1,
-              filter: "brightness(0.9)",
-            }
-          : {
-              scale: 1.1,
-              filter: "brightness(1.2)",
-            }
+            ? {
+                scale: 1.1,
+                filter: 'brightness(0.9)',
+              }
+            : {
+                scale: 1.1,
+                filter: 'brightness(1.2)',
+              }
       }
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.2 }}

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpLink } from "@trpc/client";
-import { useState } from "react";
-import { trpc, TRPC_ENDPOINT } from "@/lib/trpc/client";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { httpLink } from '@trpc/client';
+import { useState } from 'react';
+import { trpc, TRPC_ENDPOINT } from '@/lib/trpc/client';
 
 let authorizationHeader: string | null = null;
 export const setAuthorizationHeader = (header: string | null) => {
@@ -27,7 +27,7 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
           },
         }),
       ],
-    })
+    }),
   );
 
   return (

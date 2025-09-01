@@ -1,42 +1,42 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { InputImagePreview } from "@/components/shared/input-image-preview";
-import { NumberInput } from "@/components/shared/inputs";
-import { WithLoader } from "@/components/shared/loaders";
-import { ProcessedImage } from "@/components/shared/processed-image";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
-import { UploadImage } from "@/components/shared/upload-image";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { extractImageDimensions } from "@/utils/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { InputImagePreview } from '@/components/shared/input-image-preview';
+import { NumberInput } from '@/components/shared/inputs';
+import { WithLoader } from '@/components/shared/loaders';
+import { ProcessedImage } from '@/components/shared/processed-image';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { H1, Muted } from '@/components/ui/typography';
+import { UploadImage } from '@/components/shared/upload-image';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { extractImageDimensions } from '@/utils/image';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const ResizeImageSchema = z.object({
-  imageBase64: z.string().min(1, "Please upload an image to resize"),
+  imageBase64: z.string().min(1, 'Please upload an image to resize'),
   width: z
     .number()
-    .min(1, "Width must be at least 1 pixel")
-    .max(5000, "Width cannot exceed 5000 pixels"),
+    .min(1, 'Width must be at least 1 pixel')
+    .max(5000, 'Width cannot exceed 5000 pixels'),
   height: z
     .number()
-    .min(1, "Height must be at least 1 pixel")
-    .max(5000, "Height cannot exceed 5000 pixels"),
+    .min(1, 'Height must be at least 1 pixel')
+    .max(5000, 'Height cannot exceed 5000 pixels'),
 });
 
 type ResizeImageFormValues = z.infer<typeof ResizeImageSchema>;
 
 export default function ResizeImagePage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("resized-image");
+  const [fileName, setFileName] = useState<string>('resized-image');
   const [inputImageDimensions, setInputImageDimensions] = useState<string>();
   const [processedImageDimensions, setProcessedImageDimensions] =
     useState<string>();
@@ -46,9 +46,9 @@ export default function ResizeImagePage() {
 
   const form = useForm<ResizeImageFormValues>({
     resolver: zodResolver(ResizeImageSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      imageBase64: "",
+      imageBase64: '',
       width: 800,
       height: 600,
     },
@@ -60,22 +60,22 @@ export default function ResizeImagePage() {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
           const processedDimensions = await extractImageDimensions(
-            data.data.imageBase64
+            data.data.imageBase64,
           );
           setProcessedImageDimensions(processedDimensions);
-          setSuccessMessage(data.message || "Image resized successfully!");
+          setSuccessMessage(data.message || 'Image resized successfully!');
           setErrorMessage(null);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to resize image. Please try again."
+            data.message || 'Failed to resize image. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to resize image. Please try again."
+          error.message || 'Failed to resize image. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -93,7 +93,7 @@ export default function ResizeImagePage() {
 
   const setFormValue = (
     field: keyof ResizeImageFormValues,
-    value: string | number
+    value: string | number,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -105,21 +105,21 @@ export default function ResizeImagePage() {
   const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numValue = value ? parseInt(value) : 1;
-    setFormValue("width", numValue);
+    setFormValue('width', numValue);
   };
 
   const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numValue = value ? parseInt(value) : 1;
-    setFormValue("height", numValue);
+    setFormValue('height', numValue);
   };
 
   const handleFileUpload = async (
     base64: string,
     fileSizeValue?: string,
-    fileName?: string
+    fileName?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
     const dimensions = await extractImageDimensions(base64);
     setInputImageDimensions(dimensions);
@@ -128,9 +128,9 @@ export default function ResizeImagePage() {
   const handleUrlUpload = async (
     base64: string,
     fileSizeValue?: string,
-    fileName?: string
+    fileName?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
     const dimensions = await extractImageDimensions(base64);
     setInputImageDimensions(dimensions);
@@ -201,7 +201,7 @@ export default function ResizeImagePage() {
                     disabled={!isFormValid || isResizeImagePending}
                   >
                     {WithLoader({
-                      text: "Resize Image",
+                      text: 'Resize Image',
                       isLoading: isResizeImagePending,
                     })}
                   </Button>

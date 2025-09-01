@@ -1,6 +1,6 @@
-import { BlogSlug } from "@/components/pages/blog-slug";
-import { prisma } from "@/lib/prisma";
-import { notFound } from "next/navigation";
+import { BlogSlug } from '@/components/pages/blog-slug';
+import { prisma } from '@/lib/prisma';
+import { notFound } from 'next/navigation';
 
 interface BlogPageProps {
   params: Promise<{
@@ -18,14 +18,14 @@ export async function generateMetadata({ params }: BlogPageProps) {
 
   if (!blog) {
     return {
-      title: "Blog Post - Imagify",
-      description: "Blog post not found.",
+      title: 'Blog Post - Imagify',
+      description: 'Blog post not found.',
     };
   }
 
   return {
     title: `${blog.title} - Imagify`,
-    description: blog.content.substring(0, 150) + "...",
+    description: blog.content.substring(0, 150) + '...',
   };
 }
 

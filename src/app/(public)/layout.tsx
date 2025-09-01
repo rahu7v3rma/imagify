@@ -1,4 +1,4 @@
-import PublicLayoutComponent from "@/components/layouts/public";
+import PublicLayoutComponent from '@/components/layouts/public';
 
 export default function PublicLayout({
   children,

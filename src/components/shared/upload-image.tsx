@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
 import {
   ImageInput,
   TextActionInput,
   DragDropImageInput,
-} from "@/components/shared/inputs";
-import { convertImageUrlToBase64, fileToBase64 } from "@/utils/common";
-import { formatFileSize } from "@/utils/image";
-import { Muted } from "@/components/ui/typography";
-import { useState } from "react";
+} from '@/components/shared/inputs';
+import { convertImageUrlToBase64, fileToBase64 } from '@/utils/common';
+import { formatFileSize } from '@/utils/image';
+import { Muted } from '@/components/ui/typography';
+import { useState } from 'react';
 
 interface UploadImageProps {
   onUploadFile: (
@@ -16,13 +16,13 @@ interface UploadImageProps {
     fileSize?: string,
     fileName?: string,
     format?: string,
-    file?: File
+    file?: File,
   ) => void;
   onUploadUrl: (
     base64: string,
     fileSize?: string,
     fileName?: string,
-    format?: string
+    format?: string,
   ) => void;
 }
 
@@ -30,7 +30,7 @@ export const UploadImage = ({
   onUploadFile,
   onUploadUrl,
 }: UploadImageProps) => {
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [imageInputError, setImageInputError] = useState<string | null>(null);
   const [urlInputError, setUrlInputError] = useState<string | null>(null);
   const [dragDropError, setDragDropError] = useState<string | null>(null);
@@ -42,25 +42,25 @@ export const UploadImage = ({
       // Check file size (10MB limit)
       const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
       if (file.size > maxSizeInBytes) {
-        setImageInputError("File size must be less than 10MB");
+        setImageInputError('File size must be less than 10MB');
         setUrlInputError(null);
         // Clear the input
-        e.target.value = "";
+        e.target.value = '';
         return;
       }
 
       // Check if file is a supported image type
       const allowedTypes = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
       ];
       if (!allowedTypes.includes(file.type)) {
-        setImageInputError("Please select a JPG, PNG, or WebP image file");
+        setImageInputError('Please select a JPG, PNG, or WebP image file');
         setUrlInputError(null);
         // Clear the input
-        e.target.value = "";
+        e.target.value = '';
         return;
       }
 
@@ -68,21 +68,21 @@ export const UploadImage = ({
         const base64 = await fileToBase64(file);
         const fileSize = formatFileSize(file.size);
         const fileName = file.name
-          .replace(".webp", "")
-          .replace(".jpg", "")
-          .replace(".jpeg", "")
-          .replace(".png", "")
+          .replace('.webp', '')
+          .replace('.jpg', '')
+          .replace('.jpeg', '')
+          .replace('.png', '')
           .slice(0, 20)
-          .replace(/[^a-zA-Z0-9]/g, "-")
+          .replace(/[^a-zA-Z0-9]/g, '-')
           .toLowerCase();
-        const format = file.type.replace("image/", "");
+        const format = file.type.replace('image/', '');
         onUploadFile(base64, fileSize, fileName, format, file);
         setImageInputError(null);
         setUrlInputError(null);
         setDragDropError(null);
       } catch (error) {
         setImageInputError(
-          "Failed to process the image file. Please try another file."
+          'Failed to process the image file. Please try another file.',
         );
         setUrlInputError(null);
         setDragDropError(null);
@@ -93,7 +93,7 @@ export const UploadImage = ({
   const handleUrlToBase64 = async () => {
     try {
       if (!imageUrl.trim()) {
-        setUrlInputError("Please enter a valid image URL");
+        setUrlInputError('Please enter a valid image URL');
         setImageInputError(null);
         return;
       }
@@ -101,11 +101,11 @@ export const UploadImage = ({
       setIsUrlConversionLoading(true);
       const result = await convertImageUrlToBase64(imageUrl);
       const urlFileName = imageUrl
-        .replace(/http/, "")
-        .replace(/https/, "")
-        .replace(/www/, "")
+        .replace(/http/, '')
+        .replace(/https/, '')
+        .replace(/www/, '')
         .slice(0, 20)
-        .replace(/[^a-zA-Z0-9]/g, "-")
+        .replace(/[^a-zA-Z0-9]/g, '-')
         .toLowerCase();
       onUploadUrl(result.base64, result.fileSize, urlFileName, result.format);
       setImageInputError(null);
@@ -113,7 +113,7 @@ export const UploadImage = ({
       setDragDropError(null);
     } catch (error) {
       setUrlInputError(
-        "Failed to load image from URL. Please check the URL and try again."
+        'Failed to load image from URL. Please check the URL and try again.',
       );
       setImageInputError(null);
       setDragDropError(null);
@@ -127,7 +127,7 @@ export const UploadImage = ({
     fileSize?: string,
     fileName?: string,
     format?: string,
-    file?: File
+    file?: File,
   ) => {
     onUploadFile(base64, fileSize, fileName, format, file);
     setImageInputError(null);
@@ -160,7 +160,7 @@ export const UploadImage = ({
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
         actionButton={{
-          text: "Use",
+          text: 'Use',
           onPress: handleUrlToBase64,
           disabled: !imageUrl.trim(),
           isLoading: isUrlConversionLoading,

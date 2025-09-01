@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { Button, IconButton } from "@/components/shared/buttons";
+import * as React from 'react';
+import { Button, IconButton } from '@/components/shared/buttons';
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,9 @@ import {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { WithLoader } from "@/components/shared/loaders";
-import { X } from "lucide-react";
+} from '@/components/ui/dialog';
+import { WithLoader } from '@/components/shared/loaders';
+import { X } from 'lucide-react';
 
 export default function ConfirmationModal({
   isOpen,
@@ -42,7 +42,7 @@ export default function ConfirmationModal({
             Cancel
           </Button>
           <Button onClick={onConfirm} disabled={disabled}>
-            {WithLoader({ text: "Confirm", isLoading: loading })}
+            {WithLoader({ text: 'Confirm', isLoading: loading })}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import PageTransition from "@/components/shared/transitions";
+import PageTransition from '@/components/shared/transitions';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { H1, H3, H4, Muted, Large, List } from "@/components/ui/typography";
-import { Button } from "@/components/shared/buttons";
-import { NumberInput } from "@/components/shared/inputs";
-import { Zap, CreditCard } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { H1, H3, H4, Muted, Large, List } from '@/components/ui/typography';
+import { Button } from '@/components/shared/buttons';
+import { NumberInput } from '@/components/shared/inputs';
+import { Zap, CreditCard } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ChangeEvent, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
 import {
   WithLoaderNode,
   WithLoaderNodeSafe,
-} from "@/components/shared/loaders";
-import { trpc } from "@/lib/trpc/client";
-import { useUser } from "@/context/user/provider";
-import { BILLING_CONSTANTS } from "@/constants/credits";
+} from '@/components/shared/loaders';
+import { trpc } from '@/lib/trpc/client';
+import { useUser } from '@/context/user/provider';
+import { BILLING_CONSTANTS } from '@/constants/credits';
 
 // Local schema copied from pricing page reference
 const PurchaseSchema = z.object({
@@ -33,16 +33,16 @@ const PurchaseSchema = z.object({
     .number()
     .min(
       BILLING_CONSTANTS.MIN_CREDITS / 100,
-      `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`
+      `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`,
     )
-    .max(100, "Amount must be at most $100"),
+    .max(100, 'Amount must be at most $100'),
   credits: z
     .number()
     .min(
       BILLING_CONSTANTS.MIN_CREDITS,
-      `Credits must be at least ${BILLING_CONSTANTS.MIN_CREDITS}`
+      `Credits must be at least ${BILLING_CONSTANTS.MIN_CREDITS}`,
     )
-    .max(10000, "Credits must be at most 10000"),
+    .max(10000, 'Credits must be at most 10000'),
 });
 
 // Buy Credits form component (placed above BillingPage)
@@ -53,23 +53,23 @@ function BuyCreditsForm() {
 
   // Effect to check search params for success/failure messages
   useEffect(() => {
-    const buyCreditsSuccess = searchParams.get("buy_credits_success");
-    const buyCreditsFailure = searchParams.get("buy_credits_failure");
+    const buyCreditsSuccess = searchParams.get('buy_credits_success');
+    const buyCreditsFailure = searchParams.get('buy_credits_failure');
 
-    if (buyCreditsSuccess === "1") {
+    if (buyCreditsSuccess === '1') {
       setSuccessMessage(
-        "Payment completed successfully! Your credits have been added to your account."
+        'Payment completed successfully! Your credits have been added to your account.',
       );
       setErrorMessage(null);
-    } else if (buyCreditsFailure === "1") {
-      setErrorMessage("Payment failed or was cancelled. Please try again.");
+    } else if (buyCreditsFailure === '1') {
+      setErrorMessage('Payment failed or was cancelled. Please try again.');
       setSuccessMessage(null);
     }
   }, [searchParams]);
 
   const form = useForm<z.infer<typeof PurchaseSchema>>({
     resolver: zodResolver(PurchaseSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       amount: BILLING_CONSTANTS.MIN_CREDITS / 100,
       credits: BILLING_CONSTANTS.MIN_CREDITS,
@@ -81,21 +81,21 @@ function BuyCreditsForm() {
       if (data.success && data.data?.paymentUrl) {
         setSuccessMessage(
           data.message ||
-            "Order created successfully! Redirecting to payment..."
+            'Order created successfully! Redirecting to payment...',
         );
         setErrorMessage(null);
         // Redirect to PayPal payment URL
-        window.open(data.data.paymentUrl, "_blank");
+        window.open(data.data.paymentUrl, '_blank');
       } else {
         setErrorMessage(
-          data.message || "Failed to create order. Please try again."
+          data.message || 'Failed to create order. Please try again.',
         );
         setSuccessMessage(null);
       }
     },
     onError: (error) => {
       setErrorMessage(
-        error.message || "Failed to create order. Please try again."
+        error.message || 'Failed to create order. Please try again.',
       );
       setSuccessMessage(null);
     },
@@ -108,12 +108,12 @@ function BuyCreditsForm() {
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numValue = value ? parseFloat(value) : 0;
-    form.setValue("amount", numValue, {
+    form.setValue('amount', numValue, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
-    form.setValue("credits", Math.round(numValue * 100), {
+    form.setValue('credits', Math.round(numValue * 100), {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -123,12 +123,12 @@ function BuyCreditsForm() {
   const handleCreditsChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numValue = value ? parseInt(value) : 0;
-    form.setValue("credits", numValue, {
+    form.setValue('credits', numValue, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
-    form.setValue("amount", parseFloat((numValue / 100).toFixed(2)), {
+    form.setValue('amount', parseFloat((numValue / 100).toFixed(2)), {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -195,17 +195,17 @@ function BuySubscriptionForm() {
 
   // Effect to check search params for success/failure messages
   useEffect(() => {
-    const buySubscriptionSuccess = searchParams.get("buy_subscription_success");
-    const buySubscriptionFailure = searchParams.get("buy_subscription_failure");
+    const buySubscriptionSuccess = searchParams.get('buy_subscription_success');
+    const buySubscriptionFailure = searchParams.get('buy_subscription_failure');
 
-    if (buySubscriptionSuccess === "1") {
+    if (buySubscriptionSuccess === '1') {
       setSuccessMessage(
-        "Subscription created successfully! You now have access to premium features."
+        'Subscription created successfully! You now have access to premium features.',
       );
       setErrorMessage(null);
-    } else if (buySubscriptionFailure === "1") {
+    } else if (buySubscriptionFailure === '1') {
       setErrorMessage(
-        "Subscription failed or was cancelled. Please try again."
+        'Subscription failed or was cancelled. Please try again.',
       );
       setSuccessMessage(null);
     }
@@ -216,21 +216,21 @@ function BuySubscriptionForm() {
       if (data.success && data.data?.approvalUrl) {
         setSuccessMessage(
           data.message ||
-            "Subscription created successfully! Redirecting to payment..."
+            'Subscription created successfully! Redirecting to payment...',
         );
         setErrorMessage(null);
         // Redirect to PayPal subscription URL
-        window.open(data.data.approvalUrl, "_blank");
+        window.open(data.data.approvalUrl, '_blank');
       } else {
         setErrorMessage(
-          data.message || "Failed to create subscription. Please try again."
+          data.message || 'Failed to create subscription. Please try again.',
         );
         setSuccessMessage(null);
       }
     },
     onError: (error) => {
       setErrorMessage(
-        error.message || "Failed to create subscription. Please try again."
+        error.message || 'Failed to create subscription. Please try again.',
       );
       setSuccessMessage(null);
     },
@@ -302,7 +302,7 @@ function CurrentSubscriptionCard() {
                   <div className="flex items-center gap-2">
                     <Muted>Status</Muted>
                     <H4 className="!text-lg !mt-0">
-                      {userProfile?.subscriptionActive ? "Active" : "Inactive"}
+                      {userProfile?.subscriptionActive ? 'Active' : 'Inactive'}
                     </H4>
                   </div>
                   {userProfile?.subscriptionCredits && (
@@ -318,7 +318,7 @@ function CurrentSubscriptionCard() {
                       <Muted>Next reset</Muted>
                       <H4 className="!text-lg !mt-0">
                         {new Date(
-                          userProfile.subscriptionCreditResetDate
+                          userProfile.subscriptionCreditResetDate,
                         ).toLocaleDateString()}
                       </H4>
                     </div>
@@ -345,11 +345,11 @@ function CurrentSubscriptionCard() {
 
 export default function BillingPage() {
   const { userProfile, isLoading } = useUser();
-  const [activeTab, setActiveTab] = useState<string>("credits");
+  const [activeTab, setActiveTab] = useState<string>('credits');
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const tab = searchParams.get("tab");
+    const tab = searchParams.get('tab');
     if (tab) {
       setActiveTab(tab);
     }
@@ -367,7 +367,7 @@ export default function BillingPage() {
             <TabsTrigger
               value="credits"
               className="flex items-center space-x-2"
-              onClick={() => setActiveTab("credits")}
+              onClick={() => setActiveTab('credits')}
             >
               <Zap className="w-4 h-4" />
               <span>Credits</span>
@@ -375,7 +375,7 @@ export default function BillingPage() {
             <TabsTrigger
               value="subscription"
               className="flex items-center space-x-2"
-              onClick={() => setActiveTab("subscription")}
+              onClick={() => setActiveTab('subscription')}
             >
               <CreditCard className="w-4 h-4" />
               <span>Subscription</span>

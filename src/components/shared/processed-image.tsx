@@ -1,17 +1,17 @@
-import { Button, IconButton } from "@/components/shared/buttons";
+import { Button, IconButton } from '@/components/shared/buttons';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Muted } from "@/components/ui/typography";
-import { downloadImage } from "@/utils/common";
-import { Download, Expand } from "lucide-react";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { ExpandedPreviewImage } from "@/components/shared/modals";
+} from '@/components/ui/card';
+import { Muted } from '@/components/ui/typography';
+import { downloadImage } from '@/utils/common';
+import { Download, Expand } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { ExpandedPreviewImage } from '@/components/shared/modals';
 
 interface ProcessedImageProps {
   processedImage: string;
@@ -25,7 +25,7 @@ export function ProcessedImage({
   processedImage,
   format,
   fileSize,
-  name = "processed-image",
+  name = 'processed-image',
   dimensions,
 }: ProcessedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,7 +45,7 @@ export function ProcessedImage({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <motion.div 
+          <motion.div
             className="w-full flex justify-center relative cursor-pointer group"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
@@ -79,7 +79,7 @@ export function ProcessedImage({
           </Button>
         </CardContent>
       </Card>
-      
+
       <ExpandedPreviewImage
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

@@ -1,8 +1,8 @@
-import { exec } from "child_process";
-import { promisify } from "util";
-import fs from "fs/promises";
-import path from "path";
-import { formatFileSize, parseDataUri } from "@/utils/image";
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import fs from 'fs/promises';
+import path from 'path';
+import { formatFileSize, parseDataUri } from '@/utils/image';
 
 const execAsync = promisify(exec);
 
@@ -15,9 +15,9 @@ export interface CompressionResult {
 
 export async function compressPNG(
   base64Data: string,
-  quality: number
+  quality: number,
 ): Promise<CompressionResult> {
-  const tempDir = "/tmp";
+  const tempDir = '/tmp';
   const inputFileName = `input_${Date.now()}.png`;
   const outputFileName = `output_${Date.now()}.png`;
   const inputPath = path.join(tempDir, inputFileName);
@@ -25,7 +25,7 @@ export async function compressPNG(
 
   try {
     // Convert base64 to buffer and write to temp file
-    const imageBuffer = Buffer.from(base64Data, "base64");
+    const imageBuffer = Buffer.from(base64Data, 'base64');
     await fs.writeFile(inputPath, imageBuffer);
 
     // Get original file size
@@ -43,14 +43,14 @@ export async function compressPNG(
     const compressedStats = await fs.stat(outputPath);
     const compressedSize = formatFileSize(compressedStats.size);
 
-    const compressedBase64 = compressedBuffer.toString("base64");
+    const compressedBase64 = compressedBuffer.toString('base64');
     const dataUri = `data:image/png;base64,${compressedBase64}`;
 
     return {
       dataUri,
       compressedSize,
       originalSize,
-      format: "png",
+      format: 'png',
     };
   } finally {
     // Clean up temporary files
@@ -63,15 +63,15 @@ export async function compressPNG(
 
 export async function compressJPEG(
   base64Data: string,
-  quality: number
+  quality: number,
 ): Promise<CompressionResult> {
-  const tempDir = "/tmp";
+  const tempDir = '/tmp';
   const inputFileName = `input_${Date.now()}.jpg`;
   const inputPath = path.join(tempDir, inputFileName);
 
   try {
     // Convert base64 to buffer and write to temp file
-    const imageBuffer = Buffer.from(base64Data, "base64");
+    const imageBuffer = Buffer.from(base64Data, 'base64');
     await fs.writeFile(inputPath, imageBuffer);
 
     // Get original file size
@@ -88,14 +88,14 @@ export async function compressJPEG(
     const compressedStats = await fs.stat(inputPath);
     const compressedSize = formatFileSize(compressedStats.size);
 
-    const compressedBase64 = compressedBuffer.toString("base64");
+    const compressedBase64 = compressedBuffer.toString('base64');
     const dataUri = `data:image/jpeg;base64,${compressedBase64}`;
 
     return {
       dataUri,
       compressedSize,
       originalSize,
-      format: "jpeg",
+      format: 'jpeg',
     };
   } finally {
     // Clean up temporary file
@@ -105,9 +105,9 @@ export async function compressJPEG(
 
 export async function compressWebP(
   base64Data: string,
-  quality: number
+  quality: number,
 ): Promise<CompressionResult> {
-  const tempDir = "/tmp";
+  const tempDir = '/tmp';
   const inputFileName = `input_${Date.now()}.webp`;
   const outputFileName = `output_${Date.now()}.webp`;
   const inputPath = path.join(tempDir, inputFileName);
@@ -115,7 +115,7 @@ export async function compressWebP(
 
   try {
     // Convert base64 to buffer and write to temp file
-    const imageBuffer = Buffer.from(base64Data, "base64");
+    const imageBuffer = Buffer.from(base64Data, 'base64');
     await fs.writeFile(inputPath, imageBuffer);
 
     // Get original file size
@@ -132,14 +132,14 @@ export async function compressWebP(
     const compressedStats = await fs.stat(outputPath);
     const compressedSize = formatFileSize(compressedStats.size);
 
-    const compressedBase64 = compressedBuffer.toString("base64");
+    const compressedBase64 = compressedBuffer.toString('base64');
     const dataUri = `data:image/webp;base64,${compressedBase64}`;
 
     return {
       dataUri,
       compressedSize,
       originalSize,
-      format: "webp",
+      format: 'webp',
     };
   } finally {
     // Clean up temporary files
@@ -152,17 +152,17 @@ export async function compressWebP(
 
 export async function compressImage(
   dataUri: string,
-  quality: number
+  quality: number,
 ): Promise<CompressionResult> {
   const { format, base64Data } = parseDataUri(dataUri);
 
   switch (format) {
-    case "png":
+    case 'png':
       return compressPNG(base64Data, quality);
-    case "jpeg":
-    case "jpg":
+    case 'jpeg':
+    case 'jpg':
       return compressJPEG(base64Data, quality);
-    case "webp":
+    case 'webp':
       return compressWebP(base64Data, quality);
     default:
       throw new Error(`Unsupported image format: ${format}`);

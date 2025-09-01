@@ -11,17 +11,17 @@ export const formatFileSize = (sizeInBytes: number): string => {
 export const parseDataUri = (dataUri: string) => {
   const match = dataUri.match(/^data:image\/(.+);base64,(.+)$/);
   if (!match) {
-    throw new Error("Invalid data URI format");
+    throw new Error('Invalid data URI format');
   }
 
   const [, format, base64Data] = match;
   // Normalize format (jpg -> jpeg)
-  const normalizedFormat = format === "jpg" ? "jpeg" : format;
+  const normalizedFormat = format === 'jpg' ? 'jpeg' : format;
 
   return {
     format: normalizedFormat,
     base64Data,
-    extension: normalizedFormat === "jpeg" ? "jpg" : normalizedFormat,
+    extension: normalizedFormat === 'jpeg' ? 'jpg' : normalizedFormat,
   };
 };
 
@@ -32,7 +32,7 @@ export const extractImageDimensions = (base64: string): Promise<string> => {
       resolve(`${img.width} × ${img.height}`);
     };
     img.onerror = () => {
-      resolve("Unknown dimensions");
+      resolve('Unknown dimensions');
     };
     img.src = base64;
   });

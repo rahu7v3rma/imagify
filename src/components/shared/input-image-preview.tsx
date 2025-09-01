@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -6,8 +6,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Muted } from "@/components/ui/typography";
+} from '@/components/ui/card';
+import { Muted } from '@/components/ui/typography';
 
 interface InputImagePreviewProps {
   imageBase64: string;

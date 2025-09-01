@@ -1,48 +1,48 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
 import {
   PasswordInput,
   EmailInput,
   TextInput,
-} from "@/components/shared/inputs";
-import { TabLink } from "@/components/shared/links";
-import { WithLoader, WithLoaderNode } from "@/components/shared/loaders";
-import PageTransition from "@/components/shared/transitions";
+} from '@/components/shared/inputs';
+import { TabLink } from '@/components/shared/links';
+import { WithLoader, WithLoaderNode } from '@/components/shared/loaders';
+import PageTransition from '@/components/shared/transitions';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { H1 } from "@/components/ui/typography";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { isStrongPassword } from "validator";
-import { z } from "zod";
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { H1 } from '@/components/ui/typography';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { isStrongPassword } from 'validator';
+import { z } from 'zod';
 
 const ChangePasswordSchema = z
   .object({
     currentPassword: z.string(),
     newPassword: z.string().refine(isStrongPassword, {
       message:
-        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
     }),
     confirmNewPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
     message: "Passwords don't match",
-    path: ["confirmNewPassword"],
+    path: ['confirmNewPassword'],
   });
 
 const ChangeEmailSchema = z.object({
-  updatedEmail: z.email("Please enter a valid email address"),
+  updatedEmail: z.email('Please enter a valid email address'),
 });
 
 type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>;
@@ -54,11 +54,11 @@ function ChangePasswordForm() {
 
   const form = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(ChangePasswordSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmNewPassword: "",
+      currentPassword: '',
+      newPassword: '',
+      confirmNewPassword: '',
     },
   });
 
@@ -66,19 +66,19 @@ function ChangePasswordForm() {
     trpc.settings.changePassword.useMutation({
       onSuccess: (data) => {
         if (data.success) {
-          setSuccessMessage(data.message || "Password changed successfully!");
+          setSuccessMessage(data.message || 'Password changed successfully!');
           setErrorMessage(null);
           form.reset();
         } else {
           setErrorMessage(
-            data.message || "Failed to change password. Please try again."
+            data.message || 'Failed to change password. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to change password. Please try again."
+          error.message || 'Failed to change password. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -96,7 +96,7 @@ function ChangePasswordForm() {
 
   const setFormValue = (
     field: keyof ChangePasswordFormValues,
-    value: string
+    value: string,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -127,19 +127,19 @@ function ChangePasswordForm() {
           <PasswordInput
             label="Current Password"
             value={currentPassword}
-            onChange={(e) => setFormValue("currentPassword", e.target.value)}
+            onChange={(e) => setFormValue('currentPassword', e.target.value)}
             error={currentPasswordError}
           />
           <PasswordInput
             label="New Password"
             value={newPassword}
-            onChange={(e) => setFormValue("newPassword", e.target.value)}
+            onChange={(e) => setFormValue('newPassword', e.target.value)}
             error={newPasswordError}
           />
           <PasswordInput
             label="Confirm New Password"
             value={confirmNewPassword}
-            onChange={(e) => setFormValue("confirmNewPassword", e.target.value)}
+            onChange={(e) => setFormValue('confirmNewPassword', e.target.value)}
             error={confirmNewPasswordError}
           />
           <Button
@@ -149,7 +149,7 @@ function ChangePasswordForm() {
             disabled={!isFormValid || isChangePending}
           >
             {WithLoader({
-              text: "Change Password",
+              text: 'Change Password',
               isLoading: isChangePending,
             })}
           </Button>
@@ -168,12 +168,12 @@ function ChangeEmailForm() {
 
   const form = useForm<ChangeEmailFormValues>({
     resolver: zodResolver(ChangeEmailSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      updatedEmail: "",
+      updatedEmail: '',
     },
     values: {
-      updatedEmail: userProfile?.email || "",
+      updatedEmail: userProfile?.email || '',
     },
   });
 
@@ -181,20 +181,20 @@ function ChangeEmailForm() {
     trpc.settings.changeEmail.useMutation({
       onSuccess: (data) => {
         if (data.success) {
-          setSuccessMessage(data.message || "Email changed successfully!");
+          setSuccessMessage(data.message || 'Email changed successfully!');
           setErrorMessage(null);
           form.reset();
           logout();
         } else {
           setErrorMessage(
-            data.message || "Failed to change email. Please try again."
+            data.message || 'Failed to change email. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to change email. Please try again."
+          error.message || 'Failed to change email. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -237,7 +237,7 @@ function ChangeEmailForm() {
             content: (
               <EmailInput
                 value={updatedEmail}
-                onChange={(e) => setFormValue("updatedEmail", e.target.value)}
+                onChange={(e) => setFormValue('updatedEmail', e.target.value)}
                 error={updatedEmailError}
               />
             ),
@@ -249,7 +249,7 @@ function ChangeEmailForm() {
             disabled={!isFormValid || isChangePending || !userProfile}
           >
             {WithLoader({
-              text: "Change Email",
+              text: 'Change Email',
               isLoading: isChangePending,
             })}
           </Button>
@@ -262,7 +262,7 @@ function ChangeEmailForm() {
 }
 
 const DeleteAccountSchema = z.object({
-  confirmationText: z.string().refine((val) => val === "delete my account", {
+  confirmationText: z.string().refine((val) => val === 'delete my account', {
     message: "Please type 'delete my account' to confirm",
   }),
 });
@@ -275,9 +275,9 @@ function DeleteAccount() {
 
   const form = useForm<DeleteAccountFormValues>({
     resolver: zodResolver(DeleteAccountSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      confirmationText: "",
+      confirmationText: '',
     },
   });
 
@@ -285,16 +285,16 @@ function DeleteAccount() {
     trpc.settings.deleteAccount.useMutation({
       onSuccess: (ok) => {
         if (ok) {
-          setSuccessMessage("Account deleted successfully");
+          setSuccessMessage('Account deleted successfully');
           setErrorMessage(null);
         } else {
-          setErrorMessage("Failed to delete account. Please try again.");
+          setErrorMessage('Failed to delete account. Please try again.');
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to delete account. Please try again."
+          error.message || 'Failed to delete account. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -308,7 +308,7 @@ function DeleteAccount() {
 
   const setFormValue = (
     field: keyof DeleteAccountFormValues,
-    value: string
+    value: string,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -337,7 +337,7 @@ function DeleteAccount() {
           <TextInput
             label={`Type "delete my account" to confirm`}
             value={confirmationText}
-            onChange={(e) => setFormValue("confirmationText", e.target.value)}
+            onChange={(e) => setFormValue('confirmationText', e.target.value)}
             error={confirmationTextError}
           />
           <Button
@@ -347,7 +347,7 @@ function DeleteAccount() {
             disabled={!isFormValid || isDeletePending}
           >
             {WithLoader({
-              text: "Delete Account",
+              text: 'Delete Account',
               isLoading: isDeletePending,
             })}
           </Button>

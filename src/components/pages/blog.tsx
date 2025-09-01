@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import PageTransition from "@/components/shared/transitions";
+import PageTransition from '@/components/shared/transitions';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { H1, P } from "@/components/ui/typography";
-import NextLink from "next/link";
-import { MotionCardWrapper } from "../shared/cards";
+} from '@/components/ui/card';
+import { H1, P } from '@/components/ui/typography';
+import NextLink from 'next/link';
+import { MotionCardWrapper } from '../shared/cards';
 
 interface Blog {
   id: number;
@@ -69,7 +69,7 @@ export default function BlogPage({ blogs }: BlogPageProps) {
                 <BlogCard
                   key={blog.id}
                   title={blog.title}
-                  description={blog.content.substring(0, 150) + "..."}
+                  description={blog.content.substring(0, 150) + '...'}
                   slug={blog.slug!}
                 />
               ))}

@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { TextareaAction, SelectSingle } from "@/components/shared/inputs";
-import { WithLoader } from "@/components/shared/loaders";
-import { ProcessedImage } from "@/components/shared/processed-image";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted, P } from "@/components/ui/typography";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { TextareaAction, SelectSingle } from '@/components/shared/inputs';
+import { WithLoader } from '@/components/shared/loaders';
+import { ProcessedImage } from '@/components/shared/processed-image';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { H1, Muted, P } from '@/components/ui/typography';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const GenerateImageSchema = z.object({
   prompt: z
     .string()
-    .min(1, "Please enter a prompt to generate an image")
-    .max(1000, "Prompt must be at most 1000 characters long"),
-  generateType: z.enum(["standard", "pro"]),
+    .min(1, 'Please enter a prompt to generate an image')
+    .max(1000, 'Prompt must be at most 1000 characters long'),
+  generateType: z.enum(['standard', 'pro']),
   outputFormat: z.string(),
   aspectRatio: z.string(),
 });
@@ -31,19 +31,19 @@ type GenerateImageFormValues = z.infer<typeof GenerateImageSchema>;
 
 export default function GenerateImagePage() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [imageFormat, setImageFormat] = useState<string>("png");
+  const [imageFormat, setImageFormat] = useState<string>('png');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
 
   const form = useForm<GenerateImageFormValues>({
     resolver: zodResolver(GenerateImageSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      prompt: "",
-      generateType: "standard",
-      outputFormat: "png",
-      aspectRatio: "1:1",
+      prompt: '',
+      generateType: 'standard',
+      outputFormat: 'png',
+      aspectRatio: '1:1',
     },
   });
 
@@ -53,19 +53,19 @@ export default function GenerateImagePage() {
         if (data.success && data.data?.imageBase64) {
           setGeneratedImage(data.data.imageBase64);
           setImageFormat(data.data.outputFormat);
-          setSuccessMessage(data.message || "Image generated successfully!");
+          setSuccessMessage(data.message || 'Image generated successfully!');
           setErrorMessage(null);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to generate image. Please try again."
+            data.message || 'Failed to generate image. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to generate image. Please try again."
+          error.message || 'Failed to generate image. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -75,18 +75,18 @@ export default function GenerateImagePage() {
     trpc.generateImage.enhancePrompt.useMutation({
       onSuccess: (data) => {
         if (data.success && data.data?.enhancedPrompt) {
-          setFormValue("prompt", data.data.enhancedPrompt);
+          setFormValue('prompt', data.data.enhancedPrompt);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to enhance prompt. Please try again."
+            data.message || 'Failed to enhance prompt. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to enhance prompt. Please try again."
+          error.message || 'Failed to enhance prompt. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -113,7 +113,7 @@ export default function GenerateImagePage() {
 
   const setFormValue = (
     field: keyof GenerateImageFormValues,
-    value: string
+    value: string,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -128,43 +128,43 @@ export default function GenerateImagePage() {
   const promptError = errors.prompt?.message;
 
   const getOutputFormatOptions = () => {
-    if (values.generateType === "standard") {
-      return ["png", "jpg", "webp"];
+    if (values.generateType === 'standard') {
+      return ['png', 'jpg', 'webp'];
     } else {
-      return ["png", "jpg"];
+      return ['png', 'jpg'];
     }
   };
 
   const getAspectRatioOptions = () => {
-    if (values.generateType === "standard") {
+    if (values.generateType === 'standard') {
       return [
-        "1:1",
-        "16:9",
-        "21:9",
-        "3:2",
-        "2:3",
-        "4:5",
-        "5:4",
-        "3:4",
-        "4:3",
-        "8:16",
-        "9:16",
+        '1:1',
+        '16:9',
+        '21:9',
+        '3:2',
+        '2:3',
+        '4:5',
+        '5:4',
+        '3:4',
+        '4:3',
+        '8:16',
+        '9:16',
       ];
     } else {
       return [
-        "1:1",
-        "16:9",
-        "9:16",
-        "4:3",
-        "3:4",
-        "3:2",
-        "2:3",
-        "1:0",
-        "5:4",
-        "21:9",
-        "9:21",
-        "2:1",
-        "1:2",
+        '1:1',
+        '16:9',
+        '9:16',
+        '4:3',
+        '3:4',
+        '3:2',
+        '2:3',
+        '1:0',
+        '5:4',
+        '21:9',
+        '9:21',
+        '2:1',
+        '1:2',
       ];
     }
   };
@@ -172,7 +172,7 @@ export default function GenerateImagePage() {
   const getPromptBasedFileName = (prompt: string) => {
     return prompt
       .slice(0, 20)
-      .replace(/[^a-zA-Z0-9]/g, "-")
+      .replace(/[^a-zA-Z0-9]/g, '-')
       .toLowerCase();
   };
   const isFormValid = form.formState.isValid;
@@ -192,7 +192,7 @@ export default function GenerateImagePage() {
                   </div>
                 </CardTitle>
                 <Badge variant="default" className="w-fit">
-                  💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE[values.generateType]}{" "}
+                  💳 {CREDIT_REQUIREMENTS.GENERATE_IMAGE[values.generateType]}{' '}
                   credits
                 </Badge>
               </CardHeader>
@@ -204,7 +204,7 @@ export default function GenerateImagePage() {
                   <TextareaAction
                     label="Image Prompt"
                     value={prompt}
-                    onChange={(e) => setFormValue("prompt", e.target.value)}
+                    onChange={(e) => setFormValue('prompt', e.target.value)}
                     error={promptError}
                     placeholder="Describe the image you want to generate"
                     actionButtonNode={
@@ -225,24 +225,24 @@ export default function GenerateImagePage() {
                   <SelectSingle
                     label="Output Format"
                     value={values.outputFormat}
-                    onChange={(value) => setFormValue("outputFormat", value)}
+                    onChange={(value) => setFormValue('outputFormat', value)}
                     options={getOutputFormatOptions()}
                   />
                   <SelectSingle
                     label="Aspect Ratio"
                     value={values.aspectRatio}
-                    onChange={(value) => setFormValue("aspectRatio", value)}
+                    onChange={(value) => setFormValue('aspectRatio', value)}
                     options={getAspectRatioOptions()}
                   />
                   <div className="flex gap-2">
                     <Button
                       type="button"
                       variant={
-                        values.generateType === "standard"
-                          ? "default"
-                          : "outline"
+                        values.generateType === 'standard'
+                          ? 'default'
+                          : 'outline'
                       }
-                      onClick={() => setFormValue("generateType", "standard")}
+                      onClick={() => setFormValue('generateType', 'standard')}
                       className="flex-1"
                     >
                       Standard
@@ -250,9 +250,9 @@ export default function GenerateImagePage() {
                     <Button
                       type="button"
                       variant={
-                        values.generateType === "pro" ? "default" : "outline"
+                        values.generateType === 'pro' ? 'default' : 'outline'
                       }
-                      onClick={() => setFormValue("generateType", "pro")}
+                      onClick={() => setFormValue('generateType', 'pro')}
                       className="flex-1"
                     >
                       Pro
@@ -265,7 +265,7 @@ export default function GenerateImagePage() {
                     disabled={!isFormValid || isGenerateImagePending}
                   >
                     {WithLoader({
-                      text: "Generate",
+                      text: 'Generate',
                       isLoading: isGenerateImagePending,
                     })}
                   </Button>

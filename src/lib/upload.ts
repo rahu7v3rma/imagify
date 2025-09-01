@@ -1,8 +1,8 @@
-import fs from "fs/promises";
-import path from "path";
+import fs from 'fs/promises';
+import path from 'path';
 
-export const UPLOAD_BASE_DIR = path.join(process.cwd(), "uploads");
-export const CONTACT_DIR = "contact";
+export const UPLOAD_BASE_DIR = path.join(process.cwd(), 'uploads');
+export const CONTACT_DIR = 'contact';
 
 export const uploadFile = async ({
   directory,
@@ -12,7 +12,7 @@ export const uploadFile = async ({
   directory: string;
 }) => {
   try {
-    const fileName = `file-${Date.now()}.${file.name.split(".").pop()}`;
+    const fileName = `file-${Date.now()}.${file.name.split('.').pop()}`;
 
     const fullPath = path.join(UPLOAD_BASE_DIR, directory, fileName);
     const fullDirectory = path.dirname(fullPath);

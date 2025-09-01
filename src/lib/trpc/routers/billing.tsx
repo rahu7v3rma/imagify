@@ -1,26 +1,26 @@
-import { IS_PRODUCTION } from "@/constants/common";
-import { BILLING_CONSTANTS } from "@/constants/credits";
-import { sendErrorEmail } from "@/lib/email";
+import { IS_PRODUCTION } from '@/constants/common';
+import { BILLING_CONSTANTS } from '@/constants/credits';
+import { sendErrorEmail } from '@/lib/email';
 import {
   createStandardPlanSubscription,
   paypalOrdersController,
-} from "@/lib/paypal";
-import { protectedProcedure, router } from "@/lib/trpc/init";
+} from '@/lib/paypal';
+import { protectedProcedure, router } from '@/lib/trpc/init';
 import {
   CheckoutPaymentIntent,
   OrderApplicationContextShippingPreference,
   OrderRequest,
-} from "@paypal/paypal-server-sdk";
-import { z } from "zod";
+} from '@paypal/paypal-server-sdk';
+import { z } from 'zod';
 
 const AmountSchema = z.object({
   amount: z
     .number()
     .min(
       BILLING_CONSTANTS.MIN_CREDITS / 100,
-      `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`
+      `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`,
     )
-    .max(100, "Amount must be at most $100"),
+    .max(100, 'Amount must be at most $100'),
 });
 
 const CreateOrderOutputSchema = z.object({
@@ -52,7 +52,7 @@ export const billingRouter = router({
         if (!ctx.user) {
           return {
             success: false,
-            message: "Unauthorized",
+            message: 'Unauthorized',
             data: null,
           };
         }
@@ -64,7 +64,7 @@ export const billingRouter = router({
           purchaseUnits: [
             {
               amount: {
-                currencyCode: "USD",
+                currencyCode: 'USD',
                 value: String(amount),
               },
               customId: ctx.user.id.toString(),
@@ -83,31 +83,31 @@ export const billingRouter = router({
         });
 
         const approvalLink =
-          order.result.links?.find((link) => link.rel === "approve")?.href ||
+          order.result.links?.find((link) => link.rel === 'approve')?.href ||
           null;
 
         if (!approvalLink) {
-          throw new Error("Failed to generate payment URL", {
+          throw new Error('Failed to generate payment URL', {
             cause: order,
           });
         }
 
         return {
           success: true,
-          message: "Order created successfully",
+          message: 'Order created successfully',
           data: {
             paymentUrl: approvalLink,
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === "production") {
+        if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in billing create order:", error);
+          console.log('Error in billing create order:', error);
         }
         return {
           success: false,
-          message: "Failed to create order",
+          message: 'Failed to create order',
           data: null,
         };
       }
@@ -119,7 +119,7 @@ export const billingRouter = router({
         if (!ctx.user) {
           return {
             success: false,
-            message: "Unauthorized",
+            message: 'Unauthorized',
             data: null,
           };
         }
@@ -130,7 +130,7 @@ export const billingRouter = router({
 
         return {
           success: true,
-          message: "Subscription created successfully",
+          message: 'Subscription created successfully',
           data: {
             approvalUrl: subscription.approvalUrl,
           },
@@ -139,11 +139,11 @@ export const billingRouter = router({
         if (IS_PRODUCTION) {
           sendErrorEmail({ error });
         } else {
-          console.log("Error in billing create subscription:", error);
+          console.log('Error in billing create subscription:', error);
         }
         return {
           success: false,
-          message: "Failed to create subscription",
+          message: 'Failed to create subscription',
           data: null,
         };
       }

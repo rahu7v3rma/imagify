@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/shared/buttons";
-import { Link } from "@/components/shared/links";
-import { Logo } from "@/components/shared/logo";
+import { Button } from '@/components/shared/buttons';
+import { Link } from '@/components/shared/links';
+import { Logo } from '@/components/shared/logo';
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { Muted, Small } from "@/components/ui/typography";
-import { ROUTES } from "@/constants/routes";
-import { useUser } from "@/context/user/provider";
-import { Menu } from "lucide-react";
-import NextLink from "next/link";
-import { useState } from "react";
+} from '@/components/ui/sheet';
+import { Muted, Small } from '@/components/ui/typography';
+import { ROUTES } from '@/constants/routes';
+import { useUser } from '@/context/user/provider';
+import { Menu } from 'lucide-react';
+import NextLink from 'next/link';
+import { useState } from 'react';
 
 function NavbarComponent() {
   const [isOpen, setIsOpen] = useState(false);

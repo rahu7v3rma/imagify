@@ -1,5 +1,5 @@
-import { router, protectedProcedure } from "@/lib/trpc/init";
-import { z } from "zod";
+import { router, protectedProcedure } from '@/lib/trpc/init';
+import { z } from 'zod';
 
 export const userRouter = router({
   getProfile: protectedProcedure
@@ -11,7 +11,7 @@ export const userRouter = router({
         subscriptionCreditResetDate: z.string().nullable().optional(),
         subscriptionCredits: z.number().optional(),
         subscriptionActive: z.boolean().optional(),
-      })
+      }),
     )
     .query(({ ctx }) => {
       return {

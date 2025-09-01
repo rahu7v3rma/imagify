@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { H1, P } from "@/components/ui/typography";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/shared/buttons";
+import { H1, P } from '@/components/ui/typography';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/shared/buttons';
 
 interface BlogSlugProps {
   title: string;

@@ -1,38 +1,38 @@
-"use client";
+'use client';
 
-import { PasswordInput, EmailInput } from "@/components/shared/inputs";
-import { Button } from "@/components/shared/buttons";
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { WithLoader } from "@/components/shared/loaders";
-import { Link } from "@/components/shared/links";
-import { ChangeEvent, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { PasswordInput, EmailInput } from '@/components/shared/inputs';
+import { Button } from '@/components/shared/buttons';
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { WithLoader } from '@/components/shared/loaders';
+import { Link } from '@/components/shared/links';
+import { ChangeEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { ROUTES } from "@/constants/routes";
-import { trpc } from "@/lib/trpc/client";
-import { isStrongPassword } from "validator";
-import { Muted, Small } from "@/components/ui/typography";
+} from '@/components/ui/card';
+import { ROUTES } from '@/constants/routes';
+import { trpc } from '@/lib/trpc/client';
+import { isStrongPassword } from 'validator';
+import { Muted, Small } from '@/components/ui/typography';
 
 const SignupSchema = z
   .object({
     email: z.email(),
     password: z.string().refine(isStrongPassword, {
       message:
-        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
     }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"],
+    path: ['confirmPassword'],
   });
 
 export default function SignupPage() {
@@ -41,7 +41,7 @@ export default function SignupPage() {
 
   const form = useForm<z.infer<typeof SignupSchema>>({
     resolver: zodResolver(SignupSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const { mutate, isPending } = trpc.signup.createUser.useMutation({
@@ -49,20 +49,20 @@ export default function SignupPage() {
       if (data.success) {
         setSuccessMessage(
           data.message ||
-            "Account created successfully! Please check your email to verify your account."
+            'Account created successfully! Please check your email to verify your account.',
         );
         setErrorMessage(null);
         form.reset();
       } else {
         setErrorMessage(
-          data.message || "Failed to create account. Please try again."
+          data.message || 'Failed to create account. Please try again.',
         );
         setSuccessMessage(null);
       }
     },
     onError: (error) => {
       setErrorMessage(
-        error.message || "Failed to create account. Please try again."
+        error.message || 'Failed to create account. Please try again.',
       );
       setSuccessMessage(null);
     },
@@ -84,7 +84,7 @@ export default function SignupPage() {
   const confirmPassword = values.confirmPassword;
 
   const setEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    form.setValue("email", e.target.value, {
+    form.setValue('email', e.target.value, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -92,7 +92,7 @@ export default function SignupPage() {
   };
 
   const setPassword = (e: ChangeEvent<HTMLInputElement>) => {
-    form.setValue("password", e.target.value, {
+    form.setValue('password', e.target.value, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -100,7 +100,7 @@ export default function SignupPage() {
   };
 
   const setConfirmPassword = (e: ChangeEvent<HTMLInputElement>) => {
-    form.setValue("confirmPassword", e.target.value, {
+    form.setValue('confirmPassword', e.target.value, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -132,19 +132,19 @@ export default function SignupPage() {
               className="flex flex-col gap-4 w-full"
             >
               <EmailInput
-                value={email || ""}
+                value={email || ''}
                 onChange={setEmail}
                 error={emailError}
               />
               <PasswordInput
                 label="Password"
-                value={password || ""}
+                value={password || ''}
                 onChange={setPassword}
                 error={passwordError}
               />
               <PasswordInput
                 label="Confirm Password"
-                value={confirmPassword || ""}
+                value={confirmPassword || ''}
                 onChange={setConfirmPassword}
                 error={confirmPasswordError}
               />
@@ -158,7 +158,7 @@ export default function SignupPage() {
                 className="w-full"
                 disabled={!isFormValid || isPending}
               >
-                {WithLoader({ text: "Create Account", isLoading: isPending })}
+                {WithLoader({ text: 'Create Account', isLoading: isPending })}
               </Button>
               {successMessage && <SuccessAlert message={successMessage} />}
               {errorMessage && <ErrorAlert message={errorMessage} />}

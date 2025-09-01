@@ -1,12 +1,12 @@
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter } from "@/lib/trpc/root";
-import { TRPC_ENDPOINT } from "@/lib/trpc/client";
-import { NextRequest } from "next/server";
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
+import { appRouter } from '@/lib/trpc/root';
+import { TRPC_ENDPOINT } from '@/lib/trpc/client';
+import { NextRequest } from 'next/server';
 
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "10mb",
+      sizeLimit: '10mb',
     },
   },
 };

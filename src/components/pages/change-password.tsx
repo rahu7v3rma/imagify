@@ -1,35 +1,35 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { PasswordInput } from "@/components/shared/inputs";
-import { WithLoader } from "@/components/shared/loaders";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { PasswordInput } from '@/components/shared/inputs';
+import { WithLoader } from '@/components/shared/loaders';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { trpc } from "@/lib/trpc/client";
-import { useSearchParams } from "next/navigation";
-import { isStrongPassword } from "validator";
+} from '@/components/ui/card';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ChangeEvent, useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { trpc } from '@/lib/trpc/client';
+import { useSearchParams } from 'next/navigation';
+import { isStrongPassword } from 'validator';
 
 const ChangePasswordSchema = z
   .object({
     password: z.string().refine(isStrongPassword, {
       message:
-        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
     }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"],
+    path: ['confirmPassword'],
   });
 
 export default function ChangePasswordPage() {
@@ -42,38 +42,38 @@ export default function ChangePasswordPage() {
 
   useEffect(() => {
     // Get email and code from search params
-    const emailParam = searchParams.get("email");
-    const codeParam = searchParams.get("code");
+    const emailParam = searchParams.get('email');
+    const codeParam = searchParams.get('code');
 
     if (emailParam && codeParam) {
       setEmail(emailParam);
       setCode(codeParam);
     } else {
-      setErrorMessage("Invalid or missing verification parameters");
+      setErrorMessage('Invalid or missing verification parameters');
     }
   }, [searchParams]);
 
   const form = useForm<z.infer<typeof ChangePasswordSchema>>({
     resolver: zodResolver(ChangePasswordSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const { mutate, isPending } = trpc.changePassword.changePassword.useMutation({
     onSuccess: (data) => {
       if (data.success) {
-        setSuccessMessage(data.message || "Password changed successfully!");
+        setSuccessMessage(data.message || 'Password changed successfully!');
         setErrorMessage(null);
         form.reset();
       } else {
         setErrorMessage(
-          data.message || "Failed to change password. Please try again."
+          data.message || 'Failed to change password. Please try again.',
         );
         setSuccessMessage(null);
       }
     },
     onError: (error) => {
       setErrorMessage(
-        error.message || "Failed to change password. Please try again."
+        error.message || 'Failed to change password. Please try again.',
       );
       setSuccessMessage(null);
     },
@@ -84,7 +84,7 @@ export default function ChangePasswordPage() {
     setErrorMessage(null);
 
     if (!email || !code) {
-      setErrorMessage("Missing verification parameters");
+      setErrorMessage('Missing verification parameters');
       return;
     }
 
@@ -97,7 +97,7 @@ export default function ChangePasswordPage() {
 
   const setFormValue = (
     field: keyof z.infer<typeof ChangePasswordSchema>,
-    value: string
+    value: string,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -107,11 +107,11 @@ export default function ChangePasswordPage() {
   };
 
   const setPassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormValue("password", e.target.value);
+    setFormValue('password', e.target.value);
   };
 
   const setConfirmPassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormValue("confirmPassword", e.target.value);
+    setFormValue('confirmPassword', e.target.value);
   };
 
   const values = form.watch();
@@ -141,13 +141,13 @@ export default function ChangePasswordPage() {
             >
               <PasswordInput
                 label="New Password"
-                value={password || ""}
+                value={password || ''}
                 onChange={setPassword}
                 error={passwordError}
               />
               <PasswordInput
                 label="Confirm New Password"
-                value={confirmPassword || ""}
+                value={confirmPassword || ''}
                 onChange={setConfirmPassword}
                 error={confirmPasswordError}
               />
@@ -157,7 +157,7 @@ export default function ChangePasswordPage() {
                 className="mt-2 w-full"
                 disabled={!isFormValid || isPending || !email || !code}
               >
-                {WithLoader({ text: "Change Password", isLoading: isPending })}
+                {WithLoader({ text: 'Change Password', isLoading: isPending })}
               </Button>
               {successMessage && <SuccessAlert message={successMessage} />}
               {errorMessage && <ErrorAlert message={errorMessage} />}

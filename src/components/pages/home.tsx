@@ -1,8 +1,8 @@
-import { MotionCardWrapper } from "@/components/shared/cards";
-import PageTransition from "@/components/shared/transitions";
-import { Card, CardContent } from "@/components/ui/card";
-import { H1, H4, Muted } from "@/components/ui/typography";
-import { ROUTES } from "@/constants/routes";
+import { MotionCardWrapper } from '@/components/shared/cards';
+import PageTransition from '@/components/shared/transitions';
+import { Card, CardContent } from '@/components/ui/card';
+import { H1, H4, Muted } from '@/components/ui/typography';
+import { ROUTES } from '@/constants/routes';
 import {
   Archive,
   ArrowUp,
@@ -13,8 +13,8 @@ import {
   Maximize,
   RotateCcw,
   Sparkles,
-} from "lucide-react";
-import NextLink from "next/link";
+} from 'lucide-react';
+import NextLink from 'next/link';
 
 export default function Home() {
   return (
@@ -197,7 +197,9 @@ export default function Home() {
                       <Crop className="w-8 h-8" />
                     </div>
                     <div className="text-center">
-                      <H4 className="font-bold text-sm">Crop-Rotate-Flip Image</H4>
+                      <H4 className="font-bold text-sm">
+                        Crop-Rotate-Flip Image
+                      </H4>
                       <Muted className="text-xs text-muted-foreground">
                         Crop, rotate, and flip your images
                       </Muted>

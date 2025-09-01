@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import { ReactNode } from "react";
+import clsx from 'clsx';
+import { ReactNode } from 'react';
 
 export interface H1Props {
   children: ReactNode;
@@ -77,7 +77,7 @@ export function H1({ children, className }: H1Props) {
   return (
     <h1
       className={clsx(
-        "scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance",
+        'scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance',
         className,
       )}
     >
@@ -90,7 +90,7 @@ export function H2({ children, className }: H2Props) {
   return (
     <h2
       className={clsx(
-        "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+        'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0',
         className,
       )}
     >
@@ -103,7 +103,7 @@ export function H3({ children, className }: H3Props) {
   return (
     <h3
       className={clsx(
-        "scroll-m-20 text-2xl font-semibold tracking-tight",
+        'scroll-m-20 text-2xl font-semibold tracking-tight',
         className,
       )}
     >
@@ -116,7 +116,7 @@ export function H4({ children, className }: H4Props) {
   return (
     <h4
       className={clsx(
-        "scroll-m-20 text-xl font-semibold tracking-tight",
+        'scroll-m-20 text-xl font-semibold tracking-tight',
         className,
       )}
     >
@@ -126,16 +126,12 @@ export function H4({ children, className }: H4Props) {
 }
 
 export function P({ children, className }: PProps) {
-  return (
-    <p className={clsx("leading-7", className)}>
-      {children}
-    </p>
-  );
+  return <p className={clsx('leading-7', className)}>{children}</p>;
 }
 
 export function Muted({ children, className }: MutedProps) {
   return (
-    <p className={clsx("text-muted-foreground text-sm", className)}>
+    <p className={clsx('text-muted-foreground text-sm', className)}>
       {children}
     </p>
   );
@@ -143,7 +139,7 @@ export function Muted({ children, className }: MutedProps) {
 
 export function Small({ children, className }: SmallProps) {
   return (
-    <small className={clsx("text-sm leading-none font-medium", className)}>
+    <small className={clsx('text-sm leading-none font-medium', className)}>
       {children}
     </small>
   );
@@ -151,13 +147,13 @@ export function Small({ children, className }: SmallProps) {
 
 export function Large({ children, className }: LargeProps) {
   return (
-    <div className={clsx("text-lg font-semibold", className)}>{children}</div>
+    <div className={clsx('text-lg font-semibold', className)}>{children}</div>
   );
 }
 
 export function Lead({ children, className }: LeadProps) {
   return (
-    <p className={clsx("text-muted-foreground text-xl", className)}>
+    <p className={clsx('text-muted-foreground text-xl', className)}>
       {children}
     </p>
   );
@@ -167,7 +163,7 @@ export function InlineCode({ children, className }: InlineCodeProps) {
   return (
     <code
       className={clsx(
-        "bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
+        'bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
         className,
       )}
     >
@@ -177,7 +173,7 @@ export function InlineCode({ children, className }: InlineCodeProps) {
 }
 export function List({ options, className }: ListProps) {
   return (
-    <ul className={clsx("my-6 ml-6 list-disc [&>li]:mt-2", className)}>
+    <ul className={clsx('my-6 ml-6 list-disc [&>li]:mt-2', className)}>
       {options.map((option, index) => (
         <li key={index}>{option}</li>
       ))}
@@ -187,7 +183,7 @@ export function List({ options, className }: ListProps) {
 
 export function Table({ headers, rows, className }: TableProps) {
   return (
-    <div className={clsx("my-6 w-full overflow-y-auto", className)}>
+    <div className={clsx('my-6 w-full overflow-y-auto', className)}>
       <table className="w-full">
         <thead>
           <tr className="even:bg-muted m-0 border-t p-0">
@@ -219,7 +215,7 @@ export function Table({ headers, rows, className }: TableProps) {
 
 export function Blockquote({ children, className }: BlockquoteProps) {
   return (
-    <blockquote className={clsx("mt-6 border-l-2 pl-6 italic", className)}>
+    <blockquote className={clsx('mt-6 border-l-2 pl-6 italic', className)}>
       {children}
     </blockquote>
   );
@@ -230,7 +226,7 @@ export function Link({ children, href, className }: LinkProps) {
     <a
       href={href}
       className={clsx(
-        "text-primary-600 underline hover:text-primary-700",
+        'text-primary-600 underline hover:text-primary-700',
         className,
       )}
     >

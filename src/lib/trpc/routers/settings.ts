@@ -1,9 +1,9 @@
-import { prisma } from "@/lib/prisma";
-import { router, protectedProcedure } from "@/lib/trpc/init";
-import { z } from "zod";
-import { hashPassword, comparePassword } from "@/utils/bcrypt";
-import { generateEmailVerificationCode } from "@/utils/common";
-import { sendEmailVerificationEmail, sendErrorEmail } from "@/lib/email";
+import { prisma } from '@/lib/prisma';
+import { router, protectedProcedure } from '@/lib/trpc/init';
+import { z } from 'zod';
+import { hashPassword, comparePassword } from '@/utils/bcrypt';
+import { generateEmailVerificationCode } from '@/utils/common';
+import { sendEmailVerificationEmail, sendErrorEmail } from '@/lib/email';
 
 export const settingsRouter = router({
   deleteAccount: protectedProcedure
@@ -31,18 +31,18 @@ export const settingsRouter = router({
       z.object({
         currentPassword: z.string(),
         newPassword: z.string(),
-      })
+      }),
     )
     .output(
       z.object({
         success: z.boolean(),
         message: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         if (!ctx.user) {
-          return { success: false, message: "User not found" };
+          return { success: false, message: 'User not found' };
         }
 
         const isPasswordCorrect = await comparePassword({
@@ -50,7 +50,7 @@ export const settingsRouter = router({
           hashedPassword: ctx.user.password,
         });
         if (!isPasswordCorrect) {
-          return { success: false, message: "Current password is incorrect" };
+          return { success: false, message: 'Current password is incorrect' };
         }
 
         const hashedPassword = await hashPassword({
@@ -64,32 +64,32 @@ export const settingsRouter = router({
           },
         });
 
-        return { success: true, message: "Password changed successfully" };
+        return { success: true, message: 'Password changed successfully' };
       } catch (error: any) {
         if (process.env.APP_ENV === 'production') {
           sendErrorEmail({ error });
         } else {
           console.log('Error in change password:', error);
         }
-        return { success: false, message: "Failed to change password" };
+        return { success: false, message: 'Failed to change password' };
       }
     }),
   changeEmail: protectedProcedure
     .input(
       z.object({
-        updatedEmail: z.email("Please enter a valid email address"),
-      })
+        updatedEmail: z.email('Please enter a valid email address'),
+      }),
     )
     .output(
       z.object({
         success: z.boolean(),
         message: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         if (!ctx.user) {
-          return { success: false, message: "User not found" };
+          return { success: false, message: 'User not found' };
         }
 
         const { updatedEmail } = input;
@@ -102,7 +102,7 @@ export const settingsRouter = router({
         if (existingUser) {
           return {
             success: false,
-            message: "Email address is already in use",
+            message: 'Email address is already in use',
           };
         }
 
@@ -129,7 +129,7 @@ export const settingsRouter = router({
         return {
           success: true,
           message:
-            "Email changed successfully. Please check your new email to verify your account.",
+            'Email changed successfully. Please check your new email to verify your account.',
         };
       } catch (error: any) {
         if (process.env.APP_ENV === 'production') {
@@ -139,7 +139,7 @@ export const settingsRouter = router({
         }
         return {
           success: false,
-          message: "Failed to change email address",
+          message: 'Failed to change email address',
         };
       }
     }),

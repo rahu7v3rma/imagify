@@ -1,45 +1,45 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { InputImagePreview } from "@/components/shared/input-image-preview";
-import { WithLoader } from "@/components/shared/loaders";
-import { ProcessedImage } from "@/components/shared/processed-image";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
-import { UploadImage } from "@/components/shared/upload-image";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { InputImagePreview } from '@/components/shared/input-image-preview';
+import { WithLoader } from '@/components/shared/loaders';
+import { ProcessedImage } from '@/components/shared/processed-image';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { H1, Muted } from '@/components/ui/typography';
+import { UploadImage } from '@/components/shared/upload-image';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const RemoveBackgroundSchema = z.object({
   imageBase64: z
     .string()
-    .min(1, "Please upload an image to remove its background"),
-  generateType: z.enum(["fast", "standard"]),
+    .min(1, 'Please upload an image to remove its background'),
+  generateType: z.enum(['fast', 'standard']),
 });
 
 type RemoveBackgroundFormValues = z.infer<typeof RemoveBackgroundSchema>;
 
 export default function RemoveBackgroundPage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("removed-background");
+  const [fileName, setFileName] = useState<string>('removed-background');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
 
   const form = useForm<RemoveBackgroundFormValues>({
     resolver: zodResolver(RemoveBackgroundSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      imageBase64: "",
-      generateType: "fast",
+      imageBase64: '',
+      generateType: 'fast',
     },
   });
 
@@ -48,19 +48,19 @@ export default function RemoveBackgroundPage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
-          setSuccessMessage(data.message || "Background removed successfully!");
+          setSuccessMessage(data.message || 'Background removed successfully!');
           setErrorMessage(null);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to remove background. Please try again."
+            data.message || 'Failed to remove background. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to remove background. Please try again."
+          error.message || 'Failed to remove background. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -77,7 +77,7 @@ export default function RemoveBackgroundPage() {
 
   const setFormValue = (
     field: keyof RemoveBackgroundFormValues,
-    value: string
+    value: string,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -89,18 +89,18 @@ export default function RemoveBackgroundPage() {
   const handleFileUpload = (
     base64: string,
     fileSize?: string,
-    fileName?: string
+    fileName?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
   };
 
   const handleUrlUpload = (
     base64: string,
     fileSize?: string,
-    fileName?: string
+    fileName?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
   };
 
@@ -141,11 +141,9 @@ export default function RemoveBackgroundPage() {
                     <Button
                       type="button"
                       variant={
-                        values.generateType === "fast"
-                          ? "default"
-                          : "outline"
+                        values.generateType === 'fast' ? 'default' : 'outline'
                       }
-                      onClick={() => setFormValue("generateType", "fast")}
+                      onClick={() => setFormValue('generateType', 'fast')}
                       className="flex-1"
                     >
                       Fast
@@ -153,9 +151,11 @@ export default function RemoveBackgroundPage() {
                     <Button
                       type="button"
                       variant={
-                        values.generateType === "standard" ? "default" : "outline"
+                        values.generateType === 'standard'
+                          ? 'default'
+                          : 'outline'
                       }
-                      onClick={() => setFormValue("generateType", "standard")}
+                      onClick={() => setFormValue('generateType', 'standard')}
                       className="flex-1"
                     >
                       Standard
@@ -168,7 +168,7 @@ export default function RemoveBackgroundPage() {
                     disabled={!isFormValid || isRemoveBackgroundPending}
                   >
                     {WithLoader({
-                      text: "Remove Background",
+                      text: 'Remove Background',
                       isLoading: isRemoveBackgroundPending,
                     })}
                   </Button>

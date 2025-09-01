@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { EmailInput } from "@/components/shared/inputs";
-import { WithLoader } from "@/components/shared/loaders";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { EmailInput } from '@/components/shared/inputs';
+import { WithLoader } from '@/components/shared/loaders';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { trpc } from "@/lib/trpc/client";
+} from '@/components/ui/card';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ChangeEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { trpc } from '@/lib/trpc/client';
 
 const ForgotPasswordSchema = z.object({
-  email: z.email("Please enter a valid email address"),
+  email: z.email('Please enter a valid email address'),
 });
 
 export default function ForgotPasswordPage() {
@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
 
   const form = useForm<z.infer<typeof ForgotPasswordSchema>>({
     resolver: zodResolver(ForgotPasswordSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const { mutate, isPending } = trpc.forgotPassword.resetPassword.useMutation({
@@ -35,13 +35,13 @@ export default function ForgotPasswordPage() {
       if (data.success) {
         setSuccessMessage(
           data.message ||
-            "Password reset email sent! Check your inbox for instructions."
+            'Password reset email sent! Check your inbox for instructions.',
         );
         setErrorMessage(null);
       } else {
         setErrorMessage(
           data.message ||
-            "Failed to send password reset email. Please try again."
+            'Failed to send password reset email. Please try again.',
         );
         setSuccessMessage(null);
       }
@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
     onError: (error) => {
       setErrorMessage(
         error.message ||
-          "Failed to send password reset email. Please try again."
+          'Failed to send password reset email. Please try again.',
       );
       setSuccessMessage(null);
     },
@@ -66,7 +66,7 @@ export default function ForgotPasswordPage() {
 
   const setFormValue = (
     field: keyof z.infer<typeof ForgotPasswordSchema>,
-    value: string
+    value: string,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -76,7 +76,7 @@ export default function ForgotPasswordPage() {
   };
 
   const setEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormValue("email", e.target.value);
+    setFormValue('email', e.target.value);
   };
 
   const values = form.watch();
@@ -104,7 +104,7 @@ export default function ForgotPasswordPage() {
               className="flex flex-col gap-4 w-full"
             >
               <EmailInput
-                value={email || ""}
+                value={email || ''}
                 onChange={setEmail}
                 error={emailError}
               />
@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
                 className="mt-2 w-full"
                 disabled={!isFormValid || isPending}
               >
-                {WithLoader({ text: "Send Reset Email", isLoading: isPending })}
+                {WithLoader({ text: 'Send Reset Email', isLoading: isPending })}
               </Button>
               {successMessage && <SuccessAlert message={successMessage} />}
               {errorMessage && <ErrorAlert message={errorMessage} />}

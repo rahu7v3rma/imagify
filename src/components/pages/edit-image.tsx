@@ -1,47 +1,47 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { Textarea } from "@/components/shared/inputs";
-import { InputImagePreview } from "@/components/shared/input-image-preview";
-import { WithLoader } from "@/components/shared/loaders";
-import { ProcessedImage } from "@/components/shared/processed-image";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
-import { UploadImage } from "@/components/shared/upload-image";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { Textarea } from '@/components/shared/inputs';
+import { InputImagePreview } from '@/components/shared/input-image-preview';
+import { WithLoader } from '@/components/shared/loaders';
+import { ProcessedImage } from '@/components/shared/processed-image';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { H1, Muted } from '@/components/ui/typography';
+import { UploadImage } from '@/components/shared/upload-image';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const EditImageSchema = z.object({
-  imageBase64: z.string().min(1, "Please upload an image to edit"),
+  imageBase64: z.string().min(1, 'Please upload an image to edit'),
   prompt: z
     .string()
-    .min(1, "Please enter a prompt to edit the image")
-    .max(1000, "Prompt must be at most 1000 characters long"),
+    .min(1, 'Please enter a prompt to edit the image')
+    .max(1000, 'Prompt must be at most 1000 characters long'),
 });
 
 type EditImageFormValues = z.infer<typeof EditImageSchema>;
 
 export default function EditImagePage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("edited-image");
+  const [fileName, setFileName] = useState<string>('edited-image');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
 
   const form = useForm<EditImageFormValues>({
     resolver: zodResolver(EditImageSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      imageBase64: "",
-      prompt: "",
+      imageBase64: '',
+      prompt: '',
     },
   });
 
@@ -50,19 +50,19 @@ export default function EditImagePage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
-          setSuccessMessage(data.message || "Image edited successfully!");
+          setSuccessMessage(data.message || 'Image edited successfully!');
           setErrorMessage(null);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to edit image. Please try again."
+            data.message || 'Failed to edit image. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to edit image. Please try again."
+          error.message || 'Failed to edit image. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -88,25 +88,25 @@ export default function EditImagePage() {
   const handleFileUpload = (
     base64: string,
     fileSize?: string,
-    fileName?: string
+    fileName?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
   };
 
   const handleUrlUpload = (
     base64: string,
     fileSize?: string,
-    fileName?: string
+    fileName?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
   };
 
   const getEditBasedFileName = (originalName: string, prompt: string) => {
     const promptBasedName = prompt
       .slice(0, 20)
-      .replace(/[^a-zA-Z0-9]/g, "-")
+      .replace(/[^a-zA-Z0-9]/g, '-')
       .toLowerCase();
     return `${originalName}-${promptBasedName}`;
   };
@@ -150,7 +150,7 @@ export default function EditImagePage() {
                   <Textarea
                     label="Edit Prompt"
                     value={prompt}
-                    onChange={(e) => setFormValue("prompt", e.target.value)}
+                    onChange={(e) => setFormValue('prompt', e.target.value)}
                     error={promptError}
                     placeholder="Describe the changes you want to make to the image"
                   />
@@ -161,7 +161,7 @@ export default function EditImagePage() {
                     disabled={!isFormValid || isEditImagePending}
                   >
                     {WithLoader({
-                      text: "Edit Image",
+                      text: 'Edit Image',
                       isLoading: isEditImagePending,
                     })}
                   </Button>

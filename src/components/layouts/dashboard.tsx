@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Button, IconButton } from "@/components/shared/buttons";
-import { ROUTES } from "@/constants/routes";
-import { useUser } from "@/context/user/provider";
+import { Button, IconButton } from '@/components/shared/buttons';
+import { ROUTES } from '@/constants/routes';
+import { useUser } from '@/context/user/provider';
 import {
   Archive,
   ArrowUp,
@@ -19,14 +19,14 @@ import {
   Settings,
   Sparkles,
   Zap,
-} from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { Logo } from "@/components/shared/logo";
-import PageTransition from "@/components/shared/transitions";
-import { WithLoaderNodeSafe } from "@/components/shared/loaders";
-import { useState } from "react";
-import { TextInput } from "@/components/shared/inputs";
+} from 'lucide-react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { Logo } from '@/components/shared/logo';
+import PageTransition from '@/components/shared/transitions';
+import { WithLoaderNodeSafe } from '@/components/shared/loaders';
+import { useState } from 'react';
+import { TextInput } from '@/components/shared/inputs';
 
 function Header() {
   const router = useRouter();
@@ -73,51 +73,51 @@ function Header() {
 function Sidebar() {
   const pathname = usePathname();
   const { logout } = useUser();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const navigationButtons = [
-    { href: ROUTES.DASHBOARD.ROOT, icon: Home, label: "Dashboard" },
+    { href: ROUTES.DASHBOARD.ROOT, icon: Home, label: 'Dashboard' },
     {
       href: ROUTES.DASHBOARD.GENERATE_IMAGE,
       icon: Sparkles,
-      label: "Generate Image",
+      label: 'Generate Image',
     },
     {
       href: ROUTES.DASHBOARD.REMOVE_BACKGROUND,
       icon: Image,
-      label: "Remove Background",
+      label: 'Remove Background',
     },
     {
       href: ROUTES.DASHBOARD.EXTRACT_TEXT,
       icon: FileText,
-      label: "Extract Text",
+      label: 'Extract Text',
     },
-    { href: ROUTES.DASHBOARD.UPSCALE, icon: ArrowUp, label: "Upscale Image" },
+    { href: ROUTES.DASHBOARD.UPSCALE, icon: ArrowUp, label: 'Upscale Image' },
     {
       href: ROUTES.DASHBOARD.COMPRESS_IMAGE,
       icon: Archive,
-      label: "Compress Image",
+      label: 'Compress Image',
     },
     {
       href: ROUTES.DASHBOARD.CONVERT_FORMAT,
       icon: RotateCcw,
-      label: "Convert Format",
+      label: 'Convert Format',
     },
     {
       href: ROUTES.DASHBOARD.RESIZE_IMAGE,
       icon: Maximize,
-      label: "Resize Image",
+      label: 'Resize Image',
     },
-    { href: ROUTES.DASHBOARD.EDIT_IMAGE, icon: Edit, label: "Edit Image" },
+    { href: ROUTES.DASHBOARD.EDIT_IMAGE, icon: Edit, label: 'Edit Image' },
     {
       href: ROUTES.DASHBOARD.CROP_ROTATE_FLIP,
       icon: Crop,
-      label: "Crop-Rotate-Flip Image",
+      label: 'Crop-Rotate-Flip Image',
     },
   ];
 
   const filteredButtons = navigationButtons.filter((button) =>
-    button.label.toLowerCase().includes(searchTerm.toLowerCase())
+    button.label.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -137,7 +137,7 @@ function Sidebar() {
               <Button
                 key={button.href}
                 size="sm"
-                variant={pathname === button.href ? "default" : "outline"}
+                variant={pathname === button.href ? 'default' : 'outline'}
                 className="w-full"
               >
                 <Link
@@ -155,7 +155,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.BILLING ? "default" : "outline"
+              pathname === ROUTES.DASHBOARD.BILLING ? 'default' : 'outline'
             }
             className="w-full"
           >
@@ -170,7 +170,7 @@ function Sidebar() {
           <Button
             size="sm"
             variant={
-              pathname === ROUTES.DASHBOARD.SETTINGS ? "default" : "outline"
+              pathname === ROUTES.DASHBOARD.SETTINGS ? 'default' : 'outline'
             }
             className="w-full"
           >

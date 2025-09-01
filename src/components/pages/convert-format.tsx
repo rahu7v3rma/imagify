@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { SelectSingle } from "@/components/shared/inputs";
-import { InputImagePreview } from "@/components/shared/input-image-preview";
-import { WithLoader } from "@/components/shared/loaders";
-import { ProcessedImage } from "@/components/shared/processed-image";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
-import { UploadImage } from "@/components/shared/upload-image";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { SelectSingle } from '@/components/shared/inputs';
+import { InputImagePreview } from '@/components/shared/input-image-preview';
+import { WithLoader } from '@/components/shared/loaders';
+import { ProcessedImage } from '@/components/shared/processed-image';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { H1, Muted } from '@/components/ui/typography';
+import { UploadImage } from '@/components/shared/upload-image';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const ConvertFormatSchema = z.object({
-  imageBase64: z.string().min(1, "Please upload an image to convert"),
-  format: z.string().min(1, "Please select a format"),
+  imageBase64: z.string().min(1, 'Please upload an image to convert'),
+  format: z.string().min(1, 'Please select a format'),
 });
 
 type ConvertFormatFormValues = z.infer<typeof ConvertFormatSchema>;
 
 export default function ConvertFormatPage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("converted-image");
+  const [fileName, setFileName] = useState<string>('converted-image');
   const [inputFormat, setInputFormat] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -36,10 +36,10 @@ export default function ConvertFormatPage() {
 
   const form = useForm<ConvertFormatFormValues>({
     resolver: zodResolver(ConvertFormatSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      imageBase64: "",
-      format: "png",
+      imageBase64: '',
+      format: 'png',
     },
   });
 
@@ -49,20 +49,20 @@ export default function ConvertFormatPage() {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
           setSuccessMessage(
-            data.message || "Image format converted successfully!"
+            data.message || 'Image format converted successfully!',
           );
           setErrorMessage(null);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to convert image format. Please try again."
+            data.message || 'Failed to convert image format. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to convert image format. Please try again."
+          error.message || 'Failed to convert image format. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -79,7 +79,7 @@ export default function ConvertFormatPage() {
 
   const setFormValue = (
     field: keyof ConvertFormatFormValues,
-    value: string
+    value: string,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -92,9 +92,9 @@ export default function ConvertFormatPage() {
     base64: string,
     fileSize?: string,
     fileName?: string,
-    format?: string
+    format?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
     if (format) setInputFormat(format);
   };
@@ -103,9 +103,9 @@ export default function ConvertFormatPage() {
     base64: string,
     fileSize?: string,
     fileName?: string,
-    format?: string
+    format?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
     if (format) setInputFormat(format);
   };
@@ -147,8 +147,8 @@ export default function ConvertFormatPage() {
                   <SelectSingle
                     label="Output Format"
                     value={format}
-                    onChange={(value) => setFormValue("format", value)}
-                    options={["png", "jpeg", "jpg", "webp"]}
+                    onChange={(value) => setFormValue('format', value)}
+                    options={['png', 'jpeg', 'jpg', 'webp']}
                   />
                   <Button
                     type="submit"
@@ -157,7 +157,7 @@ export default function ConvertFormatPage() {
                     disabled={!isFormValid || isConvertFormatPending}
                   >
                     {WithLoader({
-                      text: "Convert Format",
+                      text: 'Convert Format',
                       isLoading: isConvertFormatPending,
                     })}
                   </Button>
@@ -166,10 +166,7 @@ export default function ConvertFormatPage() {
                 </form>
               </CardContent>
             </Card>
-            <InputImagePreview
-              imageBase64={imageBase64}
-              format={inputFormat}
-            />
+            <InputImagePreview imageBase64={imageBase64} format={inputFormat} />
           </div>
 
           {processedImage && (

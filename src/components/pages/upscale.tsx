@@ -1,41 +1,41 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { InputImagePreview } from "@/components/shared/input-image-preview";
-import { WithLoader } from "@/components/shared/loaders";
-import { ProcessedImage } from "@/components/shared/processed-image";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
-import { UploadImage } from "@/components/shared/upload-image";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { InputImagePreview } from '@/components/shared/input-image-preview';
+import { WithLoader } from '@/components/shared/loaders';
+import { ProcessedImage } from '@/components/shared/processed-image';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { H1, Muted } from '@/components/ui/typography';
+import { UploadImage } from '@/components/shared/upload-image';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const UpscaleSchema = z.object({
-  imageBase64: z.string().min(1, "Please upload an image to upscale"),
+  imageBase64: z.string().min(1, 'Please upload an image to upscale'),
 });
 
 type UpscaleFormValues = z.infer<typeof UpscaleSchema>;
 
 export default function UpscalePage() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("upscaled-image");
+  const [fileName, setFileName] = useState<string>('upscaled-image');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
 
   const form = useForm<UpscaleFormValues>({
     resolver: zodResolver(UpscaleSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      imageBase64: "",
+      imageBase64: '',
     },
   });
 
@@ -44,19 +44,19 @@ export default function UpscalePage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
-          setSuccessMessage(data.message || "Image upscaled successfully!");
+          setSuccessMessage(data.message || 'Image upscaled successfully!');
           setErrorMessage(null);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to upscale image. Please try again."
+            data.message || 'Failed to upscale image. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to upscale image. Please try again."
+          error.message || 'Failed to upscale image. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -81,18 +81,18 @@ export default function UpscalePage() {
   const handleFileUpload = (
     base64: string,
     fileSize?: string,
-    fileName?: string
+    fileName?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
   };
 
   const handleUrlUpload = (
     base64: string,
     fileSize?: string,
-    fileName?: string
+    fileName?: string,
   ) => {
-    setFormValue("imageBase64", base64);
+    setFormValue('imageBase64', base64);
     if (fileName) setFileName(fileName);
   };
 
@@ -134,7 +134,7 @@ export default function UpscalePage() {
                     disabled={!isFormValid || isUpscalePending}
                   >
                     {WithLoader({
-                      text: "Upscale Image",
+                      text: 'Upscale Image',
                       isLoading: isUpscalePending,
                     })}
                   </Button>

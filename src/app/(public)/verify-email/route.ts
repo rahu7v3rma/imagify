@@ -1,16 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { sendErrorEmail } from "@/lib/email";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { sendErrorEmail } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const email = searchParams.get("email");
-    const code = searchParams.get("code");
+    const email = searchParams.get('email');
+    const code = searchParams.get('code');
 
     if (!email || !code) {
       return NextResponse.redirect(
-        new URL("/login?email_verified_failed=1", request.url)
+        new URL('/login?email_verified_failed=1', request.url),
       );
     }
 
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
     if (!user) {
       return NextResponse.redirect(
-        new URL("/login?email_verified_failed=1", request.url)
+        new URL('/login?email_verified_failed=1', request.url),
       );
     }
 
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.redirect(
-      new URL("/login?email_verified_success=1", request.url)
+      new URL('/login?email_verified_success=1', request.url),
     );
   } catch (error: any) {
     if (process.env.APP_ENV === 'production') {
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       console.log('Error in verify email:', error);
     }
     return NextResponse.redirect(
-      new URL("/login?email_verified_failed=1", request.url)
+      new URL('/login?email_verified_failed=1', request.url),
     );
   }
 }

@@ -1,5 +1,5 @@
-import PageTransition from "@/components/shared/transitions";
-import { H1, Muted } from "@/components/ui/typography";
+import PageTransition from '@/components/shared/transitions';
+import { H1, Muted } from '@/components/ui/typography';
 
 export default function DashboardPage() {
   return (

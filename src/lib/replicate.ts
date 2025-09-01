@@ -1,4 +1,4 @@
-import Replicate from "replicate";
+import Replicate from 'replicate';
 
 export const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
@@ -6,13 +6,13 @@ export const replicate = new Replicate({
 
 export async function getReplicateImageUrl(
   modelVersion: string,
-  input: Record<string, any>
+  input: Record<string, any>,
 ): Promise<string> {
   const replicateOutput = await replicate.run(
-    modelVersion as "`${string}/${string}` | `${string}/${string}:${string}`",
+    modelVersion as '`${string}/${string}` | `${string}/${string}:${string}`',
     {
       input,
-    }
+    },
   );
 
   const replicateOutputUrl = Array.isArray(replicateOutput)
@@ -25,13 +25,13 @@ export async function getReplicateImageUrl(
 
 export async function getReplicateOutput(
   modelVersion: string,
-  input: Record<string, any>
+  input: Record<string, any>,
 ) {
   const replicateOutput = await replicate.run(
-    modelVersion as "`${string}/${string}` | `${string}/${string}:${string}`",
+    modelVersion as '`${string}/${string}` | `${string}/${string}:${string}`',
     {
       input,
-    }
+    },
   );
 
   return replicateOutput;

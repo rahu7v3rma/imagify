@@ -2,19 +2,19 @@ import {
   Client,
   Environment,
   OrdersController,
-} from "@paypal/paypal-server-sdk";
-import axios from "axios";
-import { SUBSCRIPTION_STANDARD_PLAN_ID } from "@/constants/credits";
+} from '@paypal/paypal-server-sdk';
+import axios from 'axios';
+import { SUBSCRIPTION_STANDARD_PLAN_ID } from '@/constants/credits';
 
 const environment = process.env.PAYPAL_ENVIRONMENT as Environment;
 
 const credentials = {
   oAuthClientId:
-    environment === "Sandbox"
+    environment === 'Sandbox'
       ? process.env.PAYPAL_SANDBOX_CLIENT_ID!
       : process.env.PAYPAL_LIVE_CLIENT_ID!,
   oAuthClientSecret:
-    environment === "Sandbox"
+    environment === 'Sandbox'
       ? process.env.PAYPAL_SANDBOX_CLIENT_SECRET!
       : process.env.PAYPAL_LIVE_CLIENT_SECRET!,
 };
@@ -29,28 +29,28 @@ export const paypalClient = new Client({
 
 export const paypalOrdersController = new OrdersController(paypalClient);
 
-const isSandbox = environment === "Sandbox";
+const isSandbox = environment === 'Sandbox';
 
 const paypalBaseUrl = isSandbox
-  ? "https://api-m.sandbox.paypal.com"
-  : "https://api-m.paypal.com";
+  ? 'https://api-m.sandbox.paypal.com'
+  : 'https://api-m.paypal.com';
 
 const getPaypalAxiosClient = async () => {
   const accessTokenEndpoint = `${paypalBaseUrl}/v1/oauth2/token`;
 
   const accessTokenAuthSecrets = Buffer.from(
-    `${credentials.oAuthClientId}:${credentials.oAuthClientSecret}`
-  ).toString("base64");
+    `${credentials.oAuthClientId}:${credentials.oAuthClientSecret}`,
+  ).toString('base64');
 
   const getAccessToken = await axios.post(
     accessTokenEndpoint,
-    "grant_type=client_credentials",
+    'grant_type=client_credentials',
     {
       headers: {
         Authorization: `Basic ${accessTokenAuthSecrets}`,
-        "Content-Type": "application/x-www-form-urlencoded",
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-    }
+    },
   );
 
   const accessToken = getAccessToken.data.access_token;
@@ -83,7 +83,7 @@ export const createStandardPlanSubscription = async ({
   const subscription = response.data;
 
   const approvalUrl = subscription.links?.find(
-    (link: any) => link.rel === "approve"
+    (link: any) => link.rel === 'approve',
   )?.href;
 
   return {

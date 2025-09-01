@@ -19,7 +19,7 @@ export const BILLING_CONSTANTS = {
 };
 
 export const SUBSCRIPTION_STANDARD_PLAN_ID =
-  process.env.PAYPAL_ENVIRONMENT === "Sandbox"
+  process.env.PAYPAL_ENVIRONMENT === 'Sandbox'
     ? process.env.PAYPAL_SANDBOX_STANDARD_PLAN_ID!
     : process.env.PAYPAL_LIVE_STANDARD_PLAN_ID!;
 
@@ -30,5 +30,5 @@ export const SUBSCRIPTION_PLAN_CREDITS = {
 };
 
 export const SUBSCRIPTION_PLAN_NAMES = {
-  [SUBSCRIPTION_STANDARD_PLAN_ID]: "Standard",
+  [SUBSCRIPTION_STANDARD_PLAN_ID]: 'Standard',
 };

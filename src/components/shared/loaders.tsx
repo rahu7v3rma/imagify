@@ -1,6 +1,6 @@
-import { Loader2 } from "lucide-react";
-import { P } from "@/components/ui/typography";
-import { useEffect, useState } from "react";
+import { Loader2 } from 'lucide-react';
+import { P } from '@/components/ui/typography';
+import { useEffect, useState } from 'react';
 
 export const WithLoader = ({
   text,

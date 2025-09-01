@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import { ErrorAlert, SuccessAlert } from "@/components/shared/alerts";
-import { Button } from "@/components/shared/buttons";
-import { InputImagePreview } from "@/components/shared/input-image-preview";
-import { WithLoader } from "@/components/shared/loaders";
-import { ProcessedImage } from "@/components/shared/processed-image";
-import PageTransition from "@/components/shared/transitions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { H1, Muted } from "@/components/ui/typography";
-import { UploadImage } from "@/components/shared/upload-image";
-import { Slider } from "@/components/shared/slider";
-import { CREDIT_REQUIREMENTS } from "@/constants/credits";
-import { useUser } from "@/context/user/provider";
-import { trpc } from "@/lib/trpc/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
+import { Button } from '@/components/shared/buttons';
+import { InputImagePreview } from '@/components/shared/input-image-preview';
+import { WithLoader } from '@/components/shared/loaders';
+import { ProcessedImage } from '@/components/shared/processed-image';
+import PageTransition from '@/components/shared/transitions';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { H1, Muted } from '@/components/ui/typography';
+import { UploadImage } from '@/components/shared/upload-image';
+import { Slider } from '@/components/shared/slider';
+import { CREDIT_REQUIREMENTS } from '@/constants/credits';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const CompressImageSchema = z.object({
-  imageBase64: z.string().min(1, "Please upload an image to compress"),
+  imageBase64: z.string().min(1, 'Please upload an image to compress'),
   quality: z.number().min(1).max(100),
 });
 
@@ -31,7 +31,7 @@ export default function CompressImagePage() {
   const [processedImageCompressedSize, setProcessedImageCompressedSize] =
     useState<string>();
   const [processedImageFormat, setProcessedImageFormat] = useState<string>();
-  const [fileName, setFileName] = useState<string>("compressed-image");
+  const [fileName, setFileName] = useState<string>('compressed-image');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [fileSize, setFileSize] = useState<string>();
@@ -40,9 +40,9 @@ export default function CompressImagePage() {
 
   const form = useForm<CompressImageFormValues>({
     resolver: zodResolver(CompressImageSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      imageBase64: "",
+      imageBase64: '',
       quality: 75,
     },
   });
@@ -54,19 +54,19 @@ export default function CompressImagePage() {
           setProcessedImage(data.data.imageBase64);
           setProcessedImageCompressedSize(data.data.compressedSize);
           setProcessedImageFormat(data.data.format);
-          setSuccessMessage(data.message || "Image compressed successfully!");
+          setSuccessMessage(data.message || 'Image compressed successfully!');
           setErrorMessage(null);
           fetchUserProfile();
         } else {
           setErrorMessage(
-            data.message || "Failed to compress image. Please try again."
+            data.message || 'Failed to compress image. Please try again.',
           );
           setSuccessMessage(null);
         }
       },
       onError: (error) => {
         setErrorMessage(
-          error.message || "Failed to compress image. Please try again."
+          error.message || 'Failed to compress image. Please try again.',
         );
         setSuccessMessage(null);
       },
@@ -83,7 +83,7 @@ export default function CompressImagePage() {
 
   const setFormValue = (
     field: keyof CompressImageFormValues,
-    value: string
+    value: string,
   ) => {
     form.setValue(field, value, {
       shouldValidate: true,
@@ -92,16 +92,24 @@ export default function CompressImagePage() {
     });
   };
 
-  const handleFileUpload = (base64: string, fileSizeValue?: string, fileName?: string) => {
-    setFormValue("imageBase64", base64);
+  const handleFileUpload = (
+    base64: string,
+    fileSizeValue?: string,
+    fileName?: string,
+  ) => {
+    setFormValue('imageBase64', base64);
     if (fileSizeValue) {
       setFileSize(fileSizeValue);
     }
     if (fileName) setFileName(fileName);
   };
 
-  const handleUrlUpload = (base64: string, fileSizeValue?: string, fileName?: string) => {
-    setFormValue("imageBase64", base64);
+  const handleUrlUpload = (
+    base64: string,
+    fileSizeValue?: string,
+    fileName?: string,
+  ) => {
+    setFormValue('imageBase64', base64);
     if (fileSizeValue) {
       setFileSize(fileSizeValue);
     }
@@ -110,7 +118,7 @@ export default function CompressImagePage() {
 
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
-    form.setValue("quality", value[0], {
+    form.setValue('quality', value[0], {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -163,7 +171,7 @@ export default function CompressImagePage() {
                     disabled={!isFormValid || isCompressImagePending}
                   >
                     {WithLoader({
-                      text: "Compress Image",
+                      text: 'Compress Image',
                       isLoading: isCompressImagePending,
                     })}
                   </Button>
