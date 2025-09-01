@@ -51,6 +51,7 @@ export function ProcessedImage({
             transition={{ duration: 0.2 }}
             onClick={() => setIsModalOpen(true)}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={processedImage}
               alt="Processed image"

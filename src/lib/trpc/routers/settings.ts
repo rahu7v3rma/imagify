@@ -22,7 +22,7 @@ export const settingsRouter = router({
         }
 
         return true;
-      } catch (error) {
+      } catch {
         return false;
       }
     }),

@@ -151,7 +151,7 @@ export default function LoginPage() {
             <div className="mt-4 text-center space-y-2">
               <div>
                 <Link href={ROUTES.SIGNUP}>
-                  <Small>Don't have an account? Sign up</Small>
+                  <Small>Don&apos;t have an account? Sign up</Small>
                 </Link>
               </div>
               <div>

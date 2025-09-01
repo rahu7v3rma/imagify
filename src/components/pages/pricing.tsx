@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { H1, H4, Muted, P } from '@/components/ui/typography';
+import { H1, H4, Muted } from '@/components/ui/typography';
 import { Badge } from '@/components/ui/badge';
 import { CREDIT_REQUIREMENTS } from '@/constants/credits';
 import { ROUTES } from '@/constants/routes';
@@ -24,7 +24,7 @@ import {
   Crop,
   Edit,
   FileText,
-  Image,
+  Image as ImageIcon,
   Maximize,
   RotateCcw,
   Sparkles,
@@ -60,6 +60,7 @@ export default function PricingPage() {
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = async (data: z.infer<typeof PurchaseSchema>) => {
     setSuccessMessage(null);
     setErrorMessage(null);
@@ -111,7 +112,6 @@ export default function PricingPage() {
   const errors = form.formState.errors;
   const amountError = errors.amount?.message;
   const creditsError = errors.credits?.message;
-  const isFormValid = form.formState.isValid;
   const handleSubmit = form.handleSubmit(onSubmit);
 
   return (
@@ -155,7 +155,7 @@ export default function PricingPage() {
                 <CardContent className="p-6 h-full">
                   <div className="h-full flex flex-col items-center justify-center space-y-4">
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                      <Image className="w-8 h-8" />
+                      <ImageIcon className="w-8 h-8" />
                     </div>
                     <div className="text-center">
                       <H4 className="font-bold text-sm">Remove Background</H4>

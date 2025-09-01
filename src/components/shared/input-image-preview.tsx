@@ -39,6 +39,7 @@ export const InputImagePreview = ({
       </CardHeader>
       <CardContent>
         <div className="w-full flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageBase64}
             alt="Preview image"

@@ -33,7 +33,7 @@ const UserContext = createContext<UserContextType>({
   isLoading: true,
   fetchUserProfile: () => {},
   logout: () => {},
-  login: (accessToken: string) => {},
+  login: () => {},
 });
 
 export function UserProvider({ children }: { children: ReactNode }) {
@@ -59,7 +59,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       setAuthorizationHeader(token);
       fetchUserProfile();
     }
-  }, []);
+  }, [fetchUserProfile]);
 
   const logout = () => {
     setAuthorizationHeader(null);

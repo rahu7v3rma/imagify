@@ -44,7 +44,7 @@ export const accessTokenMiddleware = async (opts: any) => {
         user,
       },
     });
-  } catch (error) {
+  } catch {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
     });

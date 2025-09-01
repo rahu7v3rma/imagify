@@ -38,14 +38,14 @@ export default function ContactPage() {
   });
 
   const { mutate, isPending } = trpc.contact.sendMessage.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       setSuccessMessage(
         "Your message has been sent successfully! We'll get back to you soon.",
       );
       setErrorMessage(null);
       form.reset();
     },
-    onError: (error) => {
+    onError: () => {
       setErrorMessage('Failed to send message. Please try again.');
       setSuccessMessage(null);
     },

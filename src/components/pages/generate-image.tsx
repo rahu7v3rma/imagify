@@ -31,7 +31,6 @@ type GenerateImageFormValues = z.infer<typeof GenerateImageSchema>;
 
 export default function GenerateImagePage() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [imageFormat, setImageFormat] = useState<string>('png');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { fetchUserProfile } = useUser();
@@ -52,7 +51,6 @@ export default function GenerateImagePage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setGeneratedImage(data.data.imageBase64);
-          setImageFormat(data.data.outputFormat);
           setSuccessMessage(data.message || 'Image generated successfully!');
           setErrorMessage(null);
           fetchUserProfile();

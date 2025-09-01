@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write src"
   },
   "dependencies": {
     "@google/genai": "^1.15.0",

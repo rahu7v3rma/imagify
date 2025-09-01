@@ -72,6 +72,7 @@ export function ExpandedPreviewImage({
               <X className="h-6 w-6" />
             </IconButton>
           </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={src}
             alt="Expanded preview"

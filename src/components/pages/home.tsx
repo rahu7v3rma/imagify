@@ -9,7 +9,7 @@ import {
   Crop,
   Edit,
   FileText,
-  Image,
+  Image as ImageIcon,
   Maximize,
   RotateCcw,
   Sparkles,
@@ -34,7 +34,7 @@ export default function Home() {
                 <CardContent className="p-6 h-full">
                   <div className="h-full flex flex-col items-center justify-center space-y-4">
                     <div className="flex items-center justify-center w-16 h-16 rounded-lg border-2 border-border bg-background">
-                      <Image className="w-8 h-8" />
+                      <ImageIcon className="w-8 h-8" />
                     </div>
                     <div className="text-center">
                       <H4 className="font-bold text-sm">Remove Background</H4>

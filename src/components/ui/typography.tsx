@@ -198,10 +198,13 @@ export function Table({ headers, rows, className }: TableProps) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
-            <tr className="even:bg-muted m-0 border-t p-0">
-              {row.map((cell) => (
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+          {rows.map((row, index) => (
+            <tr className="even:bg-muted m-0 border-t p-0" key={index}>
+              {row.map((cell, index) => (
+                <td
+                  className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"
+                  key={index}
+                >
                   {cell}
                 </td>
               ))}

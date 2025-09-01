@@ -25,7 +25,7 @@ export const uploadFile = async ({
     await fs.writeFile(fullPath, buffer);
 
     return path.join(directory, fileName);
-  } catch (error) {
+  } catch {
     return null;
   }
 };

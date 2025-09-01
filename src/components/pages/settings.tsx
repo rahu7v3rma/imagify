@@ -300,6 +300,7 @@ function DeleteAccount() {
       },
     });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = async (data: DeleteAccountFormValues) => {
     setSuccessMessage(null);
     setErrorMessage(null);

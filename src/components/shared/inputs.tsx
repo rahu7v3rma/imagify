@@ -601,7 +601,7 @@ export const DragDropImageInput = ({
           .toLowerCase();
         const format = file.type.replace('image/', '');
         onUpload(base64, fileSize, fileName, format, file);
-      } catch (error) {
+      } catch {
         onError?.(
           'Failed to process the dropped file. Please try another file.',
         );

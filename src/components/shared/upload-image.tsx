@@ -80,7 +80,7 @@ export const UploadImage = ({
         setImageInputError(null);
         setUrlInputError(null);
         setDragDropError(null);
-      } catch (error) {
+      } catch {
         setImageInputError(
           'Failed to process the image file. Please try another file.',
         );
@@ -111,7 +111,7 @@ export const UploadImage = ({
       setImageInputError(null);
       setUrlInputError(null);
       setDragDropError(null);
-    } catch (error) {
+    } catch {
       setUrlInputError(
         'Failed to load image from URL. Please check the URL and try again.',
       );

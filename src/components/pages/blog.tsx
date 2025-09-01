@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { H1, P } from '@/components/ui/typography';
 import NextLink from 'next/link';
-import { MotionCardWrapper } from '../shared/cards';
+import { MotionCardWrapper } from '@/components/shared/cards';
 
 interface Blog {
   id: number;

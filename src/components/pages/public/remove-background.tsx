@@ -55,6 +55,7 @@ export default function RemoveBackgroundPage() {
             </div>
           </div>
           <div className="w-40 flex-shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2@2x.png"
               alt="Wikipedia Logo"

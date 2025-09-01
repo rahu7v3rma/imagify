@@ -29,7 +29,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     if (storedTheme === 'dark' || storedTheme === 'light') {
       setTheme(storedTheme);
     }
-  }, []);
+  }, [setTheme]);
 
   const setMode = (mode: ThemeMode) => {
     setTheme(mode);

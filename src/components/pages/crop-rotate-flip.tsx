@@ -39,20 +39,20 @@ const detectImageFormat = (dataUrl: string): string => {
   return 'image/jpeg'; // default to JPEG for unknown formats
 };
 
-const getFileExtension = (format: string): string => {
-  switch (format) {
-    case 'image/png':
-      return 'png';
-    case 'image/webp':
-      return 'webp';
-    case 'image/jpg':
-      return 'jpg';
-    case 'image/jpeg':
-      return 'jpeg';
-    default:
-      return 'jpg';
-  }
-};
+// const getFileExtension = (format: string): string => {
+//   switch (format) {
+//     case 'image/png':
+//       return 'png';
+//     case 'image/webp':
+//       return 'webp';
+//     case 'image/jpg':
+//       return 'jpg';
+//     case 'image/jpeg':
+//       return 'jpeg';
+//     default:
+//       return 'jpg';
+//   }
+// };
 
 const getRadianAngle = (degreeValue: number): number => {
   return (degreeValue * Math.PI) / 180;
@@ -134,7 +134,7 @@ const getCroppedImg = async (
   finalCanvas.height = pixelCrop.height;
 
   // Adjust crop coordinates based on flip transformations
-  let adjustedCrop = { ...pixelCrop };
+  const adjustedCrop = { ...pixelCrop };
 
   if (flipHorizontal) {
     adjustedCrop.x = bBoxWidth - pixelCrop.x - pixelCrop.width;
@@ -280,6 +280,7 @@ export default function CropRotateFlipPage() {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = async (data: CropRotateFlipFormValues) => {
     if (!croppedAreaPixels) return;
 
@@ -317,7 +318,7 @@ export default function CropRotateFlipPage() {
             detectedFormat,
           );
         }
-      } catch (e) {
+      } catch {
         console.warn('Failed to detect orientation');
       }
     }
