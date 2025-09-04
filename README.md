@@ -8,4 +8,4 @@
 - NextJS - full stack framework
 - Shadcn - frontend components
 - Replicate, Gemini - AI services
-- PayPal - payment processor
+- Razorpay - payment gateway

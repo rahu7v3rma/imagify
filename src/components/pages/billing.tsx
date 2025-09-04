@@ -1,39 +1,40 @@
 'use client';
 
-import PageTransition from '@/components/shared/transitions';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { H1, H3, H4, Muted, Large, List } from '@/components/ui/typography';
+import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
 import { Button } from '@/components/shared/buttons';
 import { NumberInput } from '@/components/shared/inputs';
-import { Zap, CreditCard } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ChangeEvent, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { ErrorAlert, SuccessAlert } from '@/components/shared/alerts';
 import {
   WithLoaderNode,
   WithLoaderNodeSafe,
 } from '@/components/shared/loaders';
-import { trpc } from '@/lib/trpc/client';
-import { useUser } from '@/context/user/provider';
+import PageTransition from '@/components/shared/transitions';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { H1, H3, H4, Large, List, Muted } from '@/components/ui/typography';
 import { BILLING_CONSTANTS } from '@/constants/credits';
+import { RAZORPAY_PUBLIC_KEY_ID } from '@/constants/razorpay';
+import { useUser } from '@/context/user/provider';
+import { trpc } from '@/lib/trpc/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CreditCard, Zap } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 // Local schema copied from pricing page reference
 const PurchaseSchema = z.object({
   amount: z
     .number()
     .min(
-      BILLING_CONSTANTS.MIN_CREDITS / 100,
-      `Amount must be at least $${BILLING_CONSTANTS.MIN_CREDITS / 100}`,
+      BILLING_CONSTANTS.MIN_AMOUNT,
+      `Amount must be at least $${BILLING_CONSTANTS.MIN_AMOUNT}`,
     )
     .max(100, 'Amount must be at most $100'),
   credits: z
@@ -50,6 +51,7 @@ function BuyCreditsForm() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const { fetchUserProfile } = useUser();
 
   // Effect to check search params for success/failure messages
   useEffect(() => {
@@ -71,32 +73,57 @@ function BuyCreditsForm() {
     resolver: zodResolver(PurchaseSchema),
     mode: 'onChange',
     defaultValues: {
-      amount: BILLING_CONSTANTS.MIN_CREDITS / 100,
+      amount: BILLING_CONSTANTS.MIN_AMOUNT,
       credits: BILLING_CONSTANTS.MIN_CREDITS,
     },
   });
 
+  const { mutate: verifyOrder, isPending: isVerifyingOrder } =
+    trpc.billing.verifyOrder.useMutation({
+      onSuccess: (data) => {
+        if (data.success) {
+          setSuccessMessage(data.message);
+          setErrorMessage(null);
+          fetchUserProfile();
+        } else {
+          setErrorMessage(data.message);
+          setSuccessMessage(null);
+        }
+      },
+      onError: (error) => {
+        setErrorMessage(error.message);
+        setSuccessMessage(null);
+      },
+    });
+
   const { mutate, isPending } = trpc.billing.createOrder.useMutation({
     onSuccess: (data) => {
-      if (data.success && data.data?.paymentUrl) {
-        setSuccessMessage(
-          data.message ||
-            'Order created successfully! Redirecting to payment...',
-        );
+      if (data.success && data.data?.orderId && data.data?.amount) {
+        setSuccessMessage(data.message);
         setErrorMessage(null);
-        // Redirect to PayPal payment URL
-        window.open(data.data.paymentUrl, '_blank');
+        // @ts-expect-error - Razorpay is not typed
+        const razorpay = new window.Razorpay({
+          key: RAZORPAY_PUBLIC_KEY_ID,
+          amount: data.data.amount,
+          currency: 'USD',
+          order_id: data.data.orderId,
+          handler: (response: any) => {
+            if (response.razorpay_order_id) {
+              verifyOrder({
+                orderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+              });
+            }
+          },
+        });
+        razorpay.open();
       } else {
-        setErrorMessage(
-          data.message || 'Failed to create order. Please try again.',
-        );
+        setErrorMessage(data.message);
         setSuccessMessage(null);
       }
     },
     onError: (error) => {
-      setErrorMessage(
-        error.message || 'Failed to create order. Please try again.',
-      );
+      setErrorMessage(error.message);
       setSuccessMessage(null);
     },
   });
@@ -157,7 +184,7 @@ function BuyCreditsForm() {
             label="Amount (USD)"
             value={(amount ?? 0).toString()}
             onChange={handleAmountChange}
-            min={BILLING_CONSTANTS.MIN_CREDITS / 100}
+            min={BILLING_CONSTANTS.MIN_AMOUNT}
             step={1}
             placeholder="Enter amount in USD"
             error={amountError}
@@ -177,7 +204,10 @@ function BuyCreditsForm() {
             className="w-full"
             disabled={isPending}
           >
-            <WithLoaderNode content="Buy Credits" isLoading={isPending} />
+            <WithLoaderNode
+              content="Buy Credits"
+              isLoading={isPending || isVerifyingOrder}
+            />
           </Button>
           {successMessage && <SuccessAlert message={successMessage} />}
           {errorMessage && <ErrorAlert message={errorMessage} />}
@@ -192,6 +222,7 @@ function BuySubscriptionForm() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const { fetchUserProfile } = useUser();
 
   // Effect to check search params for success/failure messages
   useEffect(() => {
@@ -211,30 +242,64 @@ function BuySubscriptionForm() {
     }
   }, [searchParams]);
 
-  const { mutate, isPending } = trpc.billing.createSubscription.useMutation({
-    onSuccess: (data) => {
-      if (data.success && data.data?.approvalUrl) {
-        setSuccessMessage(
-          data.message ||
-            'Subscription created successfully! Redirecting to payment...',
-        );
-        setErrorMessage(null);
-        // Redirect to PayPal subscription URL
-        window.open(data.data.approvalUrl, '_blank');
-      } else {
+  const { mutate: verifySubscription, isPending: isVerifying } =
+    trpc.billing.verifyRazorpaySubscription.useMutation({
+      onSuccess: (data) => {
+        if (data.success) {
+          setSuccessMessage(data.message);
+          setErrorMessage(null);
+          fetchUserProfile();
+        } else {
+          setErrorMessage(data.message);
+          setSuccessMessage(null);
+        }
+      },
+      onError: (error) => {
         setErrorMessage(
-          data.message || 'Failed to create subscription. Please try again.',
+          error.message || 'Failed to verify subscription. Please try again.',
         );
         setSuccessMessage(null);
-      }
-    },
-    onError: (error) => {
-      setErrorMessage(
-        error.message || 'Failed to create subscription. Please try again.',
-      );
-      setSuccessMessage(null);
-    },
-  });
+      },
+    });
+
+  const { mutate, isPending } =
+    trpc.billing.createRazorpaySubscription.useMutation({
+      onSuccess: (data) => {
+        if (data.success && data.data?.subscriptionId) {
+          setSuccessMessage('Redirecting to payment...');
+          setErrorMessage(null);
+          // @ts-expect-error - Razorpay is not typed
+          const razorpay = new window.Razorpay({
+            key: RAZORPAY_PUBLIC_KEY_ID,
+            subscription_id: data.data.subscriptionId,
+            handler: function (response: any) {
+              const {
+                razorpay_subscription_id: subscriptionId,
+                razorpay_payment_id: paymentId,
+              } = response || ({} as any);
+              if (subscriptionId) {
+                verifySubscription({
+                  subscriptionId,
+                  paymentId,
+                });
+              }
+            },
+          });
+          razorpay.open();
+        } else {
+          setErrorMessage(
+            data.message || 'Failed to create subscription. Please try again.',
+          );
+          setSuccessMessage(null);
+        }
+      },
+      onError: (error) => {
+        setErrorMessage(
+          error.message || 'Failed to create subscription. Please try again.',
+        );
+        setSuccessMessage(null);
+      },
+    });
 
   const handleSubscribe = () => {
     mutate();
@@ -264,10 +329,13 @@ function BuySubscriptionForm() {
             type="button"
             variant="default"
             className="w-full"
-            disabled={isPending}
+            disabled={isPending || isVerifying}
             onClick={handleSubscribe}
           >
-            <WithLoaderNode content="Subscribe" isLoading={isPending} />
+            <WithLoaderNode
+              content="Subscribe"
+              isLoading={isPending || isVerifying}
+            />
           </Button>
           {successMessage && <SuccessAlert message={successMessage} />}
           {errorMessage && <ErrorAlert message={errorMessage} />}

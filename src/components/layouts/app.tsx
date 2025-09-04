@@ -10,6 +10,7 @@ import PageTransition from '@/components/shared/transitions';
 import { UserProvider } from '@/context/user/provider';
 import { ThemeProvider } from '@/context/theme';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import Script from 'next/script';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={clsx(geist.className, 'min-h-screen')}>
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" />
         <NextThemesProvider
           attribute="class"
           defaultTheme="light"

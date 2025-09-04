@@ -37,14 +37,14 @@ model User {
   @@map("users")
 }
 
-model Order {
+model Payments {
   id        Int      @id @default(autoincrement()) @map("id")
-  orderId   String   @map("order_id")
   userId    Int      @map("user_id")
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+  paymentId String   @map("payment_id")
 
-  @@map("order")
+  @@map("payments")
 }
 
 model Blog {
