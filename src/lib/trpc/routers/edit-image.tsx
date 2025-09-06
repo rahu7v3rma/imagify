@@ -1,10 +1,10 @@
-import { prisma } from '@/lib/prisma';
-import { router, imageProcedure } from '@/lib/trpc/init';
-import { z } from 'zod';
-import { sendErrorEmail } from '@/lib/email';
 import { CREDIT_REQUIREMENTS } from '@/constants/credits';
 import { getReplicateImageUrl } from '@/lib/replicate';
+import { imageProcedure, router } from '@/lib/trpc/init';
 import { convertImageUrlToBase64 } from '@/utils/common';
+import { deductCredits, verifyCredits } from '@/utils/credits';
+import { handleTrpcImageProcessingError } from '@/utils/errors';
+import { z } from 'zod';
 
 export const editImageRouter = router({
   editImage: imageProcedure
@@ -37,10 +37,9 @@ export const editImageRouter = router({
           return { success: false, message: 'User not found' };
         }
 
-        const credits = ctx.user.credits || 0;
-        if (credits < CREDIT_REQUIREMENTS.EDIT_IMAGE) {
-          return { success: false, message: 'You do not have enough credits.' };
-        }
+        const requiredCredits = CREDIT_REQUIREMENTS.EDIT_IMAGE;
+
+        verifyCredits(ctx.user, requiredCredits);
 
         const replicateInput = {
           prompt: input.prompt,
@@ -55,14 +54,7 @@ export const editImageRouter = router({
         const replicateImageBase64 =
           await convertImageUrlToBase64(replicateImageUrl);
 
-        await prisma.user.update({
-          where: { id: ctx.user.id },
-          data: {
-            credits: {
-              decrement: CREDIT_REQUIREMENTS.EDIT_IMAGE,
-            },
-          },
-        });
+        await deductCredits(ctx.user, requiredCredits);
 
         return {
           success: true,
@@ -72,12 +64,7 @@ export const editImageRouter = router({
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
-          sendErrorEmail({ error });
-        } else {
-          console.log('Error in edit image:', error);
-        }
-        return { success: false, message: 'Failed to edit image.' };
+        return handleTrpcImageProcessingError(error);
       }
     }),
 });

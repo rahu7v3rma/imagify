@@ -1,10 +1,10 @@
 import { CREDIT_REQUIREMENTS } from '@/constants/credits';
-import { sendErrorEmail } from '@/lib/email';
-import { prisma } from '@/lib/prisma';
 import { getReplicateImageUrl } from '@/lib/replicate';
 import { protectedProcedure, router } from '@/lib/trpc/init';
 import { enhancePrompt } from '@/lib/gemini';
 import { convertImageUrlToBase64 } from '@/utils/common';
+import { deductCredits, verifyCredits } from '@/utils/credits';
+import { handleTrpcImageProcessingError } from '@/utils/errors';
 import { z } from 'zod';
 
 export const generateImageRouter = router({
@@ -33,22 +33,13 @@ export const generateImageRouter = router({
           return { success: false, message: 'User not found' };
         }
 
-        const credits = ctx.user.credits || 0;
         const requiredCredits = CREDIT_REQUIREMENTS.ENHANCE_PROMPT;
-        if (credits < requiredCredits) {
-          return { success: false, message: 'You do not have enough credits.' };
-        }
+
+        verifyCredits(ctx.user, requiredCredits);
 
         const enhancedPrompt = await enhancePrompt(input.prompt);
 
-        await prisma.user.update({
-          where: { id: ctx.user.id },
-          data: {
-            credits: {
-              decrement: requiredCredits,
-            },
-          },
-        });
+        await deductCredits(ctx.user, requiredCredits);
 
         return {
           success: true,
@@ -58,12 +49,7 @@ export const generateImageRouter = router({
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
-          sendErrorEmail({ error });
-        } else {
-          console.log('Error in enhance prompt:', error);
-        }
-        return { success: false, message: 'Failed to enhance prompt.' };
+        return handleTrpcImageProcessingError(error);
       }
     }),
 
@@ -96,12 +82,10 @@ export const generateImageRouter = router({
           return { success: false, message: 'User not found' };
         }
 
-        const credits = ctx.user.credits || 0;
         const requiredCredits =
           CREDIT_REQUIREMENTS.GENERATE_IMAGE[input.generateType];
-        if (credits < requiredCredits) {
-          return { success: false, message: 'You do not have enough credits.' };
-        }
+
+        verifyCredits(ctx.user, requiredCredits);
 
         const replicateInput = {
           prompt: input.prompt,
@@ -122,14 +106,7 @@ export const generateImageRouter = router({
         const replicateImageBase64 =
           await convertImageUrlToBase64(replicateImageUrl);
 
-        await prisma.user.update({
-          where: { id: ctx.user.id },
-          data: {
-            credits: {
-              decrement: requiredCredits,
-            },
-          },
-        });
+        await deductCredits(ctx.user, requiredCredits);
 
         return {
           success: true,
@@ -140,12 +117,7 @@ export const generateImageRouter = router({
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
-          sendErrorEmail({ error });
-        } else {
-          console.log('Error in generate image:', error);
-        }
-        return { success: false, message: 'Failed to generate image.' };
+        return handleTrpcImageProcessingError(error);
       }
     }),
 });

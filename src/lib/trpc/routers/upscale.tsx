@@ -1,10 +1,10 @@
-import { prisma } from '@/lib/prisma';
-import { router, imageProcedure } from '@/lib/trpc/init';
-import { z } from 'zod';
-import { sendErrorEmail } from '@/lib/email';
 import { CREDIT_REQUIREMENTS } from '@/constants/credits';
 import { getReplicateImageUrl } from '@/lib/replicate';
+import { imageProcedure, router } from '@/lib/trpc/init';
 import { convertImageUrlToBase64 } from '@/utils/common';
+import { deductCredits, verifyCredits } from '@/utils/credits';
+import { handleTrpcImageProcessingError } from '@/utils/errors';
+import { z } from 'zod';
 
 export const upscaleRouter = router({
   upscale: imageProcedure
@@ -36,10 +36,9 @@ export const upscaleRouter = router({
           return { success: false, message: 'User not found' };
         }
 
-        const credits = ctx.user.credits || 0;
-        if (credits < CREDIT_REQUIREMENTS.UPSCALE) {
-          return { success: false, message: 'You do not have enough credits.' };
-        }
+        const requiredCredits = CREDIT_REQUIREMENTS.UPSCALE;
+
+        verifyCredits(ctx.user, requiredCredits);
 
         const replicateInput = {
           image: input.imageBase64,
@@ -54,14 +53,7 @@ export const upscaleRouter = router({
         const replicateImageBase64 =
           await convertImageUrlToBase64(replicateImageUrl);
 
-        await prisma.user.update({
-          where: { id: ctx.user.id },
-          data: {
-            credits: {
-              decrement: CREDIT_REQUIREMENTS.UPSCALE,
-            },
-          },
-        });
+        await deductCredits(ctx.user, requiredCredits);
 
         return {
           success: true,
@@ -71,12 +63,7 @@ export const upscaleRouter = router({
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
-          sendErrorEmail({ error });
-        } else {
-          console.log('Error in upscale:', error);
-        }
-        return { success: false, message: 'Failed to upscale image.' };
+        return handleTrpcImageProcessingError(error);
       }
     }),
 });

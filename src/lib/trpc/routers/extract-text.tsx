@@ -1,8 +1,8 @@
 import { CREDIT_REQUIREMENTS } from '@/constants/credits';
-import { sendErrorEmail } from '@/lib/email';
-import { prisma } from '@/lib/prisma';
 import { extractText } from '@/lib/image/extract-text';
 import { imageProcedure, router } from '@/lib/trpc/init';
+import { deductCredits, verifyCredits } from '@/utils/credits';
+import { handleTrpcImageProcessingError } from '@/utils/errors';
 import { z } from 'zod';
 
 export const extractTextRouter = router({
@@ -35,22 +35,14 @@ export const extractTextRouter = router({
           return { success: false, message: 'User not found' };
         }
 
-        const credits = ctx.user.credits || 0;
-        if (credits < CREDIT_REQUIREMENTS.EXTRACT_TEXT) {
-          return { success: false, message: 'You do not have enough credits.' };
-        }
+        const requiredCredits = CREDIT_REQUIREMENTS.EXTRACT_TEXT;
+
+        verifyCredits(ctx.user, requiredCredits);
 
         // Extract text using image processing API
         const response = await extractText(input.imageBase64);
 
-        await prisma.user.update({
-          where: { id: ctx.user.id },
-          data: {
-            credits: {
-              decrement: CREDIT_REQUIREMENTS.EXTRACT_TEXT,
-            },
-          },
-        });
+        await deductCredits(ctx.user, requiredCredits);
 
         return {
           success: true,
@@ -60,12 +52,7 @@ export const extractTextRouter = router({
           },
         };
       } catch (error: any) {
-        if (process.env.APP_ENV === 'production') {
-          sendErrorEmail({ error });
-        } else {
-          console.log('Error in extract text:', error);
-        }
-        return { success: false, message: 'Failed to extract text.' };
+        return handleTrpcImageProcessingError(error);
       }
     }),
 });
