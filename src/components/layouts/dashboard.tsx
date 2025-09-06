@@ -31,6 +31,8 @@ import { TextInput } from '@/components/shared/inputs';
 function Header() {
   const router = useRouter();
   const { userProfile, isLoading, fetchUserProfile } = useUser();
+  const totalCredits =
+    (userProfile?.credits ?? 0) + (userProfile?.subscriptionCredits ?? 0);
 
   return (
     <header className="w-full backdrop-blur-sm border-b bg-background/95 supports-[backdrop-filter]:bg-background/60">
@@ -51,7 +53,7 @@ function Header() {
           >
             <Zap className="w-4 h-4 mr-2" />
             <WithLoaderNodeSafe
-              content={`${userProfile?.credits ?? 0} credits`}
+              content={`${totalCredits} credits`}
               fallback="0 credits"
               isLoading={isLoading}
             />
