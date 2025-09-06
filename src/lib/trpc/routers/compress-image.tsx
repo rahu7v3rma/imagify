@@ -1,6 +1,7 @@
 import { CREDIT_REQUIREMENTS } from '@/constants/credits';
 import { compressImage } from '@/lib/image/compress-image';
 import { imageProcedure, router } from '@/lib/trpc/init';
+import { uploadFileToDatabase } from '@/lib/upload';
 import { deductCredits, verifyCredits } from '@/utils/credits';
 import { handleTrpcImageProcessingError } from '@/utils/errors';
 import { z } from 'zod';
@@ -47,6 +48,11 @@ export const compressImageRouter = router({
         const response = await compressImage(input.imageBase64, input.quality);
 
         await deductCredits(ctx.user, requiredCredits);
+
+        await uploadFileToDatabase({
+          user: ctx.user,
+          base64String: response.dataUri,
+        });
 
         return {
           success: true,

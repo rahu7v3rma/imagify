@@ -2,6 +2,7 @@ import { CREDIT_REQUIREMENTS } from '@/constants/credits';
 import { getReplicateImageUrl } from '@/lib/replicate';
 import { protectedProcedure, router } from '@/lib/trpc/init';
 import { enhancePrompt } from '@/lib/gemini';
+import { uploadFileToDatabase } from '@/lib/upload';
 import { convertImageUrlToBase64 } from '@/utils/common';
 import { deductCredits, verifyCredits } from '@/utils/credits';
 import { handleTrpcImageProcessingError } from '@/utils/errors';
@@ -107,6 +108,11 @@ export const generateImageRouter = router({
           await convertImageUrlToBase64(replicateImageUrl);
 
         await deductCredits(ctx.user, requiredCredits);
+
+        await uploadFileToDatabase({
+          user: ctx.user,
+          base64String: replicateImageBase64.base64,
+        });
 
         return {
           success: true,

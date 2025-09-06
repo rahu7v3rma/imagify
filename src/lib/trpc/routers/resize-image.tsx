@@ -1,6 +1,7 @@
 import { CREDIT_REQUIREMENTS } from '@/constants/credits';
 import { resizeImage } from '@/lib/image/resize';
 import { imageProcedure, router } from '@/lib/trpc/init';
+import { uploadFileToDatabase } from '@/lib/upload';
 import { deductCredits, verifyCredits } from '@/utils/credits';
 import { handleTrpcImageProcessingError } from '@/utils/errors';
 import { z } from 'zod';
@@ -55,6 +56,11 @@ export const resizeImageRouter = router({
         );
 
         await deductCredits(ctx.user, requiredCredits);
+
+        await uploadFileToDatabase({
+          user: ctx.user,
+          base64String: response.imageBase64,
+        });
 
         return {
           success: true,
