@@ -27,7 +27,7 @@ const CompressImageSchema = z.object({
 type CompressImageFormValues = z.infer<typeof CompressImageSchema>;
 
 export default function CompressImagePage() {
-  const [processedImage, setProcessedImage] = useState<string | null>(null);
+  const [processedImage, setProcessedImage] = useState<string | null>('');
   const [processedImageCompressedSize, setProcessedImageCompressedSize] =
     useState<string>();
   const [processedImageFormat, setProcessedImageFormat] = useState<string>();
@@ -36,7 +36,8 @@ export default function CompressImagePage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [fileSize, setFileSize] = useState<string>();
   const [sliderValue, setSliderValue] = useState<number[]>([75]);
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
+  const [fileId, setFileId] = useState<number | null>(null);
 
   const form = useForm<CompressImageFormValues>({
     resolver: zodResolver(CompressImageSchema),
@@ -54,9 +55,10 @@ export default function CompressImagePage() {
           setProcessedImage(data.data.imageBase64);
           setProcessedImageCompressedSize(data.data.compressedSize);
           setProcessedImageFormat(data.data.format);
+          setFileId(data.data.fileId);
           setSuccessMessage(data.message || 'Image compressed successfully!');
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to compress image. Please try again.',
@@ -189,6 +191,7 @@ export default function CompressImagePage() {
               format={processedImageFormat}
               fileSize={processedImageCompressedSize}
               name={fileName}
+              fileId={fileId}
             />
           )}
         </div>

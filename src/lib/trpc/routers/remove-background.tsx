@@ -28,6 +28,7 @@ export const removeBackgroundRouter = router({
         data: z
           .object({
             imageBase64: z.string(),
+            fileId: z.number().nullable(),
           })
           .optional(),
       }),
@@ -61,7 +62,7 @@ export const removeBackgroundRouter = router({
 
         await deductCredits(ctx.user, requiredCredits);
 
-        await uploadFileToDatabase({
+        const fileId = await uploadFileToDatabase({
           user: ctx.user,
           base64String: replicateImageBase64.base64,
         });
@@ -71,6 +72,7 @@ export const removeBackgroundRouter = router({
           message: 'Background removed successfully!',
           data: {
             imageBase64: replicateImageBase64.base64,
+            fileId: fileId,
           },
         };
       } catch (error: any) {

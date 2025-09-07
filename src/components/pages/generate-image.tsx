@@ -33,7 +33,8 @@ export default function GenerateImagePage() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
+  const [fileId, setFileId] = useState<number | null>(null);
 
   const form = useForm<GenerateImageFormValues>({
     resolver: zodResolver(GenerateImageSchema),
@@ -51,9 +52,10 @@ export default function GenerateImagePage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setGeneratedImage(data.data.imageBase64);
+          setFileId(data.data.fileId);
           setSuccessMessage(data.message || 'Image generated successfully!');
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to generate image. Please try again.',
@@ -74,7 +76,7 @@ export default function GenerateImagePage() {
       onSuccess: (data) => {
         if (data.success && data.data?.enhancedPrompt) {
           setFormValue('prompt', data.data.enhancedPrompt);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to enhance prompt. Please try again.',
@@ -278,6 +280,7 @@ export default function GenerateImagePage() {
             <ProcessedImage
               processedImage={generatedImage}
               name={getPromptBasedFileName(prompt)}
+              fileId={fileId}
             />
           )}
         </div>

@@ -51,7 +51,7 @@ function BuyCreditsForm() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
 
   // Effect to check search params for success/failure messages
   useEffect(() => {
@@ -84,7 +84,7 @@ function BuyCreditsForm() {
         if (data.success) {
           setSuccessMessage(data.message);
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(data.message);
           setSuccessMessage(null);
@@ -222,7 +222,7 @@ function BuySubscriptionForm() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
 
   // Effect to check search params for success/failure messages
   useEffect(() => {
@@ -248,7 +248,7 @@ function BuySubscriptionForm() {
         if (data.success) {
           setSuccessMessage(data.message);
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(data.message);
           setSuccessMessage(null);

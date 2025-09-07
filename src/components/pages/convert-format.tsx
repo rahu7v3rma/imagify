@@ -32,7 +32,8 @@ export default function ConvertFormatPage() {
   const [inputFormat, setInputFormat] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
+  const [fileId, setFileId] = useState<number | null>(null);
 
   const form = useForm<ConvertFormatFormValues>({
     resolver: zodResolver(ConvertFormatSchema),
@@ -48,11 +49,12 @@ export default function ConvertFormatPage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
+          setFileId(data.data.fileId);
           setSuccessMessage(
             data.message || 'Image format converted successfully!',
           );
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to convert image format. Please try again.',
@@ -174,6 +176,7 @@ export default function ConvertFormatPage() {
               processedImage={processedImage}
               format={format}
               name={fileName}
+              fileId={fileId}
             />
           )}
         </div>

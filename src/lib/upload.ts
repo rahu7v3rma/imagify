@@ -59,5 +59,7 @@ export const uploadFileToDatabase = async ({
         fileId: file.id,
       },
     });
+    return file.id;
   }
+  return null;
 };

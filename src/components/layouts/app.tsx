@@ -11,6 +11,7 @@ import { UserProvider } from '@/context/user/provider';
 import { ThemeProvider } from '@/context/theme';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import Script from 'next/script';
+import { Toaster } from '@/components/ui/sonner';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </TRPCProvider>
           </ThemeProvider>
         </NextThemesProvider>
+        <Toaster />
       </body>
     </html>
   );

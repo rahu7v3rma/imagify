@@ -228,7 +228,7 @@ export default function CropRotateFlipPage() {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
 
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
 
   const form = useForm<CropRotateFlipFormValues>({
     resolver: zodResolver(CropRotateFlipSchema),
@@ -260,7 +260,7 @@ export default function CropRotateFlipPage() {
             setErrorMessage('Failed to process image. Please try again.');
           }
 
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to process image. Please try again.',

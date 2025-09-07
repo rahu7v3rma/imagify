@@ -10,6 +10,7 @@ import {
 import { setAuthorizationHeader } from '@/lib/trpc/provider';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { USER_SUBSCRIPTION_PLANS } from '@/constants/credits';
 
 type UserProfile = {
   email?: string;
@@ -20,20 +21,34 @@ type UserProfile = {
   subscriptionActive?: boolean;
 };
 
+type UserFile = {
+  base64String: string;
+  fileId: number;
+};
+
 type UserContextType = {
   userProfile?: UserProfile;
   isLoading: boolean;
+  isStandardPlan: boolean;
+  isSubscriptionActive: boolean;
+  userFiles?: UserFile[];
   fetchUserProfile: () => void;
+  fetchUserFiles: () => void;
   logout: () => void;
   login: (accessToken: string) => void;
+  refreshUser: () => void;
 };
 
 const UserContext = createContext<UserContextType>({
   userProfile: undefined,
   isLoading: true,
+  isStandardPlan: false,
+  isSubscriptionActive: false,
   fetchUserProfile: () => {},
+  fetchUserFiles: () => {},
   logout: () => {},
   login: () => {},
+  refreshUser: () => {},
 });
 
 export function UserProvider({ children }: { children: ReactNode }) {
@@ -42,6 +57,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const {
     user: {
       getProfile: { reset: resetGetProfile },
+      getUserFiles: { reset: resetGetUserFiles },
     },
   } = trpc.useUtils();
   const {
@@ -51,6 +67,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
   } = trpc.user.getProfile.useQuery(undefined, {
     enabled: false,
   });
+  const {
+    data: userFiles,
+    isLoading: userFilesLoading,
+    refetch: fetchUserFiles,
+  } = trpc.user.getUserFiles.useQuery(undefined, {
+    enabled: false,
+  });
 
   // on initial load
   useEffect(() => {
@@ -58,13 +81,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
     if (token) {
       setAuthorizationHeader(token);
       fetchUserProfile();
+      fetchUserFiles();
     }
-  }, [fetchUserProfile]);
+  }, [fetchUserProfile, fetchUserFiles]);
 
   const logout = () => {
     setAuthorizationHeader(null);
     cookiesDeleteAccessToken();
     resetGetProfile();
+    resetGetUserFiles();
     router.push(ROUTES.LOGIN);
   };
 
@@ -72,6 +97,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     cookiesSaveAccessToken({ accessToken });
     setAuthorizationHeader(accessToken);
     fetchUserProfile();
+    fetchUserFiles();
     router.push(ROUTES.DASHBOARD.ROOT);
   };
 
@@ -79,10 +105,20 @@ export function UserProvider({ children }: { children: ReactNode }) {
     <UserContext.Provider
       value={{
         userProfile,
-        isLoading: userProfileLoading,
+        userFiles,
+        isLoading: userProfileLoading || userFilesLoading,
         fetchUserProfile,
+        fetchUserFiles,
         logout,
         login,
+        refreshUser: () => {
+          fetchUserProfile();
+          fetchUserFiles();
+        },
+        isStandardPlan:
+          userProfile?.subscriptionPlanName ===
+          USER_SUBSCRIPTION_PLANS.Standard,
+        isSubscriptionActive: userProfile?.subscriptionActive ?? false,
       }}
     >
       {children}

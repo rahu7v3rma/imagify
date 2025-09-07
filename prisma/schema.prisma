@@ -65,6 +65,9 @@ model File {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
 
+  // Relations
+  userFiles UserFile[]
+
   @@map("files") 
 }
 
@@ -74,6 +77,9 @@ model UserFile {
   fileId Int @map("file_id")
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+
+  // Relations
+  file File @relation(fields: [fileId], references: [id])
 
   @@map("user_files") 
 }

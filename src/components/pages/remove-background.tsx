@@ -32,7 +32,8 @@ export default function RemoveBackgroundPage() {
   const [fileName, setFileName] = useState<string>('removed-background');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
+  const [fileId, setFileId] = useState<number | null>(null);
 
   const form = useForm<RemoveBackgroundFormValues>({
     resolver: zodResolver(RemoveBackgroundSchema),
@@ -48,9 +49,10 @@ export default function RemoveBackgroundPage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
+          setFileId(data.data.fileId);
           setSuccessMessage(data.message || 'Background removed successfully!');
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to remove background. Please try again.',
@@ -181,7 +183,11 @@ export default function RemoveBackgroundPage() {
           </div>
 
           {processedImage && (
-            <ProcessedImage processedImage={processedImage} name={fileName} />
+            <ProcessedImage
+              processedImage={processedImage}
+              name={fileName}
+              fileId={fileId}
+            />
           )}
         </div>
       </div>

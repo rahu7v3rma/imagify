@@ -49,3 +49,7 @@ export const RAZORPAY_SUBSCRIPTION_PLAN_CREDITS = {
 export const RAZORPAY_SUBSCRIPTION_PLAN_NAMES = {
   [RAZORPAY_SUBSCRIPTION_STANDARD_PLAN_ID]: 'Standard',
 };
+
+export const USER_SUBSCRIPTION_PLANS = {
+  Standard: 'Standard',
+};

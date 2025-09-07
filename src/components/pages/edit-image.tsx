@@ -34,7 +34,8 @@ export default function EditImagePage() {
   const [fileName, setFileName] = useState<string>('edited-image');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
+  const [fileId, setFileId] = useState<number | null>(null);
 
   const form = useForm<EditImageFormValues>({
     resolver: zodResolver(EditImageSchema),
@@ -50,9 +51,10 @@ export default function EditImagePage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
+          setFileId(data.data.fileId);
           setSuccessMessage(data.message || 'Image edited successfully!');
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to edit image. Please try again.',
@@ -177,6 +179,7 @@ export default function EditImagePage() {
             <ProcessedImage
               processedImage={processedImage}
               name={getEditBasedFileName(fileName, prompt)}
+              fileId={fileId}
             />
           )}
         </div>

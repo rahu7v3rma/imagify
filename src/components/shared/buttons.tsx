@@ -113,3 +113,26 @@ export function IconButton({
     </motion.div>
   );
 }
+
+export function WhiteButton({ children, disabled, ...props }: UIButtonProps) {
+  return (
+    <motion.div
+      whileHover={
+        disabled
+          ? undefined
+          : {
+              scale: 1.02,
+            }
+      }
+      transition={disabled ? undefined : { duration: 0.4 }}
+    >
+      <UIButton
+        disabled={disabled}
+        className="!bg-white !text-black hover:!bg-white/70 hover:!text-black"
+        {...props}
+      >
+        {children}
+      </UIButton>
+    </motion.div>
+  );
+}

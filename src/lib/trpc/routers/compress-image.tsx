@@ -30,6 +30,7 @@ export const compressImageRouter = router({
             compressedSize: z.string().optional(),
             originalSize: z.string().optional(),
             format: z.string().optional(),
+            fileId: z.number().nullable(),
           })
           .optional(),
       }),
@@ -49,7 +50,7 @@ export const compressImageRouter = router({
 
         await deductCredits(ctx.user, requiredCredits);
 
-        await uploadFileToDatabase({
+        const fileId = await uploadFileToDatabase({
           user: ctx.user,
           base64String: response.dataUri,
         });
@@ -62,6 +63,7 @@ export const compressImageRouter = router({
             compressedSize: response.compressedSize,
             originalSize: response.originalSize,
             format: response.format,
+            fileId: fileId,
           },
         };
       } catch (error: any) {

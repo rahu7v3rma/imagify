@@ -73,6 +73,7 @@ export const generateImageRouter = router({
           .object({
             imageBase64: z.string(),
             outputFormat: z.string(),
+            fileId: z.number().nullable(),
           })
           .optional(),
       }),
@@ -109,7 +110,7 @@ export const generateImageRouter = router({
 
         await deductCredits(ctx.user, requiredCredits);
 
-        await uploadFileToDatabase({
+        const fileId = await uploadFileToDatabase({
           user: ctx.user,
           base64String: replicateImageBase64.base64,
         });
@@ -120,6 +121,7 @@ export const generateImageRouter = router({
           data: {
             imageBase64: replicateImageBase64.base64,
             outputFormat: input.outputFormat,
+            fileId: fileId,
           },
         };
       } catch (error: any) {

@@ -8,10 +8,14 @@ import {
 } from '@/components/ui/card';
 import { Muted } from '@/components/ui/typography';
 import { downloadImage } from '@/utils/common';
-import { Download, Expand } from 'lucide-react';
+import { Download, Expand, Share } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { ExpandedPreviewImage } from '@/components/shared/modals';
+import { WithLoaderNode } from '@/components/shared/loaders';
+import { toast } from 'sonner';
+import { trpc } from '@/lib/trpc/client';
+import { useUser } from '@/context/user/provider';
 
 interface ProcessedImageProps {
   processedImage: string;
@@ -19,6 +23,7 @@ interface ProcessedImageProps {
   fileSize?: string;
   name?: string;
   dimensions?: string;
+  fileId?: number | null;
 }
 
 export function ProcessedImage({
@@ -27,8 +32,27 @@ export function ProcessedImage({
   fileSize,
   name = 'processed-image',
   dimensions,
+  fileId,
 }: ProcessedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isStandardPlan, isSubscriptionActive } = useUser();
+
+  const { mutate: generateShareUrl, isPending: isGeneratingShareUrl } =
+    trpc.shareImage.generateShareUrl.useMutation({
+      onSuccess: (data) => {
+        navigator.clipboard.writeText(data.shareUrl);
+        toast.success('Share URL copied to clipboard!');
+      },
+      onError: () => {
+        toast.error('Failed to generate share URL. Please try again.');
+      },
+    });
+
+  const handleShare = async () => {
+    if (fileId) {
+      generateShareUrl({ fileId });
+    }
+  };
 
   return (
     <div className="flex-1">
@@ -71,13 +95,36 @@ export function ProcessedImage({
               </IconButton>
             </motion.div>
           </motion.div>
-          <Button
-            className="w-full"
-            onClick={() => downloadImage(processedImage, format, name)}
-          >
-            <Download className="mr-2 h-4 w-4" />
-            Download Image
-          </Button>
+          <div className="flex gap-2 w-full">
+            {isStandardPlan && isSubscriptionActive && (
+              <div className="flex-1">
+                <Button
+                  className="w-full"
+                  onClick={handleShare}
+                  disabled={isGeneratingShareUrl}
+                >
+                  <WithLoaderNode
+                    isLoading={isGeneratingShareUrl}
+                    content={
+                      <>
+                        <Share className="mr-2 h-4 w-4" />
+                        Share
+                      </>
+                    }
+                  />
+                </Button>
+              </div>
+            )}
+            <div className="flex-1">
+              <Button
+                className="w-full"
+                onClick={() => downloadImage(processedImage, format, name)}
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Download
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
 

@@ -1,6 +1,7 @@
 import { Loader2 } from 'lucide-react';
 import { P } from '@/components/ui/typography';
 import { useEffect, useState } from 'react';
+import { cn } from '@/utils/common';
 
 export const WithLoader = ({
   text,
@@ -62,5 +63,35 @@ export const WithLoaderNodeSafe = ({
     </div>
   ) : (
     <>{content}</>
+  );
+};
+
+export const Spinner = ({
+  size = 'default',
+  className = '',
+}: {
+  size?: 'sm' | 'default' | 'lg';
+  className?: string;
+}) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  const sizeClasses = {
+    sm: 'h-4 w-4',
+    default: 'h-6 w-6',
+    lg: 'h-8 w-8',
+  };
+
+  return (
+    <Loader2
+      className={cn(sizeClasses[size], 'animate-spin text-gray-500', className)}
+    />
   );
 };

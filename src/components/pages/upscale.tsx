@@ -29,7 +29,8 @@ export default function UpscalePage() {
   const [fileName, setFileName] = useState<string>('upscaled-image');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
+  const [fileId, setFileId] = useState<number | null>(null);
 
   const form = useForm<UpscaleFormValues>({
     resolver: zodResolver(UpscaleSchema),
@@ -44,9 +45,10 @@ export default function UpscalePage() {
       onSuccess: (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
+          setFileId(data.data.fileId);
           setSuccessMessage(data.message || 'Image upscaled successfully!');
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to upscale image. Please try again.',
@@ -147,7 +149,11 @@ export default function UpscalePage() {
           </div>
 
           {processedImage && (
-            <ProcessedImage processedImage={processedImage} name={fileName} />
+            <ProcessedImage
+              processedImage={processedImage}
+              name={fileName}
+              fileId={fileId}
+            />
           )}
         </div>
       </div>

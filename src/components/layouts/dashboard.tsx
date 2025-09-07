@@ -30,7 +30,7 @@ import { TextInput } from '@/components/shared/inputs';
 
 function Header() {
   const router = useRouter();
-  const { userProfile, isLoading, fetchUserProfile } = useUser();
+  const { userProfile, isLoading, refreshUser } = useUser();
   const totalCredits =
     (userProfile?.credits ?? 0) + (userProfile?.subscriptionCredits ?? 0);
 
@@ -59,7 +59,7 @@ function Header() {
             />
           </Button>
           <IconButton
-            onClick={fetchUserProfile}
+            onClick={refreshUser}
             size="sm"
             className="w-8 h-8"
             variant="outline"

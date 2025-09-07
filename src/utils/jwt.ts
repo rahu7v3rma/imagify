@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
+const SHARE_IMAGE_JWT_SECRET = process.env.SHARE_IMAGE_JWT_SECRET!;
 
 export function encodeJWT({
   payload,
@@ -22,4 +23,21 @@ export function generateAccessToken({ userId }: { userId: string }) {
 
 export function decodeAccessToken({ token }: { token: string }) {
   return decodeJWT({ token });
+}
+
+export function generateShareId({
+  userId,
+  fileId,
+}: {
+  userId: number;
+  fileId: number;
+}) {
+  return jwt.sign({ userId, fileId }, SHARE_IMAGE_JWT_SECRET);
+}
+
+export function decodeShareId({ token }: { token: string }) {
+  return jwt.verify(token, SHARE_IMAGE_JWT_SECRET) as {
+    userId: number;
+    fileId: number;
+  };
 }

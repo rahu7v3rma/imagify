@@ -35,7 +35,7 @@ export default function ExtractTextPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false);
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
 
   const form = useForm<ExtractTextFormValues>({
     resolver: zodResolver(ExtractTextSchema),
@@ -52,7 +52,7 @@ export default function ExtractTextPage() {
           setProcessedText(data.data.extractedText);
           setSuccessMessage(data.message || 'Text extracted successfully!');
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to extract text. Please try again.',

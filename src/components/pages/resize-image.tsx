@@ -42,7 +42,8 @@ export default function ResizeImagePage() {
     useState<string>();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { fetchUserProfile } = useUser();
+  const { refreshUser } = useUser();
+  const [fileId, setFileId] = useState<number | null>(null);
 
   const form = useForm<ResizeImageFormValues>({
     resolver: zodResolver(ResizeImageSchema),
@@ -59,13 +60,14 @@ export default function ResizeImagePage() {
       onSuccess: async (data) => {
         if (data.success && data.data?.imageBase64) {
           setProcessedImage(data.data.imageBase64);
+          setFileId(data.data.fileId);
           const processedDimensions = await extractImageDimensions(
             data.data.imageBase64,
           );
           setProcessedImageDimensions(processedDimensions);
           setSuccessMessage(data.message || 'Image resized successfully!');
           setErrorMessage(null);
-          fetchUserProfile();
+          refreshUser();
         } else {
           setErrorMessage(
             data.message || 'Failed to resize image. Please try again.',
@@ -221,6 +223,7 @@ export default function ResizeImagePage() {
               processedImage={processedImage}
               name={fileName}
               dimensions={processedImageDimensions}
+              fileId={fileId}
             />
           )}
         </div>

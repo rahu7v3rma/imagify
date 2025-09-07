@@ -27,6 +27,7 @@ export const convertFormatRouter = router({
         data: z
           .object({
             imageBase64: z.string(),
+            fileId: z.number().nullable(),
           })
           .optional(),
       }),
@@ -46,7 +47,7 @@ export const convertFormatRouter = router({
 
         await deductCredits(ctx.user, requiredCredits);
 
-        await uploadFileToDatabase({
+        const fileId = await uploadFileToDatabase({
           user: ctx.user,
           base64String: response.imageBase64,
         });
@@ -56,6 +57,7 @@ export const convertFormatRouter = router({
           message: 'Image format converted successfully!',
           data: {
             imageBase64: response.imageBase64,
+            fileId: fileId,
           },
         };
       } catch (error: any) {

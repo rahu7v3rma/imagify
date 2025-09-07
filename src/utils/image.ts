@@ -15,13 +15,11 @@ export const parseDataUri = (dataUri: string) => {
   }
 
   const [, format, base64Data] = match;
-  // Normalize format (jpg -> jpeg)
-  const normalizedFormat = format === 'jpg' ? 'jpeg' : format;
 
   return {
-    format: normalizedFormat,
+    format,
     base64Data,
-    extension: normalizedFormat === 'jpeg' ? 'jpg' : normalizedFormat,
+    extension: format,
   };
 };
 
