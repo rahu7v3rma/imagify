@@ -7,5 +7,5 @@
 - PostgreSQL - database
 - NextJS - full stack framework
 - Shadcn - frontend components
-- Replicate, Gemini - AI services
+- Replicate - AI services
 - Razorpay - payment gateway

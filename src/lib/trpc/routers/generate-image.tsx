@@ -1,7 +1,6 @@
 import { CREDIT_REQUIREMENTS } from '@/constants/credits';
-import { getReplicateImageUrl } from '@/lib/replicate';
+import { getReplicateImageUrl, replicate } from '@/lib/replicate';
 import { protectedProcedure, router } from '@/lib/trpc/init';
-import { enhancePrompt } from '@/lib/gemini';
 import { uploadFileToDatabase } from '@/lib/upload';
 import { convertImageUrlToBase64 } from '@/utils/common';
 import { deductCredits, verifyCredits } from '@/utils/credits';
@@ -38,7 +37,15 @@ export const generateImageRouter = router({
 
         verifyCredits(ctx.user, requiredCredits);
 
-        const enhancedPrompt = await enhancePrompt(input.prompt);
+        const output = await replicate.run('openai/gpt-5-nano', {
+          input: {
+            prompt: `You are an AI assistant specialized in enhancing user prompts to make them more detailed, specific, and effective. Take the following user prompt and enhance it to be more comprehensive while maintaining the original intent. Return ONLY the enhanced prompt, nothing else:
+
+"${input.prompt}"`,
+          },
+        });
+
+        const enhancedPrompt = (output as any).join('');
 
         await deductCredits(ctx.user, requiredCredits);
 

@@ -4,7 +4,7 @@ import { publicProcedure, router } from '@/lib/trpc/init';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { sendErrorEmail } from '@/lib/email';
-import { convertFileToBase64 } from '@/utils/image';
+import { convertImageToBase64 } from '@/utils/image-server';
 
 export const contactRouter = router({
   sendMessage: publicProcedure
@@ -29,7 +29,7 @@ export const contactRouter = router({
 
         let base64String: string | null = null;
         if (image) {
-          base64String = await convertFileToBase64(
+          base64String = await convertImageToBase64(
             image,
             image.type.replace('image/', ''),
           );
