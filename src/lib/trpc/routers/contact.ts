@@ -1,10 +1,10 @@
 import { prisma } from '@/lib/prisma';
 import { TRPCError } from '@trpc/server';
 import { publicProcedure, router } from '@/lib/trpc/init';
-import { uploadContactFile } from '@/lib/upload';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { sendErrorEmail } from '@/lib/email';
+import { convertFileToBase64 } from '@/utils/image';
 
 export const contactRouter = router({
   sendMessage: publicProcedure
@@ -27,18 +27,19 @@ export const contactRouter = router({
       try {
         const { email, message, image } = input;
 
-        let uploadsPath: string | null = null;
+        let base64String: string | null = null;
         if (image) {
-          uploadsPath = await uploadContactFile({
-            file: image,
-          });
+          base64String = await convertFileToBase64(
+            image,
+            image.type.replace('image/', ''),
+          );
         }
 
         await prisma.contact.create({
           data: {
             email,
             message,
-            uploadsPath,
+            base64String,
           },
         });
 

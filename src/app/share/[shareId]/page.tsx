@@ -34,8 +34,7 @@ export default async function SharePage({
         height={0}
       />
     );
-  } catch (error) {
-    console.error(error);
+  } catch {
     return notFound();
   }
 }
