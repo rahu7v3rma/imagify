@@ -6,10 +6,10 @@ import Image from 'next/image';
 export default async function SharePage({
   params,
 }: {
-  params: { shareId: string };
+  params: Promise<{ shareId: string }>;
 }) {
   try {
-    const { shareId } = params;
+    const { shareId } = await params;
     const decoded = decodeShareId({ token: shareId });
 
     const { userId, fileId } = decoded;
