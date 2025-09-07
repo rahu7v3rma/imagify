@@ -7,7 +7,7 @@ import {
 } from '@/constants/credits';
 import { sendErrorEmail } from '@/lib/email';
 import { prisma } from '@/lib/prisma';
-import { razorpay } from '@/lib/razorpay';
+import { initRazorpay } from '@/lib/razorpay';
 import { protectedProcedure, router } from '@/lib/trpc/init';
 import { z } from 'zod';
 
@@ -63,6 +63,8 @@ export const billingRouter = router({
 
         const { amount } = input;
 
+        const razorpay = initRazorpay();
+
         const order = await razorpay.orders.create({
           amount: amount * 100,
           currency: 'USD',
@@ -108,6 +110,8 @@ export const billingRouter = router({
         }
 
         const { orderId, paymentId } = input;
+
+        const razorpay = initRazorpay();
 
         const order = await razorpay.orders.fetch(orderId);
 
@@ -187,6 +191,8 @@ export const billingRouter = router({
           };
         }
 
+        const razorpay = initRazorpay();
+
         const subscription = await razorpay.subscriptions.create({
           plan_id: RAZORPAY_SUBSCRIPTION_STANDARD_PLAN_ID,
           total_count: 12,
@@ -228,6 +234,8 @@ export const billingRouter = router({
         }
 
         const { subscriptionId, paymentId } = input;
+
+        const razorpay = initRazorpay();
 
         const subscription = await razorpay.subscriptions.fetch(subscriptionId);
 

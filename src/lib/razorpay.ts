@@ -9,7 +9,8 @@ const keySecret = isTest
   ? process.env.RAZORPAY_TEST_KEY_SECRET!
   : process.env.RAZORPAY_LIVE_KEY_SECRET!;
 
-export const razorpay = new Razorpay({
-  key_id: keyId,
-  key_secret: keySecret,
-});
+export const initRazorpay = () =>
+  new Razorpay({
+    key_id: keyId,
+    key_secret: keySecret,
+  });
