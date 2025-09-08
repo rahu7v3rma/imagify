@@ -17,6 +17,7 @@ import { convertFormatRouter } from '@/lib/trpc/routers/convert-format';
 import { resizeImageRouter } from '@/lib/trpc/routers/resize-image';
 import { cropRotateFlipRouter } from '@/lib/trpc/routers/crop-rotate-flip';
 import { shareImageRouter } from '@/lib/trpc/routers/share-image';
+import { blogRouter } from '@/lib/trpc/routers/blog';
 
 export const appRouter = router({
   contact: contactRouter,
@@ -37,6 +38,7 @@ export const appRouter = router({
   resizeImage: resizeImageRouter,
   cropRotateFlip: cropRotateFlipRouter,
   shareImage: shareImageRouter,
+  blog: blogRouter,
 });
 
 export type AppRouter = typeof appRouter;
