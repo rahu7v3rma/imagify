@@ -1,4 +1,5 @@
 import { sendErrorEmail } from '@/lib/email';
+import { TRPCError } from '@trpc/server';
 
 export const handleTrpcImageProcessingError = (error: any) => {
   if (process.env.APP_ENV === 'production') {
@@ -13,4 +14,16 @@ export const handleTrpcImageProcessingError = (error: any) => {
   }
 
   return { success: false, message: 'Failed to process image.' };
+};
+
+export const handleTrpcError = (error: any, router: string) => {
+  if (process.env.APP_ENV === 'production') {
+    sendErrorEmail({ error });
+  } else {
+    console.log(`Error in ${router}:`, error);
+  }
+  throw new TRPCError({
+    code: 'INTERNAL_SERVER_ERROR',
+    message: `Failed to process ${router}.`,
+  });
 };
